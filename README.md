@@ -5,7 +5,6 @@ A management system for Banksia Gardens Community Service.
 [Version 0.1]
 
 TO DO:
-- Design & Develop Login / Register functions
-1. Controller
-2. Model
-3. View
+1. Controller for Login/Register
+2. Model for Login/Register
+3. View for Login/Register
