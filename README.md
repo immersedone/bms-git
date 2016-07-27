@@ -6,3 +6,6 @@ A management system for Banksia Gardens Community Service.
 
 TO DO:
 - Design & Develop Login / Register functions
+1. Controller
+2. Model
+3. View
