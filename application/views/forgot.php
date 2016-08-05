@@ -65,7 +65,7 @@
 					<input type="submit" value="Reset Password" class="btn" />
 				</form>
 				<hr/>
-				<a href="http://banksiagardens.org.au" class="__flRight">Back to Banksia Gardens</a>
+				<a href="/" class="__flRight">Back to Login</a>
 			</div>
 		</div>
 	</div>
