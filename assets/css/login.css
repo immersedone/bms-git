@@ -57,11 +57,27 @@ body {
 	bottom: 0;
 }
 
+.loginPnl.forgot {
+	width: 400px;
+	height: 410px;
+	margin: auto;
+	border: 1px solid black;
+	position: absolute;
+	top: 0;
+	left:0;
+	right: 0;
+	bottom: 0;
+}
+
 .header {
 	background: #2f2f2f;
 	color: white;
 	padding: 10px 0;
 	text-align: center;
+}
+
+.justify {
+	text-align: justify;
 }
 
 img.rsp_img {
