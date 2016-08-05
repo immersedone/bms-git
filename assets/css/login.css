@@ -1,0 +1,136 @@
+/*
+	Project Name: 	Banksia Management System
+	Course:			Programming Project 1
+
+	Theme Name:		Login Page
+	Revision: 		v1.0
+
+	Authors: 		Adam Salek		- S
+					Ryan Bargholz	- S
+					Truc Minh Phan 	- S3545017
+
+	Description: 	Login Page using CodeIgniter & Bootstrap Frameworks.
+
+
+*/
+
+/************************************
+*************************************
+	
+	-------------------------
+	---	TABLE OF CONTENTS ---
+	-------------------------
+
+
+__GLBL - Global Variables
+__LGIN - Login
+__CLFX - Clearfix
+
+
+
+*************************************
+************************************/
+
+
+/* __GLBL - Global Variables */
+
+* { 
+	margin: 0;
+}
+
+body {
+	background: #f1f1f1;
+}
+
+
+/* __LGIN - Login */
+
+.loginPnl {
+	width: 400px;
+	height: 375px;
+	margin: auto;
+	border: 1px solid black;
+	position: absolute;
+	top: 0;
+	left:0;
+	right: 0;
+	bottom: 0;
+}
+
+.header {
+	background: #2f2f2f;
+	color: white;
+	padding: 10px 0;
+	text-align: center;
+}
+
+img.rsp_img {
+	max-width:40px;
+	max-height:40px;
+	display:inline-block;
+	float: left;
+}
+
+.header h4 {
+	display: inline-block;
+	vertical-align: middle;
+	font-size: 26px;
+	font-weight: bold;
+	line-height: 20px;
+}
+
+.content {
+	background: white;
+	padding: 25px 0 0;
+}
+
+.content label {
+	display: block;
+}
+
+label[for=password] {
+	margin-top: 10px;
+}
+
+.content input {
+	width: 100%;
+	background: #f1f1f1;
+	margin: 5px auto;
+	outline: none;
+	box-shadow: none;
+	border: 1px solid silver;
+	font-size: 18px;
+	padding: 4px;
+}
+
+.content form > a {
+	margin-top: 7px;
+}
+
+.content input[type=submit] {
+	background: #5fbe2d;
+	color: white;
+	border-radius: 0;
+	font-weight: bold;
+	margin-top: 7px;
+}
+
+.content hr {
+	margin: 15px 0;
+}
+
+.__flRight {
+	float: right;
+}
+
+/* __CLFX - Clearfix */
+
+.cfx, .inner {
+	overflow: auto;
+}
+
+.cfx:after, .inner:after {
+	content: "";
+	display: table;
+	clear: both;	
+}
