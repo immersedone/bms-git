@@ -8,7 +8,7 @@ class Expenditure_model extends CI_Model
 
     function group_expenditures_to_reimb()
     {
-        
+
     }
 }
 ?>

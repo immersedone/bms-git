@@ -7,7 +7,7 @@
 	Revision: 		v1.0
 
 	Authors: 		Adam Salek		-	S
-					Ryan Bargholz	-	S
+					Ryan Bargholz	-	S3485754
 					Truc Minh Phan	- 	S3545017
 
 
