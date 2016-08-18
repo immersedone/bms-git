@@ -1,17 +1,22 @@
-<?php
-class People_model extends CI_Model {
-    function __construct()
-    {
-        parent::__construct();
-    }
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+class People_model extends grocery_CRUD_Model {
 
-    //List all people
+    private $query_str = '';
+    
+    function __construct() {
+        parent::construct();
+    }
+    
+    public function set_query_str($query_str){
+        $this->query_str = $query_str;
+    }
+    
     function list_all_people()
     {
-        $sql = "SELECT *
-                FROM Person";
-        $query = $this->db->query($sql);
+        $query = $this->db->query($this->query_str);
         
+        $results_arr=$query->result();
+        return $results_arr;       
     }
 
     /*
@@ -28,7 +33,8 @@ class People_model extends CI_Model {
     */
     //Add people to a project
     function add_people_to_proj()
-    {   
+    {  
+        /*
         $sql = "IF NOT EXISTS 
                 INSERT INTO PersonProject(PersonProjectID, PersonID, ProjID, Role)
                 VALUES(PersonProjectID,
