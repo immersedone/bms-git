@@ -1,6 +1,5 @@
 <?php
-class Expenditure_model extends CI_Model
-{
+class Expenditure_model extends CI_Model {
     function __construct()
     {
         parent::__construct(
