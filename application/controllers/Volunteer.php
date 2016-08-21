@@ -25,24 +25,16 @@ class Volunteer extends CI_Controller {
 	public function volunteer() {
 
 		$crud = new grocery_CRUD();
-		$crud->set_theme('flexigrid');
-		$crud->set_relation("PerID", "PersonProject", "PerID"); //, array("Role"=>"VOLUNTEER")
-		$crud->where("Role", "VOLUNTEER");
+		$crud->set_model('Volunteer_GC');
 		$crud->set_table('Person');
 		$crud->set_subject('Volunteer');
-		
-		$crud->columns('ProjID', 'FirstName', 'LastName', 'Address', 'SuburbID', 'WorkEmail', 'PersonalEmail', 'Mobile', 'HomePhone');
-		$crud->add_fields('FirstName', 'MiddleName', 'LastName', 'Address', 'SuburbID', 'WorkEmail', 'PersonalEmail', 'Mobile', 'HomePhone', 'Status', 'DateStarted', 'WWC', 'WWCFiled', 'Username');
-		$crud->edit_fields('FirstName', 'MiddleName', 'LastName', 'Address', 'SuburbID', 'WorkEmail', 'PersonalEmail', 'Mobile', 'HomePhone', 'Status', 'DateStarted', 'DateFinished', 'WWC', 'WWCFiled', 'Username');
-		$crud->display_as('FirstName', 'First Name');
-		$crud->display_as('MiddleName', 'Middle Name');
-		$crud->display_as('LastName', 'Last Name');
-		$crud->display_as('WorkEmail', 'Work Email');
-		$crud->display_as('PersonalEmail', 'Personal Email');
-		$crud->display_as('HomePhone', 'Home Phone');
-		$crud->display_as('DateStarted', 'Date Started');
+		$crud->basic_model->set_query_str('SELECT `Project`.Name, `PersonProject`.Role as ProjRole, `Person`.* FROM `Person` LEFT OUTER JOIN `PersonProject` ON `Person`.PerID=`PersonProject`.PerID LEFT OUTER JOIN `Project` ON `PersonProject`.ProjID=`Project`.ProjID WHERE `PersonProject`.Role="VOLUNTEER"');
+		$crud->columns("Name", "ProjRole", "FirstName", "LastName", "Address", "SuburbID", "WorkEmail", "PersonalEmail", "Mobile", "HomePhone");
+		$crud->display_as("Name", "Project Name");
+		$crud->display_as("ProjRole", "Project Role");
 		$crud->unset_add();
-		
+		$crud->unset_edit();
+
 		$output = $crud->render();
 
 		$this->render($output);
