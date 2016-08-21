@@ -27,7 +27,7 @@ class Volunteer extends CI_Controller {
 		$crud = new grocery_CRUD();
 		$crud->set_theme('flexigrid');
 		$crud->set_relation("PerID", "PersonProject", "PerID"); //, array("Role"=>"VOLUNTEER")
-		$crud->where("Role", "VOLUNTEER");
+			 ->where("Role", "VOLUNTEER");
 		$crud->set_table('Person');
 		$crud->set_subject('Volunteer');
 		
