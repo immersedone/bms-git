@@ -43,6 +43,11 @@ class People extends CI_Controller {
 
 		$this->render($output);
 	}
+	
+	public function add_people_to_proj()
+	{
+		
+	}
 
 
 }
