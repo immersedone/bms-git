@@ -1,5 +1,5 @@
 <?php
-class Login_model extends Grocery_CRUD_Model
+class User_model extends Grocery_crud_model
 {
     function login($username, $password)
     {
