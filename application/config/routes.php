@@ -83,6 +83,7 @@ $route['user/volunteer/index/update_validation/(:num)'] = 'volunteer/volunteer/$
 $route['user/volunteer/index/success/(:num)'] = 'volunteer/volunteer/$1';
 $route['user/volunteer/index/read/(:num)'] = 'volunteer/volunteer/$1';
 $route['user/volunteer/index/delete/(:num)'] = 'volunteer/volunteer/$1';
+$route['user/volunteer/index/pp_delete/(:num)/(:num)'] = 'volunteer/pp_delete/$1/$2';
 $route['user/volunteer/index/print'] = 'volunteer/volunteer';
 $route['user/volunteer/index/ajax_list'] = 'volunteer/volunteer';
 $route['user/volunteer/index/ajax_list_info'] = 'volunteer/volunteer';

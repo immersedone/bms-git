@@ -169,6 +169,37 @@ $(function(){
 		return false;
 	});
 
+	//AJAX for Custom Delete Method
+	$('.ajax_list').on('click','.delete-icon.crud-action', function(){
+		var delete_url = $(this).attr('href');
+
+		var this_container = $(this).closest('.flexigrid');
+
+		if( confirm( message_alert_delete ) )
+		{
+			$.ajax({
+				url: delete_url,
+				dataType: 'json',
+				success: function(data)
+				{
+					if(data.result === "success")
+					{
+						this_container.find('.ajax_refresh_and_loading').trigger('click');
+
+						success_message("Successfully removed Person from Project.");
+					}
+					else
+					{
+						error_message("Failed to remove Person from Project.\n Try again later or contact system administrator.");
+
+					}
+				}
+			});
+		}
+
+		return false;
+	});
+
 	$('.export-anchor').click(function(){
 		var export_url = $(this).attr('data-url');
 

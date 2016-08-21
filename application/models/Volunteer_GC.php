@@ -18,5 +18,21 @@
             $this->query_str = $query_str;
         }
     
+        function get_total_results() {
+            return count($this->get_list());
+        }
 
+        function delete_pp($userid, $projectid)
+        {
+
+            $resp = array();
+
+            if($this->db->simple_query("DELETE FROM PersonProject WHERE ProjID='$projectid' AND PerID='$userid' LIMIT 1")) {
+                $resp['result'] = "success";
+            } else {
+                $resp['result'] = "failed";
+            }
+
+            echo json_encode($resp);
+        }
 }
