@@ -12,23 +12,7 @@ class People_model extends Grocery_crud_model {
           
     }
     
-        
-    //View expenditures for a person
-    function view_person_expenditures()
-    {
-        $this->db->select('*');
-        $this->db->from('Expenditure');
-        $this->db->where('SpentBy'=$chosen_person);
-    }
-
-    //View reimbursements for a person
-    function view_person_reimbursements()
-    {
-        $this->db->select('*');
-        $this->db->from('Reimbursement');
-        $this->db->where('PerID'=$chosen_person); 
-    }
-    /*
+        /*
     function list_all_employees()
     {
 
@@ -39,19 +23,39 @@ class People_model extends Grocery_crud_model {
 
     }
     */
+        
+    //View expenditures for a person
+    function view_person_expenditures()
+    {
+        $this->db
+            ->select('*');
+            ->from('Expenditure');
+            ->where('Expenditure.SpentBy'=$chosen_person);
+    }
+
+    //View reimbursements for a person
+    function view_person_reimbursements()
+    {
+        $this->db
+            ->select('*');
+            ->from('Reimbursement');
+            ->where('Reimbursement.PerID', $chosen_person);
+    }
    
     
     //Add people to a project
     public function add_people_to_proj($data)
     {  
-        $this->db->insert('PersonProject', $data);
+        $this->db
+            ->insert('PersonProject', $data);
     }
     
     
     //Add an expenditure for a person
     function add_person_expenditure()
     {
-        $this->db->insert('PersonProject', $data);
+        $this->db
+            ->insert('Expenditure', $data);
     }
 
 

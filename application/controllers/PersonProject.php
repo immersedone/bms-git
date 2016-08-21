@@ -17,6 +17,22 @@ class PersonProject extends CI_Controller {
 		//$this->render((object)array('output' => '' , 'js_files' => array() , 'css_files' => array()));
 		//$this->personproject();
 		$this->load->view('personproject');
+	
+		/*
+		Corresponds to People_model.php's function to add Person to project
+		
+		$data is a variable that exists in People_model - $data is the fields being inserted when the
+		person_to_project function is called
+		*/
+		$data = array(
+			'PerID' => $this->input->post('personid'),
+			'ProjID' => $this->input->post('projectid'),
+			'Role' => $this->input->post('role')
+		);
+		
+		//Data transfer to Model
+		$this->People_model->add_person_to_proj($data);
+		$data['message'] = 'Person successfully added to Project';
 	}
 
 	public function render($output = null) {
