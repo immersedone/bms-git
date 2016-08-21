@@ -28,8 +28,11 @@ class Milestones extends CI_Controller {
 		$crud->set_theme('flexigrid');
 		$crud->set_table('Milestone');
 		$crud->set_subject('Milestone');
+		$crud->set_relation('ProjID', 'Project', 'ProjID');
+		$crud->columns('Title', 'Description', 'StartDate', 'FinishDate');
+		$crud->display_as('StartDate', 'Start Date');
+		$crud->display_as('FinishDate', 'Finish Date');
 		
-
 		$output = $crud->render();
 
 		$this->render($output);
