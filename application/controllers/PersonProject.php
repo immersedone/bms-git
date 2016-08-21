@@ -14,6 +14,7 @@ class PersonProject extends CI_Controller {
 
 	public function index()
 	{
+		
 		//$this->render((object)array('output' => '' , 'js_files' => array() , 'css_files' => array()));
 		//$this->personproject();
 		$this->load->view('personproject');
@@ -46,6 +47,8 @@ class PersonProject extends CI_Controller {
 		$crud->set_table('Project');
 		$crud->set_subject('Project');
 		$crud->columns("Name", "Description", "StartDate", "FinishDate", "Status", "TotalFunding");
+		$crud->set_rules('');
+		$crud->set_rules('');
 		$crud->display_as("Name", "Project Name");
 		$crud->display_as("Description", "Project Description");
 		$crud->display_as("StartDate", "Start Date");

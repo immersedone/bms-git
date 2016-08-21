@@ -30,7 +30,7 @@ class People_model extends Grocery_crud_model {
         $this->db
             ->select('*');
             ->from('Expenditure');
-            ->where('Expenditure.SpentBy'=$chosen_person);
+            ->where('SpentBy', $chosen_person);
     }
 
     //View reimbursements for a person
@@ -39,7 +39,7 @@ class People_model extends Grocery_crud_model {
         $this->db
             ->select('*');
             ->from('Reimbursement');
-            ->where('Reimbursement.PerID', $chosen_person);
+            ->where('PerID', $chosen_person);
     }
    
     
@@ -65,7 +65,7 @@ class People_model extends Grocery_crud_model {
         
     }
     
-    //Remove epxenditure from a person
+    //Remove expenditure from a person
     function remove_person_expenditure()
     {
 

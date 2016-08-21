@@ -33,4 +33,8 @@ class Expenditures extends CI_Controller {
 
 		$this->render($output);
 	}
+	
+	public function add_person_expenditure(){
+		
+	}
 }
