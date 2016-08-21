@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-    class Volunteer_GC extends grocery_CRUD_model {
+    class Employee_GC extends grocery_CRUD_model {
      
         private  $query_str = ''; 
         function __construct() {
@@ -27,7 +27,7 @@
 
             $resp = array();
 
-            if($this->db->simple_query("DELETE FROM PersonProject WHERE ProjID='$projectid' AND PerID='$userid' AND Role='VOLUNTEER' LIMIT 1")) {
+            if($this->db->simple_query("DELETE FROM PersonProject WHERE ProjID='$projectid' AND PerID='$userid' AND Role='EMPLOYEE' LIMIT 1")) {
                 $resp['success'] = TRUE;
                 $resp['success_message'] = "Successfully removed Person from Project.";
             } else {
@@ -44,7 +44,7 @@
 
             if($this->db->simple_query("INSERT INTO PersonProject (ProjID, PerID, Role) VALUES('$projectID', '$personID', '$role')")) {
                 $resp['success'] = TRUE;
-                $resp['success_list_url'] = base_url() . "user/volunteer";
+                $resp['success_list_url'] = base_url() . "user/employee";
                 $resp['success_message'] = "Successfully added Person to Project.";
             } else {
                 $resp['success'] = FALSE;
