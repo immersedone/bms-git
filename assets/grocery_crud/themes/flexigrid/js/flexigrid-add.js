@@ -23,7 +23,8 @@ $(function(){
 		$('#crudForm').submit(function(){
 			var my_crud_form = $(this);
 
-			$(this).ajaxSubmit({
+			$.ajax({
+				method: "POST",
 				url: validation_url,
 				dataType: 'json',
 				cache: 'false',

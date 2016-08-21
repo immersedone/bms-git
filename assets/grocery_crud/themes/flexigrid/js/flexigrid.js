@@ -182,15 +182,15 @@ $(function(){
 				dataType: 'json',
 				success: function(data)
 				{
-					if(data.result === "success")
+					if(data.success)
 					{
 						this_container.find('.ajax_refresh_and_loading').trigger('click');
 
-						success_message("Successfully removed Person from Project.");
+						success_message(data.success_message);
 					}
 					else
 					{
-						error_message("Failed to remove Person from Project.\n Try again later or contact system administrator.");
+						error_message(data.error_message);
 
 					}
 				}

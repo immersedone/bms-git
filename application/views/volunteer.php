@@ -70,6 +70,8 @@
       </div>
     </div>
 
+    
+
     <!-- jQuery -->
     <!--<script src="/assets/vendors/jquery/dist/jquery.min.js"></script>-->
     <!-- Bootstrap -->
