@@ -28,7 +28,7 @@
                   <li><a><i class="fa fa-table"></i> Reports<span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="/user/reports">View All Reports</a></li>
-                      <li><a href="tables_dynamic.html">Table Dynamic</a></li>
+                      <li><a href="/user/reports">Generate Custom Report</a></li>
                     </ul>
                   </li>
                   <li><a href="/user/statistics"><i class="fa fa-bar-chart-o"></i> Statistics</span></a>
