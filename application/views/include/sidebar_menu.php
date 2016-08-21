@@ -18,7 +18,7 @@
                       <li><a href="/user/milestones">Milestones</a></li>
                     </ul>
                   </li>
-				  <li><a><i class="fa fa-desktop"></i> Finance<span class="fa fa-chevron-down"></span></a>
+				  <li><a><i class="fa fa-money"></i> Finance<span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="/user/expenditures">Expenditures</a></li>
                       <li><a href="/user/reimbursements">Reimbursements</a></li>
