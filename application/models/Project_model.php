@@ -1,5 +1,5 @@
-<?php
-class Project_model extends CI_Model {
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+class Project_model extends Grocery_crud_model {
     function __construct()
     {
         parent::__construct();
