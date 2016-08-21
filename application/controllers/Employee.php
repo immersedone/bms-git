@@ -28,7 +28,7 @@ class Employee extends CI_Controller {
 		$crud->set_theme('flexigrid');
 		$crud->set_table('Person');
 		$crud->set_subject('Employee');
-		$crud->set_relation("PerID", "PersonProject", "PerID", array("Role"=>"EMPLOYEE"));
+		$crud->set_relation("PerID", "PersonProject", "PerID");
 		$crud->where("Role", "EMPLOYEE");
 		$crud->columns('FirstName', 'LastName', 'Address', 'SuburbID', 'WorkEmail', 'PersonalEmail', 'Mobile', 'HomePhone');
 		$crud->add_fields('FirstName', 'MiddleName', 'LastName', 'Address', 'SuburbID', 'WorkEmail', 'PersonalEmail', 'Mobile', 'HomePhone', 'Status', 'DateStarted', 'WWC', 'WWCFiled', 'Username');
