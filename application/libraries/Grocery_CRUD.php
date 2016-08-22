@@ -1579,8 +1579,8 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		$data->unset_delete			= $this->unset_delete;
 		$data->unset_export			= $this->unset_export;
 		$data->unset_print			= $this->unset_print;
-
-		$data->buttons = $this->form_buttons; //Tabs
+		
+		$data->buttons 				= $this->form_buttons; //Tabs
 
 		$default_per_page = $this->config->default_per_page;
 		$data->paging_options = $this->config->paging_options;
