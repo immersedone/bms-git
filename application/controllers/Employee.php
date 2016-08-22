@@ -54,8 +54,12 @@ class Employee extends CI_Controller {
 		$crud->set_model('Employee_GC');
 		$crud->set_table('Person');
 		$crud->set_subject('Employee');
-		$crud->basic_model->set_query_str('SELECT Proj.Name, Proj.ProjID, `PersonProject`.Role as ProjRole, CONCAT(FirstName, " ", MiddleName, " ", LastName) as FullName, Sub.SuburbName as SubName, `Person`.* FROM `Person` LEFT OUTER JOIN `PersonProject` ON `Person`.PerID=`PersonProject`.PerID LEFT OUTER JOIN `Project` Proj ON `PersonProject`.ProjID=Proj.ProjID WHERE `PersonProject`.Role="Employee" 
-		LEFT OUTER JOIN `Suburb` Sub on Sub.Postcode = `Person`.SuburbID ORDER BY Proj.Name ASC');
+		$crud->basic_model->set_query_str('SELECT Proj.Name, Proj.ProjID, `PersonProject`.Role as ProjRole, CONCAT(FirstName, " ", MiddleName, " ", LastName) as FullName, Sub.SuburbName as SubName, `Person`.* FROM `Person` 
+		LEFT OUTER JOIN `PersonProject` ON `Person`.PerID=`PersonProject`.PerID 
+		LEFT OUTER JOIN `Project` Proj ON `PersonProject`.ProjID=Proj.ProjID 
+		LEFT OUTER JOIN `Suburb` Sub ON Sub.Postcode=`Person`.SuburbID 
+		WHERE `PersonProject`.Role="Employee" 
+		ORDER BY Proj.Name ASC');
 		$crud->columns("Name", "FullName", "Address", "SuburbID", "SubName", "WorkEmail", "PersonalEmail", "Mobile", "HomePhone");
 		$crud->display_as("Name", "Project Name");
 		$crud->display_as("ProjRole", "Project Role");
