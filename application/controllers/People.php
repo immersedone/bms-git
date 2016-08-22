@@ -29,10 +29,8 @@ class People extends CI_Controller {
 		$crud->set_model('People_Model');
 		$crud->set_table('Person');
 		$crud->set_subject('Person');
-		$crud->basic_model->set_query_str('SELECT Sub.SuburbName as SubName, Per.* from `Person` Per
-		OUTER LEFT JOIN `Suburb` Sub ON Per.SuburbID = Sub.Postcode
-		ORDER BY LastName');
-		$crud->columns('FirstName', 'LastName', 'Address', 'SuburbID', 'SubName', 'WorkEmail', 'PersonalEmail', 'Mobile', 'HomePhone');
+		$crud->set_relation('SuburbID', 'Suburb', '{Postcode} - {SuburbName}');
+		$crud->columns('FirstName', 'LastName', 'Address', 'SuburbID', 'WorkEmail', 'PersonalEmail', 'Mobile', 'HomePhone');
 		$crud->add_fields('FirstName', 'MiddleName', 'LastName', 'Address', 'SuburbID', 'WorkEmail', 'PersonalEmail', 'Mobile', 'HomePhone', 'Status', 'DateStarted', 'WWC', 'WWCFiled', 'Username', 'Role');
 		$crud->edit_fields('FirstName', 'MiddleName', 'LastName', 'Address', 'SuburbID', 'WorkEmail', 'PersonalEmail', 'Mobile', 'HomePhone', 'Status', 'DateStarted', 'DateFinished', 'WWC', 'WWCFiled', 'Username', 'Role');
 		$crud->display_as('FirstName', 'First Name');
@@ -42,8 +40,7 @@ class People extends CI_Controller {
 		$crud->display_as('PersonalEmail', 'Personal Email');
 		$crud->display_as('HomePhone', 'Home Phone');
 		$crud->display_as('DateStarted', 'Date Started');
-		$crud->display_as('SuburbID', 'Postcode');
-		$crud->display_as('SubName', 'Suburb');
+		$crud->display_as('SuburbID', 'Suburb');
 
 		$output = $crud->render();
 
