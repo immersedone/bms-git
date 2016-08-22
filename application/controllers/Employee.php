@@ -54,10 +54,11 @@ class Employee extends CI_Controller {
 		$crud->set_model('Employee_GC');
 		$crud->set_table('Person');
 		$crud->set_subject('Employee');
-		$crud->basic_model->set_query_str('SELECT Proj.Name, Proj.ProjID, `PersonProject`.Role as ProjRole, CONCAT(FirstName, " ", MiddleName, " ", LastName) as FullName, Sub.SuburbName as SubName, `Person`.* FROM `Person` 
-		LEFT OUTER JOIN `PersonProject` ON `Person`.PerID=`PersonProject`.PerID 
+		$crud->basic_model->set_query_str(
+		'SELECT Proj.Name, Proj.ProjID, `PersonProject`.Role as ProjRole, CONCAT(FirstName, " ", MiddleName, " ", LastName) as FullName, Sub.SuburbName as SubName, Per.* FROM `Person` Per 
+		LEFT OUTER JOIN `PersonProject` ON Per.PerID=`PersonProject`.PerID 
 		LEFT OUTER JOIN `Project` Proj ON `PersonProject`.ProjID=Proj.ProjID 
-		LEFT OUTER JOIN `Suburb` Sub ON Sub.Postcode=`Person`.SuburbID 
+		LEFT OUTER JOIN `Suburb` Sub ON Sub.Postcode=Per.SuburbID 
 		WHERE `PersonProject`.Role="Employee" 
 		ORDER BY Proj.Name ASC');
 		$crud->columns("Name", "FullName", "Address", "SuburbID", "SubName", "WorkEmail", "PersonalEmail", "Mobile", "HomePhone");
