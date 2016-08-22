@@ -1580,6 +1580,8 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		$data->unset_export			= $this->unset_export;
 		$data->unset_print			= $this->unset_print;
 
+		$data-&gt;buttons = $this-&gt;form_buttons; //Tabs
+
 		$default_per_page = $this->config->default_per_page;
 		$data->paging_options = $this->config->paging_options;
 		$data->default_per_page		= is_numeric($default_per_page) && $default_per_page >1 && in_array($default_per_page,$data->paging_options)? $default_per_page : 25;
