@@ -3520,6 +3520,7 @@ class Grocery_CRUD extends grocery_CRUD_States
 	protected $callback_before_upload	= null;
 	protected $callback_after_upload	= null;
 
+	protected $form_buttons 			= array();	//Allows the formation of new buttons
 	protected $default_javascript_path				= null; //autogenerate, please do not modify
 	protected $default_css_path						= null; //autogenerate, please do not modify
 	protected $default_texteditor_path 				= null; //autogenerate, please do not modify
