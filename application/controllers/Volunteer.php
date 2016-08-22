@@ -31,7 +31,7 @@ class Volunteer extends CI_Controller {
 		$crud->basic_model->set_query_str('SELECT Proj.Name, Proj.ProjID, `PersonProject`.Role as ProjRole, CONCAT(FirstName, " ", MiddleName, " ", LastName) as FullName, Sub.SuburbName as SubName, Per.* FROM `Person` Per 
 		LEFT OUTER JOIN `PersonProject` ON Per.PerID=`PersonProject`.PerID 
 		LEFT OUTER JOIN `Project` Proj ON `PersonProject`.ProjID=Proj.ProjID 
-		LEFT OUTER JOIN `Suburb` Sub ON Sub.Postcode=Per.SuburbID 
+		LEFT OUTER JOIN `Suburb` Sub ON Sub.SuburbID=Per.SuburbID 
 		WHERE `PersonProject`.Role="VOLUNTEER"
 		ORDER BY Proj.Name ASC');
 		$crud->columns("Name", "FullName", "Address", "SuburbID", "SubName", "WorkEmail", "PersonalEmail", "Mobile", "HomePhone");
