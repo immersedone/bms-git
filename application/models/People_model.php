@@ -1,9 +1,29 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class People_model extends Grocery_crud_model {
     
+	
+	private  $query_str = ''; 
+	
     function __construct() {
         parent::construct();
     }
+	
+	function get_list() {
+		$query=$this->db->query($this->query_str);
+ 
+		$results_array=$query->result();
+		return $results_array;      
+	}
+ 
+	public function set_query_str($query_str) {
+		$this->query_str = $query_str;
+	}
+
+	function get_total_results() {
+		return count($this->get_list());
+	}
+
+
 
     function view_all_people()
     {
