@@ -59,7 +59,12 @@
         <!-- page content -->
         <div class="right_col" role="main">
           <div class="row">
-            <div class="col-md-12 col-sm-12 col-xs-12">  
+            <div class="col-md-12 col-sm-12 col-xs-12">
+            <div id=tabs>
+              <ul>
+                <li><a href="milestones">Milestones</a></li>
+              </ul>
+            </div>  
               <?php echo $output; ?>
             </div>
           </div>
