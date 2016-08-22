@@ -25,10 +25,13 @@ class Projects extends CI_Controller {
 	public function projects() {
 
 		$crud = new grocery_CRUD();
+		$crud->form_buttons('View Milestones', '');
+		$crud->form_buttons('View Expenditures', '');
+		$crud->form_buttons('View Reimbursements', '');
+		$crud->form_buttons('View Funding', '');
 		$crud->set_theme('flexigrid');
 		$crud->set_table('Project');
 		$crud->set_subject('Project');
-		$crud->form_buttons('Milestones', 'myJSCall', '');
 		$crud->columns("Name", "Description", "StartDate", "FinishDate", "Status", "TotalFunding");
 		$crud->display_as("Name", "Project Name");
 		$crud->display_as("Description", "Project Description");
