@@ -39,7 +39,7 @@ class People extends CI_Controller {
 		$crud->display_as('PersonalEmail', 'Personal Email');
 		$crud->display_as('HomePhone', 'Home Phone');
 		$crud->display_as('DateStarted', 'Date Started');
-		$crud->display_as('SuburbID', 'Suburb);
+		$crud->display_as('SuburbID', 'Suburb');
 
 		$output = $crud->render();
 
