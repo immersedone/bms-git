@@ -60,14 +60,6 @@
         <div class="right_col" role="main">
           <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
-              <div id=tabs>
-                <ul class="nav nav-tabs">
-                  <li><a href="#home" data-toggle="tab">Home</a></li>
-                  <li><a href="#profile" data-toggle="tab">Profile</a></li>
-                  <li><a href="#messages" data-toggle="tab">Messages</a></li>
-                  <li><a href="#settings" data-toggle="tab">Settings</a></li>
-               </ul>
-              </div>
               <?php echo $output; ?>
             </div>
           </div>
