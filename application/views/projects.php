@@ -62,7 +62,7 @@
             <div class="col-md-12 col-sm-12 col-xs-12">
             <div id=tabs>
               <ul>
-                <li><a href="milestones">Milestones</a></li>
+                <li><a href="/user/milestones">Milestones</a></li>
               </ul>
             </div>  
               <?php echo $output; ?>
