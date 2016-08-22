@@ -61,15 +61,11 @@ class Employee extends CI_Controller {
 		LEFT OUTER JOIN `Suburb` Sub ON Sub.SuburbID=Per.SuburbID 
 		WHERE `PersonProject`.Role="Employee" 
 		ORDER BY Proj.Name ASC');
-		$crud->columns("Name", "FullName", "Address", "SuburbID", "SubName", "WorkEmail", "PersonalEmail", "Mobile", "HomePhone");
+		$crud->columns("Name", "FullName", "Address", "Postcode", "SubName", "WorkEmail", "PersonalEmail", "Mobile", "HomePhone");
 		$crud->display_as("Name", "Project Name");
 		$crud->display_as("ProjRole", "Project Role");
 		$crud->display_as("FullName", "Full Name");
 		$crud->display_as("SubName", "Suburb");
-		$crud->display_as("SuburbID", "Postcode");
-
-
-		
 		
 		//Change the Add Volunteer Fields
 		$crud->add_fields("FullName", "Name", "Role");
