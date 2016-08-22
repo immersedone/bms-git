@@ -28,8 +28,8 @@ class People extends CI_Controller {
 		$crud->set_model('Person_GC');
 		$crud->set_table('Person');
 		$crud->set_subject('Person');
-		$crud->set_relation('SuburbID', 'Suburb', '{Postcode} - {Suburb}');
-		$crud->basic_model->set_query_str('SELECT Sub.SuburbID as SuburbID, Sub.SuburbName as SubName, Sub.Postcode as Postcode, Per.* from `Person` Per
+		//$crud->set_relation('SuburbID', 'Suburb', '{Postcode} - {Suburb}');
+		$crud->basic_model->set_query_str('SELECT Sub.SuburbName as SubName, Sub.Postcode as Postcode, Per.* from `Person` Per
 		LEFT OUTER JOIN `Suburb` Sub ON Per.SuburbID=Sub.SuburbID
 		ORDER BY LastName');
 		$crud->columns('FirstName', 'LastName', 'Address', 'Postcode', 'SubName', 'WorkEmail', 'PersonalEmail', 'Mobile', 'HomePhone');
