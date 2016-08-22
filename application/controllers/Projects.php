@@ -28,7 +28,7 @@ class Projects extends CI_Controller {
 		$crud->form_buttons('View Milestones', '');
 		$crud->form_buttons('View Expenditures', '');
 		$crud->form_buttons('View Reimbursements', '');
-		$crud->form_buttons('View Funding', '');
+		$crud->form_buttons('View Funding', 'JSCall', 'SomeClass');
 		$crud->set_theme('flexigrid');
 		$crud->set_table('Project');
 		$crud->set_subject('Project');
