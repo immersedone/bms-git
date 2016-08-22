@@ -57,23 +57,23 @@
         <?php include_once("include/top_navigation.php"); ?>
 
         <!-- page content -->
-
-    <?php 
-    if(isset($buttons) && is_array($buttons) && count($buttons) > 0) 
-    {
-        $n=1;
-        foreach ($buttons as $formName => $frmConfig) 
-        {
-            if(array_key_exists('class', $frmConfig)) 
-            {
-                $class = $frmConfig['class'];
-            } 
-            else 
-            {
+        <div class="right_col" role="main">
+          <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <?php if(isset($buttons) && is_array($buttons) && count($buttons) > 0) 
+              {
+                $n=1;
+                foreach ($buttons as $formName => $frmConfig) 
+                {
+                  if(array_key_exists('class', $frmConfig)) 
+                  {
+                  $class = $frmConfig['class'];
+                  } 
+                  else 
+                  {
                 $class = 'btn btn-large';
-            }
-        ?>
-        <div class='form-button-box'>
+                  }?>
+            <div class='form-button-box'>
             <input class='<?php echo $class?>' type='button' onclick="<?php echo 'javascript:' . $frmConfig['js_call'] . '()'?>"
                 value='<?php echo $formName; ?>' id="user-button_<?php echo $n?>" />
             </div> 
@@ -81,10 +81,6 @@
         }
     } 
     ?>
-
-        <div class="right_col" role="main">
-          <div class="row">
-            <div class="col-md-12 col-sm-12 col-xs-12">
               <?php echo $output; ?>
             </div>
           </div>
