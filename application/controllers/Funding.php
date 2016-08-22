@@ -34,11 +34,11 @@ class Funding extends CI_Controller {
 		ORDER BY Proj.Name
 		');
 		$crud->columns('ProjName', 'FBName', 'Amount', 'PaymentType', 'ApprovedBy', 'ApprovedOn');
-		$crud->set_display('ProjName', 'Project');
-		$crud->set_display('FBName', 'Funding Body');
-		$crud->set_display('PaymentType', 'Payment Type');
-		$crud->set_display('ApprovedBy', 'Approved By');
-		$crud->set_display('ApprovedOn', 'Approved On');
+		$crud->display_as('ProjName', 'Project');
+		$crud->display_as('FBName', 'Funding Body');
+		$crud->display_as('PaymentType', 'Payment Type');
+		$crud->display_as('ApprovedBy', 'Approved By');
+		$crud->display_as('ApprovedOn', 'Approved On');
 
 		$output = $crud->render();
 
