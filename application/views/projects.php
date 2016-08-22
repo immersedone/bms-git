@@ -60,7 +60,8 @@
         <div class="right_col" role="main">
           <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
-              <?php if(isset($buttons) && is_array($buttons) && count($buttons) > 0) 
+              <?php 
+              if(isset($buttons) && is_array($buttons) && count($buttons) > 0) 
               {
                 $n=1;
                 foreach ($buttons as $formName => $frmConfig) 
@@ -72,15 +73,15 @@
                   else 
                   {
                 $class = 'btn btn-large';
-                  }?>
+                  }
+                ?>
             <div class='form-button-box'>
-            <input class='<?php echo $class?>' type='button' onclick="<?php echo 'javascript:' . $frmConfig['js_call'] . '()'?>"
-                value='<?php echo $formName; ?>' id="user-button_<?php echo $n?>" />
+              <input class='<?php echo $class?>' type='button' onclick="<?php echo 'javascript:' . $frmConfig['js_call'] . '()'?>"
+                     value='<?php echo $formName; ?>' id="user-button_<?php echo $n?>" />
             </div> 
-        <?php
-        }
-    } 
-    ?>
+            <?php
+              }
+            }?>
               <?php echo $output; ?>
             </div>
           </div>
