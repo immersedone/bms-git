@@ -26,6 +26,7 @@ class People extends CI_Controller {
 
 		$crud = new grocery_CRUD();
 		$crud->set_theme('flexigrid');
+		$crud->set_model('People_Model');
 		$crud->set_table('Person');
 		$crud->set_subject('Person');
 		$crud->basic_model->set_query_str('SELECT Sub.SuburbName as SubName, Per.* from `Person` Per
