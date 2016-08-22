@@ -3966,6 +3966,18 @@ class Grocery_CRUD extends grocery_CRUD_States
 		return $this;
 	}
 
+ 	/**
+     *
+     * Allows user to add extra button to the add / edit form
+     * @param string $field
+     * @param string $mask
+    */
+    public function form_buttons($button , $js_call,  $class=null)
+    {
+        $this->form_buttons[$button] = array('js_call'=>$js_call, 'class'=>$class);
+        return $this;
+    }
+
 	/**
 	 *
 	 * Changes the displaying label of the field
@@ -3973,6 +3985,7 @@ class Grocery_CRUD extends grocery_CRUD_States
 	 * @param $display_as
 	 * @return void
 	 */
+
 	public function display_as($field_name, $display_as = null)
 	{
 		if(is_array($field_name))
