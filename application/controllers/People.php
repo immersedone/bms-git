@@ -28,6 +28,7 @@ class People extends CI_Controller {
 		$crud->set_theme('flexigrid');
 		$crud->set_table('Person');
 		$crud->set_subject('Person');
+		$crud->set_relation('SuburbID', 'Suburb', '{Postcode} - {SuburbName}');
 		$crud->columns('FirstName', 'LastName', 'Address', 'SuburbID', 'WorkEmail', 'PersonalEmail', 'Mobile', 'HomePhone');
 		$crud->add_fields('FirstName', 'MiddleName', 'LastName', 'Address', 'SuburbID', 'WorkEmail', 'PersonalEmail', 'Mobile', 'HomePhone', 'Status', 'DateStarted', 'WWC', 'WWCFiled', 'Username', 'Role');
 		$crud->edit_fields('FirstName', 'MiddleName', 'LastName', 'Address', 'SuburbID', 'WorkEmail', 'PersonalEmail', 'Mobile', 'HomePhone', 'Status', 'DateStarted', 'DateFinished', 'WWC', 'WWCFiled', 'Username', 'Role');
