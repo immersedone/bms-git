@@ -77,7 +77,7 @@
                 ?>
             <div class='form-button-box'>
               <input class='<?php echo $class?>' type='button' onclick="<?php echo 'javascript:' . $frmConfig['js_call'] . '()'?>"
-                     value='<?php echo $formName; ?>' id="user-button_<?php echo $n?>" />
+                     value='<?php echo $formName; ?>' id="user-button_<?php echo $n?>" />"\n"
             </div> 
             <?php
               }
