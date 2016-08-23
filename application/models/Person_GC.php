@@ -60,11 +60,12 @@
 		}
 			
         function get_total_results() {
-            return count($this->get_list());
-        }
+		$this->arrange_queries(false);
+		return $this->db->query($this->query_str)->num_rows();
+	}
 
  
-		public function arrange_queries(){
+		public function arrange_queries($limit=true){
 			$query = $this->query_str;
 			$without_limit_str = str_replace($this->limit_str, '', $query);
 			$without_order_by_str = str_replace($this->order_by_str, '', $without_limit_str);
@@ -99,7 +100,8 @@
 				}
 				$i++;
 			}
-			$query = $without_group_by_str.$like_str.$or_like_str.$this->group_by_str.$this->order_by_str.$this->limit_str;
+			$query = $without_group_by_str.$like_str.$or_like_str.$this->group_by_str.$this->order_by_str;
+			if($limit) $query .= $this->limit_str;
 			$this->query_str = $query;
 		}    
 
