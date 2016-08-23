@@ -30,6 +30,11 @@ class Genreport extends CI_Controller {
 		
 	}
 
+	public function viewReport($url) {
+		$output["url"] = $url;
+		$this->load->view('viewreport', $output);
+	}
+
 	function createReport() {
 
 		$data = array();
@@ -42,14 +47,17 @@ class Genreport extends CI_Controller {
 		$data["name"] = "Jaime de Loma-Osorio Ricon";
 		$data["prjName"] = $this->Genreport_model->getProjectName($projectID);
 
-		$pdfFilePath = "/home/immersed/www/Report.pdf";
+		$pdfFilePath = "assets/public/Reports/Report.pdf";
+		$viewPath = base_url() . $pdfFilePath;
 
 		$html = $this->load->view('/include/Report_CoverPage', $data, TRUE);
 
-		echo $html;
+		//echo $html;
 		$this->pdf = $this->m_pdf->load('utf-8', 'A4');
 		$this->pdf->WriteHTML($html);
-		$this->pdf->Output($pdfFilePath, "F");
+		$this->pdf->Output(FCPATH . $pdfFilePath, "F");
+
+		$this->viewReport($viewPath);
 
 	}
 }

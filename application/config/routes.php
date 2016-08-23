@@ -228,7 +228,8 @@ $route['user/reports/createReport'] = 'reports/createReport';
 $route['user/genreport'] = 'genreport';
 $route['user/genreport/index'] = 'genreport';
 $route['user/genreport/createreport'] = 'genreport/createReport';
-
+$route['user/genreport/viewreport/(:any)'] = 'genreport/viewReport/$1';
+$route['user/genreport/viewreport'] = 'genreport/viewReport';
 
 //Routes for statistics Page
 $route['user/statistics'] = 'statistics';

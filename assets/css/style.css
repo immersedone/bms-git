@@ -35,3 +35,8 @@
 .control-wrap { 
 	padding: 20px 0;
 }
+
+iframe.viewReport {
+	width: 100%;
+	min-height: 1000px;
+}
