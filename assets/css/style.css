@@ -1,0 +1,37 @@
+.row.first {
+	background: white;
+	margin-top: 60px;
+}
+
+.bg_norm {
+	background: #f7f7f7;
+}
+
+.dashboard_generate {
+	padding: 7px 10px;
+	background: #fff;
+}
+
+.x_title {
+	border-bottom: 2px solid #E6E9ED;
+}
+
+.row.x_custom {
+	padding: 5px 5px 7px;
+	margin-bottom: 10px;
+	margin-left: -10px;
+	margin-right: -10px;
+}
+
+.x_custom p {
+	margin-top: 5px;
+	padding-left: 2px;
+}
+
+.row.mTop {
+	margin-top: 15px;
+}
+
+.control-wrap { 
+	padding: 20px 0;
+}

@@ -14,10 +14,9 @@ class Reports extends CI_Controller {
 
 	public function index()
 	{
+		
 		$this->render((object)array('output' => '' , 'js_files' => array() , 'css_files' => array()));
-		//$this->reports();
-		//$output = "";
-		//$this->render($output);
+		
 	}
 
 	public function render($output = null) {
@@ -26,20 +25,28 @@ class Reports extends CI_Controller {
 
 	public function reports() {
 
-		/*$crud = new grocery_CRUD();
-		$crud->set_theme('flexigrid');
-		$crud->set_table('Project');
-		$crud->set_subject('Project');
-		$crud->columns("Name", "Description", "StartDate", "FinishDate", "Status", "TotalFunding");
-		$crud->display_as("Name", "Project Name");
-		$crud->display_as("Description", "Project Description");
-		$crud->display_as("StartDate", "Start Date");
-		$crud->display_as("FinishDate", "Finish Date");
-		$crud->display_as("Status", "Project Status");
-		$crud->display_as("TotalFunding", "Total Funding");
+		
+	}
 
-		$output = $crud->render();
+	function createReport() {
+		/*
+		// As PDF creation takes a bit of memory, we're saving the created file in /downloads/reports/
+		$pdfFilePath = FCPATH."/downloads/reports/$filename.pdf";
+		$data['page_title'] = 'Hello world'; // pass data to the view
+		 
+		if (file_exists($pdfFilePath) == FALSE)
+		{
+		    ini_set('memory_limit','32M'); // boost the memory limit if it's low <img class="emoji" draggable="false" alt="😉" src="https://s.w.org/images/core/emoji/72x72/1f609.png">
+		    $html = $this->load->view('pdf_report', $data, true); // render the view into HTML
+		     
+		    $this->load->library('pdf');
+		    $pdf = $this->pdf->load();
+		    $pdf->SetFooter($_SERVER['HTTP_HOST'].'|{PAGENO}|'.date(DATE_RFC822)); // Add a footer for good measure <img class="emoji" draggable="false" alt="😉" src="https://s.w.org/images/core/emoji/72x72/1f609.png">
+		    $pdf->WriteHTML($html); // write the HTML into the PDF
+		    $pdf->Output($pdfFilePath, 'F'); // save to file because we can
+		}
+		 
+		redirect("/downloads/reports/$filename.pdf");*/
 
-		$this->render($output);*/
 	}
 }

@@ -60,7 +60,15 @@
         <div class="right_col" role="main">
           <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">  
-              <?php echo $output; ?>
+                
+                <?php 
+                    //If there is an output, display it
+                    if(isset($output)) { 
+                        echo $output; 
+                    } 
+                ?>
+                <h3>Viewing all Reports</h3>
+
             </div>
           </div>
         </div>

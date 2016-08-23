@@ -221,19 +221,13 @@ $route['user/funding/index/export'] = 'funding/funding';
 //Routes for reports Page
 $route['user/reports'] = 'reports';
 $route['user/reports/index'] = 'reports';
-$route['user/reports/index/add'] = 'reports/reports';
-$route['user/reports/index/insert'] = 'reports/reports';
-$route['user/reports/index/insert_validation'] = 'reports/reports';
-$route['user/reports/index/edit/(:num)'] = 'reports/reports/$1';
-$route['user/reports/index/update/(:num)'] = 'reports/reports/$1';
-$route['user/reports/index/update_validation/(:num)'] = 'reports/reports/$1';
-$route['user/reports/index/success/(:num)'] = 'reports/reports/$1';
-$route['user/reports/index/read/(:num)'] = 'reports/reports/$1';
-$route['user/reports/index/delete/(:num)'] = 'reports/reports/$1';
-$route['user/reports/index/print'] = 'reports/reports';
-$route['user/reports/index/ajax_list'] = 'reports/reports';
-$route['user/reports/index/ajax_list_info'] = 'reports/reports';
-$route['user/reports/index/export'] = 'reports/reports';
+$route['user/reports/createReport'] = 'reports/createReport';
+
+
+//Routes for Generating Page
+$route['user/genreport'] = 'genreport';
+$route['user/genreport/index'] = 'genreport';
+$route['user/genreport/createreport'] = 'genreport/createReport';
 
 
 //Routes for statistics Page
