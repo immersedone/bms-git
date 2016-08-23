@@ -38,8 +38,8 @@ class Projects extends CI_Controller {
 		$crud->display_as("TotalFunding", "Total Funding");
 
 
-		$crud->form_buttons('View Milestones', '', '', 'View Expenditures', '', ''); 
-		$crud->form_buttons();
+		$crud->form_buttons('View Milestones', '', ''); 
+		$crud->form_buttons('View Expenditures', '', '');
 		$crud->form_buttons('View Reimbursements', '', '');
 		$crud->form_buttons('View Funding', 'JSCall', 'SomeClass');
 		$output = $crud->render();
