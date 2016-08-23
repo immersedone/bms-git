@@ -22,7 +22,7 @@
       display:inline;
       margin:0px;
       padding:0px;
-      vertical-align:middle;
+      padding-right:10px;
     }
     </style>
 
