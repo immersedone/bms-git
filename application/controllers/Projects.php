@@ -41,7 +41,7 @@ class Projects extends CI_Controller {
 		$crud->form_buttons('View Milestones', '', ''); 
 		$crud->form_buttons('View Expenditures', '', '');
 		$crud->form_buttons('View Reimbursements', '', '');
-		$crud->form_buttons('View Funding', 'JSCall', 'SomeClass');
+		$crud->form_buttons('View Funding', '', '');
 		$output = $crud->render();
 		//print_r($output);
 		$this->render($output);
