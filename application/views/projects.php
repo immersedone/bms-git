@@ -16,6 +16,15 @@
       <script src="<?php echo $file; ?>"></script>
     <?php endforeach; ?>
 
+    <style type="text/css">
+    .form-button-box 
+    {
+      display:inline;
+      margin:0px;
+      padding:0px;
+    }
+    </style>
+
     <!-- Bootstrap -->
     <link href="/assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
@@ -77,7 +86,7 @@
                 ?>
             <div class='form-button-box'>
               <input class='<?php echo $class?>' type='button' onclick="<?php echo 'javascript:' . $frmConfig['js_call'] . '()'?>"
-                     value='<?php echo $formName; ?>' id="user-button_<?php echo $n?>" />"\n"
+                     value='<?php echo $formName; ?>' id="user-button_<?php echo $n?>" />
             </div> 
             <?php
               }
