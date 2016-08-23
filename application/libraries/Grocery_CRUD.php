@@ -2140,6 +2140,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 			$this->_add_js_vars($js_vars);
 
 			return (object)array(
+					'buttons' => $this->form_buttons,
 					'js_files' => $js_files,
 					'js_lib_files' => $js_lib_files,
 					'js_config_files' => $js_config_files,
@@ -3968,17 +3969,7 @@ class Grocery_CRUD extends grocery_CRUD_States
 		return $this;
 	}
 
- 	/**
-     *
-     * Allows user to add extra button to the add / edit form
-     * @param string $field
-     * @param string $mask
-    */
-    public function form_buttons($button , $js_call,  $class=null)
-    {
-        $this->form_buttons[$button] = array('js_call'=>$js_call, 'class'=>$class);
-        return $this;
-    }
+ 	
 
 	/**
 	 *
@@ -4003,6 +3994,18 @@ class Grocery_CRUD extends grocery_CRUD_States
 		}
 		return $this;
 	}
+
+	/**
+     *
+     * Allows user to add extra button to the add / edit form
+     * @param string $field
+     * @param string $mask
+    */
+    public function form_buttons($button , $js_call,  $class=null)
+    {
+        $this->form_buttons[$button] = array('js_call'=>$js_call, 'class'=>$class);
+        return $this;
+    }
 
 	/**
 	 *
