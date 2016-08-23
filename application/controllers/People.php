@@ -30,7 +30,7 @@ class People extends CI_Controller {
 		$crud->set_subject('Person');
 		$crud->basic_model->set_query_str('SELECT Sub.SuburbName as SubName, Sub.Postcode as Postcode, Per.* from `Person` Per
 		LEFT OUTER JOIN `Suburb` Sub ON Per.SuburbID=Sub.SuburbID
-		ORDER BY LastName');
+		ORDER BY LastName', " GROUP BY Postcode, SubName");
 		$crud->columns('FirstName', 'LastName', 'Address', 'Postcode', 'SubName', 'WorkEmail', 'PersonalEmail', 'Mobile', 'HomePhone');
 		$crud->add_fields('FirstName', 'MiddleName', 'LastName', 'Address', 'SuburbID', 'WorkEmail', 'PersonalEmail', 'Mobile', 'HomePhone', 'Status', 'DateStarted', 'WWC', 'WWCFiled', 'Username', 'Role');
 		$crud->edit_fields('FirstName', 'MiddleName', 'LastName', 'Address', 'SuburbID', 'WorkEmail', 'PersonalEmail', 'Mobile', 'HomePhone', 'Status', 'DateStarted', 'DateFinished', 'WWC', 'WWCFiled', 'Username', 'Role');	
