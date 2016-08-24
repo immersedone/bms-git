@@ -25,14 +25,16 @@ class Milestones extends CI_Controller {
 	public function milestones() {
 
 		$crud = new grocery_CRUD();
-		$crud->set_theme('flexigrid');
+		$crud->set_model('Extended_generic_model'); 
 		$crud->set_table('Milestone');
 		$crud->set_subject('Milestone');
-		$crud->set_relation('ProjID', 'Project', 'Name');
-		$crud->columns('ProjID', 'Title', 'Description', 'StartDate', 'FinishDate');
+		$crud->basic_model->set_query_str('SELECT P.Name as ProjName, M.* from `Milestone` M
+		LEFT OUTER JOIN `Project` P on M.ProjID=P.ProjID', ' GROUP By P.Name');
+			
+		$crud->columns('ProjName', 'Title', 'Description', 'StartDate', 'FinishDate');
 		$crud->display_as('StartDate', 'Start Date');
 		$crud->display_as('FinishDate', 'Finish Date');
-		$crud->display_as('ProjID', 'Project');
+		$crud->display_as('ProjName', 'Project');
 		$crud->add_fields('ProjID', 'Title', 'Description', 'StartDate', 'FinishDate');
 		
 		$output = $crud->render();
