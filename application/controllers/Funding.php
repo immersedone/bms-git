@@ -96,7 +96,7 @@ class Funding extends CI_Controller {
 	public function fd_delete($uID, $pID) {
 
 		$crud = new grocery_CRUD();
-		$crud->set_model('Volunteer_GC');
+		$crud->set_model('Funding_GC');
 		$resp = $crud->basic_model->delete_pp($uID, $pID);
 		echo $resp;
 		/*if($resp['result'] === "success") {
@@ -114,7 +114,7 @@ class Funding extends CI_Controller {
 		$role = $_POST['Role'];
 
 		$crud = new grocery_CRUD();
-		$crud->set_model('Volunteer_GC');
+		$crud->set_model('Funding_GC');
 		$resp = $crud->basic_model->insert_pp($personID, $projectID, $role);
 		echo $resp;
 	}
