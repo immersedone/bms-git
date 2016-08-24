@@ -41,7 +41,7 @@ class Funding extends CI_Controller {
 		$crud->display_as('ApprovedOn', 'Approved On');
 
 		//Change the Insert Funding fields
-		$crud->add_fields("ProjName", "FbName", "Amount", "PaymentType", "FullName", "ApprovedOn");
+		$crud->add_fields("ProjName", "FBName", "Amount", "PaymentType", "FullName", "ApprovedOn");
 
 		
 		//Call Model to get the Project Names
@@ -56,6 +56,21 @@ class Funding extends CI_Controller {
 		//Change the field type to a dropdown with values
 		//to add to the relational table
 		$crud->field_type("ProjName", "dropdown", $prjArr);
+		
+		//Call Model to get the names of the funding bodies
+		$fundingbodies = $crud->basic_model->return_query("SELECT FundBodyID, BodyName FROM FundingBody");
+		
+		//Convert Return Object into Associative Array
+		$FBArr = array();
+		foreach($fundingbodies as $fb) {
+			$FBArr += [$fb->FundBodyID => $fb->FundingBody];
+		}
+
+		//Change the field type to a dropdown with values
+		//to add to the relational table
+		$crud->field_type("FBName", "dropdown", $FBArr);		
+		
+		
 		
 		//Call Model to get the User's Full Names
 		$users = $crud->basic_model->return_query("SELECT PerID, CONCAT(FirstName, ' ', MiddleName, ' ', LastName) as FullName FROM Person");
@@ -108,14 +123,17 @@ class Funding extends CI_Controller {
 
 	public function fd_insert() {
 
-		//Initialise and assign variables
-		$personID = $_POST['FullName'];
+		//Initialise and assign variables $projectID, $fundbodyid, $amount, $PaymentType, $Approvedby, $ApprovedOn
+		$fundbodyid = $_POST['FBName'];
 		$projectID = $_POST['Name'];
-		$role = $_POST['Role'];
+		$amount = $_POST['amount'];
+		$PaymentType = $_POST['PaymentType'];
+		$Approvedby = $_POST['FullName'];
+		$ApprovedOn = $_POST['ApprovedOn'];
 
 		$crud = new grocery_CRUD();
 		$crud->set_model('Funding_GC');
-		$resp = $crud->basic_model->insert_pp($personID, $projectID, $role);
+		$resp = $crud->basic_model->insert_pp($projectID, $fundbodyid, $amount, $PaymentType, $Approvedby, $ApprovedOn);
 		echo $resp;
 	}
 
