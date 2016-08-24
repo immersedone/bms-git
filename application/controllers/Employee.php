@@ -61,7 +61,7 @@ class Employee extends CI_Controller {
 		LEFT OUTER JOIN `Project` Proj ON `PersonProject`.ProjID=Proj.ProjID 
 		LEFT OUTER JOIN `Suburb` Sub ON Sub.SuburbID=Per.SuburbID 
 		WHERE `PersonProject`.Role="Employee" 
-		ORDER BY Proj.Name ASC');
+		ORDER BY Proj.Name ASC', null);
 		$crud->columns("Name", "FullName", "Address", "Postcode", "SubName", "WorkEmail", "PersonalEmail", "Mobile", "HomePhone");
 		$crud->display_as("Name", "Project Name");
 		$crud->display_as("ProjRole", "Project Role");
@@ -74,6 +74,7 @@ class Employee extends CI_Controller {
 		
 		//Call Model to get the Project Names
 		$projects = $crud->basic_model->return_query("SELECT ProjID, Name FROM Project");
+		print_r($projects);
 		
 		//Convert Return Object into Associative Array
 		$prjArr = array();

@@ -105,8 +105,9 @@
 		$this->query_str = $query;
 	}
 
-    function return_query($select) {
-        $this->set_query_str($select, null);
-        $this->get_list();
+    function return_query($query_string) {
+        $query=$this->db->query($query_string);
+        $results_array=$query->result();
+        return $results_array;
     }
 }
