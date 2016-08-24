@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 
-    require_once("Grocery_crud_model.php");
+    //require_once("Grocery_crud_model.php");
     class Extended_generic_model extends Grocery_crud_model {
 
 	private $query_str = '';
@@ -104,4 +104,9 @@
 		if($limit) $query .= $this->limit_str;
 		$this->query_str = $query;
 	}
+
+    function return_query($select) {
+        $this->set_query_str($select, null);
+        $this->get_list();
+    }
 }
