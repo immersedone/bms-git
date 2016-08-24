@@ -85,15 +85,15 @@ class Funding extends CI_Controller {
 	}
 
 	function delete_fund($primarykey, $row) {
-		return base_url().'user/volunteer/index/pp_delete/'.$primarykey.'/'.$row->ProjID;
+		return base_url().'user/volunteer/index/fd_delete/'.$primarykey.'/'.$row->ProjID;
 	}
 
 	function volunteer_add($post_array) {
 		
-		$this->insert_fund($post_array);
+		$this->fd_insert($post_array);
 	}
 
-	public function delete_fund($uID, $pID) {
+	public function fd_delete($uID, $pID) {
 
 		$crud = new grocery_CRUD();
 		$crud->set_model('Volunteer_GC');
@@ -106,7 +106,7 @@ class Funding extends CI_Controller {
 		}*/
 	}
 
-	public function insert_fund() {
+	public function fd_insert() {
 
 		//Initialise and assign variables
 		$personID = $_POST['FullName'];
