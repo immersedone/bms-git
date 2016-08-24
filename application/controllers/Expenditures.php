@@ -28,9 +28,9 @@ class Expenditures extends CI_Controller {
 		$crud->set_model('Extended_generic_model'); 
 		$crud->set_table('Expenditure');
 		$crud->set_subject('Expenditure');
-		$crud->basic_model->set_query_str("SELECT Proj.Name, CONCAT(Per.FirstName, " ", Per.MiddleName, " ", Per.LastName) as FullName, Exp.* from `Expenditure` Exp
+		$crud->basic_model->set_query_str('SELECT Proj.Name, CONCAT(Per.FirstName, " ", Per.MiddleName, " ", Per.LastName) as FullName, Exp.* from `Expenditure` Exp
 		LEFT OUTER JOIN `Project` Proj ON Proj.ProjID=Exp.Proj.ID
-		LEFT OUTER JOIN `Person` Per ON Per.PerID=Exp.ApprovedBy");
+		LEFT OUTER JOIN `Person` Per ON Per.PerID=Exp.ApprovedBy');
 		$crud->columns('Name', 'ExpName', 'Reason', 'Amount', 'FullName', 'SpentBy', 'Type');
 		
 		
