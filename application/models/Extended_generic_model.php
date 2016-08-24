@@ -21,6 +21,7 @@
 		return $results_array;		
 	}
 
+	public function set_query_str($query_str,$groupby = '') {
         $this->group_by_str = $groupby;
 		$this->query_str = $query_str;
 	}
