@@ -207,6 +207,7 @@ $route['user/funding/index'] = 'funding';
 $route['user/funding/index/add'] = 'funding/funding';
 $route['user/funding/index/insert'] = 'funding/fd_insert';
 $route['user/funding/index/fd_insert'] = 'funding/fd_insert';
+$route['user/funding/index/fd_delete/(:num)/(:num)'] = 'funding/fd_delete/$1/$2';
 $route['user/funding/index/insert_validation'] = 'funding/funding';
 $route['user/funding/index/edit/(:num)'] = 'funding/funding/$1';
 $route['user/funding/index/update/(:num)'] = 'funding/funding/$1';
