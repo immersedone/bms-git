@@ -74,7 +74,6 @@ class Employee extends CI_Controller {
 		
 		//Call Model to get the Project Names
 		$projects = $crud->basic_model->return_query("SELECT ProjID, Name FROM Project");
-		print_r($projects);
 		
 		//Convert Return Object into Associative Array
 		$prjArr = array();
