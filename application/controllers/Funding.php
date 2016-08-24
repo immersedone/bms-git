@@ -63,7 +63,7 @@ class Funding extends CI_Controller {
 		//Convert Return Object into Associative Array
 		$FBArr = array();
 		foreach($fundingbodies as $fb) {
-			$FBArr += [$fb->FundBodyID => $fb->FundingBody];
+			$FBArr += [$fb->FundBodyID => $fb->BodyName];
 		}
 
 		//Change the field type to a dropdown with values
