@@ -22,33 +22,34 @@
             return count($this->get_list());
         }
 
-        function delete_pp($userid, $projectid)
+        function delete_fund($fundbodyid, $projectid)
         {
 
             $resp = array();
 
-            if($this->db->simple_query("DELETE FROM PersonProject WHERE ProjID='$projectid' AND PerID='$userid' AND Role='EMPLOYEE' LIMIT 1")) {
+            if($this->db->simple_query("DELETE FROM Funding WHERE ProjID='$projectid' AND FundBodyID='$fundbodyid' AND Role='EMPLOYEE' LIMIT 1")) {
                 $resp['success'] = TRUE;
-                $resp['success_message'] = "Successfully removed Person from Project.";
+                $resp['success_message'] = "Successfully removed Item from Funding.";
             } else {
                 $resp['success'] = FALSE;
-                $resp['error_message'] = "Failed to remove Person from Project.\n Try again later or contact system administrator.";
+                $resp['error_message'] = "Failed to remove Item from Funding.\n Try again later or contact system administrator.";
             }
 
             echo json_encode($resp);
         }
 
-        function insert_pp($personID, $projectID, $role) {
+        function insert_fund($projectID, $fundbodyid, $amount, $PaymentType, $Approvedby, $ApprovedOn) {
 
             $resp = array();
 
-            if($this->db->simple_query("INSERT INTO PersonProject (ProjID, PerID, Role) VALUES('$projectID', '$personID', '$role')")) {
+            if($this->db->simple_query("INSERT INTO Funding (ProjID, FundBodyID, Amount, PaymentType, ApprovedBy, Approvedon) 
+			VALUES('$projectID', $fundbodyid, $amount, $PaymentType, $Approvedby, $ApprovedOn')")) {
                 $resp['success'] = TRUE;
-                $resp['success_list_url'] = base_url() . "user/employee";
-                $resp['success_message'] = "Successfully added Person to Project.";
+                $resp['success_list_url'] = base_url() . "user/funding";
+                $resp['success_message'] = "Successfully added Funding to Project.";
             } else {
                 $resp['success'] = FALSE;
-                $resp['error_message'] = "Successfully added Person to Project.";
+                $resp['error_message'] = "Successfully added Funding to Project.";
                 $resp['error_fields'] = "";
             }
 
