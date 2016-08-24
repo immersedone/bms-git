@@ -1,5 +1,8 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+
+    require_once("Extended_generic_model.php");
+
     class Employee_GC extends Extended_generic_model {
      
         function __construct() {
