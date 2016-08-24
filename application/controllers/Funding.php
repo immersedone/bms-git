@@ -28,7 +28,7 @@ class Funding extends CI_Controller {
 		$crud->set_model('Funding_GC');
 		$crud->set_table('Funding');
 		$crud->set_subject('Funding');
-		$crud->basic_model->set_query_str('SELECT Proj.Name as ProjName, FB.BodyName as FBName, CONCAT(FirstName, " ", MiddleName, " ", LastName) as FullName, Fund.* from `Funding` Fund
+		$crud->basic_model->set_query_str('SELECT Proj.Name as ProjName, FB.BodyName as FBName, CONCAT(Per.FirstName, " ", Per.MiddleName, " ", Per.LastName) as FullName, Fund.* from `Funding` Fund
 		LEFT OUTER JOIN `FundingBody` FB on FB.FundBodyID=Fund.FundBodyID
 		LEFT OUTER JOIN `Project` Proj on Proj.ProjID=Fund.ProjID
 		LEFT OUTER JOIN `Person` Per on Per.PerID=Fund.ApprovedBy 
@@ -108,7 +108,7 @@ class Funding extends CI_Controller {
 
 		$crud = new grocery_CRUD();
 		$crud->set_model('Funding_GC');
-		$resp = $crud->basic_model->delete_pp($uID, $pID);
+		$resp = $crud->basic_model->delete_fund($uID, $pID);
 		echo $resp;
 		/*if($resp['result'] === "success") {
 			redirect(base_url().'/user/volunteer/');
@@ -130,7 +130,7 @@ class Funding extends CI_Controller {
 
 		$crud = new grocery_CRUD();
 		$crud->set_model('Funding_GC');
-		$resp = $crud->basic_model->insert_pp($projectID, $fundbodyid, $amount, $PaymentType, $Approvedby, $ApprovedOn);
+		$resp = $crud->basic_model->insert_fund($projectID, $fundbodyid, $amount, $PaymentType, $Approvedby, $ApprovedOn);
 		echo $resp;
 	}
 
