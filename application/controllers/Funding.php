@@ -45,7 +45,7 @@ class Funding extends CI_Controller {
 
 		
 		//Call Model to get the Project Names
-		$projects = $crud->basic_model->return_query("SELECT ProjID, ProjName FROM Project");
+		$projects = $crud->basic_model->return_query("SELECT ProjID, Name as ProjName FROM Project");
 		
 		//Convert Return Object into Associative Array
 		$prjArr = array();
