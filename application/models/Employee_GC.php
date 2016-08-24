@@ -1,26 +1,11 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-    class Employee_GC extends grocery_CRUD_model {
+    class Employee_GC extends Extended_generic_model {
      
-        private  $query_str = ''; 
         function __construct() {
             parent::__construct();
         }
-     
-        function get_list() {
-            $query=$this->db->query($this->query_str);
-     
-            $results_array=$query->result();
-            return $results_array;      
-        }
-     
-        public function set_query_str($query_str) {
-            $this->query_str = $query_str;
-        }
-    
-        function get_total_results() {
-            return count($this->get_list());
-        }
+
 
         function delete_pp($userid, $projectid)
         {
@@ -56,9 +41,4 @@
 
         }
 
-        function return_query($query_string) {
-            $query=$this->db->query($query_string);
-            $results_array=$query->result();
-            return $results_array;
-        }
 }
