@@ -85,7 +85,7 @@ class Funding extends CI_Controller {
 	}
 
 	function delete_fund($primarykey, $row) {
-		return base_url().'user/volunteer/index/fd_delete/'.$primarykey.'/'.$row->ProjID;
+		return base_url().'user/funding/index/fd_delete/'.$primarykey.'/'.$row->ProjID;
 	}
 
 	function volunteer_add($post_array) {
