@@ -45,12 +45,12 @@ class Funding extends CI_Controller {
 
 		
 		//Call Model to get the Project Names
-		$projects = $crud->basic_model->return_query("SELECT ProjID, Name FROM Project");
+		$projects = $crud->basic_model->return_query("SELECT ProjID, ProjName FROM Project");
 		
 		//Convert Return Object into Associative Array
 		$prjArr = array();
 		foreach($projects as $prj) {
-			$prjArr += [$prj->ProjID => $prj->Name];
+			$prjArr += [$prj->ProjID => $prj->ProjName];
 		}
 
 		//Change the field type to a dropdown with values
@@ -125,7 +125,7 @@ class Funding extends CI_Controller {
 
 		//Initialise and assign variables $projectID, $fundbodyid, $amount, $PaymentType, $Approvedby, $ApprovedOn
 		$fundbodyid = $_POST['FBName'];
-		$projectID = $_POST['Name'];
+		$projectID = $_POST['ProjName'];
 		//$amount = $_POST['Amount'];
 		//$PaymentType = $_POST['PaymentType'];
 		//$Approvedby = $_POST['FullName'];
@@ -133,7 +133,8 @@ class Funding extends CI_Controller {
 
 		$crud = new grocery_CRUD();
 		$crud->set_model('Funding_GC');
-		$resp = $crud->basic_model->insert_pp($projectID, $fundbodyid, $amount, $PaymentType, $Approvedby, $ApprovedOn);
+		$resp = $crud->basic_model->insert_pp($projectID, $fundbodyid);
+		//, $amount, $PaymentType, $Approvedby, $ApprovedOn);
 		echo $resp;
 	}
 
