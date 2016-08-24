@@ -42,8 +42,7 @@ class Funding extends CI_Controller {
 
 		//Change the Insert Funding fields
 		$crud->add_fields("ProjName", "FBName", "Amount", "PaymentType", "FullName", "ApprovedOn");
-
-		
+	
 		//Call Model to get the Project Names
 		$projects = $crud->basic_model->return_query("SELECT ProjID, Name as ProjName FROM Project");
 		
@@ -69,9 +68,7 @@ class Funding extends CI_Controller {
 		//Change the field type to a dropdown with values
 		//to add to the relational table
 		$crud->field_type("FBName", "dropdown", $FBArr);		
-		
-		
-		
+				
 		//Call Model to get the User's Full Names
 		$users = $crud->basic_model->return_query("SELECT PerID, CONCAT(FirstName, ' ', MiddleName, ' ', LastName) as FullName FROM Person");
 
@@ -85,8 +82,7 @@ class Funding extends CI_Controller {
 		//to add to the relational table
 		$crud->field_type("FullName", "dropdown", $usrArr);
 
-		//Change the default method to fire when adding
-		//a new person to a project
+		//Change the default method to fire when organizing funding for a project
 		$crud->callback_before_insert(array($this,'volunteer_add'));
 
 		$crud->unset_edit();
@@ -123,7 +119,8 @@ class Funding extends CI_Controller {
 
 	public function fd_insert() {
 
-		//Initialise and assign variables $projectID, $fundbodyid, $amount, $PaymentType, $Approvedby, $ApprovedOn
+		//Initialise and assign variables 
+		
 		$projectID = $_POST['ProjName'];
 		$fundbodyid = $_POST['FBName'];
 		$amount = $_POST['Amount'];
