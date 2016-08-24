@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-    class Person_GC extends grocery_CRUD_model {
+    class Extended_generic_model extends grocery_CRUD_model {
 
 	private $query_str = '';
     private $like_arr = array();
