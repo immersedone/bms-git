@@ -43,7 +43,7 @@
             $resp = array();
 
             if($this->db->simple_query("INSERT INTO Funding (ProjID, FundBodyID, Amount, PaymentType, ApprovedBy, Approvedon) 
-			VALUES('$projectID', $fundbodyid, $amount, $PaymentType, $Approvedby, $ApprovedOn')")) {
+			VALUES('$projectID', '$fundbodyid', '$amount', '$PaymentType', '$Approvedby', '$ApprovedOn')")) {
                 $resp['success'] = TRUE;
                 $resp['success_list_url'] = base_url() . "user/funding";
                 $resp['success_message'] = "Successfully added Funding to Project.";
