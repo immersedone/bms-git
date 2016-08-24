@@ -91,7 +91,7 @@ class Funding extends CI_Controller {
 
 		$crud->unset_edit();
 		$crud->unset_delete();
-		$crud->add_action('Delete', '', '', 'delete-icon', array($this, 'delete_fund'));
+		//$crud->add_action('Delete', '', '', 'delete-icon', array($this, 'delete_fund'));
 		//$crud->callback_delete(array($this, 'delete_fund'));
 
 		$output = $crud->render();
@@ -126,10 +126,10 @@ class Funding extends CI_Controller {
 		//Initialise and assign variables $projectID, $fundbodyid, $amount, $PaymentType, $Approvedby, $ApprovedOn
 		$fundbodyid = $_POST['FBName'];
 		$projectID = $_POST['Name'];
-		$amount = $_POST['amount'];
-		$PaymentType = $_POST['PaymentType'];
-		$Approvedby = $_POST['FullName'];
-		$ApprovedOn = $_POST['ApprovedOn'];
+		//$amount = $_POST['Amount'];
+		//$PaymentType = $_POST['PaymentType'];
+		//$Approvedby = $_POST['FullName'];
+		//$ApprovedOn = $_POST['ApprovedOn'];
 
 		$crud = new grocery_CRUD();
 		$crud->set_model('Funding_GC');
