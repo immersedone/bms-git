@@ -48,7 +48,7 @@ class People extends CI_Controller {
 		
 		//Convert Return Object into Associative Array
 		$subArr = array();
-		foreach($subrubs as $sub) {
+		foreach($suburbs as $sub) {
 			$subArr += [$sub->SuburbID => $sub->FullSub];
 		}
 
