@@ -32,6 +32,34 @@ class Expenditures extends CI_Controller {
 		LEFT OUTER JOIN `Project` Proj ON Proj.ProjID=Exp.ProjID
 		LEFT OUTER JOIN `Person` Per ON Per.PerID=Exp.ApprovedBy');
 		$crud->columns('Name', 'ExpName', 'Reason', 'Amount', 'FullName', 'SpentBy', 'Type');
+		$crud->add_fields('Name', 'ExpName', 'Reason', 'Amount', 'FullName', 'SpentBy', 'Type');
+		$crud->display_as('ExpName', 'Expenditure Name');
+		$crud->display_as('FullName', 'Full Name');
+		$crud->display_as('SpentBy', 'Spent By');
+		$crud->display_as('Name', 'Project Name');
+
+		$projects = $crud->basic_model->return_query("SELECT ProjID, Name FROM Project");
+
+		$prjArr = array();
+		foreach($projects as $prj) {
+			$prjArr += [$prj->ProjID => $prj->Name];
+		}
+
+		$crud->field_type("Name", "dropdown", $prjArr);
+
+		//Call Model to get the User's Full Names
+		$users = $crud->basic_model->return_query("SELECT PerID, CONCAT(FirstName, ' ', MiddleName, ' ', LastName) as FullName FROM Person");
+
+		//Convert Return Object into Associative Array
+		$usrArr = array();
+		foreach($users as $usr) {
+			$usrArr += [$usr->PerID => $usr->FullName];
+		}
+		
+		//Change the field type to a dropdown with values
+		//to add to the relational table
+		$crud->field_type("SpentBy", "dropdown", $usrArr);
+		$crud->field_type("FullName", "dropdown", $usrArr);
 		
 		
 		$output = $crud->render();

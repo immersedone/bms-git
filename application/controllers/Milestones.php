@@ -34,8 +34,17 @@ class Milestones extends CI_Controller {
 		$crud->columns('ProjName', 'Title', 'Description', 'StartDate', 'FinishDate');
 		$crud->display_as('StartDate', 'Start Date');
 		$crud->display_as('FinishDate', 'Finish Date');
-		$crud->display_as('ProjName', 'Project');
+		$crud->display_as('ProjID', 'Project');
 		$crud->add_fields('ProjID', 'Title', 'Description', 'StartDate', 'FinishDate');
+
+		$projects = $crud->basic_model->return_query("SELECT ProjID, Name FROM Project");
+
+		$prjArr = array();
+		foreach($projects as $prj) {
+			$prjArr += [$prj->ProjID => $prj->Name];
+		}
+
+		$crud->field_type("ProjID", "dropdown", $prjArr);
 		
 		$output = $crud->render();
 
