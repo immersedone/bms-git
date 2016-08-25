@@ -86,7 +86,7 @@ class Funding extends CI_Controller {
 
 		$crud->unset_edit();
 		$crud->unset_delete();
-		//$crud->add_action('Delete', '', '', 'delete-icon', array($this, 'delete_fund'));
+		$crud->add_action('Delete', '', '', 'delete-icon', array($this, 'delete_fund'));
 		//$crud->callback_delete(array($this, 'delete_fund'));
 		
 		$output = $crud->render();
