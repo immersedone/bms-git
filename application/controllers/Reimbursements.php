@@ -71,7 +71,7 @@ class Reimbursements extends CI_Controller {
 		$Approvedby = $_POST['FullName'];
 
 		$crud = new grocery_CRUD();
-		$crud->set_model('Funding_GC');
+		$crud->set_model('Reimbursement_GC');
 		$resp = $crud->basic_model->insert_reimb($perid, $reason, $Approvedby, $date, $ispaid);
 		echo $resp;
 	}
