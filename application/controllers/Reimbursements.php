@@ -51,11 +51,30 @@ class Reimbursements extends CI_Controller {
 		//to add to the relational table
 		$crud->field_type("ApprovedBy", "dropdown", $usrArr);
 		$crud->field_type("FullName", "dropdown", $usrArr);
-
+		
+		$crud->callback_before_insert(array($this,'reimb_insert'));
 		
 
 		$output = $crud->render();
 
 		$this->render($output);
 	}
+	
+	public function reimb_insert() {
+
+		//Initialise and assign variables 
+		
+		$perid = $_POST['FullName'];
+		$date = $_POST['ApprovedOn'];
+		$reason = $_POST['Reason'];
+		$ispaid = $_POST['PaymentType'];
+		$Approvedby = $_POST['FullName'];
+
+		$crud = new grocery_CRUD();
+		$crud->set_model('Funding_GC');
+		$resp = $crud->basic_model->insert_reimb($perid, $reason, $Approvedby, $date, $ispaid);
+		echo $resp;
+	}
+	
+	
 }

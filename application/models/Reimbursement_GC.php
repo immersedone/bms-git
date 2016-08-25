@@ -25,12 +25,13 @@
             echo json_encode($resp);
         }
 
-        function insert_fund($reimID, $perid, $amount, $type, $Approvedby, $date, $ispaid) {
+        function insert_reimb($perid, $reason, $Approvedby, $date, $ispaid)  //Removed type/ReimbID Temporarily
+		{
 
             $resp = array();
 
-            if($this->db->simple_query("INSERT INTO Reimbursement ('ReimID', 'PerID', 'Amount', 'Type', 'ApprovedBy', 'Date', 'IsPaid') 
-			VALUES('$reimID', '$perid', '$amount', '$type', '$Approvedby', '$date', '$ispaid')")) 
+            if($this->db->simple_query("INSERT INTO Reimbursement ('PerID', 'Reason','ApprovedBy', 'Date', 'IsPaid') 
+			VALUES('$perid', '$reason', '$Approvedby', '$date', '$ispaid')")) 
 			{
 				$this->db->simple_query("UPDATE Reimbursement SET `Amount`=`Amount`+$amount
 				WHERE `PerID` = $perid ");
