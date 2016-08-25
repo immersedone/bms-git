@@ -29,7 +29,7 @@ class Milestones extends CI_Controller {
 		$crud->set_table('Milestone');
 		$crud->set_subject('Milestone');
 		$crud->basic_model->set_query_str('SELECT P.Name as ProjName, M.* from `Milestone` M
-		LEFT OUTER JOIN `Project` P on M.ProjID=P.ProjID', ' GROUP By P.Name');
+		LEFT OUTER JOIN `Project` P on M.ProjID=P.ProjID');
 			
 		$crud->columns('ProjName', 'Title', 'Description', 'StartDate', 'FinishDate');
 		$crud->display_as('StartDate', 'Start Date');
