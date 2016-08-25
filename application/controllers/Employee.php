@@ -60,7 +60,7 @@ class Employee extends CI_Controller {
 		LEFT OUTER JOIN `PersonProject` ON Per.PerID=`PersonProject`.PerID 
 		LEFT OUTER JOIN `Project` Proj ON `PersonProject`.ProjID=Proj.ProjID 
 		LEFT OUTER JOIN `Suburb` Sub ON Sub.SuburbID=Per.SuburbID 
-		WHERE `PersonProject`.Role="Employee"', ' GROUP BY FullName');
+		WHERE `PersonProject`.Role="Employee"', ' GROUP BY FullName, Name, ProjRole');
 		$crud->columns("Name", "FullName", "Address", "Postcode", "SubName", "WorkEmail", "PersonalEmail", "Mobile", "HomePhone");
 		$crud->display_as("Name", "Project Name");
 		$crud->display_as("ProjRole", "Project Role");
