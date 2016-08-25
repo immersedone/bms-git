@@ -154,7 +154,7 @@ class Funding extends CI_Controller {
 		$crud->field_type("FullName", "dropdown", $usrArr);
 
 		//Change the default method to fire when organizing funding for a project
-		$crud->callback_before_insert(array($this,'volunteer_add'));
+		$crud->callback_before_insert(array($this,'funding_add'));
 
 		$crud->unset_edit();
 		$crud->unset_delete();
@@ -170,7 +170,7 @@ class Funding extends CI_Controller {
 		return base_url().'user/funding/index/fd_delete/'.$primarykey.'/'.$row->ProjID;
 	}
 
-	function volunteer_add($post_array) {
+	function funding_add($post_array) {
 		
 		$this->fd_insert($post_array);
 	}

@@ -52,14 +52,17 @@ class Reimbursements extends CI_Controller {
 		$crud->field_type("ApprovedBy", "dropdown", $usrArr);
 		$crud->field_type("FullName", "dropdown", $usrArr);
 		
-		$crud->callback_before_insert(array($this,'reimb_insert'));
+		$crud->callback_before_insert(array($this,'reimbursement_add'));
 		
 
 		$output = $crud->render();
 
 		$this->render($output);
 	}
-	
+	function reimbursement_add($post_array) {
+		
+		$this->reimb_insert($post_array);
+	}
 	public function reimb_insert() {
 
 		//Initialise and assign variables 
