@@ -17,28 +17,13 @@
     <?php endforeach; ?>
 
     <!--Button scripts -->
-    <!--AJAX post-->
+    <!--AJAX post
     <script type="text/javascript">
-    $(document).ready(function(){
-      $(".submit").click(function(event){
-        function showMilestones(){
-
-        }
-
-        function showExpenditures(){
-        } 
-
-        function showReimbursements(){
-        }
-
-        function showFunding(){
-        }
-      });
-    });
+    
 
 
     </script>
-
+    -->
     <style type="text/css">
     .form-button-box
     {
