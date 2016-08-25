@@ -25,7 +25,7 @@
             echo json_encode($resp);
         }
 
-        function insert_reimb($perid, $reason, $Approvedby, $date, $ispaid)  //Removed type/ReimbID Temporarily
+        function insert_reimb($reason, $date, $Approvedby, $ispaid, $perid)  //Removed type/ReimbID Temporarily
 		{
 
             $resp = array();
