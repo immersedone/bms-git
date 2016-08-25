@@ -14,7 +14,7 @@ class Reimbursements extends CI_Controller {
 
 	public function index()
 	{
-		//$this->render((object)array('output' => '' , 'js_files' => array() , 'css_files' => array()));
+		$this->render((object)array('output' => '' , 'js_files' => array() , 'css_files' => array()));
 		$this->reimbursement();
 	}
 
