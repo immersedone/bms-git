@@ -32,14 +32,14 @@ class Funding extends CI_Controller {
 		LEFT OUTER JOIN `FundingBody` FB on FB.FundBodyID=Fund.FundBodyID
 		LEFT OUTER JOIN `Project` Proj on Proj.ProjID=Fund.ProjID
 		LEFT OUTER JOIN `Person` Per on Per.PerID=Fund.ApprovedBy 
-		ORDER BY Proj.Name');
+		ORDER BY Proj.Name', ' GROUP BY ProjName');
 		$crud->columns('ProjName', 'FBName', 'Amount', 'PaymentType', 'FullName', 'ApprovedOn');
 		$crud->display_as('ProjName', 'Project');
 		$crud->display_as('FBName', 'Funding Body');
 		$crud->display_as('PaymentType', 'Payment Type');
 		$crud->display_as('FullName', 'Approved By');
 		$crud->display_as('ApprovedOn', 'Approved On');
-		/*
+		
 		//Change the Insert Funding fields
 		$crud->add_fields("ProjName", "FBName", "Amount", "PaymentType", "FullName", "ApprovedOn");
 	
@@ -89,7 +89,7 @@ class Funding extends CI_Controller {
 		$crud->unset_delete();
 		//$crud->add_action('Delete', '', '', 'delete-icon', array($this, 'delete_fund'));
 		//$crud->callback_delete(array($this, 'delete_fund'));
-		*/
+		
 		$output = $crud->render();
 
 		$this->render($output);
