@@ -30,9 +30,10 @@ class Reimbursements extends CI_Controller {
 		LEFT OUTER JOIN Person P on R.PerID=P.PerID");
 		$crud->set_table('Reimbursement');
 		$crud->set_subject('Reimbursement');
-		$crud->columns('FullName','Date', 'Reason', 'ApprovedBy', 'IsPaid'); //'Type', removed due to lack of implementation
-		$crud->add_fields('FullName', 'Date', 'Reason', 'ApprovedBy', 'IsPaid');
-		$crud->edit_fields('FullName', 'Date', 'Reason', 'ApprovedBy', 'IsPaid');
+		$crud->columns('FullName','ReimbDate', 'Reason', 'ApprovedBy', 'IsPaid'); //'Type', removed due to lack of implementation
+		$crud->add_fields('FullName', 'ReimbDate', 'Reason', 'ApprovedBy', 'IsPaid');
+		$crud->edit_fields('FullName', 'ReimbDate', 'Reason', 'ApprovedBy', 'IsPaid');
+		$crud->display_as('ReimbDate', 'Date');
 		$crud->display_as('ApprovedBy', 'Approved By');
 		$crud->display_as('FullName', 'Reimbursement For');
 		$crud->display_as('IsPaid', 'Is Paid');
@@ -68,7 +69,7 @@ class Reimbursements extends CI_Controller {
 		//Initialise and assign variables 
 		
 		$perid = $_POST['FullName'];
-		$date = $_POST['Date'];
+		$date = $_POST['ReimbDate'];
 		$reason = $_POST['Reason'];
 		$ispaid = $_POST['IsPaid'];
 		$Approvedby = $_POST['ApprovedBy'];
