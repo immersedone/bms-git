@@ -17,22 +17,26 @@
     <?php endforeach; ?>
 
     <!--Button scripts -->
+    <!--AJAX post-->
     <script type="text/javascript">
-    function showMilestones(){
+    $(document).ready(function(){
+      $(".submit").click(function(event){
+        function showMilestones(){
 
-    }
+        }
 
-    function showExpenditures(){
+        function showExpenditures(){
+        } 
 
-    }
+        function showReimbursements(){
+        }
 
-    function showReimbursements(){
+        function showFunding(){
+        }
+      });
+    });
 
-    }
 
-    function showFunding(){
-
-    }
     </script>
 
     <style type="text/css">
@@ -118,7 +122,7 @@
       </div>
     </div>
     <!-- jQuery -->
-    <!--<script src="/assets/vendors/jquery/dist/jquery.min.js"></script>-->
+    <script src="/assets/vendors/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap -->
     <script src="/assets/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- FastClick -->
