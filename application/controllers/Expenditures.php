@@ -34,7 +34,7 @@ class Expenditures extends CI_Controller {
 		$crud->columns('Name', 'ExpName', 'Reason', 'Amount', 'ApprovedBy', 'FullName'); // 'Type' removed due to lack of implementation - 'ApprovedBy' Removed for clarity
 		$crud->add_fields('Name', 'ExpName', 'Reason', 'Amount', 'ApprovedBy', 'FullName');
 		$crud->display_as('ExpName', 'Expenditure Name');
-		$crud->display_as('AprovedBy', 'Approved By'); Removing in favor of who spent, rather than who authorized
+		$crud->display_as('ApprovedBy', 'Approved By'); //Removing in favor of who spent, rather than who authorized
 		$crud->display_as('FullName', 'Spent By');
 		$crud->display_as('Name', 'Project Name');
 
