@@ -29,6 +29,7 @@ class Projects extends CI_Controller {
 		$crud->set_theme('flexigrid');
 		$crud->set_table('Project');
 		$crud->set_subject('Project');
+		$crud->set_js('application/controllers/People_functions.js')
 		$crud->columns("Name", "Description", "StartDate", "FinishDate", "Status", "TotalFunding");
 		$crud->display_as("Name", "Project Name");
 		$crud->display_as("Description", "Project Description");
