@@ -76,7 +76,7 @@ class Expenditures extends CI_Controller {
 		$crud->basic_model->set_query_str('SELECT Proj.Name, CONCAT(Per.FirstName, " ", Per.MiddleName, " ", Per.LastName) as FullName, Exp.* from `Expenditure` Exp
 		LEFT OUTER JOIN `Project` Proj ON Proj.ProjID=Exp.ProjID
 		LEFT OUTER JOIN `Person` Per ON Per.PerID=Exp.SpentBy');
-		$crud->columns('Name', 'ExpName', 'Reason', 'Amount', 'ApprovedBy', 'FullName'); // 'Type' removed due to lack of implementation - 'ApprovedBy' Removed for clarity
+		$crud->columns('Name', 'ExpName', 'Reason', 'Amount', 'ApprovedBy', 'FullName'); 
 		$crud->add_fields('Name', 'ExpName', 'Reason', 'Amount', 'ApprovedBy', 'FullName');
 		$crud->display_as('ExpName', 'Expenditure Name');
 		$crud->display_as('ApprovedBy', 'Approved By'); 
