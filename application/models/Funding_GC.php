@@ -11,10 +11,12 @@
      
         function delete_fund($fundbodyid, $projectid)
         {
-
+			$amount = $this->db->simple_query("SELECT Amount FROM Funding WHERE ProjID='$projectid' AND FundBodyID='$fundbodyid' LIMIT 1");
             $resp = array();
-
+			
             if($this->db->simple_query("DELETE FROM Funding WHERE ProjID='$projectid' AND FundBodyID='$fundbodyid' LIMIT 1")) {
+				$this->db->simple_query("UPDATE Project SET `TotalFunding`=`TotalFunding`-$amount
+				WHERE `ProjID` = $projectID ");
                 $resp['success'] = TRUE;
                 $resp['success_message'] = "Successfully removed Item from Funding.";
             } else {
