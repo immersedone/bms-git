@@ -94,6 +94,78 @@ class Funding extends CI_Controller {
 		$this->render($output);
 	}
 
+	public function fundproj($id) {
+
+		$crud = new grocery_CRUD();
+		$crud->set_model('Funding_GC');
+		$crud->set_table('Funding');
+		$crud->set_subject('Funding');
+		$crud->basic_model->set_query_str('SELECT Proj.ProjID, Proj.Name as ProjName, FB.BodyName as FBName, CONCAT(Per.FirstName, " ", Per.MiddleName, " ", Per.LastName) as FullName, Fund.* from `Funding` Fund
+		LEFT OUTER JOIN `FundingBody` FB on FB.FundBodyID=Fund.FundBodyID
+		LEFT OUTER JOIN `Project` Proj on Proj.ProjID=Fund.ProjID
+		LEFT OUTER JOIN `Person` Per on Per.PerID=Fund.ApprovedBy', ' GROUP BY FundID');
+		$crud->columns('ProjName', 'FBName', 'Amount', 'PaymentType', 'FullName', 'ApprovedOn');
+		$crud->display_as('ProjName', 'Project');
+		$crud->display_as('FBName', 'Funding Body');
+		$crud->display_as('PaymentType', 'Payment Type');
+		$crud->display_as('FullName', 'Approved By');
+		$crud->display_as('ApprovedOn', 'Approved On');
+		
+		//Change the Insert Funding fields
+		$crud->add_fields("ProjName", "FBName", "Amount", "PaymentType", "FullName", "ApprovedOn");
+	
+		//Call Model to get the Project Names
+		$projects = $crud->basic_model->return_query("SELECT ProjID, Name as ProjName FROM Project WHERE ProjID=".$id);
+		
+		//Convert Return Object into Associative Array
+		$prjArr = array();
+		foreach($projects as $prj) {
+			$prjArr += [$prj->ProjID => $prj->ProjName];
+		}
+
+		//Change the field type to a dropdown with values
+		//to add to the relational table
+		$crud->field_type("ProjName", "dropdown", $prjArr);
+		
+		//Call Model to get the names of the funding bodies
+		$fundingbodies = $crud->basic_model->return_query("SELECT FundBodyID, BodyName FROM FundingBody");
+		
+		//Convert Return Object into Associative Array
+		$FBArr = array();
+		foreach($fundingbodies as $fb) {
+			$FBArr += [$fb->FundBodyID => $fb->BodyName];
+		}
+
+		//Change the field type to a dropdown with values
+		//to add to the relational table
+		$crud->field_type("FBName", "dropdown", $FBArr);		
+				
+		//Call Model to get the User's Full Names
+		$users = $crud->basic_model->return_query("SELECT PerID, CONCAT(FirstName, ' ', MiddleName, ' ', LastName) as FullName FROM Person");
+
+		//Convert Return Object into Associative Array
+		$usrArr = array();
+		foreach($users as $usr) {
+			$usrArr += [$usr->PerID => $usr->FullName];
+		}
+		
+		//Change the field type to a dropdown with values
+		//to add to the relational table
+		$crud->field_type("FullName", "dropdown", $usrArr);
+
+		//Change the default method to fire when organizing funding for a project
+		$crud->callback_before_insert(array($this,'volunteer_add'));
+
+		$crud->unset_edit();
+		$crud->unset_delete();
+		$crud->add_action('Delete', '', '', 'delete-icon', array($this, 'delete_fund'));
+		//$crud->callback_delete(array($this, 'delete_fund'));
+		
+		$output = $crud->render();
+
+		$this->render($output);
+	}
+
 	function delete_fund($primarykey, $row) {
 		return base_url().'user/funding/index/fd_delete/'.$primarykey.'/'.$row->ProjID;
 	}
