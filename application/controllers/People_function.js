@@ -1,11 +1,9 @@
-//(document).ready(function(){
-     // $(".submit").click(function(event){
         function showMilestones(){
-        var xhttp;   
-        xhttp = new XMLHttpRequest();
-        xhttp.click = function(){
-        if(xhttp.readyState == 4 && xhttp.status == 200){
-           document.getElementById().innerHTML = xhttp.responseText;
+            var xhttp;   
+            xhttp = new XMLHttpRequest();
+            xhttp.click = function(){
+            if(xhttp.readyState == 4 && xhttp.status == 200){
+                document.getElementById().innerHTML = xhttp.responseText;
             }
         };
         xhttp.open("GET", "ProjID", true);
@@ -13,15 +11,39 @@
         }
 
         function showExpenditures(){
-
+            var xhttp;
+            xhttp = new XMLHttpRequest();
+            xhttp.click = function(){
+            if(xhttp.readyState == 4 && xhttp.status == 200){
+                document.getElementById().innerHTML = xhttp.responseText;
+            }
+        };
+        xhttp.open("GET", "ExpID", true);
+        xhttp.send();        
         } 
 
         function showReimbursements(){
+            var xhttp;
+            xhttp = new XMLHttpRequest();
+            xhttp.click = function(){
+            if(xhttp.readyState == 4 && xhttp.status == 200){
+                document.getElementById().innerHTML = xhttp.responseText;
+            }
+        };
+        xhttp.open("GET", "ReimID", true);
+        xhttp.send();        
+
 
         }
 
         function showFunding(){
-
+            var xhttp;
+            xhttp = new XMLHttpRequest();
+            xhttp.click = function(){
+            if(xhttp.readyState == 4 && xhttp.status == 200){
+                document.getElementById().innerHTML = xhttp.responseText;
+            }
+        };
+        xhttp.open("GET", "FundID", true);
+        xhttp.send();        
         }
-      //});
-    //});
