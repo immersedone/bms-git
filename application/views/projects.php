@@ -56,7 +56,7 @@
 
             <?php include_once("include/menu_profile.php"); ?>
 
-            <br />
+            <!--<br />
 
             <?php include_once("include/sidebar_menu.php"); ?>
 
