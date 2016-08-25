@@ -183,6 +183,7 @@ $route['user/expenditures/index/export'] = 'expenditures/expenditures';
 
 
 //Routes for reimbursements Page
+$route['user/reimbursement'] = 'reimbursements';
 $route['user/reimbursements'] = 'reimbursements';
 $route['user/reimbursements/index'] = 'reimbursements';
 $route['user/reimbursements/index/add'] = 'reimbursements/reimbursements';

@@ -88,6 +88,8 @@ class Projects extends CI_Controller {
 		}
 
 		$GCM->grids[1]->field_type("ProjID", "dropdown", $prjArr);
+		$GCM->grids[1]->unset_edit();
+		$GCM->grids[1]->unset_delete();
 
 		$GCM->grid_add(2);
 
@@ -99,6 +101,8 @@ class Projects extends CI_Controller {
 		LEFT OUTER JOIN `Person` Per ON Per.PerID=Exp.ApprovedBy  WHERE Exp.ProjID='.$id);
 		$GCM->grids[2]->columns('Name', 'ExpName', 'Reason', 'Amount', 'FullName', 'SpentBy', 'Type');
 		$GCM->grids[2]->display_as('Name', 'Project Name');
+		$GCM->grids[2]->unset_edit();
+		$GCM->grids[2]->unset_delete();
 
 		$GCM->grid_add(3);
 
