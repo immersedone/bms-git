@@ -16,6 +16,25 @@
       <script src="<?php echo $file; ?>"></script>
     <?php endforeach; ?>
 
+    <!--Button scripts -->
+    <script type="text/javascript">
+    function showMilestones(){
+
+    }
+
+    function showExpenditures(){
+
+    }
+
+    function showReimbursements(){
+
+    }
+
+    function showFunding(){
+
+    }
+    </script>
+
     <style type="text/css">
     .form-button-box
     {
@@ -98,25 +117,6 @@
         <?php include_once("include/footer.php"); ?>
       </div>
     </div>
-
-    <!--Button scripts -->
-    <script type="text/javascript">
-    function showMilestones(){
-
-    }
-
-    function showExpenditures(){
-
-    }
-
-    function showReimbursements(){
-
-    }
-
-    function showFunding(){
-
-    }
-    </script>
     <!-- jQuery -->
     <!--<script src="/assets/vendors/jquery/dist/jquery.min.js"></script>-->
     <!-- Bootstrap -->
