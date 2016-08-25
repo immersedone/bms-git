@@ -132,9 +132,9 @@ $route['user/projects/index/projread/1/add/(:num)'] = 'milestones/mileproj/$1';
 $route['user/projects/index/projread/1/insert'] = 'milestones/mile_insert';
 $route['user/projects/index/projread/1/insert_validation'] = 'milestones/milestones';
 
-$route['user/projects/index/projread/2/add/(:num)'] = 'expenditures/fundproj/$1';
-$route['user/projects/index/projread/2/insert'] = 'expenditures/fd_insert';
-$route['user/projects/index/projread/2/insert_validation'] = 'expenditures/funding';
+$route['user/projects/index/projread/2/add/(:num)'] = 'expenditures/expendproj/$1';
+$route['user/projects/index/projread/2/insert'] = 'expenditures/exp_insert';
+$route['user/projects/index/projread/2/insert_validation'] = 'expenditures/expenditures';
 
 $route['user/projects/index/projread/3/add/(:num)'] = 'funding/fundproj/$1';
 $route['user/projects/index/projread/3/insert'] = 'funding/fd_insert';
