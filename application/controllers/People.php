@@ -25,7 +25,7 @@ class People extends CI_Controller {
 	public function all_people() {
 
 		$crud = new grocery_CRUD();
-		$crud->set_model('Person_GC');
+		$crud->set_model('Extended_generic_model');
 		$crud->set_table('Person');
 		$crud->set_subject('Person');
 		$crud->basic_model->set_custom_query('SELECT Sub.SuburbName as SubName, Sub.Postcode as Postcode, Per.* from `Person` Per
