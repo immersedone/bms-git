@@ -31,8 +31,7 @@ class Funding extends CI_Controller {
 		$crud->basic_model->set_query_str('SELECT Proj.Name as ProjName, FB.BodyName as FBName, CONCAT(Per.FirstName, " ", Per.MiddleName, " ", Per.LastName) as FullName, Fund.* from `Funding` Fund
 		LEFT OUTER JOIN `FundingBody` FB on FB.FundBodyID=Fund.FundBodyID
 		LEFT OUTER JOIN `Project` Proj on Proj.ProjID=Fund.ProjID
-		LEFT OUTER JOIN `Person` Per on Per.PerID=Fund.ApprovedBy 
-		ORDER BY Proj.Name', ' GROUP BY ProjName');
+		LEFT OUTER JOIN `Person` Per on Per.PerID=Fund.ApprovedBy', ' GROUP BY ProjName');
 		$crud->columns('ProjName', 'FBName', 'Amount', 'PaymentType', 'FullName', 'ApprovedOn');
 		$crud->display_as('ProjName', 'Project');
 		$crud->display_as('FBName', 'Funding Body');
