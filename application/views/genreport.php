@@ -94,14 +94,14 @@
                                             <!--<option value="allemp">All Employees</option>
                                             <option value="allvol">All Volunteers</option>
                                             <option value="allprj">All Projects</option>
-                                            <option value="allfun">All Funding</option>-->
-                                            <option value="prjovr">Project Overview</option>
+                                            <option value="allfun">All Funding</option>
+                                            <option value="prjovr">Project Overview</option>-->
                                             <option value="empprj">Employees in a Project</option>
-                                            <option value="volprj">Volunteers in a Project</option>
+                                            <!--<option value="volprj">Volunteers in a Project</option>
                                             <option value="expprj">Expenditures in a Project</option>
                                             <option value="reiprj">Reimbursements in a Project</option>
                                             <option value="mstprj">Milestones in a Project</option>
-                                            <option value="funprj">Funding in a Project</option>
+                                            <option value="funprj">Funding in a Project</option>-->
                                         </select>
                                     </div>
                                     </div>
