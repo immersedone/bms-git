@@ -8,10 +8,10 @@ $(document).ready(function(){
            document.getElementById().innerHTML = xhttp.responseText;
             }
         };
-        xhttp.open("GET", "", true);
+        xhttp.open("GET", "ProjID", true);
         xhttp.send();               
         }
-        
+
         function showExpenditures(){
 
         } 
