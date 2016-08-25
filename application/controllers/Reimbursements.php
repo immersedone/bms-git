@@ -26,14 +26,15 @@ class Reimbursements extends CI_Controller {
 		$crud = new grocery_CRUD();
 		$crud->set_theme('flexigrid');
 		$crud->set_model('Reimbursement_GC');
-		$crud->basic_model->set_query_str("SELECT * FROM Reimbursement");
+		$crud->basic_model->set_query_str("SELECT CONCAT(P.FirstName, ' ', P.MiddleName, ' ', P.LastName) as FullName, R.* FROM Reimbursement R
+		LEFT OUTER JOIN Person P on R.PerID=P.PerID");
 		$crud->set_table('Reimbursement');
 		$crud->set_subject('Reimbursement');
-		$crud->columns('PerID','Date', 'Reason', 'Type', 'ApprovedBy', 'IsPaid');
-		$crud->add_fields('Date', 'Reason', 'Type', 'ApprovedBy', 'PerID', 'IsPaid');
-		$crud->edit_fields('Date', 'Reason', 'Type', 'ApprovedBy', 'PerID', 'IsPaid');
+		$crud->columns('FullName','Date', 'Reason', 'ApprovedBy', 'IsPaid'); //'Type', removed due to lack of implementation
+		$crud->add_fields('FullName', 'Date', 'Reason', 'ApprovedBy', 'IsPaid');
+		$crud->edit_fields('FullName', 'Date', 'Reason', 'ApprovedBy', 'IsPaid');
 		$crud->display_as('ApprovedBy', 'Approved By');
-		$crud->display_as('PerID', 'Reimbursement For');
+		$crud->display_as('FullName', 'Reimbursement For');
 		$crud->display_as('IsPaid', 'Is Paid');
 
 
@@ -49,7 +50,7 @@ class Reimbursements extends CI_Controller {
 		//Change the field type to a dropdown with values
 		//to add to the relational table
 		$crud->field_type("ApprovedBy", "dropdown", $usrArr);
-		$crud->field_type("PerID", "dropdown", $usrArr);
+		$crud->field_type("FullName", "dropdown", $usrArr);
 
 		
 
