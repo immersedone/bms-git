@@ -36,12 +36,29 @@ class People extends CI_Controller {
 		$crud->display_as('FirstName', 'First Name');
 		$crud->display_as('MiddleName', 'Middle Name');
 		$crud->display_as('LastName', 'Last Name');
+		$crud->display_as('SuburbID', 'Suburb');
 		$crud->display_as('WorkEmail', 'Work Email');
 		$crud->display_as('PersonalEmail', 'Personal Email');
 		$crud->display_as('HomePhone', 'Home Phone');
 		$crud->display_as('DateStarted', 'Date Started');
 		$crud->display_as('SubName', 'Suburb');
+	
+		//Call Model to get the Project Names
+		$suburbs = $crud->basic_model->return_query("SELECT SuburbID, CONCAT(Postcode, ' - ', SubName) as FullSub FROM Project");
+		
+		//Convert Return Object into Associative Array
+		$subArr = array();
+		foreach($subrubs as $sub) {
+			$subArr += [$sub->SuburbID => $sub->FullSub];
+		}
 
+		//Change the field type to a dropdown with values
+		//to add to the relational table
+		$crud->field_type("SuburbID", "dropdown", $subArr);
+				
+		
+		
+		
 		$output = $crud->render();
 
 		$this->render($output);
