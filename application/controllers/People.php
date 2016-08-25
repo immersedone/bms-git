@@ -44,7 +44,7 @@ class People extends CI_Controller {
 		$crud->display_as('SubName', 'Suburb');
 	
 		//Call Model to get the Project Names
-		$suburbs = $crud->basic_model->return_query("SELECT SuburbID, CONCAT(Postcode, ' - ', SubName) as FullSub FROM Project");
+		$suburbs = $crud->basic_model->return_query("SELECT SuburbID, CONCAT(Postcode, ' - ', SubName) as FullSub FROM Suburb");
 		
 		//Convert Return Object into Associative Array
 		$subArr = array();
