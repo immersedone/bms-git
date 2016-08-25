@@ -27,10 +27,10 @@ class Reimbursements extends CI_Controller {
 		$crud = new grocery_CRUD();
 		$crud->set_theme('flexigrid');
 		$crud->set_table('Reimbursement');
-		$crud->set_subject('Reimbursement')
+		$crud->set_subject('Reimbursement');
 		$crud->columns('PerID','Date', 'Reason', 'Type', 'ApprovedBy', 'IsPaid');
 		$crud->add_fields('Date', 'Reason', 'Type', 'ApprovedBy', 'PerID', 'IsPaid');
-		$crud->edit_fields('Date', 'Reason', 'Type', 'ApprovedBy', 'PerID', 'IsPaid')
+		$crud->edit_fields('Date', 'Reason', 'Type', 'ApprovedBy', 'PerID', 'IsPaid');
 		$crud->display_as('ApprovedBy', 'Approved By');
 		$crud->display_as('PerID', 'Person');
 		$crud->display_as('IsPaid', 'Is Paid');
