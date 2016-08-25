@@ -16,14 +16,6 @@
       <script src="<?php echo $file; ?>"></script>
     <?php endforeach; ?>
 
-    <!--Button scripts -->
-    <!--AJAX post
-    <script type="text/javascript">
-    
-
-
-    </script>
-    -->
     <style type="text/css">
     .form-button-box
     {
