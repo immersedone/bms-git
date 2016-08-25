@@ -14,7 +14,7 @@
 
             $resp = array();
 
-            if($this->db->simple_query("DELETE FROM Funding WHERE ProjID='$projectid' AND FundBodyID='$fundbodyid' AND Role='EMPLOYEE' LIMIT 1")) {
+            if($this->db->simple_query("DELETE FROM Funding WHERE ProjID='$projectid' AND FundBodyID='$fundbodyid' LIMIT 1")) {
                 $resp['success'] = TRUE;
                 $resp['success_message'] = "Successfully removed Item from Funding.";
             } else {
