@@ -51,4 +51,54 @@ class Milestones extends CI_Controller {
 
 		$this->render($output);
 	}
+
+	public function mileproj($id) {
+
+		$crud = new grocery_CRUD();
+		$crud->set_model('Extended_generic_model'); 
+		$crud->set_table('Milestone');
+		$crud->set_subject('Milestone');
+		$crud->basic_model->set_query_str('SELECT P.Name as ProjName, M.* from `Milestone` M
+		LEFT OUTER JOIN `Project` P on M.ProjID=P.ProjID');
+			
+		$crud->columns('ProjName', 'Title', 'Description', 'StartDate', 'FinishDate');
+		$crud->display_as('StartDate', 'Start Date');
+		$crud->display_as('FinishDate', 'Finish Date');
+		$crud->display_as('ProjID', 'Project Name');
+		$crud->display_as('ProjName', 'Project Name');
+		$crud->add_fields('ProjID', 'Title', 'Description', 'StartDate', 'FinishDate');
+
+		$projects = $crud->basic_model->return_query("SELECT ProjID, Name FROM Project WHERE ProjID=".$id);
+
+		$prjArr = array();
+		foreach($projects as $prj) {
+			$prjArr += [$prj->ProjID => $prj->Name];
+		}
+
+		$crud->field_type("ProjID", "dropdown", $prjArr);
+		
+		$output = $crud->render();
+
+		$this->render($output);
+	}
+
+	function milestone_add($post_array) {
+		
+		$this->mile_insert($post_array);
+	}
+
+	public function mile_insert() {
+
+		//Initialise and assign variables
+		$ProjID = $_POST['ProjID'];
+		$Title = $_POST['Title'];
+		$Description = $_POST['Description'];
+		$StartDate = $_POST['StartDate'];
+		$FinishDate = $_POST['FinishDate'];
+
+		$crud = new grocery_CRUD();
+		$crud->set_model('Milestone_GC');
+		$resp = $crud->basic_model->insert_mile($ProjID, $Title, $Description, $StartDate, $FinishDate);
+		echo $resp;
+	}
 }

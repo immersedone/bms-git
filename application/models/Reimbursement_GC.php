@@ -36,7 +36,7 @@
 			{
 				//$this->db->simple_query("UPDATE Reimbursement SET `Amount`=`Amount`+$amount WHERE `PerID` = $perid ");
                 $resp['success'] = TRUE;
-                $resp['success_list_url'] = base_url() . "user/reimbursement";
+                $resp['success_list_url'] = base_url() . "user/reimbursements";
                 $resp['success_message'] = "Successfully added Reimbursement to Person";
             } else {
                 $resp['success'] = FALSE;
