@@ -65,25 +65,6 @@
         </div>
 
         <?php include_once("include/top_navigation.php"); ?>
-        <!--
-        <script type="text/javascript">
-        function showMilestones(){
-
-        }
-
-        function showExpenditures(){
-
-        }
-
-        function showReimbursements(){
-
-        }
-
-        function showFunding(){
-
-        }
-        </script>
-      -->
         <!-- page content -->
         <div class="right_col" role="main">
           <div class="row">
@@ -120,6 +101,24 @@
       </div>
     </div>
 
+    <!--Button scripts -->
+    <script type="text/javascript">
+    function showMilestones(){
+
+    }
+
+    function showExpenditures(){
+
+    }
+
+    function showReimbursements(){
+
+    }
+
+    function showFunding(){
+
+    }
+    </script>
     <!-- jQuery -->
     <!--<script src="/assets/vendors/jquery/dist/jquery.min.js"></script>-->
     <!-- Bootstrap -->
