@@ -68,10 +68,10 @@ class Reimbursements extends CI_Controller {
 		//Initialise and assign variables 
 		
 		$perid = $_POST['FullName'];
-		$date = $_POST['ApprovedOn'];
+		$date = $_POST['Date'];
 		$reason = $_POST['Reason'];
-		$ispaid = $_POST['PaymentType'];
-		$Approvedby = $_POST['FullName'];
+		$ispaid = $_POST['IsPaid'];
+		$Approvedby = $_POST['ApprovedBy'];
 
 		$crud = new grocery_CRUD();
 		$crud->set_model('Reimbursement_GC');
