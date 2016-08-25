@@ -1,5 +1,5 @@
-$(document).ready(function(){
-      $(".submit").click(function(event){
+//(document).ready(function(){
+     // $(".submit").click(function(event){
         function showMilestones(){
         var xhttp;   
         xhttp = new XMLHttpRequest();
@@ -23,5 +23,5 @@ $(document).ready(function(){
         function showFunding(){
 
         }
-      });
-    });
+      //});
+    //});
