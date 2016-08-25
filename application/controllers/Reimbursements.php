@@ -30,9 +30,9 @@ class Reimbursements extends CI_Controller {
 		LEFT OUTER JOIN Person P on R.PerID=P.PerID");
 		$crud->set_table('Reimbursement');
 		$crud->set_subject('Reimbursement');
-		$crud->columns('FullName','Date', 'Reason', 'Type', 'ApprovedBy', 'IsPaid');
-		$crud->add_fields('FullName', 'Date', 'Reason', 'Type', 'ApprovedBy', 'IsPaid');
-		$crud->edit_fields('FullName', 'Date', 'Reason', 'Type', 'ApprovedBy', 'IsPaid');
+		$crud->columns('FullName','Date', 'Reason', 'ApprovedBy', 'IsPaid'); //'Type', removed due to lack of implementation
+		$crud->add_fields('FullName', 'Date', 'Reason', 'ApprovedBy', 'IsPaid');
+		$crud->edit_fields('FullName', 'Date', 'Reason', 'ApprovedBy', 'IsPaid');
 		$crud->display_as('ApprovedBy', 'Approved By');
 		$crud->display_as('FullName', 'Reimbursement For');
 		$crud->display_as('IsPaid', 'Is Paid');
