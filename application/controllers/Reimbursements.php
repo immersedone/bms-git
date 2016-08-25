@@ -32,7 +32,7 @@ class Reimbursements extends CI_Controller {
 		$crud->add_fields('Date', 'Reason', 'Type', 'ApprovedBy', 'PerID', 'IsPaid');
 		$crud->edit_fields('Date', 'Reason', 'Type', 'ApprovedBy', 'PerID', 'IsPaid')
 		$crud->display_as('ApprovedBy', 'Approved By');
-		$crud->display_as('PerID', 'Person ID');
+		$crud->display_as('PerID', 'Person');
 		$crud->display_as('IsPaid', 'Is Paid');
 		
 
