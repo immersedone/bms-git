@@ -72,14 +72,22 @@ class Projects extends CI_Controller {
 	   	$GCM->grids[1]->set_model('Extended_generic_model'); 
 		$GCM->grids[1]->set_table('Milestone');
 		$GCM->grids[1]->set_subject('Milestone');
-		$GCM->grids[1]->basic_model->set_query_str('SELECT P.Name as ProjName, M.* from `Milestone` M
-		LEFT OUTER JOIN `Project` P on M.ProjID=P.ProjID WHERE M.ProjID='.$id);
+		$GCM->grids[1]->basic_model->set_query_str('SELECT Project.Name as ProjName, Milestone.* FROM Milestone LEFT OUTER JOIN Project ON Milestone.ProjID=Project.ProjID WHERE Milestone.ProjID='.$id);
 			
 		$GCM->grids[1]->columns('ProjName', 'Title', 'Description', 'StartDate', 'FinishDate');
 		$GCM->grids[1]->display_as('StartDate', 'Start Date');
 		$GCM->grids[1]->display_as('FinishDate', 'Finish Date');
-		$GCM->grids[1]->display_as('ProjName', 'Project');
+		$GCM->grids[1]->display_as('ProjName', 'Project Name');
 		$GCM->grids[1]->add_fields('ProjID', 'Title', 'Description', 'StartDate', 'FinishDate');
+
+		$projects = $GCM->grids[1]->basic_model->return_query("SELECT ProjID, Name FROM Project WHERE ProjID='".$id."'");
+
+		$prjArr = array();
+		foreach($projects as $prj) {
+			$prjArr += [$prj->ProjID => $prj->Name];
+		}
+
+		$GCM->grids[1]->field_type("ProjID", "dropdown", $prjArr);
 
 		$GCM->grid_add(2);
 
@@ -90,6 +98,7 @@ class Projects extends CI_Controller {
 		LEFT OUTER JOIN `Project` Proj ON Proj.ProjID=Exp.ProjID
 		LEFT OUTER JOIN `Person` Per ON Per.PerID=Exp.ApprovedBy  WHERE Exp.ProjID='.$id);
 		$GCM->grids[2]->columns('Name', 'ExpName', 'Reason', 'Amount', 'FullName', 'SpentBy', 'Type');
+		$GCM->grids[2]->display_as('Name', 'Project Name');
 
 		$GCM->grid_add(3);
 
@@ -101,7 +110,7 @@ class Projects extends CI_Controller {
 		LEFT OUTER JOIN `Project` Proj on Proj.ProjID=Fund.ProjID
 		LEFT OUTER JOIN `Person` Per on Per.PerID=Fund.ApprovedBy WHERE Fund.ProjID='.$id, ' GROUP BY FundID');
 		$GCM->grids[3]->columns('ProjName', 'FBName', 'Amount', 'PaymentType', 'FullName', 'ApprovedOn');
-		$GCM->grids[3]->display_as('ProjName', 'Project');
+		$GCM->grids[3]->display_as('ProjName', 'Project Name');
 		$GCM->grids[3]->display_as('FBName', 'Funding Body');
 		$GCM->grids[3]->display_as('PaymentType', 'Payment Type');
 		$GCM->grids[3]->display_as('FullName', 'Approved By');
@@ -267,6 +276,8 @@ class Projects extends CI_Controller {
 		//$crud->callback_delete(array($this, 'volunteer_delete'));
 
 		$output = $GCM->render();
+
+		//print_r($GCM->grids[1]);
 
 	   $this->_output_multi($output);
 	}

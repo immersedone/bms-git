@@ -8,6 +8,25 @@ $this->set_js($this->default_theme_path.'/flexiajax/js/flexigrid.js');
 $this->set_js($this->default_theme_path.'/flexiajax/js/jquery.form.js');
 $this->set_js($this->default_theme_path.'/flexiajax/js/jquery.numeric.js');
 
+switch($subject) {
+    case "Milestone":
+        $gridNo = 1;
+        break;
+    case "Expenditure":
+        $gridNo = 2;
+        break;
+    case "Funding":
+        $gridNo = 3;
+        break;
+    case "Volunteer":
+        $gridNo = 4;
+        break;
+    case "Employee":
+        $gridNo = 5;
+        break;
+}
+
+
 ?>
 <h4 class="projTitle"><?php echo $subject?></h4>
 <script type='text/javascript'>
@@ -50,7 +69,7 @@ $this->set_js($this->default_theme_path.'/flexiajax/js/jquery.numeric.js');
         <?php if(!$unset_add){?>
         <div class="tDiv">
             <div class="tDiv2">
-                <a href='<?php echo $add_url.'/'.$unic_id?>' title='<?php echo $this->l('list_add'); ?> <?php echo $subject?>' class='add-anchor'>
+                <a href='<?php echo dirname($add_url).'/'.$gridNo .'/add/'.get_cookie("projID")?>' title='<?php echo $this->l('list_add'); ?> <?php echo $subject?>' class='add-anchor'>
                     <div class="fbutton">
                         <div>
                             <span class="add"><?php echo $this->l('list_add'); ?> <?php echo $subject?></span>

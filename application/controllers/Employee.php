@@ -111,6 +111,69 @@ class Employee extends CI_Controller {
 		$this->render($output);
 	}
 
+	public function empproj($id) {
+
+		$crud = new grocery_CRUD();
+		$crud->set_model('Employee_GC');
+		$crud->set_table('Person');
+		$crud->set_subject('Employee');
+		$crud->basic_model->set_query_str(
+		'SELECT Proj.Name, Proj.ProjID, `PersonProject`.Role as ProjRole, CONCAT(FirstName, " ", MiddleName, " ", LastName) as FullName, Sub.SuburbName as SubName, 
+		Sub.Postcode as Postcode, Per.* FROM `Person` Per 
+		LEFT OUTER JOIN `PersonProject` ON Per.PerID=`PersonProject`.PerID 
+		LEFT OUTER JOIN `Project` Proj ON `PersonProject`.ProjID=Proj.ProjID 
+		LEFT OUTER JOIN `Suburb` Sub ON Sub.SuburbID=Per.SuburbID 
+		WHERE `PersonProject`.Role="Employee"', ' GROUP BY FullName, Name, ProjRole');
+		$crud->columns("Name", "FullName", "Address", "Postcode", "SubName", "WorkEmail", "PersonalEmail", "Mobile", "HomePhone");
+		$crud->display_as("Name", "Project Name");
+		$crud->display_as("ProjRole", "Project Role");
+		$crud->display_as("FullName", "Full Name");
+		$crud->display_as("SubName", "Suburb");
+		
+		//Change the Add Volunteer Fields
+		$crud->add_fields("FullName", "Name", "Role");
+
+		
+		//Call Model to get the Project Names
+		$projects = $crud->basic_model->return_query("SELECT ProjID, Name FROM Project WHERE ProjID=".$id);
+		
+		//Convert Return Object into Associative Array
+		$prjArr = array();
+		foreach($projects as $prj) {
+			$prjArr += [$prj->ProjID => $prj->Name];
+		}
+
+		//Change the field type to a dropdown with values
+		//to add to the relational table
+		$crud->field_type("Name", "dropdown", $prjArr);
+		
+		//Call Model to get the User's Full Names
+		$users = $crud->basic_model->return_query("SELECT PerID, CONCAT(FirstName, ' ', MiddleName, ' ', LastName) as FullName FROM Person");
+
+		//Convert Return Object into Associative Array
+		$usrArr = array();
+		foreach($users as $usr) {
+			$usrArr += [$usr->PerID => $usr->FullName];
+		}
+		
+		//Change the field type to a dropdown with values
+		//to add to the relational table
+		$crud->field_type("FullName", "dropdown", $usrArr);
+
+		//Change the default method to fire when adding
+		//a new person to a project
+		$crud->callback_before_insert(array($this,'employee_add'));
+
+		$crud->unset_edit();
+		$crud->unset_delete();
+		$crud->add_action('Delete', '', '', 'delete-icon', array($this, 'employee_delete'));
+		//$crud->callback_delete(array($this, 'volunteer_delete'));
+
+		$output = $crud->render();
+
+		$this->render($output);
+	}
+
 	function employee_delete($primarykey, $row) {
 		return base_url().'user/employee/index/pp_delete/'.$primarykey.'/'.$row->ProjID;
 	}
