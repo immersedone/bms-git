@@ -39,7 +39,7 @@ class Funding extends CI_Controller {
 		$crud->display_as('PaymentType', 'Payment Type');
 		$crud->display_as('FullName', 'Approved By');
 		$crud->display_as('ApprovedOn', 'Approved On');
-
+		/*
 		//Change the Insert Funding fields
 		$crud->add_fields("ProjName", "FBName", "Amount", "PaymentType", "FullName", "ApprovedOn");
 	
@@ -89,7 +89,7 @@ class Funding extends CI_Controller {
 		$crud->unset_delete();
 		//$crud->add_action('Delete', '', '', 'delete-icon', array($this, 'delete_fund'));
 		//$crud->callback_delete(array($this, 'delete_fund'));
-
+		*/
 		$output = $crud->render();
 
 		$this->render($output);
