@@ -77,7 +77,7 @@ class Expenditures extends CI_Controller {
 		LEFT OUTER JOIN `Project` Proj ON Proj.ProjID=Exp.ProjID
 		LEFT OUTER JOIN `Person` Per ON Per.PerID=Exp.SpentBy');
 		$crud->columns('Name', 'ExpName', 'Reason', 'Amount', 'ApprovedBy', 'FullName'); // 'Type' removed due to lack of implementation - 'ApprovedBy' Removed for clarity
-		$crud->add_fields('Name', 'ExpName', 'Reason', 'Amount', 'FullName');
+		$crud->add_fields('Name', 'ExpName', 'Reason', 'Amount', 'ApprovedBy', 'FullName');
 		$crud->display_as('ExpName', 'Expenditure Name');
 		$crud->display_as('ApprovedBy', 'Approved By'); 
 		$crud->display_as('FullName', 'Spent By');
@@ -112,10 +112,12 @@ class Expenditures extends CI_Controller {
 
 		$this->render($output);
 	}
+	
 	function expenditure_add($post_array) {
 		
 		$this->exp_insert($post_array);
 	}
+	
 	public function exp_insert() {
 
 		//Initialise and assign variables 
