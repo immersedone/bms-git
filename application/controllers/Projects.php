@@ -29,13 +29,13 @@ class Projects extends CI_Controller {
 		$crud->set_theme('flexigrid');
 		$crud->set_table('Project');
 		$crud->set_subject('Project');
-		$crud->columns("Name", "Description", "StartDate", "FinishDate", "Status", "TotalFunding");
+		$crud->columns("Name", "Description", "StartDate", "FinishDate", "TotalFunding"); //"Status", 
 		$crud->set_js('People_function.js');
 		$crud->display_as("Name", "Project Name");
 		$crud->display_as("Description", "Project Description");
 		$crud->display_as("StartDate", "Start Date");
 		$crud->display_as("FinishDate", "Finish Date");
-		$crud->display_as("Status", "Project Status");
+		//$crud->display_as("Status", "Project Status");
 		$crud->display_as("TotalFunding", "Total Funding");
 
 		$crud->form_buttons('View Milestones', 'showMilestones', '');
