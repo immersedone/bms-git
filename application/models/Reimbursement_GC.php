@@ -9,12 +9,12 @@
             parent::__construct();
         }
      
-        function delete_reimb($expid, $projid)
+        function delete_reimb($expid, $perid)
         {
 
             $resp = array();
 
-            if($this->db->simple_query("DELETE FROM Reimbursement WHERE ExpID='$expid' OR ProjID='$projid' LIMIT 1")) {
+            if($this->db->simple_query("DELETE FROM Reimbursement WHERE ExpID='$expid' OR PerID='$perid' LIMIT 1")) {
                 $resp['success'] = TRUE;
                 $resp['success_message'] = "Successfully removed Reimbursement";
             } else {
