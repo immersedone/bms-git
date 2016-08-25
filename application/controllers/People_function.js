@@ -1,9 +1,9 @@
         function showMilestones(){
             var xhttp;   
             xhttp = new XMLHttpRequest();
-            xhttp.click = function(){
+            xhttp.onreadystatechange = function(){
             if(xhttp.readyState == 4 && xhttp.status == 200){
-                document.getElementById().innerHTML = xhttp.responseText;
+                document.getElementById(ProjID).innerHTML = xhttp.responseText;
             }
         };
         xhttp.open("GET", "ProjID", true);
@@ -13,7 +13,7 @@
         function showExpenditures(){
             var xhttp;
             xhttp = new XMLHttpRequest();
-            xhttp.click = function(){
+            xhttp.onreadystatechange = function(){
             if(xhttp.readyState == 4 && xhttp.status == 200){
                 document.getElementById().innerHTML = xhttp.responseText;
             }
@@ -25,7 +25,7 @@
         function showReimbursements(){
             var xhttp;
             xhttp = new XMLHttpRequest();
-            xhttp.click = function(){
+            xhttp.onreadystatechange = function(){
             if(xhttp.readyState == 4 && xhttp.status == 200){
                 document.getElementById().innerHTML = xhttp.responseText;
             }
@@ -39,7 +39,7 @@
         function showFunding(){
             var xhttp;
             xhttp = new XMLHttpRequest();
-            xhttp.click = function(){
+            xhttp.onreadystatechange = function(){
             if(xhttp.readyState == 4 && xhttp.status == 200){
                 document.getElementById().innerHTML = xhttp.responseText;
             }
