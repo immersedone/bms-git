@@ -78,10 +78,11 @@ class Expenditures extends CI_Controller {
 		LEFT OUTER JOIN `Project` Proj ON Proj.ProjID=Exp.ProjID
 		LEFT OUTER JOIN `Person` Per ON Per.PerID=Exp.SpentBy');
 		$crud->columns('Name', 'ExpName', 'Reason', 'Amount', 'ApprovedBy', 'FullName'); 
-		$crud->add_fields('Name', 'ExpName', 'Reason', 'Amount', 'ApprovedBy', 'FullName');
+		$crud->add_fields('ProjID', 'ExpName', 'Reason', 'Amount', 'ApprovedBy', 'FullName');
 		$crud->display_as('ExpName', 'Expenditure Name');
 		$crud->display_as('ApprovedBy', 'Approved By'); 
 		$crud->display_as('FullName', 'Spent By');
+		$crud->display_as('ProjID', 'Project Name');
 		$crud->display_as('Name', 'Project Name');
 
 		$projects = $crud->basic_model->return_query("SELECT ProjID, Name FROM Project WHERE ProjID=".$id);
@@ -91,7 +92,7 @@ class Expenditures extends CI_Controller {
 			$prjArr += [$prj->ProjID => $prj->Name];
 		}
 
-		$crud->field_type("Name", "dropdown", $prjArr);
+		$crud->field_type("ProjID", "dropdown", $prjArr);
 
 		//Call Model to get the User's Full Names
 		$users = $crud->basic_model->return_query("SELECT PerID, CONCAT(FirstName, ' ', MiddleName, ' ', LastName) as FullName FROM Person");
@@ -128,7 +129,7 @@ class Expenditures extends CI_Controller {
 		$amount = $_POST['Amount'];
 		$Approvedby = $_POST['ApprovedBy'];
 		$SpentBy = $_POST['FullName'];
-		$ProjectID = $_POST['Name'];
+		$ProjectID = $_POST['ProjID'];
 		
 		$crud = new grocery_CRUD();
 		$crud->set_model('Expenditure_model');
