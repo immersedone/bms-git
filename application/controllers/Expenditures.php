@@ -129,7 +129,7 @@ class Expenditures extends CI_Controller {
 		$amount = $_POST['Amount'];
 		$Approvedby = $_POST['ApprovedBy'];
 		$SpentBy = $_POST['FullName'];
-		$ProjectID = $_POST['ProjID'];
+		$ProjectID = $_POST['Name'];
 		
 		$crud = new grocery_CRUD();
 		$crud->set_model('Expenditure_model');
