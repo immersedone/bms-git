@@ -38,7 +38,7 @@ class Milestones extends CI_Controller {
 		$crud->display_as('ProjName', 'Project Name');
 		$crud->display_as('MSComplete', 'Complete');
 		$crud->add_fields('ProjID', 'Title', 'Description', 'StartDate', 'FinishDate');
-		$crud->callback_column('MSComplete', array($this, check_complete));
+		$crud->callback_column('MSComplete', array($this, 'check_complete'));
 
 		$projects = $crud->basic_model->return_query("SELECT ProjID, Name FROM Project");
 
