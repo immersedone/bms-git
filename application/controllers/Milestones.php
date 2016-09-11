@@ -95,8 +95,8 @@ class Milestones extends CI_Controller {
 		return "<input type='checkbox' name='MSComplete'>";
 	}
 
-		function field_width($value, $row) {
-		return $value = wordwrap($row->'MSComplete', 50, "", true);
+	function field_width($value, $row) {
+		return "wordwrap($row->MSComplete, 50, "", true)";
 	}
 
 	public function mile_insert() {
