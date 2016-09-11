@@ -31,12 +31,14 @@ class Milestones extends CI_Controller {
 		$crud->basic_model->set_query_str('SELECT P.Name as ProjName, M.* from `Milestone` M
 		LEFT OUTER JOIN `Project` P on M.ProjID=P.ProjID');
 			
-		$crud->columns('ProjName', 'Title', 'Description', 'StartDate', 'FinishDate');
+		$crud->columns('ProjName', 'Title', 'Description', 'StartDate', 'FinishDate','MSComplete');
 		$crud->display_as('StartDate', 'Start Date');
 		$crud->display_as('FinishDate', 'Finish Date');
 		$crud->display_as('ProjID', 'Project Name');
 		$crud->display_as('ProjName', 'Project Name');
+		$crud->display_as('MSComplete', 'Complete');
 		$crud->add_fields('ProjID', 'Title', 'Description', 'StartDate', 'FinishDate');
+		$crud->callback_function('MSComplete', array($this, check_complete));
 
 		$projects = $crud->basic_model->return_query("SELECT ProjID, Name FROM Project");
 
@@ -61,15 +63,14 @@ class Milestones extends CI_Controller {
 		$crud->basic_model->set_query_str('SELECT P.Name as ProjName, M.* from `Milestone` M
 		LEFT OUTER JOIN `Project` P on M.ProjID=P.ProjID');
 			
-		$crud->columns('ProjName', 'Title', 'Description', 'StartDate', 'FinishDate', 'MSComplete');
+		$crud->columns('ProjName', 'Title', 'Description', 'StartDate', 'FinishDate');
 		$crud->display_as('StartDate', 'Start Date');
 		$crud->display_as('FinishDate', 'Finish Date');
 		$crud->display_as('ProjID', 'Project Name');
 		$crud->display_as('ProjName', 'Project Name');
-		$crud->display_as('MSComplete', 'Complete');
+
 		$crud->add_fields('ProjID', 'Title', 'Description', 'StartDate', 'FinishDate');
 
-		$crud->callback_function('MSComplete', array($this, check_complete));
 		$projects = $crud->basic_model->return_query("SELECT ProjID, Name FROM Project WHERE ProjID=".$id);
 
 		$prjArr = array();
