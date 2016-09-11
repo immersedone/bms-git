@@ -1,0 +1,24 @@
+/*
+	Replacement for Milestone table
+	Comment to be moved to new table possibly and replaced with relation
+
+*/
+
+
+CREATE TABLE `milestone_new` (
+`milestoneID` int( 255 ) NOT NULL PRIMARY KEY AUTO_INCREMENT ,		
+`DueDate` datetime,
+`Option` enum( 'Report', 'Payment', 'Both', 'Final' ) ,
+`Desc` Varchar( 500 ) ,
+`Amount` float( 14, 2 ) ,
+`Completed` boolean,
+`Comment` Varchar( 8000 )
+)
+
+
+
+/*
+
+	Potential replacement comment table
+
+*/
