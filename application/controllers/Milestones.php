@@ -96,7 +96,7 @@ class Milestones extends CI_Controller {
 	}
 
 		function field_width($value, $row) {
-		return $value = wordwrap($row->text_to_show, 50, '', true);
+		return $value = wordwrap($row->MSComplete, 50, '', true);
 	}
 
 	public function mile_insert() {
