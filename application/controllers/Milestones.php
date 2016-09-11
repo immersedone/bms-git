@@ -39,6 +39,7 @@ class Milestones extends CI_Controller {
 		$crud->display_as('MSComplete', 'Complete');
 		$crud->add_fields('ProjID', 'Title', 'Description', 'StartDate', 'FinishDate');
 		$crud->callback_column('MSComplete', array($this, 'check_complete'));
+		$crud->callback_column('MSComplete', array($this, 'field_width'));
 
 		$projects = $crud->basic_model->return_query("SELECT ProjID, Name FROM Project");
 
@@ -90,8 +91,12 @@ class Milestones extends CI_Controller {
 		$this->mile_insert($post_array);
 	}
 
-	function check_complete($value) {
+	function check_complete($value, $row) {
 		return "<input type='checkbox' name='MSComplete'>";
+	}
+
+		function field_width($value, $row) {
+		return $value = wordwrap($row->text_to_show, 50, '', true);
 	}
 
 	public function mile_insert() {
