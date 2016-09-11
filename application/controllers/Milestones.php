@@ -90,8 +90,8 @@ class Milestones extends CI_Controller {
 		$this->mile_insert($post_array);
 	}
 
-		function check_complete($value = '') {
-		return '<input type="checkbox" name="MSComplete">';
+	function check_complete($value) {
+		return "<input type='checkbox' name='MSComplete'>";
 	}
 
 	public function mile_insert() {
