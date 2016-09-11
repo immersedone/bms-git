@@ -94,11 +94,11 @@ class Milestones extends CI_Controller {
 	function check_complete($value, $row) {
 		return "<input type='checkbox' name='MSComplete'>";
 	}
-
+/*
 	function field_width($value, $row) {
 		return "wordwrap($row->MSComplete, 50, "", true)";
 	}
-
+*/
 	public function mile_insert() {
 
 		//Initialise and assign variables
