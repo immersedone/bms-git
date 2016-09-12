@@ -38,6 +38,7 @@ class Milestones extends CI_Controller {
 		$crud->display_as('DueDate', 'Due Date');
 		$crud->display_as('RptType', 'Type');
 		$crud->display_as('MSComplete', 'Complete');
+		$crud->view_fields('ProjectName', 'ShortDesc', 'DueDate', 'RptType', 'Amount', 'Comment');
 		$crud->add_fields('ProjID', 'ShortDesc', 'DueDate', 'RptType', 'Amount', 'Comment');
 		$crud->callback_column('MSComplete', array($this, 'check_complete'));
 		//$crud->callback_column('MSComplete', array($this, 'field_width'));
@@ -52,7 +53,7 @@ class Milestones extends CI_Controller {
 				
 		$crud->field_type("DueDate", 'datetime');
 		$crud->field_type("Comment", 'text');
-		$crud->field_type("RptType", "dropdown", $rptArr);
+		$crud->field_type("RptType", "enum", $rptArr);
 		$crud->field_type("ProjID", "dropdown", $prjArr);
 		
 		$output = $crud->render();
