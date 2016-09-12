@@ -64,18 +64,20 @@ class Milestones extends CI_Controller {
 
 		$crud = new grocery_CRUD();
 		$crud->set_model('Extended_generic_model'); 
-		$crud->set_table('Milestone');
-		$crud->set_subject('Milestone');
-		$crud->basic_model->set_query_str('SELECT P.Name as ProjName, M.* from `Milestone` M
-		LEFT OUTER JOIN `Project` P on M.ProjID=P.ProjID');
+		$crud->set_table('Milestone_new');
+		$crud->set_subject('Milestone_new');
+		$crud->basic_model->set_query_str('SELECT P.Name as ProjName, M.* from `Milestone_new` M
+		LEFT OUTER JOIN `Project` P on M.ProjID=P.ProjID
+		WHERE M.ProjID = $id');
 			
-		$crud->columns('ProjName', 'Title', 'Description', 'StartDate', 'FinishDate');
-		$crud->display_as('StartDate', 'Start Date');
-		$crud->display_as('FinishDate', 'Finish Date');
+		$crud->columns('ProjName', 'ShortDesc', 'DueDate', 'RptType', 'Amount');
 		$crud->display_as('ProjID', 'Project Name');
 		$crud->display_as('ProjName', 'Project Name');
-
-		$crud->add_fields('ProjID', 'Title', 'Description', 'StartDate', 'FinishDate');
+		$crud->display_as('ShortDesc', 'Description');
+		$crud->display_as('DueDate', 'Due Date');
+		$crud->display_as('RptType', 'Type');
+		$crud->display_as('MSComplete', 'Complete');
+		$crud->add_fields('ProjID', 'ShortDesc', 'DueDate', 'RptType', 'Amount', 'Comment');
 
 		$projects = $crud->basic_model->return_query("SELECT ProjID, Name FROM Project WHERE ProjID=".$id);
 
@@ -84,7 +86,13 @@ class Milestones extends CI_Controller {
 			$prjArr += [$prj->ProjID => $prj->Name];
 		}
 
+		$rptArr = array("Report", "Payment", "Both", "Final");
+				
+		$crud->field_type("DueDate", 'datetime');
+		$crud->field_type("Comment", 'text');
+		$crud->field_type("RptType", "enum", $rptArr);
 		$crud->field_type("ProjID", "dropdown", $prjArr);
+		
 		
 		$output = $crud->render();
 
