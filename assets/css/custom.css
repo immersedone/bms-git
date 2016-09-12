@@ -2,6 +2,15 @@
 .left_col {
   background: #2A3F54; }
 
+h4.projTitle {
+    padding: 15px 10px 10px;
+    background: url(../../../../assets/grocery_crud/themes/flexigrid/css/images/wbg.gif) repeat-x top;
+    margin-top: 25px;
+    margin-bottom: 0;
+    border: 1px solid #ccc;
+    font-weight: bold;
+}
+
 .nav-sm .container.body .col-md-3.left_col {
   min-height: 100%;
   width: 70px;
