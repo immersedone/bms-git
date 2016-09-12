@@ -72,7 +72,8 @@ class Projects extends CI_Controller {
 	   	$GCM->grids[1]->set_model('Extended_generic_model'); 
 		$GCM->grids[1]->set_table('Milestone_new');
 		$GCM->grids[1]->set_subject('Milestone_new');
-		$GCM->grids[1]->basic_model->set_query_str('SELECT Project.Name as ProjName, Milestone.* FROM Milestone LEFT OUTER JOIN Project ON Milestone.ProjID=Project.ProjID WHERE Milestone.ProjID='.$id);
+		$GCM->grids[1]->basic_model->set_query_str('SELECT P.Name as ProjName, Milestone.* FROM Milestone_new M
+		LEFT OUTER JOIN Project P ON M.ProjID=P.ProjID WHERE M.ProjID='.$id);
 			
 		$GCM->grids[1]->columns('ShortDesc', 'DueDate', 'RptType', 'Amount');
 		$GCM->grids[1]->display_as('ProjID', 'Project Name');
