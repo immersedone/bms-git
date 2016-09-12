@@ -70,15 +70,18 @@ class Projects extends CI_Controller {
 	  	$GCM->grid_add(1);
 
 	   	$GCM->grids[1]->set_model('Extended_generic_model'); 
-		$GCM->grids[1]->set_table('Milestone');
-		$GCM->grids[1]->set_subject('Milestone');
+		$GCM->grids[1]->set_table('Milestone_new');
+		$GCM->grids[1]->set_subject('Milestone_new');
 		$GCM->grids[1]->basic_model->set_query_str('SELECT Project.Name as ProjName, Milestone.* FROM Milestone LEFT OUTER JOIN Project ON Milestone.ProjID=Project.ProjID WHERE Milestone.ProjID='.$id);
 			
-		$GCM->grids[1]->columns('ProjName', 'Title', 'Description', 'StartDate', 'FinishDate');
-		$GCM->grids[1]->display_as('StartDate', 'Start Date');
-		$GCM->grids[1]->display_as('FinishDate', 'Finish Date');
+		$GCM->grids[1]->columns('ShortDesc', 'DueDate', 'RptType', 'Amount');
+		$GCM->grids[1]->display_as('ProjID', 'Project Name');
 		$GCM->grids[1]->display_as('ProjName', 'Project Name');
-		$GCM->grids[1]->add_fields('ProjID', 'Title', 'Description', 'StartDate', 'FinishDate');
+		$GCM->grids[1]->display_as('ShortDesc', 'Description');
+		$GCM->grids[1]->display_as('DueDate', 'Due Date');
+		$GCM->grids[1]->display_as('RptType', 'Type');
+		$GCM->grids[1]->display_as('MSComplete', 'Complete');
+		$GCM->grids[1]->add_fields('ShortDesc', 'DueDate', 'RptType', 'Amount', 'Comment');
 
 		$projects = $GCM->grids[1]->basic_model->return_query("SELECT ProjID, Name FROM Project WHERE ProjID='".$id."'");
 
