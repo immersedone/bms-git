@@ -70,14 +70,14 @@ class Milestones extends CI_Controller {
 		LEFT OUTER JOIN `Project` P on M.ProjID=P.ProjID
 		WHERE M.ProjID = $id');
 			
-		$crud->columns('ProjName', 'ShortDesc', 'DueDate', 'RptType', 'Amount');
+		$crud->columns('ShortDesc', 'DueDate', 'RptType', 'Amount');
 		$crud->display_as('ProjID', 'Project Name');
 		$crud->display_as('ProjName', 'Project Name');
 		$crud->display_as('ShortDesc', 'Description');
 		$crud->display_as('DueDate', 'Due Date');
 		$crud->display_as('RptType', 'Type');
 		$crud->display_as('MSComplete', 'Complete');
-		$crud->add_fields('ProjID', 'ShortDesc', 'DueDate', 'RptType', 'Amount', 'Comment');
+		$crud->add_fields('ShortDesc', 'DueDate', 'RptType', 'Amount', 'Comment');
 
 		$projects = $crud->basic_model->return_query("SELECT ProjID, Name FROM Project WHERE ProjID=".$id);
 
@@ -91,7 +91,6 @@ class Milestones extends CI_Controller {
 		$crud->field_type("DueDate", 'datetime');
 		$crud->field_type("Comment", 'text');
 		$crud->field_type("RptType", "enum", $rptArr);
-		$crud->field_type("ProjID", "dropdown", $prjArr);
 		
 		
 		$output = $crud->render();
