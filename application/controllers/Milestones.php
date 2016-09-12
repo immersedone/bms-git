@@ -51,7 +51,7 @@ class Milestones extends CI_Controller {
 		$rptArr = array("Report", "Payment", "Both", "Final");
 				
 		$crud->field_type("DueDate", 'datetime');
-		$crud->field_type("Comment", 'text');
+		$crud->field_type("Comment", 'textbox');
 		$crud->field_type("RptType", "enum", $rptArr);
 		$crud->field_type("ProjID", "dropdown", $prjArr);
 		
