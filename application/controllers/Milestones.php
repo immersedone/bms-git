@@ -28,16 +28,16 @@ class Milestones extends CI_Controller {
 		$crud->set_model('Extended_generic_model'); 
 		$crud->set_table('Milestone');
 		$crud->set_subject('Milestone');
-		$crud->basic_model->set_query_str('SELECT P.Name as ProjName, M.* from `Milestone` M
+		$crud->basic_model->set_query_str('SELECT P.Name as ProjName, M.* from `Milestone_new` M
 		LEFT OUTER JOIN `Project` P on M.ProjID=P.ProjID');
 			
-		$crud->columns('ProjName', 'Title', 'Description', 'StartDate', 'FinishDate','MSComplete');
-		$crud->display_as('StartDate', 'Start Date');
-		$crud->display_as('FinishDate', 'Finish Date');
+		$crud->columns('ProjName', 'ShortDesc', 'DueDate', 'RptType', 'Amount');
 		$crud->display_as('ProjID', 'Project Name');
 		$crud->display_as('ProjName', 'Project Name');
+		$crud->display_as('ShortDesc', 'Description');
+		$crud->display_as('RptType', 'Type');
 		$crud->display_as('MSComplete', 'Complete');
-		$crud->add_fields('ProjID', 'Title', 'Description', 'StartDate', 'FinishDate');
+		$crud->add_fields('ProjID', 'ShortDesc', 'DueDate', 'RptType', 'Amount');
 		$crud->callback_column('MSComplete', array($this, 'check_complete'));
 		//$crud->callback_column('MSComplete', array($this, 'field_width'));
 
@@ -47,7 +47,9 @@ class Milestones extends CI_Controller {
 		foreach($projects as $prj) {
 			$prjArr += [$prj->ProjID => $prj->Name];
 		}
-
+		$rptArr = array("Report", "Payment", "Both", "Final");
+				
+		$crud->field_type("RptType", "dropdown", $rptArr);
 		$crud->field_type("ProjID", "dropdown", $prjArr);
 		
 		$output = $crud->render();
