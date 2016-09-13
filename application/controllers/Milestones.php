@@ -28,7 +28,7 @@ class Milestones extends CI_Controller {
 		$crud = new grocery_CRUD();
 		$crud->set_model('Extended_generic_model'); 
 		$crud->set_table('Milestone_new');
-		$crud->set_subject('Milestone_new');
+		$crud->set_subject('Milestone');
 		$crud->basic_model->set_query_str('SELECT P.Name as ProjName, M.* from `Milestone_new` M
 		LEFT OUTER JOIN `Project` P on M.ProjID=P.ProjID');
 		$crud->columns('ProjName', 'ShortDesc', 'DueDate', 'RptType', 'Amount', 'Comment', 'FilePath');
@@ -72,7 +72,7 @@ class Milestones extends CI_Controller {
 		$crud = new grocery_CRUD();
 		$crud->set_model('Extended_generic_model'); 
 		$crud->set_table('Milestone_new');
-		$crud->set_subject('Milestone_new');
+		$crud->set_subject('Milestone');
 		$crud->basic_model->set_query_str('SELECT P.Name as ProjName, M.* from `Milestone_new` M
 		LEFT OUTER JOIN `Project` P on M.ProjID=P.ProjID
 		WHERE M.ProjID = $id');
