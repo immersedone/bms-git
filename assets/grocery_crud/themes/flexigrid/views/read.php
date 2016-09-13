@@ -29,6 +29,104 @@
 				$even_odd = $counter % 2 == 0 ? 'odd' : 'even';
 				$counter++;
 		?>
+
+		<?php 
+
+		//Hack Read Template files to get the name of User/Project
+		if($field->field_name === "ProjID") {
+			//Get Project ID to convert to a name
+			$projID = $input_fields["ProjID"]->input;
+			$projID = str_replace("</div>", "", $projID);
+			$projID = str_replace('<div id="field-ProjID" class="readonly_label">', "", $projID);
+			//Echo out HTML AJAX for name conversion
+
+			$ajaxHTML = '<script type="text/javascript">
+			$(document).ready(function() {
+				$.ajax({
+					url: "'. base_url() .'user/projects/index/getProjName/' . $projID .'",
+					type: "POST",
+					dataType: "json",
+					success: function(data) {
+						$("div#field-ProjID.readonly_label").text(data.ProjName);
+					}
+
+				});
+			});
+			</script>';
+
+			echo $ajaxHTML;
+
+		} elseif($field->field_name === "ApprovedBy") {
+			//Get Project ID to convert to a name
+			$perID = $input_fields["ApprovedBy"]->input;
+			$perID = str_replace("</div>", "", $perID);
+			$perID = str_replace('<div id="field-ApprovedBy" class="readonly_label">', "", $perID);
+			//Echo out HTML AJAX for name conversion
+
+			$ajaxHTML = '<script type="text/javascript">
+			$(document).ready(function() {
+				$.ajax({
+					url: "'. base_url() .'user/people/index/getPerName/' . $perID .'",
+					type: "POST",
+					dataType: "json",
+					success: function(data) {
+						$("div#field-ApprovedBy.readonly_label").text(data.PerName);
+					}
+
+				});
+			});
+			</script>';
+
+			echo $ajaxHTML;
+
+		} elseif($field->field_name === "SpentBy") {
+			//Get Project ID to convert to a name
+			$perID = $input_fields["SpentBy"]->input;
+			$perID = str_replace("</div>", "", $perID);
+			$perID = str_replace('<div id="field-SpentBy" class="readonly_label">', "", $perID);
+			//Echo out HTML AJAX for name conversion
+
+			$ajaxHTML = '<script type="text/javascript">
+			$(document).ready(function() {
+				$.ajax({
+					url: "'. base_url() .'user/people/index/getPerName/' . $perID .'",
+					type: "POST",
+					dataType: "json",
+					success: function(data) {
+						$("div#field-SpentBy.readonly_label").text(data.PerName);
+					}
+
+				});
+			});
+			</script>';
+
+			echo $ajaxHTML;
+
+		} elseif($field->field_name === "PerID") {
+			//Get Project ID to convert to a name
+			$perID = $input_fields["PerID"]->input;
+			$perID = str_replace("</div>", "", $perID);
+			$perID = str_replace('<div id="field-PerID" class="readonly_label">', "", $perID);
+			//Echo out HTML AJAX for name conversion
+
+			$ajaxHTML = '<script type="text/javascript">
+			$(document).ready(function() {
+				$.ajax({
+					url: "'. base_url() .'user/people/index/getPerName/' . $perID .'",
+					type: "POST",
+					dataType: "json",
+					success: function(data) {
+						$("div#field-PerID.readonly_label").text(data.PerName);
+					}
+
+				});
+			});
+			</script>';
+
+			echo $ajaxHTML;
+
+		}  ?>
+			
 			<div class='form-field-box <?php echo $even_odd?>' id="<?php echo $field->field_name; ?>_field_box">
 				<div class='form-display-as-box' id="<?php echo $field->field_name; ?>_display_as_box">
 					<?php echo $input_fields[$field->field_name]->display_as?><?php echo ($input_fields[$field->field_name]->required)? "<span class='required'>*</span> " : ""?> :

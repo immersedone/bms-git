@@ -102,4 +102,10 @@
 		if($limit) $query .= $this->limit_str;
 		$this->query_str = $query;
 	}
+
+    function return_query($query_string) {
+        $query=$this->db->query($query_string);
+        $results_array=$query->result();
+        return $results_array;
+    }
 }

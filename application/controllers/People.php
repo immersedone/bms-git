@@ -64,4 +64,15 @@ class People extends CI_Controller {
 		$this->render($output);
 	}
 
+	public function getPerName($id) {
+
+		$crud = new grocery_CRUD();
+		$crud->set_model('Project_GC');
+		$res = $crud->basic_model->return_query("SELECT CONCAT(FirstName, ' ', MiddleName, ' ', LastName) as PerName FROM Person WHERE PerID='$id' LIMIT 1");
+
+		$resp = array();
+		$resp["PerName"] = $res[0]->PerName;
+		echo json_encode($resp);
+	}
+
 }

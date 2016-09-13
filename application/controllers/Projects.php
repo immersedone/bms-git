@@ -358,4 +358,15 @@ class Projects extends CI_Controller {
 
 		return $post_array;
 	}
+
+	public function getProjName($id) {
+
+		$crud = new grocery_CRUD();
+		$crud->set_model('Project_GC');
+		$res = $crud->basic_model->return_query("SELECT Name FROM Project WHERE ProjID='$id' LIMIT 1");
+
+		$resp = array();
+		$resp["ProjName"] = $res[0]->Name;
+		echo json_encode($resp);
+	}
 }

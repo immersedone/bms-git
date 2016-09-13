@@ -72,6 +72,7 @@ $route['user/people/index/print'] = 'people/all_people';
 $route['user/people/index/ajax_list'] = 'people/all_people';
 $route['user/people/index/ajax_list_info'] = 'people/all_people';
 $route['user/people/index/export'] = 'people/all_people';
+$route['user/people/index/getPerName/(:num)'] = 'people/getPerName/$1';
 
 //Routes for Volunteer Page
 $route['user/volunteer'] = 'volunteer';
@@ -156,6 +157,7 @@ $route['user/projects/index/ajax_list'] = 'projects/projects';
 $route['user/projects/index/ajax_list_info'] = 'projects/projects';
 $route['user/projects/index/export'] = 'projects/projects';
 $route['user/projects/index/addProjID'] = 'projects/addProjID';
+$route['user/projects/index/getProjName/(:num)'] = 'projects/getProjName/$1';
 
 //Routes for Milestones Page
 $route['user/milestones'] = 'milestones';
