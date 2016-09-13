@@ -41,7 +41,7 @@
 			//Echo out HTML AJAX for name conversion
 
 			$ajaxHTML = '<script type="text/javascript">
-			$(document).ready(function() {
+			$(function() {
 				$.ajax({
 					url: "'. base_url() .'user/projects/index/getProjName/' . $projID .'",
 					type: "POST",
@@ -64,7 +64,7 @@
 			//Echo out HTML AJAX for name conversion
 
 			$ajaxHTML = '<script type="text/javascript">
-			$(document).ready(function() {
+			$(function() {
 				$.ajax({
 					url: "'. base_url() .'user/people/index/getPerName/' . $perID .'",
 					type: "POST",
@@ -87,7 +87,7 @@
 			//Echo out HTML AJAX for name conversion
 
 			$ajaxHTML = '<script type="text/javascript">
-			$(document).ready(function() {
+			$(function() {
 				$.ajax({
 					url: "'. base_url() .'user/people/index/getPerName/' . $perID .'",
 					type: "POST",
@@ -110,7 +110,7 @@
 			//Echo out HTML AJAX for name conversion
 
 			$ajaxHTML = '<script type="text/javascript">
-			$(document).ready(function() {
+			$(function() {
 				$.ajax({
 					url: "'. base_url() .'user/people/index/getPerName/' . $perID .'",
 					type: "POST",
@@ -133,7 +133,7 @@
 			//Echo out HTML AJAX for name conversion
 
 			$ajaxHTML = '<script type="text/javascript">
-			$(document).ready(function() {
+			$(function() {
 				$.ajax({
 					url: "'. base_url() .'user/funding/index/getFBName/' . $fbID .'",
 					type: "POST",
