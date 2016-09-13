@@ -30,13 +30,15 @@ class Reimbursements extends CI_Controller {
 		LEFT OUTER JOIN Person P on R.PerID=P.PerID");
 		$crud->set_table('Reimbursement');
 		$crud->set_subject('Reimbursement');
+		$crud->set_read_fields("Reason", "ReimbDate", "Type", "ApprovedBy", "PerID", "IsPaid");
 		$crud->columns('FullName','ReimbDate', 'Reason', 'ApprovedBy', 'IsPaid'); //'Type', removed due to lack of implementation
 		$crud->add_fields('FullName', 'ReimbDate', 'Reason', 'ApprovedBy', 'IsPaid');
-		$crud->edit_fields('FullName', 'ReimbDate', 'Reason', 'ApprovedBy', 'IsPaid');
+		$crud->edit_fields('PerID', 'ReimbDate', 'Reason', 'ApprovedBy', 'IsPaid');
 		$crud->display_as('ReimbDate', 'Date');
 		$crud->display_as('ApprovedBy', 'Approved By');
 		$crud->display_as('FullName', 'Reimbursement For');
 		$crud->display_as('IsPaid', 'Is Paid');
+		$crud->display_as('PerID', 'Spent By');
 
 
 		//Call Model to get the User's Full Names
@@ -52,6 +54,7 @@ class Reimbursements extends CI_Controller {
 		//to add to the relational table
 		$crud->field_type("ApprovedBy", "dropdown", $usrArr);
 		$crud->field_type("FullName", "dropdown", $usrArr);
+		$crud->field_type("PerID", "dropdown", $usrArr);
 		
 		$crud->callback_before_insert(array($this,'reimbursement_add'));
 		
