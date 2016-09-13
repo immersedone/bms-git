@@ -31,11 +31,15 @@ class Expenditures extends CI_Controller {
 		$crud->basic_model->set_query_str('SELECT Proj.Name, CONCAT(Per.FirstName, " ", Per.MiddleName, " ", Per.LastName) as FullName, Exp.* from `Expenditure` Exp
 		LEFT OUTER JOIN `Project` Proj ON Proj.ProjID=Exp.ProjID
 		LEFT OUTER JOIN `Person` Per ON Per.PerID=Exp.SpentBy');
+		$crud->set_read_fields('ProjID', 'ExpName', 'Reason', 'Amount', 'ApprovedBy', 'SpentBy', 'Type');
+		$crud->edit_fields('ProjID', 'ExpName', 'Reason', 'Amount', 'ApprovedBy', 'SpentBy', 'Type');
 		$crud->columns('Name', 'ExpName', 'Reason', 'Amount', 'ApprovedBy', 'FullName'); // 'Type' removed due to lack of implementation - 'ApprovedBy' Removed for clarity
 		$crud->add_fields('Name', 'ExpName', 'Reason', 'Amount', 'ApprovedBy', 'FullName');
 		$crud->display_as('ExpName', 'Expenditure Name');
+		$crud->display_as('ProjID', 'Project Name');
 		$crud->display_as('ApprovedBy', 'Approved By'); //Removing in favor of who spent, rather than who authorized
 		$crud->display_as('FullName', 'Spent By');
+		$crud->display_as('SpentBy', 'Spent By');
 		$crud->display_as('Name', 'Project Name');
 
 		$projects = $crud->basic_model->return_query("SELECT ProjID, Name FROM Project");
@@ -59,7 +63,9 @@ class Expenditures extends CI_Controller {
 		//Change the field type to a dropdown with values
 		//to add to the relational table
 		$crud->field_type("ApprovedBy", "dropdown", $usrArr);
+		$crud->field_type("SpentBy", "dropdown", $usrArr);
 		$crud->field_type("FullName", "dropdown", $usrArr);
+		$crud->field_type("ProjID", "dropdown", $prjArr);
 		$crud->callback_before_insert(array($this,'expenditure_add'));
 		
 		
