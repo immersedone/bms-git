@@ -131,6 +131,7 @@ $route['user/projects/index/projread/(:num)'] = 'projects/projread/$1';
 $route['user/projects/index/projread/1/add/(:num)'] = 'milestones/mileproj/$1';
 $route['user/projects/index/projread/1/insert'] = 'milestones/mile_insert';
 $route['user/projects/index/projread/1/insert_validation'] = 'milestones/milestones';
+$route['user/projects/index/projread/1/ajax_list_info'] = 'milestones/milestones';
 
 $route['user/projects/index/projread/2/add/(:num)'] = 'expenditures/expendproj/$1';
 $route['user/projects/index/projread/2/insert'] = 'expenditures/exp_insert';
@@ -148,11 +149,13 @@ $route['user/projects/index/projread/5/add/(:num)'] = 'employee/empproj/$1';
 $route['user/projects/index/projread/5/insert'] = 'employee/pp_insert';
 $route['user/projects/index/projread/5/insert_validation'] = 'employee/employee';
 //$route['user/projects/index/projread'] = 'projects/projread';
+$route['user/projects/index/read/(:num)'] = 'projects/projects/$1';
 $route['user/projects/index/delete/(:num)'] = 'projects/projects/$1';
 $route['user/projects/index/print'] = 'projects/projects';
 $route['user/projects/index/ajax_list'] = 'projects/projects';
 $route['user/projects/index/ajax_list_info'] = 'projects/projects';
 $route['user/projects/index/export'] = 'projects/projects';
+$route['user/projects/index/addProjID'] = 'projects/addProjID';
 
 //Routes for Milestones Page
 $route['user/milestones'] = 'milestones';

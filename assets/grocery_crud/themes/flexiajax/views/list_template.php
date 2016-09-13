@@ -26,6 +26,31 @@ switch($subject) {
         break;
 }
 
+$fullURL = explode('/', $_SERVER[REQUEST_URI]);
+if(end($fullURL) === "") {
+    array_pop($fullURL);
+} 
+
+if($fullURL[0] === "") {
+    array_shift($fullURL);
+}
+if(strtolower($fullURL[0]) === "user" && strtolower($fullURL[1]) === "projects" && strtolower($fullURL[2]) === "index" && strtolower($fullURL[3]) === "projread" && strtolower($fullURL[4]) === "list") {
+    $page = "PROJECT_VIEW";
+}
+
+if($page === "PROJECT_VIEW" && $subject === "Milestone") {
+    $ajax_url = base_url() . 'user/milestones/index/ajax_list';
+} elseif($page === "PROJECT_VIEW" && $subject === "Expenditure") {
+    $ajax_url = base_url() . 'user/expenditures/index/ajax_list';
+} elseif($page === "PROJECT_VIEW" && $subject === "Funding") {
+    $ajax_url = base_url() . 'user/funding/index/ajax_list';
+} elseif($page === "PROJECT_VIEW" && $subject === "Volunteer") {
+    $ajax_url = base_url() . 'user/volunteer/index/ajax_list';
+} elseif($page === "PROJECT_VIEW" && $subject === "Employee") {
+    $ajax_url = base_url() . 'user/employee/index/ajax_list';
+} else {
+    $ajax_url = $ajax_list_info_url . '/' . $unic_id;
+}
 
 ?>
 <h4 class="projTitle"><?php echo $subject?></h4>
@@ -44,7 +69,7 @@ switch($subject) {
     subjects[unic_name] = '<?php echo $subject?>';
     unic_ids[unic_name] = '<?php echo $unic_id?>';
 
-    ajax_list_info_urls[unic_name] = '<?php echo $ajax_list_info_url?>/<?php echo $unic_id ?>';
+    ajax_list_info_urls[unic_name] = '<?php echo $ajax_url; ?>';  
 
     uniques_hash[unic_name] = '<?php echo $unique_hash; ?>';
 
@@ -85,7 +110,7 @@ switch($subject) {
         <div class='ajax_list'>
             <?php echo $list_view?>
         </div>
-        <?php echo form_open( $ajax_list_url.'/'.$unic_id, 'method="post" class="filtering_form" autocomplete = "off"'); ?>
+        <?php echo form_open( $ajax_url, 'method="post" class="filtering_form" autocomplete = "off"'); ?>
         <div class="sDiv quickSearchBox">
             <div class="sDiv2">
                 <?php echo $this->l('list_search');?>: <input type="text" class="qsbsearch_fieldox search_text" name="search_text" size="30">
