@@ -46,6 +46,8 @@ class Milestones extends CI_Controller {
 		$crud->callback_column('MSComplete', array($this, 'check_complete'));
 		//$crud->callback_column('MSComplete', array($this, 'field_width'));
 
+		$crud->set_field_upload('FilePath', 'assets/uploads/files/');
+
 		$projects = $crud->basic_model->return_query("SELECT ProjID, Name FROM Project");
 
 		$prjArr = array();
@@ -97,7 +99,7 @@ class Milestones extends CI_Controller {
 		$crud->field_type("Comment", 'text');
 		$crud->field_type("RptType", "enum", $rptArr);
 
-		$crud->set_field_upload('FilePath', 'assets/uploads/files/milestones');
+		$crud->set_field_upload('FilePath', 'assets/uploads/files/');
 		
 		$crud->field_type("ProjID", "dropdown", $prjArr);
 		
