@@ -174,6 +174,7 @@ $route['user/milestones/index/print'] = 'milestones/milestones';
 $route['user/milestones/index/ajax_list'] = 'milestones/milestones';
 $route['user/milestones/index/ajax_list_info'] = 'milestones/milestones';
 $route['user/milestones/index/export'] = 'milestones/milestones';
+$route['user/milestones/index/upload_file/FilePath'] = 'milestones/milestones';
 
 //Routes for expenditures Page
 $route['user/expenditures'] = 'expenditures';
