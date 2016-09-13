@@ -32,12 +32,16 @@ class Funding extends CI_Controller {
 		LEFT OUTER JOIN `FundingBody` FB on FB.FundBodyID=Fund.FundBodyID
 		LEFT OUTER JOIN `Project` Proj on Proj.ProjID=Fund.ProjID
 		LEFT OUTER JOIN `Person` Per on Per.PerID=Fund.ApprovedBy', ' GROUP BY FundID');
+		$crud->set_read_fields('ProjID', 'FundBodyID', 'Amount', 'PaymentType', 'ApprovedBy', 'ApprovedOn');
 		$crud->columns('ProjName', 'FBName', 'Amount', 'PaymentType', 'FullName', 'ApprovedOn');
 		$crud->display_as('ProjName', 'Project');
 		$crud->display_as('FBName', 'Funding Body');
 		$crud->display_as('PaymentType', 'Payment Type');
 		$crud->display_as('FullName', 'Approved By');
+		$crud->display_as('ApprovedBy', 'Approved By');
 		$crud->display_as('ApprovedOn', 'Approved On');
+		$crud->display_as('ProjID', 'Project Name');
+		$crud->display_as('FundBodyID', 'Funding Body');
 		
 		//Change the Insert Funding fields
 		$crud->add_fields("ProjName", "FBName", "Amount", "PaymentType", "FullName", "ApprovedOn");
@@ -203,6 +207,18 @@ class Funding extends CI_Controller {
 		$crud->set_model('Funding_GC');
 		$resp = $crud->basic_model->insert_fund($projectID, $fundbodyid, $amount, $PaymentType, $Approvedby, $ApprovedOn);
 		echo $resp;
+	}
+
+	public function getFBName($id) {
+
+		$crud = new grocery_CRUD();
+		$crud->set_model('Funding_GC');
+		$res = $crud->basic_model->return_query("SELECT BodyName FROM FundingBody WHERE FundBodyID='$id' LIMIT 1");
+
+
+		$resp = array();
+		$resp["FBName"] = $res[0]->BodyName;
+		echo json_encode($resp);
 	}
 
 }

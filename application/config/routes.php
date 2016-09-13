@@ -256,6 +256,7 @@ $route['user/funding/index/print'] = 'funding/funding';
 $route['user/funding/index/ajax_list'] = 'funding/funding';
 $route['user/funding/index/ajax_list_info'] = 'funding/funding';
 $route['user/funding/index/export'] = 'funding/funding';
+$route['user/funding/index/getFBName/(:num)'] = 'funding/getFBName/$1';
 
 //Routes for reports Page
 $route['user/reports'] = 'reports';
