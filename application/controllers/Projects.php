@@ -93,15 +93,16 @@ class Projects extends CI_Controller {
 		$GCM->grids[2]->basic_model->set_query_str('SELECT P.Name as ProjName, M.* FROM Milestone_new M
 		LEFT OUTER JOIN Project P ON M.ProjID=P.ProjID WHERE M.ProjID='.$id);
 			
-		$GCM->grids[2]->columns('ShortDesc', 'DueDate', 'RptType', 'Amount', 'Comment');
+		$GCM->grids[2]->columns('ShortDesc', 'DueDate', 'RptType', 'Amount', 'Comment', 'FilePath');
 		$GCM->grids[2]->display_as('ProjID', 'Project Name');
 		$GCM->grids[2]->display_as('ProjName', 'Project Name');
 		$GCM->grids[2]->display_as('ShortDesc', 'Description');
 		$GCM->grids[2]->display_as('DueDate', 'Due Date');
 		$GCM->grids[2]->display_as('RptType', 'Type');
+		$GCM->grids[2]->display_as('File Path', 'Files Attached');
 		$GCM->grids[2]->display_as('MSComplete', 'Complete');
 		$GCM->grids[2]->field_type('ProjIDhidden', 'invisible');
-		$GCM->grids[2]->add_fields('ShortDesc', 'DueDate', 'RptType', 'Amount', 'Comment', 'ProjID');
+		$GCM->grids[2]->add_fields('ShortDesc', 'DueDate', 'RptType', 'Amount', 'Comment', 'FilePath', 'ProjID');
 		$GCM->grids[2]->callback_before_insert(array($this, 'addProjID'));
 		
 
