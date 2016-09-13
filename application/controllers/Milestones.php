@@ -30,13 +30,13 @@ class Milestones extends CI_Controller {
 		$crud->set_subject('Milestone_new');
 		$crud->basic_model->set_query_str('SELECT P.Name as ProjName, M.* from `Milestone_new` M
 		LEFT OUTER JOIN `Project` P on M.ProjID=P.ProjID');
-			
-		$crud->columns('ProjName', 'ShortDesc', 'DueDate', 'RptType', 'Amount');
+		$crud->columns('ProjName', 'ShortDesc', 'DueDate', 'RptType', 'Amount', 'Comment', 'FilePath');
 		$crud->display_as('ProjID', 'Project Name');
 		$crud->display_as('ProjName', 'Project Name');
 		$crud->display_as('ShortDesc', 'Description');
 		$crud->display_as('DueDate', 'Due Date');
 		$crud->display_as('RptType', 'Type');
+		$crud->display_as('FilePath', 'File Attached');
 		$crud->display_as('MSComplete', 'Complete');
 		$crud->add_fields('ProjID', 'ShortDesc', 'DueDate', 'RptType', 'Amount', 'Comment');
 		$crud->callback_column('MSComplete', array($this, 'check_complete'));
@@ -86,11 +86,12 @@ class Milestones extends CI_Controller {
 			$prjArr += [$prj->ProjID => $prj->Name];
 		}
 
-		$rptArr = array("Report", "Payment", "Both", "Final");
+		$rptArr = array("Report", "Payment", "Report & Payment", "Final");
 				
 		$crud->field_type("DueDate", 'datetime');
 		$crud->field_type("Comment", 'text');
 		$crud->field_type("RptType", "enum", $rptArr);
+		$crud->set_field_upload('FilePath', 'assets/uploads/files/milestones');
 		
 		
 		$output = $crud->render();

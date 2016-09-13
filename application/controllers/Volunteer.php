@@ -33,7 +33,7 @@ class Volunteer extends CI_Controller {
 		LEFT OUTER JOIN `Project` Proj ON `PersonProject`.ProjID=Proj.ProjID 
 		LEFT OUTER JOIN `Suburb` Sub ON Sub.SuburbID=Per.SuburbID 
 		WHERE `PersonProject`.Role="VOLUNTEER"', ' GROUP BY FullName, Name, ProjRole');
-		$crud->columns("Name", "FullName", "Address", "Postcode", "SubName", "WorkEmail", "PersonalEmail", "Mobile", "HomePhone");
+		$crud->columns("FullName", "Address", "Postcode", "SubName", "WorkEmail", "PersonalEmail", "Mobile", "HomePhone");
 		$crud->display_as("Name", "Project Name");
 		$crud->display_as("ProjRole", "Project Role");
 		$crud->display_as("FullName", "Full Name");
