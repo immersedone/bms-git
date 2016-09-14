@@ -99,7 +99,7 @@ class Projects extends CI_Controller {
 		$GCM->grids[2]->display_as('ShortDesc', 'Description');
 		$GCM->grids[2]->display_as('DueDate', 'Due Date');
 		$GCM->grids[2]->display_as('RptType', 'Type');
-		$GCM->grids[2]->display_as('File Path', 'Files Attached');
+		$GCM->grids[2]->display_as('FilePath', 'Files Attached');
 		$GCM->grids[2]->display_as('MSComplete', 'Complete');
 		$GCM->grids[2]->field_type('ProjIDhidden', 'invisible');
 		$GCM->grids[2]->add_fields('ShortDesc', 'DueDate', 'RptType', 'Amount', 'Comment', 'FilePath', 'ProjID');
