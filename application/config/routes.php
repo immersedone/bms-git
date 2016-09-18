@@ -178,6 +178,23 @@ $route['user/milestones/index/ajax_list_info'] = 'milestones/milestones';
 $route['user/milestones/index/export'] = 'milestones/milestones';
 $route['user/milestones/index/upload_file/FilePath'] = 'milestones/milestones';
 
+//Routes for Upcoming Milestones Page
+$route['user/duemilestones'] = 'duemilestones';
+$route['user/duemilestones/index'] = 'duemilestones';
+$route['user/duemilestones/index/insert'] = 'duemilestones/duemilestones';
+$route['user/duemilestones/index/insert_validation'] = 'duemilestones/duemilestones';
+$route['user/duemilestones/index/edit/(:num)'] = 'duemilestones/duemilestones/$1';
+$route['user/duemilestones/index/update/(:num)'] = 'duemilestones/duemilestones/$1';
+$route['user/duemilestones/index/update_validation/(:num)'] = 'duemilestones/duemilestones/$1';
+$route['user/duemilestones/index/success/(:num)'] = 'duemilestones/duemilestones/$1';
+$route['user/duemilestones/index/read/(:num)'] = 'duemilestones/duemilestones/$1';
+$route['user/duemilestones/index/delete/(:num)'] = 'duemilestones/duemilestones/$1';
+$route['user/duemilestones/index/print'] = 'duemilestones/duemilestones';
+$route['user/duemilestones/index/ajax_list'] = 'duemilestones/duemilestones';
+$route['user/duemilestones/index/ajax_list_info'] = 'duemilestones/duemilestones';
+$route['user/duemilestones/index/export'] = 'duemilestones/duemilestones';
+$route['user/duemilestones/index/upload_file/FilePath'] = 'duemilestones/duemilestones';
+
 //Routes for expenditures Page
 $route['user/expenditures'] = 'expenditures';
 $route['user/expenditures/index'] = 'expenditures';

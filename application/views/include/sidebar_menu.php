@@ -16,6 +16,7 @@
                     <ul class="nav child_menu">
                       <li><a href="/user/projects">View All Projects</a></li>
                       <li><a href="/user/milestones">Milestones</a></li>
+                      <li><a href="/user/duemilestones">Upcoming Milestones</a></li>
                     </ul>
                   </li>
 				  <li><a><i class="fa fa-money"></i> Finance<span class="fa fa-chevron-down"></span></a>
