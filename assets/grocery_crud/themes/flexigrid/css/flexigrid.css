@@ -360,10 +360,15 @@ div.form-div input.datetime-input
 	float:left;
 	width:200px;
 	padding-top:7px;
+	margin-right: 15px;
 }
 .form-input-box
 {
 	float:left;
+}
+
+.form-input-box div.radio {
+	display:inline-block;
 }
 .flexigrid div.form-button-box {
 	float:left;
