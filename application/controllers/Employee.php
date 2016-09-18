@@ -22,68 +22,22 @@ class Employee extends CI_Controller {
 		$this->load->view('employee', $output);
 	}
 
-	//Deprecated, converted over to Custom Model
-	/*public function employee() {
-
-		$crud = new grocery_CRUD();
-		$crud->set_theme('flexigrid');
-		$crud->set_table('Person');
-		$crud->set_subject('Employee');
-		$crud->where("Role", "EMPLOYEE");
-		$crud->columns('Role', 'FirstName', 'LastName', 'Address', 'SuburbID', 'WorkEmail', 'PersonalEmail', 'Mobile', 'HomePhone');
-		$crud->add_fields('FirstName', 'MiddleName', 'LastName', 'Address', 'SuburbID', 'WorkEmail', 'PersonalEmail', 'Mobile', 'HomePhone', 'Status', 'DateStarted', 'WWC', 'WWCFiled', 'Username');
-		$crud->edit_fields('FirstName', 'MiddleName', 'LastName', 'Address', 'SuburbID', 'WorkEmail', 'PersonalEmail', 'Mobile', 'HomePhone', 'Status', 'DateStarted', 'DateFinished', 'WWC', 'WWCFiled', 'Username');
-		$crud->display_as('FirstName', 'First Name');
-		$crud->display_as('MiddleName', 'Middle Name');
-		$crud->display_as('LastName', 'Last Name');
-		$crud->display_as('WorkEmail', 'Work Email');
-		$crud->display_as('PersonalEmail', 'Personal Email');
-		$crud->display_as('HomePhone', 'Home Phone');
-		$crud->display_as('DateStarted', 'Date Started');
-		$crud->unset_add();
-
-		$output = $crud->render();
-
-		$this->render($output);
-	}*/
-
 
 	public function employee() {
 
 		$crud = new grocery_CRUD();
 		$crud->set_model('Employee_GC');
-		$crud->set_table('Person');
+		$crud->set_table('Employee');
 		$crud->set_subject('Employee');
-		$crud->basic_model->set_query_str(
-		'SELECT Proj.Name, Proj.ProjID, `PersonProject`.Role as ProjRole, CONCAT(FirstName, " ", MiddleName, " ", LastName) as FullName, Sub.SuburbName as SubName, 
-		Sub.Postcode as Postcode, Per.* FROM `Person` Per 
-		LEFT OUTER JOIN `PersonProject` ON Per.PerID=`PersonProject`.PerID 
-		LEFT OUTER JOIN `Project` Proj ON `PersonProject`.ProjID=Proj.ProjID 
-		LEFT OUTER JOIN `Suburb` Sub ON Sub.SuburbID=Per.SuburbID 
-		WHERE `PersonProject`.Role="Employee"', ' GROUP BY FullName, Name, ProjRole');
-		$crud->columns("FullName", "Address", "Postcode", "SubName", "WorkEmail", "PersonalEmail", "Mobile", "HomePhone");
-		$crud->display_as("Name", "Project Name");
-		$crud->display_as("ProjRole", "Project Role");
+		$crud->basic_model->set_query_str('SELECT CONCAT(Per.FirstName, " ", Per.MiddleName, " ", Per.LastName) as FullName, Per.WorkEmail as WEmail, Per.Mobile, Opt1.data as Pos1, Opt2.data as Pos2, Emp.* from Employee Emp
+		LEFT OUTER JOIN Person Per ON Per.PerID = Emp.PerID
+		LEFT OUTER JOIN OptionType Opt1 ON Opt1.OptID = Emp.EmpPosition
+		LEFT OUTER JOIN OptionType Opt2 ON Opt2.OptID = Emp.EmpSecPosition');
+		$crud->columns('FullName', 'WEmail', 'Mobile', 'Pos1','Pos2');
 		$crud->display_as("FullName", "Full Name");
-		$crud->display_as("SubName", "Suburb");
-		
-		//Change the Add Volunteer Fields
-		$crud->add_fields("FullName", "Name", "Role");
-
-		
-		//Call Model to get the Project Names
-		$projects = $crud->basic_model->return_query("SELECT ProjID, Name FROM Project");
-		
-		//Convert Return Object into Associative Array
-		$prjArr = array();
-		foreach($projects as $prj) {
-			$prjArr += [$prj->ProjID => $prj->Name];
-		}
-
-		//Change the field type to a dropdown with values
-		//to add to the relational table
-		$crud->field_type("Name", "dropdown", $prjArr);
-		
+		$crud->display_as("Pos1", "Position");
+		$crud->display_as("Pos2", "Secondary Position");
+		$crud->fields('FullName', 'Pos1', 'Pos2');
 		//Call Model to get the User's Full Names
 		$users = $crud->basic_model->return_query("SELECT PerID, CONCAT(FirstName, ' ', MiddleName, ' ', LastName) as FullName FROM Person");
 
@@ -97,15 +51,17 @@ class Employee extends CI_Controller {
 		//to add to the relational table
 		$crud->field_type("FullName", "dropdown", $usrArr);
 
-		//Change the default method to fire when adding
-		//a new person to a project
-		$crud->callback_before_insert(array($this,'employee_add'));
-
-		$crud->unset_edit();
-		$crud->unset_delete();
-		$crud->add_action('Delete', '', '', 'delete-icon', array($this, 'employee_delete'));
-		//$crud->callback_delete(array($this, 'volunteer_delete'));
-
+		$positions = $crud->basic_model->return_query("SELECT OptID, data FROM OptionType
+		where type = 'Position'");
+		$posArr = array();
+		foreach($positions as $pos) {
+			$posArr += [$pos->OptID => $pos->data];
+		}
+		$crud->field_type("Pos1", "dropdown", $posArr);
+		$crud->field_type("Pos2", "dropdown", $posArr);
+		
+		
+		
 		$output = $crud->render();
 
 		$this->render($output);
@@ -114,8 +70,8 @@ class Employee extends CI_Controller {
 	public function empproj($id) {
 
 		$crud = new grocery_CRUD();
-		$crud->set_model('Employee_GC');
-		$crud->set_table('Person');
+		$crud->set_model('Extended_generic_model');
+		$crud->set_table('Employee');
 		$crud->set_subject('Employee');
 		$crud->basic_model->set_query_str(
 		'SELECT Proj.Name, Proj.ProjID, `PersonProject`.Role as ProjRole, CONCAT(FirstName, " ", MiddleName, " ", LastName) as FullName, Sub.SuburbName as SubName, 
@@ -160,28 +116,11 @@ class Employee extends CI_Controller {
 		//to add to the relational table
 		$crud->field_type("FullName", "dropdown", $usrArr);
 
-		//Change the default method to fire when adding
-		//a new person to a project
-		$crud->callback_before_insert(array($this,'employee_add'));
-
-		$crud->unset_edit();
-		$crud->unset_delete();
-		$crud->add_action('Delete', '', '', 'delete-icon', array($this, 'employee_delete'));
-		//$crud->callback_delete(array($this, 'volunteer_delete'));
-
 		$output = $crud->render();
 
 		$this->render($output);
 	}
 
-	function employee_delete($primarykey, $row) {
-		return base_url().'user/employee/index/pp_delete/'.$primarykey.'/'.$row->ProjID;
-	}
-
-	function employee_add($post_array) {
-		
-		$this->pp_insert($post_array);
-	}
 
 	public function pp_delete($uID, $pID) {
 
