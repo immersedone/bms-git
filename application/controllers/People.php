@@ -28,20 +28,33 @@ class People extends CI_Controller {
 		$crud->set_model('Extended_generic_model');
 		$crud->set_table('Person');
 		$crud->set_subject('Person');
-		$crud->basic_model->set_query_str('SELECT Sub.SuburbName as SubName, Sub.Postcode as Postcode, Per.* from `Person` Per
-		LEFT OUTER JOIN `Suburb` Sub ON Per.SuburbID=Sub.SuburbID', " GROUP BY FirstName, LastName, Address");
-		$crud->columns('FirstName', 'LastName', 'Address', 'Postcode', 'SubName', 'WorkEmail', 'PersonalEmail', 'Mobile', 'HomePhone');
-		$crud->add_fields('FirstName', 'MiddleName', 'LastName', 'Address', 'SuburbID', 'WorkEmail', 'PersonalEmail', 'Mobile', 'HomePhone', 'Status', 'DateStarted', 'WWC', 'WWCFiled', 'Username', 'Role');
-		$crud->edit_fields('FirstName', 'MiddleName', 'LastName', 'Address', 'SuburbID', 'WorkEmail', 'PersonalEmail', 'Mobile', 'HomePhone', 'Status', 'DateStarted', 'DateFinished', 'WWC', 'WWCFiled', 'Username', 'Role');	
+		$crud->basic_model->set_query_str('SELECT Sub.SuburbName as SubName, Sub.Postcode as Postcode, Opt.Data as OptPos, Per.* from `Person` Per
+		LEFT OUTER JOIN `Suburb` Sub ON Per.SuburbID=Sub.SuburbID
+		LEFT OUTER JOIN `OptionType` Opt ON Opt.OptID = Per.Position');
+		$crud->columns('FirstName', 'LastName', 'OptPos', 'Address', 'Postcode', 'SubName', 'WorkEmail', 'PersonalEmail', 'Mobile', 'HomePhone');
+		$crud->add_fields('FirstName', 'MiddleName', 'LastName', 'Position', 'Address', 'SuburbID', 'WorkEmail', 'PersonalEmail', 'Mobile', 'HomePhone', 'Status', 'DateStarted', 'WWC', 'WWCFiled', 'LanguagesSpoken', 'EmergContName', 'EmergContMob', 'EmergContHPhone', 'EmergContWPhone', 'EmergContRelToPer');
+		$crud->edit_fields('FirstName', 'MiddleName', 'LastName', 'Position', 'Address', 'SuburbID', 'WorkEmail', 'PersonalEmail', 'Mobile', 'HomePhone', 'Status', 'DateStarted', 'DateFinished', 'WWC', 'WWCFiled', 'LanguagesSpoken', 'EmergContName', 'EmergContMob', 'EmergContHPhone', 'EmergContWPhone', 'EmergContRelToPer');	
 		$crud->display_as('FirstName', 'First Name');
 		$crud->display_as('MiddleName', 'Middle Name');
 		$crud->display_as('LastName', 'Last Name');
+		$crud->display_as('OptPos', 'Position');
 		$crud->display_as('SuburbID', 'Suburb');
 		$crud->display_as('WorkEmail', 'Work Email');
 		$crud->display_as('PersonalEmail', 'Personal Email');
 		$crud->display_as('HomePhone', 'Home Phone');
 		$crud->display_as('DateStarted', 'Date Started');
 		$crud->display_as('SubName', 'Suburb');
+		$crud->display_as('LanguagesSpoken', 'Languages Spoken');
+		$crud->display_as('EmergContName', 'Emergency Contact Name');
+		$crud->display_as('EmergContMob', 'Emergency Contact Mobile');
+		$crud->display_as('EmergContHPhone', 'Emergency Contact Home Phone');
+		$crud->display_as('EmergContWPhone', 'Emergency Contact Work Phone');
+		$crud->display_as('EmergContRelToPer', 'Emergency Contact Relation');
+		$crud->field_type('Username', 'hidden');
+		$crud->field_type('Password', 'hidden');
+		$crud->field_type('Hash', 'hidden');
+		$crud->field_type('Timeout', 'hidden');
+		
 	
 		//Call Model to get the Project Names
 		$suburbs = $crud->basic_model->return_query("SELECT SuburbID, CONCAT(Postcode, ' - ', SuburbName) as FullSub FROM Suburb");
@@ -55,7 +68,19 @@ class People extends CI_Controller {
 		//Change the field type to a dropdown with values
 		//to add to the relational table
 		$crud->field_type("SuburbID", "dropdown", $subArr);
-				
+		
+		//Call Model to get the Project Names
+		$positions = $crud->basic_model->return_query("SELECT OptID, data FROM OptionType WHERE type = 'Position'");
+		
+		//Convert Return Object into Associative Array
+		$posArr = array();
+		foreach($positions as $pos) {
+			$posArr += [$pos->OptID => $pos->data];
+		}
+
+		//Change the field type to a dropdown with values
+		//to add to the relational table
+		$crud->field_type("Position", "dropdown", $posArr);				
 		
 		
 		
