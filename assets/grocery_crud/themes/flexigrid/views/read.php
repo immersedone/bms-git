@@ -148,6 +148,53 @@
 
 			echo $ajaxHTML;
 
+		}   elseif($field->field_name === "SuburbID") {
+			//Get Project ID to convert to a name
+			$fbID = $input_fields["SuburbID"]->input;
+			$fbID = str_replace("</div>", "", $fbID);
+			$fbID = str_replace('<div id="field-SuburbID" class="readonly_label">', "", $fbID);
+			//Echo out HTML AJAX for name conversion
+
+			$ajaxHTML = '<script type="text/javascript">
+			$(function() {
+				$.ajax({
+					url: "'. base_url() .'user/people/index/getSBName/' . $fbID .'",
+					type: "POST",
+					dataType: "json",
+					success: function(data) {
+						$("div#field-SuburbID.readonly_label").text(data.SBName);
+					}
+
+				});
+			});
+			</script>';
+
+			echo $ajaxHTML;
+
+		}   elseif($field->field_name === "LanguagesSpoken") {
+			//Get Project ID to convert to a name
+			$fbID = $input_fields["LanguagesSpoken"]->input;
+			$fbID = str_replace("</div>", "", $fbID);
+			$fbID = str_replace('<div id="field-LanguagesSpoken" class="readonly_label">', "", $fbID);
+			//Echo out HTML AJAX for name conversion
+
+			$ajaxHTML = '<script type="text/javascript">
+			$(function() {
+				$.ajax({
+					url: "'. base_url() .'user/people/index/getLangName/",
+					type: "POST",
+					data: {"languages": "' . $fbID .'"},
+					dataType: "json",
+					success: function(data) {
+						$("div#field-LanguagesSpoken.readonly_label").html(data.Languages);
+					}
+
+				});
+			});
+			</script>';
+
+			echo $ajaxHTML;
+
 		}  ?>
 			
 			<div class='form-field-box <?php echo $even_odd?>' id="<?php echo $field->field_name; ?>_field_box">

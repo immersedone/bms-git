@@ -823,6 +823,7 @@ div.flexigrid a:hover
 .readonly_label
 {
 	padding-top:7px;
+	padding-bottom:7px;
 }
 ul.chzn-choices li.search-field input
 {

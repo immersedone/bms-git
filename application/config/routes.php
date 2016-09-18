@@ -73,6 +73,8 @@ $route['user/people/index/ajax_list'] = 'people/all_people';
 $route['user/people/index/ajax_list_info'] = 'people/all_people';
 $route['user/people/index/export'] = 'people/all_people';
 $route['user/people/index/getPerName/(:num)'] = 'people/getPerName/$1';
+$route['user/people/index/getSBName/(:num)'] = 'people/getSBName/$1';
+$route['user/people/index/getLangName'] = 'people/getLangName';
 
 //Routes for Volunteer Page
 $route['user/volunteer'] = 'volunteer';

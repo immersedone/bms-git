@@ -41,7 +41,12 @@ class People extends CI_Controller {
 		$crud->display_as('PersonalEmail', 'Personal Email');
 		$crud->display_as('HomePhone', 'Home Phone');
 		$crud->display_as('DateStarted', 'Date Started');
+		$crud->display_as('DateFinished', 'Date Finished');
+		$crud->display_as('ContractSigned', 'Contract Signed');
 		$crud->display_as('SubName', 'Suburb');
+		$crud->display_as('WWC', 'Working With Children Check (WWC)');
+		$crud->display_as('WWCFiled', 'Working With Children Check (WWC) is Filed');
+		$crud->display_as('DateofBirth', 'Date of Birth');
 		$crud->display_as('LanguagesSpoken', 'Languages Spoken');
 		$crud->display_as('EmergContName', 'Emergency Contact Name');
 		$crud->display_as('EmergContMob', 'Emergency Contact Mobile');
@@ -52,6 +57,17 @@ class People extends CI_Controller {
 		$crud->field_type('Password', 'hidden');
 		$crud->field_type('Hash', 'hidden');
 		$crud->field_type('Timeout', 'hidden');
+
+
+		//Call model to get languages
+		$languages = $crud->basic_model->return_query("SELECT `LangID`, `LangName`, `LangISO_639_1` FROM Language");
+		$langArr = array();
+		foreach($languages as $lang) {
+			$langArr += [$lang->LangID => '(' . $lang->LangISO_639_1 . ') - ' . $lang->LangName];
+		}
+
+
+		$crud->field_type('LanguagesSpoken', 'multiselect', $langArr);
 		
 	
 		//Call Model to get the Project Names
@@ -80,6 +96,40 @@ class People extends CI_Controller {
 
 		$resp = array();
 		$resp["PerName"] = $res[0]->PerName;
+		echo json_encode($resp);
+	}
+
+	public function getSBName($id) {
+
+		$crud = new grocery_CRUD();
+		$crud->set_model('Project_GC');
+		$res = $crud->basic_model->return_query("SELECT CONCAT(SuburbName, ' - ', Postcode, ', ', SuburbState_Postal,'.') as SBName FROM Suburb WHERE SuburbID='$id' LIMIT 1");
+
+
+		$resp = array();
+		$resp["SBName"] = $res[0]->SBName;
+		echo json_encode($resp);
+	}
+
+	public function getLangName() {
+		$langArr = explode(',', $_POST['languages']);
+
+		$crud = new grocery_CRUD();
+		$crud->set_model('Project_GC');
+
+		$resp = array();
+		$resp["Languages"] = "";
+		for($i = 0; $i < count($langArr); $i++) {
+			$id = $langArr[$i];
+			$res = $crud->basic_model->return_query("SELECT CONCAT('(', `LangISO_639_1`, ') - ', `LangName`) as Lang FROM Language WHERE LangID='$id' LIMIT 1");
+
+			$count = $i + 1;
+
+			$resp["Languages"] .= $count . ". ";
+			$resp["Languages"] .= $res[0]->Lang;
+			$resp["Languages"] .= "<br/>";
+		}
+		
 		echo json_encode($resp);
 	}
 
