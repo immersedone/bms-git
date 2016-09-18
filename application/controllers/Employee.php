@@ -36,8 +36,109 @@ class Employee extends CI_Controller {
 		$crud->columns('FullName', 'WEmail', 'Mobile', 'Pos1','Pos2');
 		$crud->display_as("FullName", "Full Name");
 		$crud->display_as("Pos1", "Position");
+		$crud->display_as("Pos1", "Position");
+		$crud->display_as("EmpPosition", "Position");
+		$crud->display_as("EmpSecPosition", "Secondary Position");
+		$crud->display_as("PerID", "Name");
+		$crud->display_as("WorkMob", "Work Mobile");
+		$crud->display_as("WorkEmail", "Work Email");
+		$crud->display_as("EmpDate", "Employee Start Date");
+		$crud->display_as("ContStatus", "Contract Status");
+		$crud->display_as("ContStartDate", "Contract Start Date");
+		$crud->display_as("ContEndDate", "Contract End Date");
+		$crud->display_as("HrlyRate", "Hourly Rate");
+		$crud->display_as("SecHrlyRate", "Second Hourly Rate");
+		$crud->display_as("HrsPerFrtnt", "Hours Per Fortnight");
+		$crud->display_as("DaysWork", "Days Available");
+		$crud->display_as("NHACEDate", "Date Due for NHACE year Progression");
+		$crud->display_as("AnnualLeave", "Annual Leave Type");
+		$crud->display_as("PersonalLeave", "Personal Leave Type");
+		$crud->display_as("FundUSI", "Fund USI #");
+		$crud->display_as("MmbershpNo", "Membership No. #");
+		$crud->display_as("TerminationDate", "Termination Date");
+		$crud->display_as("NHACEClass", "NHACE Classification");
+		$crud->display_as("BGCSDepartment", "BGCS Department");
+
 		$crud->display_as("Pos2", "Secondary Position");
-		$crud->fields('FullName', 'Pos1', 'Pos2');
+		$crud->display_as("WEmail", "Work Email");
+
+		$crud->add_fields('FullName', 'Pos1', 'Pos2');
+		$crud->edit_fields('PerID', 'EmpPosition', 'EmpSecPosition', 'BGCSDepartment', 'Supervisor', 'WorkMob', 'WorkEmail', 'EmpDate', 'Contract', 'ContStatus', 'ContStartDate', 'ContEndDate', 'HrlyRate', 'SecHrlyRate', 'HrsPerFrtnt', 'DaysWork','NHACEClass', 'NHACEDate', 'AnnualLeave', 'PersonalLeave', 'FundUSI', 'MmbershpNo', 'TerminationDate');
+		$crud->set_read_fields('PerID', 'EmpPosition', 'EmpSecPosition', 'BGCSDepartment', 'Supervisor', 'WorkMob', 'WorkEmail', 'EmpDate', 'Contract', 'ContStatus', 'ContStartDate', 'ContEndDate', 'HrlyRate', 'SecHrlyRate', 'HrsPerFrtnt', 'DaysWork','NHACEClass', 'NHACEDate', 'AnnualLeave', 'PersonalLeave', 'FundUSI', 'MmbershpNo', 'TerminationDate');
+		
+
+		//Enumerated Values for Contract
+		$contract = $crud->basic_model->return_query("SHOW COLUMNS FROM Employee WHERE Field='Contract'");
+
+		preg_match("/^enum\(\'(.*)\'\)$/", $contract[0]->Type, $matches);
+		$contractArr = explode("','", $matches[1]);
+		$newContArr = array();
+		foreach($contractArr as $cont) {
+			if($cont==="FULL_TIME") {
+				$newContArr += [$cont => "Full Time"];
+			} else if($cont==="PART_TIME") {
+				$newContArr += [$cont => "Part Time"];
+			} else if($cont==="CASUAL") {
+				$newContArr += [$cont => "Casual"];
+			} else if($cont==="INDE_CONT") {
+				$newContArr += [$cont => "Independant Contractor"];
+			}
+		}
+
+		$crud->field_type('Contract', 'dropdown', $newContArr);
+
+		//Enumerated Values for Contract Status
+		$contractStat = $crud->basic_model->return_query("SHOW COLUMNS FROM Employee WHERE Field='ContStatus'");
+
+		preg_match("/^enum\(\'(.*)\'\)$/", $contractStat[0]->Type, $matches);
+		$contractStatArr = explode("','", $matches[1]);
+		$newContStatArr = array();
+		foreach($contractStatArr as $contStat) {
+			if($contStat==="PERMANENT") {
+				$newContStatArr += [$contStat => "Permanent"];
+			} else if($contStat==="FIXED_TERM") {
+				$newContStatArr += [$contStat => "Fixed Term"];
+			}
+		}
+
+		$crud->field_type('ContStatus', 'dropdown', $newContStatArr);
+
+		//Enumerated Values for Annual Leave
+		$annualLeave = $crud->basic_model->return_query("SHOW COLUMNS FROM Employee WHERE Field='AnnualLeave'");
+
+		preg_match("/^enum\(\'(.*)\'\)$/", $annualLeave[0]->Type, $matches);
+		$annualLeaveArr = explode("','", $matches[1]);
+		$newAnnualLeaveArr = array();
+		foreach($annualLeaveArr as $ALStat) {
+			if($ALStat==="AL_4") {
+				$newAnnualLeaveArr += [$ALStat => "Annual Leave - 4 Weeks"];
+			} else if($ALStat==="AL_5") {
+				$newAnnualLeaveArr += [$ALStat => "Annual Leave - 5 Weeks"];
+			} else if($ALStat==="AL_6") {
+				$newAnnualLeaveArr += [$ALStat => "Annual Leave - 6 Weeks"];
+			}
+		}
+
+		$crud->field_type('AnnualLeave', 'dropdown', $newAnnualLeaveArr);
+
+		//Enumerated Values for Personal Leave
+		$personalLeave = $crud->basic_model->return_query("SHOW COLUMNS FROM Employee WHERE Field='PersonalLeave'");
+
+		preg_match("/^enum\(\'(.*)\'\)$/", $personalLeave[0]->Type, $matches);
+		$personalLeaveArr = explode("','", $matches[1]);
+		$newPersonalLeaveArr = array();
+		foreach($personalLeaveArr as $PLStat) {
+			if($PLStat==="PL_1") {
+				$newPersonalLeaveArr += [$PLStat => "Personal Leave - Stage 1"];
+			} else if($PLStat==="PL_2") {
+				$newPersonalLeaveArr += [$PLStat => "Personal Leave - Stage 2"];
+			} else if($PLStat==="PL_3") {
+				$newPersonalLeaveArr += [$PLStat => "Personal Leave - Stage 3"];
+			}
+		}
+
+		$crud->field_type('PersonalLeave', 'dropdown', $newPersonalLeaveArr);
+
 		//Call Model to get the User's Full Names
 		$users = $crud->basic_model->return_query("SELECT PerID, CONCAT(FirstName, ' ', MiddleName, ' ', LastName) as FullName FROM Person");
 
@@ -50,15 +151,46 @@ class Employee extends CI_Controller {
 		//Change the field type to a dropdown with values
 		//to add to the relational table
 		$crud->field_type("FullName", "dropdown", $usrArr);
+		$crud->field_type("PerID", "dropdown", $usrArr);
 
+		//Available Days
+		$availability = $crud->basic_model->return_query("SELECT OptID, data FROM OptionType WHERE type='Availability'");
+		
+		$daysArr = array();
+		foreach($availability as $av) {
+			$daysArr += [$av->OptID => $av->data];
+		}
+		$crud->field_type("DaysWork", "multiselect", $daysArr);
+
+		//NHACE Classifications
+		$nhace = $crud->basic_model->return_query("SELECT OptID, data FROM OptionType WHERE type='NHACE_CLASS'");
+		$nhaceArr = array();
+		foreach($nhace as $nh) {
+			$nhaceArr += [$nh->OptID => $nh->data];
+		}
+		$crud->field_type("NHACEClass", "dropdown", $nhaceArr);
+
+		//BCGS Departments
+		$bcgs = $crud->basic_model->return_query("SELECT OptID, data FROM OptionType WHERE type='BGCS_DEP'");
+		$bcgsArr = array();
+		foreach($bcgs as $bc) {
+			$bcgsArr += [$bc->OptID => $bc->data];
+		}
+		$crud->field_type("BGCSDepartment", "dropdown", $bcgsArr);
+
+
+		//Position Names
 		$positions = $crud->basic_model->return_query("SELECT OptID, data FROM OptionType
 		where type = 'Position'");
 		$posArr = array();
 		foreach($positions as $pos) {
 			$posArr += [$pos->OptID => $pos->data];
 		}
+
 		$crud->field_type("Pos1", "dropdown", $posArr);
 		$crud->field_type("Pos2", "dropdown", $posArr);
+		$crud->field_type("EmpPosition", "dropdown", $posArr);
+		$crud->field_type("EmpSecPosition", "dropdown", $posArr);
 		
 		
 		
@@ -85,6 +217,7 @@ class Employee extends CI_Controller {
 		$crud->display_as("ProjRole", "Project Role");
 		$crud->display_as("FullName", "Full Name");
 		$crud->display_as("SubName", "Suburb");
+		$crud->display_as("PerID", "Name");
 		
 		//Change the Add Volunteer Fields
 		$crud->add_fields("FullName", "Name", "Role");

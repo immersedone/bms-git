@@ -133,4 +133,78 @@ class People extends CI_Controller {
 		echo json_encode($resp);
 	}
 
+	public function getDays() {
+		$daysArr = explode(',', $_POST['days']);
+
+		$crud = new grocery_CRUD();
+		$crud->set_model('Project_GC');
+
+		$resp = array();
+		$resp["Days"] = "";
+		for($i = 0; $i < count($daysArr); $i++) {
+			$id = $daysArr[$i];
+			$res = $crud->basic_model->return_query("SELECT data FROM OptionType WHERE OptID='$id' AND type='Availability' LIMIT 1");
+
+			$resp["Days"] .= $res[0]->data;
+			if($i !== (count($daysArr) - 1)) {
+				$resp["Days"] .= ", ";
+			}
+		}
+		
+		echo json_encode($resp);
+	}
+
+	public function getPosition($id) {
+		$crud = new grocery_CRUD();
+		$crud->set_model('Project_GC');
+		$res = $crud->basic_model->return_query("SELECT data FROM OptionType WHERE OptID='$id' LIMIT 1");
+
+
+		$resp = array();
+		$resp["Position"] = $res[0]->data;
+		echo json_encode($resp);
+	}
+
+	public function getBGCS() {
+		$bgcsArr = explode(',', $_POST['BGCS']);
+
+		$crud = new grocery_CRUD();
+		$crud->set_model('Project_GC');
+
+		$resp = array();
+		$resp["BGCS"] = "";
+		for($i = 0; $i < count($bgcsArr); $i++) {
+			$id = $bgcsArr[$i];
+			$res = $crud->basic_model->return_query("SELECT data FROM OptionType WHERE OptID='$id' AND type='BGCS_DEP' LIMIT 1");
+
+			$resp["BGCS"] .= $res[0]->data;
+			if($i !== (count($bgcsArr) - 1)) {
+				$resp["BGCS"] .= ",";
+			}
+		}
+		
+		echo json_encode($resp);
+	}
+
+	public function getNHACE() {
+		$nhaceArr = explode(',', $_POST['NHACE']);
+
+		$crud = new grocery_CRUD();
+		$crud->set_model('Project_GC');
+
+		$resp = array();
+		$resp["NHACE"] = "";
+		for($i = 0; $i < count($nhaceArr); $i++) {
+			$id = $nhaceArr[$i];
+			$res = $crud->basic_model->return_query("SELECT data FROM OptionType WHERE OptID='$id' AND type='NHACE_CLASS' LIMIT 1");
+
+			$resp["NHACE"] .= $res[0]->data;
+			if($i !== (count($nhaceArr) - 1)) {
+				$resp["NHACE"] .= ",";
+			}
+		}
+		
+		echo json_encode($resp);
+	}
+
 }

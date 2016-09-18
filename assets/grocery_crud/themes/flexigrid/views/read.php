@@ -171,6 +171,52 @@
 
 			echo $ajaxHTML;
 
+		}   elseif($field->field_name === "EmpPosition") {
+			//Get Project ID to convert to a name
+			$fbID = $input_fields["EmpPosition"]->input;
+			$fbID = str_replace("</div>", "", $fbID);
+			$fbID = str_replace('<div id="field-EmpPosition" class="readonly_label">', "", $fbID);
+			//Echo out HTML AJAX for name conversion
+
+			$ajaxHTML = '<script type="text/javascript">
+			$(function() {
+				$.ajax({
+					url: "'. base_url() .'user/people/index/getPosition/' . $fbID .'",
+					type: "POST",
+					dataType: "json",
+					success: function(data) {
+						$("div#field-EmpPosition.readonly_label").text(data.Position);
+					}
+
+				});
+			});
+			</script>';
+
+			echo $ajaxHTML;
+
+		}   elseif($field->field_name === "EmpSecPosition") {
+			//Get Project ID to convert to a name
+			$fbID = $input_fields["EmpSecPosition"]->input;
+			$fbID = str_replace("</div>", "", $fbID);
+			$fbID = str_replace('<div id="field-EmpSecPosition" class="readonly_label">', "", $fbID);
+			//Echo out HTML AJAX for name conversion
+
+			$ajaxHTML = '<script type="text/javascript">
+			$(function() {
+				$.ajax({
+					url: "'. base_url() .'user/people/index/getPosition/' . $fbID .'",
+					type: "POST",
+					dataType: "json",
+					success: function(data) {
+						$("div#field-EmpSecPosition.readonly_label").text(data.Position);
+					}
+
+				});
+			});
+			</script>';
+
+			echo $ajaxHTML;
+
 		}   elseif($field->field_name === "LanguagesSpoken") {
 			//Get Project ID to convert to a name
 			$fbID = $input_fields["LanguagesSpoken"]->input;
@@ -190,6 +236,206 @@
 					}
 
 				});
+			});
+			</script>';
+
+			echo $ajaxHTML;
+
+		}   elseif($field->field_name === "DaysWork") {
+			//Get Project ID to convert to a name
+			$fbID = $input_fields["DaysWork"]->input;
+			$fbID = str_replace("</div>", "", $fbID);
+			$fbID = str_replace('<div id="field-DaysWork" class="readonly_label">', "", $fbID);
+			//Echo out HTML AJAX for name conversion
+
+			$ajaxHTML = '<script type="text/javascript">
+			$(function() {
+				$.ajax({
+					url: "'. base_url() .'user/people/index/getDays/",
+					type: "POST",
+					data: {"days": "' . $fbID .'"},
+					dataType: "json",
+					success: function(data) {
+						$("div#field-DaysWork.readonly_label").html(data.Days);
+					}
+
+				});
+			});
+			</script>';
+
+			echo $ajaxHTML;
+
+		}   elseif($field->field_name === "DaysAvailable") {
+			//Get Project ID to convert to a name
+			$fbID = $input_fields["DaysAvailable"]->input;
+			$fbID = str_replace("</div>", "", $fbID);
+			$fbID = str_replace('<div id="field-DaysAvailable" class="readonly_label">', "", $fbID);
+			//Echo out HTML AJAX for name conversion
+
+			$ajaxHTML = '<script type="text/javascript">
+			$(function() {
+				$.ajax({
+					url: "'. base_url() .'user/people/index/getDays/",
+					type: "POST",
+					data: {"days": "' . $fbID .'"},
+					dataType: "json",
+					success: function(data) {
+						$("div#field-DaysAvailable.readonly_label").html(data.Days);
+					}
+
+				});
+			});
+			</script>';
+
+			echo $ajaxHTML;
+
+		}   elseif($field->field_name === "NHACEClass") {
+			//Get Project ID to convert to a name
+			$fbID = $input_fields["NHACEClass"]->input;
+			$fbID = str_replace("</div>", "", $fbID);
+			$fbID = str_replace('<div id="field-NHACEClass" class="readonly_label">', "", $fbID);
+			//Echo out HTML AJAX for name conversion
+
+			$ajaxHTML = '<script type="text/javascript">
+			$(function() {
+				$.ajax({
+					url: "'. base_url() .'user/people/index/getNHACE/",
+					type: "POST",
+					data: {"NHACE": "' . $fbID .'"},
+					dataType: "json",
+					success: function(data) {
+						$("div#field-NHACEClass.readonly_label").html(data.NHACE);
+					}
+
+				});
+			});
+			</script>';
+
+			echo $ajaxHTML;
+
+		}   elseif($field->field_name === "BGCSDepartment") {
+			//Get Project ID to convert to a name
+			$fbID = $input_fields["BGCSDepartment"]->input;
+			$fbID = str_replace("</div>", "", $fbID);
+			$fbID = str_replace('<div id="field-BGCSDepartment" class="readonly_label">', "", $fbID);
+			//Echo out HTML AJAX for name conversion
+
+			$ajaxHTML = '<script type="text/javascript">
+			$(function() {
+				$.ajax({
+					url: "'. base_url() .'user/people/index/getBGCS/",
+					type: "POST",
+					data: {"BGCS": "' . $fbID .'"},
+					dataType: "json",
+					success: function(data) {
+						$("div#field-BGCSDepartment.readonly_label").html(data.BGCS);
+					}
+
+				});
+			});
+			</script>';
+
+			echo $ajaxHTML;
+
+		}   elseif($field->field_name === "AnnualLeave") {
+			//Get Project ID to convert to a name
+			$fbID = $input_fields["AnnualLeave"]->input;
+			$fbID = str_replace("</div>", "", $fbID);
+			$fbID = str_replace('<div id="field-AnnualLeave" class="readonly_label">', "", $fbID);
+			//Echo out HTML AJAX for name conversion
+			switch($fbID) {
+				case "AL_4":
+					$data = "Annual Leave - 4 Weeks";
+					break;
+				case "AL_5":
+					$data = "Annual Leave - 5 Weeks";
+					break;
+				case "AL_6":
+					$data = "Annual Leave - 6 Weeks";
+					break;
+			}
+			$ajaxHTML = '<script type="text/javascript">
+			$(function() {
+				var data = "' . $data .'";
+				$("div#field-AnnualLeave.readonly_label").text(data);
+			});
+			</script>';
+
+			echo $ajaxHTML;
+
+		}   elseif($field->field_name === "PersonalLeave") {
+			//Get Project ID to convert to a name
+			$fbID = $input_fields["PersonalLeave"]->input;
+			$fbID = str_replace("</div>", "", $fbID);
+			$fbID = str_replace('<div id="field-PersonalLeave" class="readonly_label">', "", $fbID);
+			//Echo out HTML AJAX for name conversion
+			switch($fbID) {
+				case "PL_1":
+					$data = "Personal Leave - Stage 1";
+					break;
+				case "PL_2":
+					$data = "Personal Leave - Stage 2";
+					break;
+				case "PL_3":
+					$data = "Personal Leave - Stage 3";
+					break;
+			}
+			$ajaxHTML = '<script type="text/javascript">
+			$(function() {
+				var data = "' . $data .'";
+				$("div#field-PersonalLeave.readonly_label").text(data);
+			});
+			</script>';
+
+			echo $ajaxHTML;
+
+		}   elseif($field->field_name === "Contract") {
+			//Get Project ID to convert to a name
+			$fbID = $input_fields["Contract"]->input;
+			$fbID = str_replace("</div>", "", $fbID);
+			$fbID = str_replace('<div id="field-Contract" class="readonly_label">', "", $fbID);
+			//Echo out HTML AJAX for name conversion
+			switch($fbID) {
+				case "FULL_TIME":
+					$data = "Full Time";
+					break;
+				case "PART_TIME":
+					$data = "Part Time";
+					break;
+				case "CASUAL":
+					$data = "Casual";
+					break;
+				case "INDE_CONT":
+					$data = "Independant Contractor";
+					break;
+			}
+			$ajaxHTML = '<script type="text/javascript">
+			$(function() {
+				var data = "' . $data .'";
+				$("div#field-Contract.readonly_label").text(data);
+			});
+			</script>';
+
+			echo $ajaxHTML;
+
+		}   elseif($field->field_name === "ContStatus") {
+			//Get Project ID to convert to a name
+			$fbID = $input_fields["ContStatus"]->input;
+			$fbID = str_replace("</div>", "", $fbID);
+			$fbID = str_replace('<div id="field-ContStatus" class="readonly_label">', "", $fbID);
+			//Echo out HTML AJAX for name conversion
+			switch($fbID) {
+				case "PERMANENT":
+					$data = "Permanent";
+					break;
+				case "FIXED_TERM":
+					$data = "Fixed Term";
+					break;
+			}
+			$ajaxHTML = '<script type="text/javascript">
+			$(function() {
+				var data = "' . $data .'";
+				$("div#field-ContStatus.readonly_label").text(data);
 			});
 			</script>';
 
