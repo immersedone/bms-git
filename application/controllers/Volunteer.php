@@ -26,36 +26,23 @@ class Volunteer extends CI_Controller {
 
 		$crud = new grocery_CRUD();
 		$crud->set_model('Volunteer_GC');
-		$crud->set_table('Person');
+		$crud->set_table('Volunteer');
 		$crud->set_subject('Volunteer');
-		$crud->basic_model->set_query_str('SELECT Proj.Name, Proj.ProjID, `PersonProject`.Role as ProjRole, CONCAT(FirstName, " ", MiddleName, " ", LastName) as FullName, Sub.SuburbName as SubName, Sub.Postcode as Postcode, Per.* FROM `Person` Per 
-		LEFT OUTER JOIN `PersonProject` ON Per.PerID=`PersonProject`.PerID 
-		LEFT OUTER JOIN `Project` Proj ON `PersonProject`.ProjID=Proj.ProjID 
-		LEFT OUTER JOIN `Suburb` Sub ON Sub.SuburbID=Per.SuburbID 
-		WHERE `PersonProject`.Role="VOLUNTEER"', ' GROUP BY FullName, Name, ProjRole');
-		$crud->columns("FullName", "Address", "Postcode", "SubName", "WorkEmail", "PersonalEmail", "Mobile", "HomePhone");
-		$crud->display_as("Name", "Project Name");
-		$crud->display_as("ProjRole", "Project Role");
+		$crud->basic_model->set_query_str('SELECT CONCAT(Per.FirstName, " ", Per.MiddleName, " ", Per.LastName) as FullName, Vol.* FROM `Volunteer` Vol 
+		LEFT OUTER JOIN Person Per on Per.PerID = Vol.PerID');
+		$crud->columns("FullName", "BGSCDept", "RefFullName", "RefMobile", "RefHPhone", "RefRelToVol", "DaysAvailable", "ContSkills", "ContQual");
+		$crud->display_as("BGSCDept", "Department Assigned To");
+		$crud->display_as("RefFullName", "Referee Full Name");
+		$crud->display_as("RefMobile", "Referee Mobile");
+		$crud->display_as("RefRelToVol", "Referee Relation to Volunteer");
+		$crud->display_as("RefHPhone", "Referee Home Phone");
+		$crud->display_as("DaysAvailable", "Days Available");
+		$crud->display_as("ContSkills", "Skills and Experience");
+		$crud->display_as("ContQual", "Qualifications and Current Studies");
 		$crud->display_as("FullName", "Full Name");
-		$crud->display_as("SubName", "Suburb");
 		
-		//Change the Add Volunteer Fields
-		$crud->add_fields("FullName", "Name", "Role");
 
-		
-		//Call Model to get the Project Names
-		$projects = $crud->basic_model->return_query("SELECT ProjID, Name FROM Project");
-		
-		//Convert Return Object into Associative Array
-		$prjArr = array();
-		foreach($projects as $prj) {
-			$prjArr += [$prj->ProjID => $prj->Name];
-		}
-
-		//Change the field type to a dropdown with values
-		//to add to the relational table
-		$crud->field_type("Name", "dropdown", $prjArr);
-		
+				
 		//Call Model to get the User's Full Names
 		$users = $crud->basic_model->return_query("SELECT PerID, CONCAT(FirstName, ' ', MiddleName, ' ', LastName) as FullName FROM Person");
 
@@ -69,14 +56,6 @@ class Volunteer extends CI_Controller {
 		//to add to the relational table
 		$crud->field_type("FullName", "dropdown", $usrArr);
 
-		//Change the default method to fire when adding
-		//a new person to a project
-		$crud->callback_before_insert(array($this,'volunteer_add'));
-
-		$crud->unset_edit();
-		$crud->unset_delete();
-		$crud->add_action('Delete', '', '', 'delete-icon', array($this, 'volunteer_delete'));
-		//$crud->callback_delete(array($this, 'volunteer_delete'));
 
 		$output = $crud->render();
 
