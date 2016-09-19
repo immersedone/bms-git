@@ -30,8 +30,8 @@ class Volunteer extends CI_Controller {
 		$crud->set_subject('Volunteer');
 		$crud->basic_model->set_query_str('SELECT CONCAT(Per.FirstName, " ", Per.MiddleName, " ", Per.LastName) as FullName, Vol.* FROM `Volunteer` Vol 
 		LEFT OUTER JOIN Person Per on Per.PerID = Vol.PerID');
-		$crud->columns("FullName", "BGSCDept", "RefFullName", "RefMobile", "RefHPhone", "RefRelToVol", "DaysAvailable", "ContSkills", "ContQual");
-		$crud->display_as("BGSCDept", "Department Assigned To");
+		$crud->columns("FullName", "BGCSDept", "RefFullName", "RefMobile", "RefHPhone", "RefRelToVol", "DaysAvailable", "ContSkills", "ContQual");
+		$crud->display_as("BGCSDept", "Department Assigned To");
 		$crud->display_as("RefFullName", "Referee Full Name");
 		$crud->display_as("RefMobile", "Referee Mobile");
 		$crud->display_as("RefRelToVol", "Referee Relation to Volunteer");
@@ -40,9 +40,10 @@ class Volunteer extends CI_Controller {
 		$crud->display_as("ContSkills", "Skills and Experience");
 		$crud->display_as("ContQual", "Qualifications and Current Studies");
 		$crud->display_as("FullName", "Full Name");
+		$crud->display_as("PerID", "Full Name");
 
-		$crud->add_fields("FullName", "BGSCDept", "RefFullName", "RefMobile", "RefHPhone", "RefRelToVol", "DaysAvailable", "ContSkills", "ContQual");
-		$crud->edit_fields("FullName", "BGSCDept", "RefFullName", "RefMobile", "RefHPhone", "RefRelToVol", "DaysAvailable", "ContSkills", "ContQual");
+		$crud->add_fields("FullName", "BGCSDept", "RefFullName", "RefMobile", "RefHPhone", "RefRelToVol", "DaysAvailable", "ContSkills", "ContQual");
+		$crud->edit_fields("PerID", "BGCSDept", "RefFullName", "RefMobile", "RefHPhone", "RefRelToVol", "DaysAvailable", "ContSkills", "ContQual");
 
 		$availability = $crud->basic_model->return_query("SELECT OptID, data FROM OptionType WHERE type='Availability'");
 		
