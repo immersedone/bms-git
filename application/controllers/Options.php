@@ -29,14 +29,40 @@ class Options extends CI_Controller {
 		$crud->set_model('Extended_generic_model');
 		$crud->set_table('OptionType');
 		$crud->set_subject('Options');
-		$crud->basic_model->set_query_str("SELECT * FROM OptionType WHERE type!='Availability'");
+		$crud->basic_model->set_query_str("SELECT * FROM OptionType WHERE type!='Availability' AND type!='Role'");
 		$crud->columns('type', 'data');
+		$crud->set_read_fields('type', 'data');
+		$crud->edit_fields('type', 'data');
+		$crud->add_fields('type', 'data');
 		$crud->display_as('type', 'Option Type');
 		$crud->display_as('data', 'Option Value');
 
-		$output = $crud->render();
+		$state = $crud->getState();
+		$state_info = $crud->getStateInfo();
+
+		if($state == 'edit') {
+			$crud->field_type('type', 'readonly');
+		} else {
+
+			//Allow only specific options
+			$optArr = array(
+				"NHACE_CLASS" => "NHACE Classification",
+				"FA_QUAL" => "First Aid Qualification",
+				"Position" => "Position",
+				"BGCS_DEP" => "BGCS Department",
+				"SKILLS_EXP" => "Skills & Experience",
+				"QUAL_STUD" => "Qualifications & Current Studies"
+			);
+
+			$crud->field_type("type", "dropdown", $optArr);
+
+		}
+
+
+		$output = $crud->render();	
 
 		$this->render($output);
+
 	}
 
 
