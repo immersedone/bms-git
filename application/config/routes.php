@@ -295,6 +295,25 @@ $route['user/genreport/createreport'] = 'genreport/createReport';
 $route['user/genreport/viewreport/(:any)'] = 'genreport/viewReport/$1';
 $route['user/genreport/viewreport'] = 'genreport/viewReport';
 
+//Routes for Options Page
+$route['user/options'] = 'options';
+$route['user/options/index'] = 'options';
+$route['user/options/index/add'] = 'options/options';
+$route['user/options/index/insert'] = 'options/fd_insert';
+$route['user/options/index/fd_insert'] = 'options/fd_insert';
+$route['user/options/index/fd_delete/(:num)/(:num)'] = 'options/fd_delete/$1/$2';
+$route['user/options/index/insert_validation'] = 'options/options';
+$route['user/options/index/edit/(:num)'] = 'options/options/$1';
+$route['user/options/index/update/(:num)'] = 'options/options/$1';
+$route['user/options/index/update_validation/(:num)'] = 'options/options/$1';
+$route['user/options/index/success/(:num)'] = 'options/options/$1';
+$route['user/options/index/read/(:num)'] = 'options/options/$1';
+$route['user/options/index/delete/(:num)'] = 'options/options/$1';
+$route['user/options/index/print'] = 'options/options';
+$route['user/options/index/ajax_list'] = 'options/options';
+$route['user/options/index/ajax_list_info'] = 'options/options';
+$route['user/options/index/export'] = 'options/options';
+
 //Routes for statistics Page
 $route['user/statistics'] = 'statistics';
 $route['user/statistics/index'] = 'statistics';

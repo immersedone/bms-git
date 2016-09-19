@@ -11,6 +11,12 @@ h4.projTitle {
     font-weight: bold;
 }
 
+.panelOption {
+    padding: 20px;
+    background: white;
+    border: 1px solid #ccc;
+}
+
 .nav-sm .container.body .col-md-3.left_col {
   min-height: 100%;
   width: 70px;
