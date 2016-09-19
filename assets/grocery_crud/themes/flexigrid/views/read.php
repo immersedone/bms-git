@@ -442,7 +442,6 @@
 			echo $ajaxHTML;
 
 		}  ?>
-			
 			<div class='form-field-box <?php echo $even_odd?>' id="<?php echo $field->field_name; ?>_field_box">
 				<div class='form-display-as-box' id="<?php echo $field->field_name; ?>_display_as_box">
 					<?php echo $input_fields[$field->field_name]->display_as?><?php echo ($input_fields[$field->field_name]->required)? "<span class='required'>*</span> " : ""?> :
@@ -484,4 +483,11 @@
 
 	var message_alert_edit_form = "<?php echo $this->l('alert_edit_form')?>";
 	var message_update_error = "<?php echo $this->l('update_error')?>";
+	
+	$('.readonly_label').each(function() {
+		if($.trim($(this).text()) === "" || $(this).text() === "&nbsp;") {
+			$(this).text("N/A");
+		}
+	});
+
 </script>
