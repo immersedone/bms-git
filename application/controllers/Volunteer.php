@@ -40,18 +40,26 @@ class Volunteer extends CI_Controller {
 		$crud->display_as("ContSkills", "Skills and Experience");
 		$crud->display_as("ContQual", "Qualifications and Current Studies");
 		$crud->display_as("FullName", "Full Name");
-		
 
-				
+		$crud->add_fields("FullName", "BGSCDept", "RefFullName", "RefMobile", "RefHPhone", "RefRelToVol", "DaysAvailable", "ContSkills", "ContQual");
+		$crud->edit_fields("FullName", "BGSCDept", "RefFullName", "RefMobile", "RefHPhone", "RefRelToVol", "DaysAvailable", "ContSkills", "ContQual");
+
+		$availability = $crud->basic_model->return_query("SELECT OptID, data FROM OptionType WHERE type='Availability'");
+		
+		$daysArr = array();
+		foreach($availability as $av) {
+			$daysArr += [$av->OptID => $av->data];
+		}
+		$crud->field_type("DaysAvailable", "multiselect", $daysArr);
+		
+		
 		//Call Model to get the User's Full Names
 		$users = $crud->basic_model->return_query("SELECT PerID, CONCAT(FirstName, ' ', MiddleName, ' ', LastName) as FullName FROM Person");
-
 		//Convert Return Object into Associative Array
 		$usrArr = array();
 		foreach($users as $usr) {
 			$usrArr += [$usr->PerID => $usr->FullName];
 		}
-		
 		//Change the field type to a dropdown with values
 		//to add to the relational table
 		$crud->field_type("FullName", "dropdown", $usrArr);
