@@ -34,6 +34,11 @@
                   </li>
                   <li><a href="/user/statistics"><i class="fa fa-bar-chart-o"></i> Statistics</span></a>
                   </li>
+                  <li><a><i class="fa fa-list"></i> Extra Actions<span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="/user/options">View/Add/Edit Options</a></li>
+                    </ul>
+                  </li>
                 </ul>
               </div>
 
