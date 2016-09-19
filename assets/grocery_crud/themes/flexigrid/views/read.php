@@ -56,6 +56,75 @@
 
 			echo $ajaxHTML;
 
+		} elseif($field->field_name === "ProjOne") {
+			//Get Project ID to convert to a name
+			$projID = $input_fields["ProjOne"]->input;
+			$projID = str_replace("</div>", "", $projID);
+			$projID = str_replace('<div id="field-ProjOne" class="readonly_label">', "", $projID);
+			//Echo out HTML AJAX for name conversion
+
+			$ajaxHTML = '<script type="text/javascript">
+			$(function() {
+				$.ajax({
+					url: "'. base_url() .'user/projects/index/getProjName/' . $projID .'",
+					type: "POST",
+					dataType: "json",
+					success: function(data) {
+						$("div#field-ProjOne.readonly_label").text(data.ProjName);
+					}
+
+				});
+			});
+			</script>';
+
+			echo $ajaxHTML;
+
+		} elseif($field->field_name === "ProjTwo") {
+			//Get Project ID to convert to a name
+			$projID = $input_fields["ProjTwo"]->input;
+			$projID = str_replace("</div>", "", $projID);
+			$projID = str_replace('<div id="field-ProjTwo" class="readonly_label">', "", $projID);
+			//Echo out HTML AJAX for name conversion
+
+			$ajaxHTML = '<script type="text/javascript">
+			$(function() {
+				$.ajax({
+					url: "'. base_url() .'user/projects/index/getProjName/' . $projID .'",
+					type: "POST",
+					dataType: "json",
+					success: function(data) {
+						$("div#field-ProjTwo.readonly_label").text(data.ProjName);
+					}
+
+				});
+			});
+			</script>';
+
+			echo $ajaxHTML;
+
+		} elseif($field->field_name === "ProjThree") {
+			//Get Project ID to convert to a name
+			$projID = $input_fields["ProjThree"]->input;
+			$projID = str_replace("</div>", "", $projID);
+			$projID = str_replace('<div id="field-ProjThree" class="readonly_label">', "", $projID);
+			//Echo out HTML AJAX for name conversion
+
+			$ajaxHTML = '<script type="text/javascript">
+			$(function() {
+				$.ajax({
+					url: "'. base_url() .'user/projects/index/getProjName/' . $projID .'",
+					type: "POST",
+					dataType: "json",
+					success: function(data) {
+						$("div#field-ProjThree.readonly_label").text(data.ProjName);
+					}
+
+				});
+			});
+			</script>';
+
+			echo $ajaxHTML;
+
 		} elseif($field->field_name === "ApprovedBy") {
 			//Get Project ID to convert to a name
 			$perID = $input_fields["ApprovedBy"]->input;
@@ -71,6 +140,75 @@
 					dataType: "json",
 					success: function(data) {
 						$("div#field-ApprovedBy.readonly_label").text(data.PerName);
+					}
+
+				});
+			});
+			</script>';
+
+			echo $ajaxHTML;
+
+		} elseif($field->field_name === "ProjOne_Sup") {
+			//Get Project ID to convert to a name
+			$perID = $input_fields["ProjOne_Sup"]->input;
+			$perID = str_replace("</div>", "", $perID);
+			$perID = str_replace('<div id="field-ProjOne_Sup" class="readonly_label">', "", $perID);
+			//Echo out HTML AJAX for name conversion
+
+			$ajaxHTML = '<script type="text/javascript">
+			$(function() {
+				$.ajax({
+					url: "'. base_url() .'user/people/index/getPerName/' . $perID .'",
+					type: "POST",
+					dataType: "json",
+					success: function(data) {
+						$("div#field-ProjOne_Sup.readonly_label").text(data.PerName);
+					}
+
+				});
+			});
+			</script>';
+
+			echo $ajaxHTML;
+
+		} elseif($field->field_name === "ProjTwo_Sup") {
+			//Get Project ID to convert to a name
+			$perID = $input_fields["ProjTwo_Sup"]->input;
+			$perID = str_replace("</div>", "", $perID);
+			$perID = str_replace('<div id="field-ProjTwo_Sup" class="readonly_label">', "", $perID);
+			//Echo out HTML AJAX for name conversion
+
+			$ajaxHTML = '<script type="text/javascript">
+			$(function() {
+				$.ajax({
+					url: "'. base_url() .'user/people/index/getPerName/' . $perID .'",
+					type: "POST",
+					dataType: "json",
+					success: function(data) {
+						$("div#field-ProjTwo_Sup.readonly_label").text(data.PerName);
+					}
+
+				});
+			});
+			</script>';
+
+			echo $ajaxHTML;
+
+		} elseif($field->field_name === "ProjThree_Sup") {
+			//Get Project ID to convert to a name
+			$perID = $input_fields["ProjThree_Sup"]->input;
+			$perID = str_replace("</div>", "", $perID);
+			$perID = str_replace('<div id="field-ProjThree_Sup" class="readonly_label">', "", $perID);
+			//Echo out HTML AJAX for name conversion
+
+			$ajaxHTML = '<script type="text/javascript">
+			$(function() {
+				$.ajax({
+					url: "'. base_url() .'user/people/index/getPerName/' . $perID .'",
+					type: "POST",
+					dataType: "json",
+					success: function(data) {
+						$("div#field-ProjThree_Sup.readonly_label").text(data.PerName);
 					}
 
 				});
@@ -329,6 +467,78 @@
 					dataType: "json",
 					success: function(data) {
 						$("div#field-BGCSDepartment.readonly_label").html(data.BGCS);
+					}
+
+				});
+			});
+			</script>';
+
+			echo $ajaxHTML;
+
+		}   elseif($field->field_name === "ProjOne_Dep") {
+			//Get Project ID to convert to a name
+			$fbID = $input_fields["ProjOne_Dep"]->input;
+			$fbID = str_replace("</div>", "", $fbID);
+			$fbID = str_replace('<div id="field-ProjOne_Dep" class="readonly_label">', "", $fbID);
+			//Echo out HTML AJAX for name conversion
+
+			$ajaxHTML = '<script type="text/javascript">
+			$(function() {
+				$.ajax({
+					url: "'. base_url() .'user/people/index/getBGCS/",
+					type: "POST",
+					data: {"BGCS": "' . $fbID .'"},
+					dataType: "json",
+					success: function(data) {
+						$("div#field-ProjOne_Dep.readonly_label").html(data.BGCS);
+					}
+
+				});
+			});
+			</script>';
+
+			echo $ajaxHTML;
+
+		}   elseif($field->field_name === "ProjTwo_Dep") {
+			//Get Project ID to convert to a name
+			$fbID = $input_fields["ProjTwo_Dep"]->input;
+			$fbID = str_replace("</div>", "", $fbID);
+			$fbID = str_replace('<div id="field-ProjTwo_Dep" class="readonly_label">', "", $fbID);
+			//Echo out HTML AJAX for name conversion
+
+			$ajaxHTML = '<script type="text/javascript">
+			$(function() {
+				$.ajax({
+					url: "'. base_url() .'user/people/index/getBGCS/",
+					type: "POST",
+					data: {"BGCS": "' . $fbID .'"},
+					dataType: "json",
+					success: function(data) {
+						$("div#field-ProjTwo_Dep.readonly_label").html(data.BGCS);
+					}
+
+				});
+			});
+			</script>';
+
+			echo $ajaxHTML;
+
+		}   elseif($field->field_name === "ProjThree_Dep") {
+			//Get Project ID to convert to a name
+			$fbID = $input_fields["ProjThree_Dep"]->input;
+			$fbID = str_replace("</div>", "", $fbID);
+			$fbID = str_replace('<div id="field-ProjThree_Dep" class="readonly_label">', "", $fbID);
+			//Echo out HTML AJAX for name conversion
+
+			$ajaxHTML = '<script type="text/javascript">
+			$(function() {
+				$.ajax({
+					url: "'. base_url() .'user/people/index/getBGCS/",
+					type: "POST",
+					data: {"BGCS": "' . $fbID .'"},
+					dataType: "json",
+					success: function(data) {
+						$("div#field-ProjThree_Dep.readonly_label").html(data.BGCS);
 					}
 
 				});

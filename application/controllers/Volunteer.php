@@ -30,8 +30,8 @@ class Volunteer extends CI_Controller {
 		$crud->set_subject('Volunteer');
 		$crud->basic_model->set_query_str('SELECT CONCAT(Per.FirstName, " ", Per.MiddleName, " ", Per.LastName) as FullName, Vol.* FROM `Volunteer` Vol 
 		LEFT OUTER JOIN Person Per on Per.PerID = Vol.PerID');
-		$crud->columns("FullName", "BGCSDept", "RefFullName", "RefMobile", "RefHPhone", "RefRelToVol", "DaysAvailable", "ContSkills", "ContQual");
-		$crud->display_as("BGCSDept", "Department Assigned To");
+		$crud->columns("FullName", "ProjOne", "ProjOne_Sup", "ProjOne_Dep", "ProjTwo", "ProjTwo_Sup", "ProjTwo_Dep", "ProjThree", "ProjThree_Sup", "ProjThree_Dep", "RefFullName", "RefMobile", "RefHPhone", "RefRelToVol", "DaysAvailable", "ContSkills", "ContQual");
+		$crud->display_as("BGCSDepartment", "Department Assigned To");
 		$crud->display_as("RefFullName", "Referee Full Name");
 		$crud->display_as("RefMobile", "Referee Mobile");
 		$crud->display_as("RefRelToVol", "Referee Relation to Volunteer");
@@ -41,10 +41,45 @@ class Volunteer extends CI_Controller {
 		$crud->display_as("ContQual", "Qualifications and Current Studies");
 		$crud->display_as("FullName", "Full Name");
 		$crud->display_as("PerID", "Full Name");
+		$crud->display_as("ProjOne", "Project #1");
+		$crud->display_as("ProjTwo", "Project #2");
+		$crud->display_as("ProjThree", "Project #3");
+		$crud->display_as("ProjOne_Sup", "Supervisor #1");
+		$crud->display_as("ProjTwo_Sup", "Supervisor #2");
+		$crud->display_as("ProjThree_Sup", "Supervisor #3");
+		$crud->display_as("ProjOne_Dep", "BGCS Department #1");
+		$crud->display_as("ProjTwo_Dep", "BGCS Department #2");
+		$crud->display_as("ProjThree_Dep", "BGCS Department #3");
 
-		$crud->add_fields("FullName", "BGCSDept", "RefFullName", "RefMobile", "RefHPhone", "RefRelToVol", "DaysAvailable", "ContSkills", "ContQual");
-		$crud->edit_fields("PerID", "BGCSDept", "RefFullName", "RefMobile", "RefHPhone", "RefRelToVol", "DaysAvailable", "ContSkills", "ContQual");
+		$crud->add_fields("FullName", "ProjOne", "ProjOne_Sup", "ProjOne_Dep", "ProjTwo", "ProjTwo_Sup", "ProjTwo_Dep", "ProjThree", "ProjThree_Sup", "ProjThree_Dep", "RefFullName", "RefMobile", "RefHPhone", "RefRelToVol", "DaysAvailable", "ContSkills", "ContQual");
+		$crud->edit_fields("PerID", "ProjOne", "ProjOne_Sup", "ProjOne_Dep", "ProjTwo", "ProjTwo_Sup", "ProjTwo_Dep", "ProjThree", "ProjThree_Sup", "ProjThree_Dep", "RefFullName", "RefMobile", "RefHPhone", "RefRelToVol", "DaysAvailable", "ContSkills", "ContQual");
+		$crud->set_read_fields("PerID", "ProjOne", "ProjOne_Sup", "ProjOne_Dep", "ProjTwo", "ProjTwo_Sup", "ProjTwo_Dep", "ProjThree", "ProjThree_Sup", "ProjThree_Dep", "RefFullName", "RefMobile", "RefHPhone", "RefRelToVol", "DaysAvailable", "ContSkills", "ContQual");
 
+
+		//List of Projects
+		$projects = $crud->basic_model->return_query("SELECT ProjID, Name FROM Project");
+		$projArr = array();
+
+		foreach($projects as $proj) {
+			$projArr += [$proj->ProjID => $proj->Name];
+		}
+
+		$crud->field_type("ProjOne", "dropdown", $projArr);
+		$crud->field_type("ProjTwo", "dropdown", $projArr);
+		$crud->field_type("ProjThree", "dropdown", $projArr);
+
+
+		//BCGS Departments
+		$bcgs = $crud->basic_model->return_query("SELECT OptID, data FROM OptionType WHERE type='BGCS_DEP'");
+		$bcgsArr = array();
+		foreach($bcgs as $bc) {
+			$bcgsArr += [$bc->OptID => $bc->data];
+		}
+		$crud->field_type("ProjOne_Dep", "dropdown", $bcgsArr);
+		$crud->field_type("ProjTwo_Dep", "dropdown", $bcgsArr);
+		$crud->field_type("ProjThree_Dep", "dropdown", $bcgsArr);
+
+		//Days Array
 		$availability = $crud->basic_model->return_query("SELECT OptID, data FROM OptionType WHERE type='Availability'");
 		
 		$daysArr = array();
@@ -64,6 +99,10 @@ class Volunteer extends CI_Controller {
 		//Change the field type to a dropdown with values
 		//to add to the relational table
 		$crud->field_type("FullName", "dropdown", $usrArr);
+		$crud->field_type("PerID", "dropdown", $usrArr);
+		$crud->field_type("ProjOne_Sup", "dropdown", $usrArr);
+		$crud->field_type("ProjTwo_Sup", "dropdown", $usrArr);
+		$crud->field_type("ProjThree_Sup", "dropdown", $usrArr);
 
 
 		$output = $crud->render();
