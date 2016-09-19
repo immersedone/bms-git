@@ -30,14 +30,14 @@ class People extends CI_Controller {
 		$crud->set_subject('Person');
 		$crud->basic_model->set_query_str('SELECT Sub.SuburbName as SubName, Sub.Postcode as Postcode, Per.* from `Person` Per
 		LEFT OUTER JOIN `Suburb` Sub ON Per.SuburbID=Sub.SuburbID');
-		$crud->columns('FirstName', 'LastName', 'Address', 'Postcode', 'SubName', 'WorkEmail', 'PersonalEmail', 'Mobile', 'HomePhone');
-		$crud->add_fields('FirstName', 'MiddleName', 'LastName', 'Address', 'SuburbID', 'WorkEmail', 'PersonalEmail', 'Mobile', 'HomePhone', 'Status', 'DateStarted', 'WWC', 'WWCFiled', 'LanguagesSpoken', 'EmergContName', 'EmergContMob', 'EmergContHPhone', 'EmergContWPhone', 'EmergContRelToPer');
-		$crud->edit_fields('FirstName', 'MiddleName', 'LastName','Address', 'SuburbID', 'WorkEmail', 'PersonalEmail', 'Mobile', 'HomePhone', 'Status', 'DateStarted', 'DateFinished', 'ContractSigned', 'PaperworkCompleted', 'WWC', 'WWCFiled', 'PoliceCheck', 'TeacherRegCheck', 'FAQual', 'LanguagesSpoken', 'EmergContName', 'EmergContMob', 'EmergContHPhone', 'EmergContWPhone', 'EmergContRelToPer');	
+		$crud->columns('FirstName', 'LastName', 'Address', 'Postcode', 'SubName', 'PersonalEmail', 'Mobile', 'HomePhone');
+		$crud->add_fields('FirstName', 'MiddleName', 'LastName', 'Address', 'SuburbID', 'PersonalEmail', 'Mobile', 'HomePhone', 'Status', 'DateStarted', 'WWC', 'WWCFiled', 'LanguagesSpoken', 'EmergContName', 'EmergContMob', 'EmergContHPhone', 'EmergContWPhone', 'EmergContRelToPer');
+		$crud->edit_fields('FirstName', 'MiddleName', 'LastName','Address', 'SuburbID', 'PersonalEmail', 'Mobile', 'HomePhone', 'Status', 'DateStarted', 'DateFinished', 'ContractSigned', 'PaperworkCompleted', 'WWC', 'WWCFiled', 'PoliceCheck', 'TeacherRegCheck', 'FAQual', 'LanguagesSpoken', 'EmergContName', 'EmergContMob', 'EmergContHPhone', 'EmergContWPhone', 'EmergContRelToPer');	
 		$crud->display_as('FirstName', 'First Name');
 		$crud->display_as('MiddleName', 'Middle Name');
 		$crud->display_as('LastName', 'Last Name');
 		$crud->display_as('SuburbID', 'Suburb');
-		$crud->display_as('WorkEmail', 'Work Email');
+		//$crud->display_as('WorkEmail', 'Work Email');
 		$crud->display_as('PersonalEmail', 'Personal Email');
 		$crud->display_as('HomePhone', 'Home Phone');
 		$crud->display_as('DateStarted', 'Date Started');
