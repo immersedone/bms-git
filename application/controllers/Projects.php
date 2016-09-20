@@ -63,6 +63,8 @@ class Projects extends CI_Controller {
 				$newstatArr += [$st => "Delayed"];
 			} else if($st==="ON_HOLD") {
 				$newstatArr += [$st => "On Hold"];
+			} else if($st==="AWAITING_FUNDS") {
+				$newstatArr += [$st => "Awaiting Funds"];
 			}
 		}
 
