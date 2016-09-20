@@ -31,7 +31,7 @@ class Milestones extends CI_Controller {
 		$crud->set_subject('Milestone');
 		$crud->basic_model->set_query_str('SELECT P.Name as ProjName, M.* from `Milestone_new` M
 		LEFT OUTER JOIN `Project` P on M.ProjID=P.ProjID');
-		$crud->columns('ProjName', 'ShortDesc', 'DueDate', 'RptType', 'ReportIsDue', 'PaymentMode', 'Amount', 'Comment', 'FilePath');
+		$crud->columns('ProjName', 'ShortDesc', 'DueDate', 'RptType', 'ReportIsDue', 'PaymentMode', 'Status', 'Amount', 'Comment', 'FilePath');
 
 		$crud->display_as('ProjID', 'Project Name');
 		$crud->display_as('ProjName', 'Project Name');
@@ -43,7 +43,7 @@ class Milestones extends CI_Controller {
 		$crud->display_as('ReportIsDue', 'Report Is Due');
 		$crud->display_as('PaymentMode', 'Payment Mode');
 
-		$crud->add_fields('ProjID', 'ShortDesc', 'DueDate', 'RptType', 'Amount', 'Comment', 'FilePath');
+		$crud->add_fields('ProjID', 'ShortDesc', 'DueDate', 'RptType', 'ReportIsDue', 'PaymentMode', 'Status', 'Amount', 'Comment', 'FilePath');
 
 		$crud->callback_column('MSComplete', array($this, 'check_complete'));
 		//$crud->callback_column('MSComplete', array($this, 'field_width'));
