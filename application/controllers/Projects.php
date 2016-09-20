@@ -28,7 +28,8 @@ class Projects extends CI_Controller {
 	public function projects() {
 
 		$crud = new grocery_CRUD();
-
+		$crud->set_model('Extended_generic_model');
+		$crud->basic_model->set_query_str("SELECT * FROM Project"); 
 		$crud->set_theme('flexigrid');
 		$crud->set_table('Project');
 		$crud->set_subject('Project');
@@ -46,8 +47,32 @@ class Projects extends CI_Controller {
 		//$crud->form_buttons('View Reimbursements', 'showReimbursements', '');
 		//$crud->form_buttons('View Funding', 'showFunding', '');
 
-		$crud->unset_operations();
+		//Prettify Report Type
+		$stat = $crud->basic_model->return_query("SHOW COLUMNS FROM Project WHERE Field='Status'");
+		preg_match("/^enum\(\'(.*)\'\)$/", $stat[0]->Type, $matches);
+		$statArr = explode("','", $matches[1]);
+		$newstatArr = array();
+		foreach($statArr as $st) {
+			if($st==="ACTIVE") {
+				$newstatArr += [$st => "Active"];
+			} else if($st==="COMPLETED") {
+				$newstatArr += [$st => "Completed"];
+			} else if($st==="TO_BEGIN") {
+				$newstatArr += [$st => "To Begin"];
+			} else if($st==="DELAYED") {
+				$newstatArr += [$st => "Delayed"];
+			} else if($st==="ON_HOLD") {
+				$newstatArr += [$st => "On Hold"];
+			}
+		}
+
+		$crud->field_type('Description', 'text');
+		$crud->field_type('Status', 'dropdown', $newstatArr);
+
+		$crud->unset_delete();
+		$crud->unset_read();
 		$crud->add_action('View', '', '', 'read-icon', array($this, 'employee_read'));
+
 
 		$output = $crud->render();
 		//print_r($output);
