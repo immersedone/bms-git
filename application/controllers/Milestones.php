@@ -31,20 +31,61 @@ class Milestones extends CI_Controller {
 		$crud->set_subject('Milestone');
 		$crud->basic_model->set_query_str('SELECT P.Name as ProjName, M.* from `Milestone_new` M
 		LEFT OUTER JOIN `Project` P on M.ProjID=P.ProjID');
-		$crud->columns('ProjName', 'ShortDesc', 'DueDate', 'RptType', 'Amount', 'Comment', 'FilePath');
+		$crud->columns('ProjName', 'ShortDesc', 'DueDate', 'RptType', 'ReportIsDue', 'PaymentMode', 'Amount', 'Comment', 'FilePath');
 
 		$crud->display_as('ProjID', 'Project Name');
 		$crud->display_as('ProjName', 'Project Name');
 		$crud->display_as('ShortDesc', 'Description');
 		$crud->display_as('DueDate', 'Due Date');
-		$crud->display_as('RptType', 'Type');
+		$crud->display_as('RptType', ' Report Type');
 		$crud->display_as('FilePath', 'File Attached');
 		$crud->display_as('MSComplete', 'Complete');
+		$crud->display_as('ReportIsDue', 'Report Is Due');
+		$crud->display_as('PaymentMode', 'Payment Mode');
 
 		$crud->add_fields('ProjID', 'ShortDesc', 'DueDate', 'RptType', 'Amount', 'Comment', 'FilePath');
 
 		$crud->callback_column('MSComplete', array($this, 'check_complete'));
 		//$crud->callback_column('MSComplete', array($this, 'field_width'));
+
+		//Prettify Report Type
+		$rptType = $crud->basic_model->return_query("SHOW COLUMNS FROM Milestone_new WHERE Field='RptType'");
+		preg_match("/^enum\(\'(.*)\'\)$/", $rptType[0]->Type, $matchesRpt);
+		$rptTypeArr = explode("','", $matchesRpt[1]);
+		$newRptTypeArr = array();
+		foreach($rptTypeArr as $rpt) {
+			if($rpt==="REPORT") {
+				$newRptTypeArr += [$rpt => "Report"];
+			} else if($rpt==="PAYMENT") {
+				$newRptTypeArr += [$rpt => "Payment"];
+			} else if($rpt==="REP_PAY") {
+				$newRptTypeArr += [$rpt => "Report &amp; Payment"];
+			} else if($rpt==="FINAL_REP") {
+				$newRptTypeArr += [$rpt => "Final Report"];
+			}
+		}
+
+
+		$crud->field_type('RptType', 'dropdown', $newRptTypeArr);
+
+		//Prettify Payment Mode
+		$payM = $crud->basic_model->return_query("SHOW COLUMNS FROM Milestone_new WHERE Field='PaymentMode'");
+
+		preg_match("/^enum\(\'(.*)\'\)$/", $payM[0]->Type, $matches);
+		$payMArr = explode("','", $matches[1]);
+		$newpayMArr = array();
+		foreach($payMArr as $contPayM) {
+			if($contPayM==="AUTOMATIC") {
+				$newpayMArr += [$contPayM => "Automatic Payment"];
+			} else if($contPayM==="MANUAL") {
+				$newpayMArr += [$contPayM => "Manual Payment"];
+			}
+		}
+
+
+		$crud->field_type('PaymentMode', 'dropdown', $newpayMArr);
+
+		
 
 		$crud->set_field_upload('FilePath', 'assets/uploads/files/');
 
@@ -54,11 +95,11 @@ class Milestones extends CI_Controller {
 		foreach($projects as $prj) {
 			$prjArr += [$prj->ProjID => $prj->Name];
 		}
-		$rptArr = array("Report", "Payment", "Report & Payment", "Final Payment");
+		//$rptArr = array("Report", "Payment", "Report & Payment", "Final Payment");
 				
 		$crud->field_type("DueDate", 'datetime');
 		$crud->field_type("Comment", 'text');
-		$crud->field_type("RptType", "enum", $rptArr);
+		//$crud->field_type("RptType", "enum", $rptArr);
 		$crud->field_type("ProjID", "dropdown", $prjArr);
 		$crud->field_type("ProjName", "dropdown", $prjArr);
 		
