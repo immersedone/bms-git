@@ -164,7 +164,7 @@ class Employee extends CI_Controller {
 		$crud->field_type("DaysWork", "multiselect", $daysArr);
 
         //Supervisors
-        $supervisors = $crud->basic_model->return_query("SELECT PerID, FullName FROM Employee");
+        $supervisors = $crud->basic_model->return_query("SELECT PerID, CONCAT(FirstName, ' ', MiddleName, ' ', LastName) as FullName FROM Person");
         $visorArr = array();
         foreach($supervisors as $spv){
             $visorArr += [$spv->PerID=> $spv->FullName];
