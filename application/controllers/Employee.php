@@ -58,7 +58,7 @@ class Employee extends CI_Controller {
 		$crud->display_as("TerminationDate", "Termination Date");
 		$crud->display_as("NHACEClass", "NHACE Classification");
 		$crud->display_as("BGCSDepartment", "BGCS Department");
-        $crud->display_as("SuperFund", "Superannuation Fund")
+        $crud->display_as("SuperFund", "Superannuation Fund");
 
 		$crud->display_as("Pos2", "Secondary Position");
 		$crud->display_as("WEmail", "Work Email");
