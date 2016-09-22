@@ -58,13 +58,14 @@ class Employee extends CI_Controller {
 		$crud->display_as("TerminationDate", "Termination Date");
 		$crud->display_as("NHACEClass", "NHACE Classification");
 		$crud->display_as("BGCSDepartment", "BGCS Department");
+        $crud->display_as("SuperFund", "Superannuation Fund")
 
 		$crud->display_as("Pos2", "Secondary Position");
 		$crud->display_as("WEmail", "Work Email");
 
-		$crud->add_fields('PerID', 'EmpPosition', 'EmpSecPosition', 'BGCSDepartment', 'Supervisor', 'WorkMob', 'WorkEmail', 'EmpDate', 'Contract', 'ContStatus', 'ContStartDate', 'ContEndDate', 'HrlyRate', 'SecHrlyRate', 'HrsPerFrtnt', 'DaysWork','NHACEClass', 'NHACEDate', 'AnnualLeave', 'PersonalLeave', 'FundUSI', 'MmbershpNo', 'TerminationDate');
-		$crud->edit_fields('PerID', 'EmpPosition', 'EmpSecPosition', 'BGCSDepartment', 'Supervisor', 'WorkMob', 'WorkEmail', 'EmpDate', 'Contract', 'ContStatus', 'ContStartDate', 'ContEndDate', 'HrlyRate', 'SecHrlyRate', 'HrsPerFrtnt', 'DaysWork','NHACEClass', 'NHACEDate', 'AnnualLeave', 'PersonalLeave', 'FundUSI', 'MmbershpNo', 'TerminationDate');
-		$crud->set_read_fields('PerID', 'EmpPosition', 'EmpSecPosition', 'BGCSDepartment', 'Supervisor', 'WorkMob', 'WorkEmail', 'EmpDate', 'Contract', 'ContStatus', 'ContStartDate', 'ContEndDate', 'HrlyRate', 'SecHrlyRate', 'HrsPerFrtnt', 'DaysWork','NHACEClass', 'NHACEDate', 'AnnualLeave', 'PersonalLeave', 'FundUSI', 'MmbershpNo', 'TerminationDate');
+		$crud->add_fields('PerID', 'EmpPosition', 'EmpSecPosition', 'BGCSDepartment', 'Supervisor', 'WorkMob', 'WorkEmail', 'EmpDate', 'Contract', 'ContStatus', 'ContStartDate', 'ContEndDate', 'HrlyRate', 'SecHrlyRate', 'HrsPerFrtnt', 'DaysWork','NHACEClass', 'NHACEDate', 'AnnualLeave', 'PersonalLeave', 'FundUSI', 'MmbershpNo', 'SuperFund' , 'TerminationDate');
+		$crud->edit_fields('PerID', 'EmpPosition', 'EmpSecPosition', 'BGCSDepartment', 'Supervisor', 'WorkMob', 'WorkEmail', 'EmpDate', 'Contract', 'ContStatus', 'ContStartDate', 'ContEndDate', 'HrlyRate', 'SecHrlyRate', 'HrsPerFrtnt', 'DaysWork','NHACEClass', 'NHACEDate', 'AnnualLeave', 'PersonalLeave', 'FundUSI', 'MmbershpNo', 'SuperFund', 'TerminationDate');
+		$crud->set_read_fields('PerID', 'EmpPosition', 'EmpSecPosition', 'BGCSDepartment', 'Supervisor', 'WorkMob', 'WorkEmail', 'EmpDate', 'Contract', 'ContStatus', 'ContStartDate', 'ContEndDate', 'HrlyRate', 'SecHrlyRate', 'HrsPerFrtnt', 'DaysWork','NHACEClass', 'NHACEDate', 'AnnualLeave', 'PersonalLeave', 'FundUSI', 'MmbershpNo',  'SuperFund', 'TerminationDate');
 		
 
 		//Enumerated Values for Contract
@@ -158,9 +159,17 @@ class Employee extends CI_Controller {
 		
 		$daysArr = array();
 		foreach($availability as $av) {
-			$daysArr += [$av->OptID => $av->data];
-		}
+            $daysArr += [$av->OptID => $av->data];
+        }
 		$crud->field_type("DaysWork", "multiselect", $daysArr);
+
+        //Superannuation Funds
+        $funds = $crud->basic_model->return_query("SELECT OptID, data FROM OptionType WHERE type='Fund'");
+        $fundArr = array();
+        foreach($funds as $fnd) {
+            $fundArr+= [$fnd->OptID=> $fnd->data];
+        }
+        $crud->field_type("SuperFund", "dropdown", $fundArr);
 
 		//NHACE Classifications
 		$nhace = $crud->basic_model->return_query("SELECT OptID, data FROM OptionType WHERE type='NHACE_CLASS'");
