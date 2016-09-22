@@ -163,11 +163,19 @@ class Employee extends CI_Controller {
         }
 		$crud->field_type("DaysWork", "multiselect", $daysArr);
 
+        //Supervisors
+        $supervisors = $crud->basic_model->return_query("SELECT PerID, FullName FROM Employee");
+        $visorArr = array();
+        foreach($supervisors as $spv){
+            $visorArr += [$spv->PerID=> $spv->FullName];
+        }
+        $crud->field_type("Supervisor", "dropdown", $visorArr);
+
         //Superannuation Funds
         $funds = $crud->basic_model->return_query("SELECT OptID, data FROM OptionType WHERE type='Fund'");
         $fundArr = array();
         foreach($funds as $fnd) {
-            $fundArr+= [$fnd->OptID=> $fnd->data];
+            $fundArr += [$fnd->OptID=> $fnd->data];
         }
         $crud->field_type("SuperFund", "dropdown", $fundArr);
 
