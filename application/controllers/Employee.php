@@ -167,7 +167,7 @@ class Employee extends CI_Controller {
         $supervisors = $crud->basic_model->return_query("SELECT PerID, CONCAT(FirstName, ' ', MiddleName, ' ', LastName) as FullName FROM Person");
         $visorArr = array();
         foreach($supervisors as $spv){
-            $visorArr += [$spv->PerID=> $spv->FullName];
+            $visorArr += [$spv->PerID => $spv->FullName];
         }
         $crud->field_type("Supervisor", "dropdown", $visorArr);
 
@@ -175,7 +175,7 @@ class Employee extends CI_Controller {
         $funds = $crud->basic_model->return_query("SELECT OptID, data FROM OptionType WHERE type='Fund'");
         $fundArr = array();
         foreach($funds as $fnd) {
-            $fundArr += [$fnd->OptID=> $fnd->data];
+            $fundArr += [$fnd->OptID => $fnd->data];
         }
         $crud->field_type("SuperFund", "dropdown", $fundArr);
 
