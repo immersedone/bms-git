@@ -28,16 +28,13 @@ class Expenditures extends CI_Controller {
 		$crud->set_model('Extended_generic_model'); 
 		$crud->set_table('Expenditure');
 		$crud->set_subject('Expenditure');
-		$crud->basic_model->set_query_str('SELECT Proj.Name, CONCAT(Per.FirstName, " ", Per.MiddleName, " ", Per.LastName) as FullName, Exp.* from `Expenditure` Exp
+		$crud->basic_model->set_query_str('SELECT Proj.Name, CONCAT(Per.FirstName, " ", Per.MiddleName, " ", Per.LastName) as FullName, Opt.Data as EType, Exp.* from `Expenditure` Exp
 		LEFT OUTER JOIN `Project` Proj ON Proj.ProjID=Exp.ProjID
-		LEFT OUTER JOIN `Person` Per ON Per.PerID=Exp.SpentBy');
-		$crud->set_read_fields('ProjID', 'ExpName', 'Reason', 'Amount', 'ApprovedBy', 'SpentBy', 'Type');
-		$crud->edit_fields('ProjID', 'ExpName', 'Reason', 'Amount', 'ApprovedBy', 'SpentBy', 'Type');
-		$crud->columns('Name', 'ExpName', 'Reason', 'Amount', 'ApprovedBy', 'FullName'); // 'Type' removed due to lack of implementation - 'ApprovedBy' Removed for clarity
-		$crud->add_fields('Name', 'ExpName', 'Reason', 'Amount', 'ApprovedBy', 'FullName');
+		LEFT OUTER JOIN `Person` Per ON Per.PerID=Exp.SpentBy
+		LEFT OUTER JOIN OptionType Opt ON Opt.OptID = Exp.ExpType');
 		$crud->display_as('ExpName', 'Expenditure Name');
+		$crud->display_as('EType', 'Expenditure Type');
 		$crud->display_as('ProjID', 'Project Name');
-		$crud->display_as('ApprovedBy', 'Approved By'); //Removing in favor of who spent, rather than who authorized
 		$crud->display_as('FullName', 'Spent By');
 		$crud->display_as('SpentBy', 'Spent By');
 		$crud->display_as('Name', 'Project Name');
@@ -50,6 +47,15 @@ class Expenditures extends CI_Controller {
 		}
 
 		$crud->field_type("Name", "dropdown", $prjArr);
+				
+		//Expenditure Types
+		$exptypes = $crud->basic_model->return_query("SELECT OptID, data FROM OptionType
+		where type = 'Expenditure'");
+		$expArr = array();
+		foreach($exptypes as $exp) {
+			$expArr += [$exp->OptID => $exp->data];
+		}
+				
 
 		//Call Model to get the User's Full Names
 		$users = $crud->basic_model->return_query("SELECT PerID, CONCAT(FirstName, ' ', MiddleName, ' ', LastName) as FullName FROM Person");
@@ -62,7 +68,7 @@ class Expenditures extends CI_Controller {
 		
 		//Change the field type to a dropdown with values
 		//to add to the relational table
-		$crud->field_type("ApprovedBy", "dropdown", $usrArr);
+		$crud->field_type("EType", "dropdown", $expArr);
 		$crud->field_type("SpentBy", "dropdown", $usrArr);
 		$crud->field_type("FullName", "dropdown", $usrArr);
 		$crud->field_type("ProjID", "dropdown", $prjArr);
@@ -111,7 +117,6 @@ class Expenditures extends CI_Controller {
 		
 		//Change the field type to a dropdown with values
 		//to add to the relational table
-		$crud->field_type("ApprovedBy", "dropdown", $usrArr);
 		$crud->field_type("FullName", "dropdown", $usrArr);
 		$crud->callback_before_insert(array($this,'expenditure_add'));
 		

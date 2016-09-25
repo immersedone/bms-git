@@ -30,11 +30,12 @@ class Reimbursements extends CI_Controller {
 		LEFT OUTER JOIN Person P on R.PerID=P.PerID");
 		$crud->set_table('Reimbursement');
 		$crud->set_subject('Reimbursement');
-		$crud->set_read_fields("Reason", "ReimbDate", "Type", "ApprovedBy", "PerID", "IsPaid");
-		$crud->columns('FullName','ReimbDate', 'Reason', 'ApprovedBy', 'IsPaid'); //'Type', removed due to lack of implementation
-		$crud->add_fields('FullName', 'ReimbDate', 'Reason', 'ApprovedBy', 'IsPaid');
-		$crud->edit_fields('PerID', 'ReimbDate', 'Reason', 'ApprovedBy', 'IsPaid');
+		$crud->set_read_fields("ReimbDate", "ApprovedBy", "PerID", "ExpList", "IsPaid");
+		$crud->columns('FullName','ReimbDate', 'ApprovedBy', "ExpList",  'IsPaid'); //'Type', removed due to lack of implementation
+		$crud->add_fields('FullName', 'ReimbDate',  'ApprovedBy', "ExpList",  'IsPaid');
+		$crud->edit_fields('PerID', 'ReimbDate', 'ApprovedBy', "ExpList", 'IsPaid');
 		$crud->display_as('ReimbDate', 'Date');
+		$crud->display_as('ExpList', 'Expenditures');
 		$crud->display_as('ApprovedBy', 'Approved By');
 		$crud->display_as('FullName', 'Reimbursement For');
 		$crud->display_as('IsPaid', 'Is Paid');
@@ -49,6 +50,17 @@ class Reimbursements extends CI_Controller {
 		foreach($users as $usr) {
 			$usrArr += [$usr->PerID => $usr->FullName];
 		}
+		
+		//Available Days
+		$unpaidExp = $crud->basic_model->return_query("SELECT ExpID, CONCAT(ExpName, ' - ', Reason, ' - ', Amount) as ExpData FROM Expenditure WHERE IsPaid = 0");
+		
+		$expArr = array();
+		foreach($unpaidExp as $exp) {
+            $expArr += [$exp->ExpID => $exp->ExpData];
+        }
+		$crud->field_type("ExpList", "multiselect", $expArr);
+		
+		
 		
 		//Change the field type to a dropdown with values
 		//to add to the relational table
