@@ -89,8 +89,8 @@ class Expenditures extends CI_Controller {
 		$crud->basic_model->set_query_str('SELECT Proj.Name, CONCAT(Per.FirstName, " ", Per.MiddleName, " ", Per.LastName) as FullName, Exp.* from `Expenditure` Exp
 		LEFT OUTER JOIN `Project` Proj ON Proj.ProjID=Exp.ProjID
 		LEFT OUTER JOIN `Person` Per ON Per.PerID=Exp.SpentBy');
-		$crud->columns('Name', 'ExpName', 'Reason', 'Amount', 'ApprovedBy', 'FullName'); 
-		$crud->add_fields('ProjID', 'ExpName', 'Reason', 'Amount', 'ApprovedBy', 'FullName');
+		$crud->columns('Name', 'ExpName', 'Reason', 'Amount', 'GST', 'ApprovedBy', 'FullName'); 
+		$crud->add_fields('ProjID', 'ExpName', 'Reason', 'Amount', 'GST', 'ApprovedBy', 'FullName');
 		$crud->display_as('ExpName', 'Expenditure Name');
 		$crud->display_as('ApprovedBy', 'Approved By'); 
 		$crud->display_as('FullName', 'Spent By');
@@ -138,13 +138,14 @@ class Expenditures extends CI_Controller {
 		$ExpName = $_POST['ExpName'];
 		$Reason = $_POST['Reason'];
 		$amount = $_POST['Amount'];
+		$gst = $_POST['GST'];
 		$Approvedby = $_POST['ApprovedBy'];
 		$SpentBy = $_POST['FullName'];
 		$ProjectID = $_POST['Name'];
 		
 		$crud = new grocery_CRUD();
 		$crud->set_model('Expenditure_model');
-		$resp = $crud->basic_model->insert_expenditure($ExpName, $Reason, $amount, $Approvedby, $SpentBy, $ProjectID);
+		$resp = $crud->basic_model->insert_expenditure($ExpName, $Reason, $amount, $gst, $Approvedby, $SpentBy, $ProjectID);
 		echo $resp;
 	}
 

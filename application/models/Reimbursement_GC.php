@@ -29,10 +29,10 @@
 		{
 
             $resp = array();
-            $newDate = strtotime($date);
+            //$newDate = strtotime($date);
             
 
-            if($this->db->simple_query("INSERT INTO Reimbursement (Reason, ReimbDate, ApprovedBy, IsPaid, PerID) VALUES('$reason', '".$date."', '$Approvedby', '$ispaid', '$perid')")) 
+            if($this->db->simple_query("INSERT INTO Reimbursement (ReimbDate, ExpList, ApprovedBy, IsPaid, PerID) VALUES('$reason', '".$date."', '$Approvedby', '$ispaid', '$perid')")) 
 			{
 				//$this->db->simple_query("UPDATE Reimbursement SET `Amount`=`Amount`+$amount WHERE `PerID` = $perid ");
                 $resp['success'] = TRUE;

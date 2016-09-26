@@ -27,12 +27,12 @@
 		
 	*/
 
-        function insert_expenditure($ExpName, $Reason, $amount, $Approvedby, $SpentBy, $ProjectID)  
+        function insert_expenditure($ExpName, $Reason, $amount, $gst, $Approvedby, $SpentBy, $ProjectID)  
 		{
 
             $resp = array();
 
-            if($this->db->simple_query("INSERT INTO Expenditure (ExpName, Reason, Amount, ApprovedBy, SpentBy, ProjID) VALUES('$ExpName', '$Reason', '$amount', '$Approvedby', '$SpentBy', '$ProjectID')")) 
+            if($this->db->simple_query("INSERT INTO Expenditure (ExpName, Reason, Amount, GST, ApprovedBy, SpentBy, ProjID) VALUES('$ExpName', '$Reason', '$amount', '$gst', '$Approvedby', '$SpentBy', '$ProjectID')")) 
 			{
                 $resp['success'] = TRUE;
                 $resp['success_list_url'] = base_url() . "user/expenditures";

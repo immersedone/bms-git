@@ -76,27 +76,65 @@ class Reimbursements extends CI_Controller {
 			$crud->field_type("PerID", "readonly");
 		}
 
+		$crud->callback_before_update(array($this, 'update_expenditures'));
+
 		$output = $crud->render();
 
 		$this->render($output);
 	}
+
 	function reimbursement_add($post_array) {
 		
 		$this->reimb_insert($post_array);
 	}
+
+	function update_expenditures($post_array, $primary_key) {
+		if(!empty($post_array['ExpList'])) {
+			$exp = $post_array['ExpList'];
+			$ispaid = $post_array['IsPaid'];
+
+			for($i = 0; $i < count($exp); $i++) {
+
+				if($ispaid === "YES") {
+					$this->db->where('ExpID', $exp[$i]);
+					$this->db->update('Expenditure', array('IsPaid'=>1));
+				}
+			}
+		}
+
+		return $post_array;
+	}
+
 	public function reimb_insert() {
 
 		//Initialise and assign variables 
 		
 		$perid = $_POST['FullName'];
 		$date = $_POST['ReimbDate'];
-		$reason = $_POST['Reason'];
 		$ispaid = $_POST['IsPaid'];
+		$exp = $_POST['ExpList'];
 		$Approvedby = $_POST['ApprovedBy'];
 
+		$expStr = "";
+
+		for($i = 0; $i < count($exp); $i++) {
+			if($i === count($exp) - 1) {
+				$expStr .= $exp[$i];
+			} else {
+				$expStr .= $exp[$i] .',';
+			}
+
+			if($ispaid === "YES") {
+				$this->db->where('ExpID', $exp[$i]);
+				$this->db->update('Expenditure', array('IsPaid'=>1));
+			}
+		}
+
+		$newDateRep = preg_replace('/\//', '-',$date);
+		$newDate = date("Y-m-d H:i:s", strtotime($newDateRep));
 		$crud = new grocery_CRUD();
 		$crud->set_model('Reimbursement_GC');
-		$resp = $crud->basic_model->insert_reimb($reason, $date, $Approvedby, $ispaid, $perid);
+		$resp = $crud->basic_model->insert_reimb($newDate, $expStr, $Approvedby, $ispaid, $perid);
 		echo $resp;
 	}
 	
