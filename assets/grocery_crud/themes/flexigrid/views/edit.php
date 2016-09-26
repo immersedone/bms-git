@@ -23,13 +23,65 @@
 <div id='main-table-box'>
 	<?php echo form_open( $update_url, 'method="post" id="crudForm"  enctype="multipart/form-data"'); ?>
 	<div class='form-div'>
+		<?php if($subject === "Reimbursement") { ?>
+			<script>
+				$(function() {
+					$("#field-PerID").on('change', function() {
+						var value = $(this).val();
+
+						//Enable All Fields (to clear previous disables)
+						$("#field-ApprovedBy option").prop("disabled", false);
+						$("#field-ExpList option").each(function(i) {
+							$(this).prop("disabled", false);
+						});
+
+						//Disable Fields
+						$("#field-ApprovedBy option[value='"+value+"']").attr("disabled", "disabled");
+						$("#field-ExpList option").each(function(i) {
+							if($(this).data("expby") == value) {
+								$(this).attr("disabled", "disabled");
+							}
+						});
+
+						//Change Approved By Selection to Nothing
+						$("#field-ApprovedBy").val($("#field-ApprovedBy option:first").val());
+						$("#field-ApprovedBy").trigger("chosen:updated");
+						$("#field-ExpList").val('').trigger("chosen:updated");
+						$(".chosen-multiple-select").trigger("chosen:updated");
+					});
+				});
+			</script>
+		<?php } ?>
 		<?php
 		$counter = 0;
 			foreach($fields as $field)
 			{
 				$even_odd = $counter % 2 == 0 ? 'odd' : 'even';
 				$counter++;
+
 		?>
+		<?php if($field->field_name === "ExpList") { ?>
+				<script>
+					$(function() {
+						$("#field-ExpList > option").each(function(i) {
+						    var value = $(this).val();
+						    
+						    if(value === "") {
+						    	return true;
+						    }
+
+						    $.ajax({
+						    	url: "<?php echo base_url(); ?>user/expenditures/index/getExpBy/" + value,
+						    	type: "POST",
+						    	dataType: "json",
+						    	success: function(data) {
+						    		$("#field-ExpList option[value='"+value+"']").attr("data-expby", data.ExpBy);
+						    	}
+						    });
+						});
+					});
+				</script>
+			<?php } ?>
 			<div class='form-field-box <?php echo $even_odd?>' id="<?php echo $field->field_name; ?>_field_box">
 				<div class='form-display-as-box' id="<?php echo $field->field_name; ?>_display_as_box">
 					<?php echo $input_fields[$field->field_name]->display_as?><?php echo ($input_fields[$field->field_name]->required)? "<span class='required'>*</span> " : ""?> :

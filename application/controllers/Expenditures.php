@@ -148,4 +148,15 @@ class Expenditures extends CI_Controller {
 		echo $resp;
 	}
 
+	public function getExpBy($id) {
+
+		$crud = new grocery_CRUD();
+		$crud->set_model('Project_GC');
+		$res = $crud->basic_model->return_query("SELECT SpentBy FROM Expenditure WHERE ExpID='$id' LIMIT 1");
+
+		$resp = array();
+		$resp["ExpBy"] = $res[0]->SpentBy;
+		echo json_encode($resp);
+	}
+
 }
