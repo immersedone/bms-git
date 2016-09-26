@@ -674,30 +674,30 @@
 
 			echo $ajaxHTML;
 
-		}   elseif($field->field_name === "ContStatus") {
+		} elseif($field->field_name === "ExpType") {
 			//Get Project ID to convert to a name
-			$fbID = $input_fields["ContStatus"]->input;
-			$fbID = str_replace("</div>", "", $fbID);
-			$fbID = str_replace('<div id="field-ContStatus" class="readonly_label">', "", $fbID);
+			$perID = $input_fields["ExpType"]->input;
+			$perID = str_replace("</div>", "", $perID);
+			$perID = str_replace('<div id="field-ExpType" class="readonly_label">', "", $perID);
 			//Echo out HTML AJAX for name conversion
-			switch($fbID) {
-				case "PERMANENT":
-					$data = "Permanent";
-					break;
-				case "FIXED_TERM":
-					$data = "Fixed Term";
-					break;
-			}
+
 			$ajaxHTML = '<script type="text/javascript">
 			$(function() {
-				var data = "' . $data .'";
-				$("div#field-ContStatus.readonly_label").text(data);
+				$.ajax({
+					url: "'. base_url() .'user/expenditures/index/getExpName/' . $perID .'",
+					type: "POST",
+					dataType: "json",
+					success: function(data) {
+						$("div#field-ExpType.readonly_label").text(data.ExpName);
+					}
+
+				});
 			});
 			</script>';
 
 			echo $ajaxHTML;
 
-		}   ?>
+		}    ?>
 			<div class='form-field-box <?php echo $even_odd?>' id="<?php echo $field->field_name; ?>_field_box">
 				<div class='form-display-as-box' id="<?php echo $field->field_name; ?>_display_as_box">
 					<?php echo $input_fields[$field->field_name]->display_as?><?php echo ($input_fields[$field->field_name]->required)? "<span class='required'>*</span> " : ""?> :

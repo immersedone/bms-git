@@ -220,6 +220,7 @@ $route['user/expenditures/index/ajax_list'] = 'expenditures/expenditures';
 $route['user/expenditures/index/ajax_list_info'] = 'expenditures/expenditures';
 $route['user/expenditures/index/export'] = 'expenditures/expenditures';
 $route['user/expenditures/index/getExpBy/(:num)'] = 'expenditures/getExpBy/$1';
+$route['user/expenditures/index/getExpName/(:num)'] = 'expenditures/getExpName/$1';
 
 
 //Routes for reimbursements Page
