@@ -148,6 +148,29 @@
 
 			echo $ajaxHTML;
 
+		} elseif($field->field_name === "Supervisor") {
+			//Get Project ID to convert to a name
+			$perID = $input_fields["Supervisor"]->input;
+			$perID = str_replace("</div>", "", $perID);
+			$perID = str_replace('<div id="field-Supervisor" class="readonly_label">', "", $perID);
+			//Echo out HTML AJAX for name conversion
+
+			$ajaxHTML = '<script type="text/javascript">
+			$(function() {
+				$.ajax({
+					url: "'. base_url() .'user/people/index/getPerName/' . $perID .'",
+					type: "POST",
+					dataType: "json",
+					success: function(data) {
+						$("div#field-Supervisor.readonly_label").text(data.PerName);
+					}
+
+				});
+			});
+			</script>';
+
+			echo $ajaxHTML;
+
 		} elseif($field->field_name === "ProjOne_Sup") {
 			//Get Project ID to convert to a name
 			$perID = $input_fields["ProjOne_Sup"]->input;

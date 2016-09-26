@@ -32,7 +32,7 @@ class Volunteer extends CI_Controller {
 		$crud->set_subject('Volunteer');
 		$crud->basic_model->set_query_str('SELECT CONCAT(Per.FirstName, " ", Per.MiddleName, " ", Per.LastName) as FullName, Vol.* FROM `Volunteer` Vol 
 		LEFT OUTER JOIN Person Per on Per.PerID = Vol.PerID');
-		$crud->columns("FullName", "ProjOne", "ProjOne_Sup", "ProjOne_Dep", "ProjTwo", "ProjTwo_Sup", "ProjTwo_Dep", "ProjThree", "ProjThree_Sup", "ProjThree_Dep", "RefFullName", "RefMobile", "RefHPhone", "RefRelToVol", "DaysAvailable", "ContSkills", "ContQual");
+		$crud->columns("FullName",  "ProjID", "Supervisor", "BGCSDepartment", "isActive", "DateStarted", "DateFinished", "RefFullName", "RefMobile", "RefHPhone", "RefRelToVol", "DaysAvailable", "ContSkills", "ContQual");
 		$crud->display_as("BGCSDepartment", "Department Assigned To");
 		$crud->display_as("RefFullName", "Referee Full Name");
 		$crud->display_as("RefMobile", "Referee Mobile");
@@ -43,19 +43,16 @@ class Volunteer extends CI_Controller {
 		$crud->display_as("ContQual", "Qualifications and Current Studies");
 		$crud->display_as("FullName", "Full Name");
 		$crud->display_as("PerID", "Full Name");
-		$crud->display_as("ProjOne", "Project #1");
-		$crud->display_as("ProjTwo", "Project #2");
-		$crud->display_as("ProjThree", "Project #3");
-		$crud->display_as("ProjOne_Sup", "Supervisor #1");
-		$crud->display_as("ProjTwo_Sup", "Supervisor #2");
-		$crud->display_as("ProjThree_Sup", "Supervisor #3");
-		$crud->display_as("ProjOne_Dep", "BGCS Department #1");
-		$crud->display_as("ProjTwo_Dep", "BGCS Department #2");
-		$crud->display_as("ProjThree_Dep", "BGCS Department #3");
+		$crud->display_as("ProjID", "Project");
+		$crud->display_as("Supervisor", "Supervisor");
+		$crud->display_as("BGCSDepartment", "BGCS Department");
+		$crud->display_as("DateStarted", "Date Started");
+		$crud->display_as("DateFinished", "Date Finished");
+		$crud->display_as("isActive", "Is Active");
 
-		$crud->add_fields("FullName", "ProjOne", "ProjOne_Sup", "ProjOne_Dep", "ProjTwo", "ProjTwo_Sup", "ProjTwo_Dep", "ProjThree", "ProjThree_Sup", "ProjThree_Dep", "RefFullName", "RefMobile", "RefHPhone", "RefRelToVol", "DaysAvailable", "ContSkills", "ContQual");
-		$crud->edit_fields("PerID", "ProjOne", "ProjOne_Sup", "ProjOne_Dep", "ProjTwo", "ProjTwo_Sup", "ProjTwo_Dep", "ProjThree", "ProjThree_Sup", "ProjThree_Dep", "RefFullName", "RefMobile", "RefHPhone", "RefRelToVol", "DaysAvailable", "ContSkills", "ContQual");
-		$crud->set_read_fields("PerID", "ProjOne", "ProjOne_Sup", "ProjOne_Dep", "ProjTwo", "ProjTwo_Sup", "ProjTwo_Dep", "ProjThree", "ProjThree_Sup", "ProjThree_Dep", "RefFullName", "RefMobile", "RefHPhone", "RefRelToVol", "DaysAvailable", "ContSkills", "ContQual");
+		$crud->add_fields("FullName", "ProjID", "Supervisor", "BGCSDepartment", "isActive", "DateStarted", "DateFinished", "RefFullName", "RefMobile", "RefHPhone", "RefRelToVol", "DaysAvailable", "ContSkills", "ContQual");
+		$crud->edit_fields("PerID",  "ProjID", "Supervisor", "BGCSDepartment", "isActive", "DateStarted", "DateFinished", "RefFullName", "RefMobile", "RefHPhone", "RefRelToVol", "DaysAvailable", "ContSkills", "ContQual");
+		$crud->set_read_fields("PerID",  "ProjID", "Supervisor", "BGCSDepartment", "isActive", "DateStarted", "DateFinished", "RefFullName", "RefMobile", "RefHPhone", "RefRelToVol", "DaysAvailable", "ContSkills", "ContQual");
 
 
 		//List of Projects
@@ -66,9 +63,7 @@ class Volunteer extends CI_Controller {
 			$projArr += [$proj->ProjID => $proj->Name];
 		}
 
-		$crud->field_type("ProjOne", "dropdown", $projArr);
-		$crud->field_type("ProjTwo", "dropdown", $projArr);
-		$crud->field_type("ProjThree", "dropdown", $projArr);
+		$crud->field_type("ProjID", "dropdown", $projArr);
 
 
 		//BCGS Departments
@@ -77,9 +72,7 @@ class Volunteer extends CI_Controller {
 		foreach($bcgs as $bc) {
 			$bcgsArr += [$bc->OptID => $bc->data];
 		}
-		$crud->field_type("ProjOne_Dep", "dropdown", $bcgsArr);
-		$crud->field_type("ProjTwo_Dep", "dropdown", $bcgsArr);
-		$crud->field_type("ProjThree_Dep", "dropdown", $bcgsArr);
+		$crud->field_type("BGCSDepartment", "dropdown", $bcgsArr);
 
 		//Days Array
 		$availability = $crud->basic_model->return_query("SELECT OptID, data FROM OptionType WHERE type='Availability'");
@@ -102,9 +95,7 @@ class Volunteer extends CI_Controller {
 		//to add to the relational table
 		$crud->field_type("FullName", "dropdown", $usrArr);
 		$crud->field_type("PerID", "dropdown", $usrArr);
-		$crud->field_type("ProjOne_Sup", "dropdown", $usrArr);
-		$crud->field_type("ProjTwo_Sup", "dropdown", $usrArr);
-		$crud->field_type("ProjThree_Sup", "dropdown", $usrArr);
+		$crud->field_type("Supervisor", "dropdown", $usrArr);
 
 		$state = $crud->getState();
 		$stateInfo = $crud->getStateInfo();
@@ -163,8 +154,28 @@ class Volunteer extends CI_Controller {
 			$crudThree->set_table('Volunteer');
 			$crudThree->set_subject('Volunteer History');
 			$crudThree->basic_model->set_query_str("SELECT * FROM Volunteer WHERE PerID='$perID' AND VolID!='$pkID'");
+			$crudThree->columns("ProjID", "Supervisor", "BGCSDepartment", "isActive", "DateStarted", "DateFinished", "RefFullName", "RefMobile", "RefHPhone", "RefRelToVol", "DaysAvailable", "ContSkills", "ContQual");
+			$crudThree->display_as("ProjID", "Project Name");
+			$crudThree->display_as("BGCSDepartment", "BGCS Department");
+			$crudThree->display_as("DateStarted", "Date Started");
+			$crudThree->display_as("DateFinished", "Date Finished");
+			$crudThree->display_as("RefFullName", "Referee Full Name");
+			$crudThree->display_as("RefMobile", "Referee Mobile");
+			$crudThree->display_as("RefHPhone", "Referee Home Phone");
+			$crudThree->display_as("RefRelToVol", "Referee Relation to Volunteer");
+			$crudThree->display_as("DaysAvailable", "Days Available");
+			$crudThree->display_as("ContSkills", "Skills and Experience");
+			$crudThree->display_as("isActive", "Is Active");
+			$crudThree->display_as("ContQual", "Qualifications and Current Studies");
+			$crudThree->field_type("ProjID", "dropdown", $projArr);
+			$crudThree->field_type("BGCSDepartment", "dropdown", $bcgsArr);
+			$crudThree->field_type("DaysAvailable", "multiselect", $daysArr);
+			$crudThree->field_type("Supervisor", "dropdown", $usrArr);
+			
 			$crudThree->setStateCode(1);
-			$crudThree->unset_operations();
+			$crudThree->unset_add();
+			$crudThree->unset_edit();
+			$crudThree->unset_delete();
 			$volHistoryOP = $crudThree->render();
 
 
