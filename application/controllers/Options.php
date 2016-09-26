@@ -51,7 +51,9 @@ class Options extends CI_Controller {
 				"Position" => "Position",
 				"BGCS_DEP" => "BGCS Department",
 				"SKILLS_EXP" => "Skills & Experience",
-				"QUAL_STUD" => "Qualifications & Current Studies"
+				"QUAL_STUD" => "Qualifications & Current Studies",
+				"EXP_TYPE" => "Expenditure Type",
+				"SPR_FND" => "Superannuation Fund"
 			);
 
 			$crud->field_type("type", "dropdown", $optArr);

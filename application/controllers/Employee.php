@@ -172,7 +172,7 @@ class Employee extends CI_Controller {
         $crud->field_type("Supervisor", "dropdown", $visorArr);
 
         //Superannuation Funds
-        $funds = $crud->basic_model->return_query("SELECT OptID, data FROM OptionType WHERE type='Fund'");
+        $funds = $crud->basic_model->return_query("SELECT OptID, data FROM OptionType WHERE type='SPR_FND'");
         $fundArr = array();
         foreach($funds as $fnd) {
             $fundArr += [$fnd->OptID => $fnd->data];

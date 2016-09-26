@@ -33,11 +33,16 @@ class Expenditures extends CI_Controller {
 		LEFT OUTER JOIN `Person` Per ON Per.PerID=Exp.SpentBy
 		LEFT OUTER JOIN OptionType Opt ON Opt.OptID = Exp.ExpType');
 		$crud->display_as('ExpName', 'Expenditure Name');
+		$crud->display_as('ExpType', 'Expenditure Type');
 		$crud->display_as('EType', 'Expenditure Type');
 		$crud->display_as('ProjID', 'Project Name');
 		$crud->display_as('FullName', 'Spent By');
 		$crud->display_as('SpentBy', 'Spent By');
 		$crud->display_as('Name', 'Project Name');
+		$crud->columns('ProjID','ExpName', 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType');
+		$crud->set_read_fields('ProjID','ExpName', 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType');
+		$crud->add_fields('ProjID','ExpName', 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType');
+		$crud->edit_fields('ProjID','ExpName', 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType');
 
 		$projects = $crud->basic_model->return_query("SELECT ProjID, Name FROM Project");
 
@@ -49,8 +54,7 @@ class Expenditures extends CI_Controller {
 		$crud->field_type("Name", "dropdown", $prjArr);
 				
 		//Expenditure Types
-		$exptypes = $crud->basic_model->return_query("SELECT OptID, data FROM OptionType
-		where type = 'Expenditure'");
+		$exptypes = $crud->basic_model->return_query("SELECT OptID, data FROM OptionType WHERE type = 'EXP_TYPE'");
 		$expArr = array();
 		foreach($exptypes as $exp) {
 			$expArr += [$exp->OptID => $exp->data];
@@ -68,6 +72,7 @@ class Expenditures extends CI_Controller {
 		
 		//Change the field type to a dropdown with values
 		//to add to the relational table
+		$crud->field_type("ExpType", "dropdown", $expArr);
 		$crud->field_type("EType", "dropdown", $expArr);
 		$crud->field_type("SpentBy", "dropdown", $usrArr);
 		$crud->field_type("FullName", "dropdown", $usrArr);
