@@ -1,5 +1,5 @@
 <?php
-class FundingBody extends CI_Controller {
+class Fundingbody extends CI_Controller {
     public function __construct()
     {
         parent::__construct();

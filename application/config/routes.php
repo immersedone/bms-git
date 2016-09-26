@@ -280,6 +280,22 @@ $route['user/funding/index/ajax_list_info'] = 'funding/funding';
 $route['user/funding/index/export'] = 'funding/funding';
 $route['user/funding/index/getFBName/(:num)'] = 'funding/getFBName/$1';
 
+//Routes for funding body Page
+$route['user/fundingbody'] = 'fundingbody';
+$route['user/fundingbody/index'] = 'fundingbody';
+$route['user/fundingbody/index/add'] = 'fundingbody/fundingbody';
+$route['user/fundingbody/index/insert_validation'] = 'fundingbody/fundingbody';
+$route['user/fundingbody/index/edit/(:num)'] = 'fundingbody/fundingbody/$1';
+$route['user/fundingbody/index/update/(:num)'] = 'fundingbody/fundingbody/$1';
+$route['user/fundingbody/index/update_validation/(:num)'] = 'fundingbody/fundingbody/$1';
+$route['user/fundingbody/index/success/(:num)'] = 'fundingbody/fundingbody/$1';
+$route['user/fundingbody/index/read/(:num)'] = 'fundingbody/fundingbody/$1';
+$route['user/fundingbody/index/delete/(:num)'] = 'fundingbody/fundingbody/$1';
+$route['user/fundingbody/index/print'] = 'fundingbody/fundingbody';
+$route['user/fundingbody/index/ajax_list'] = 'fundingbody/fundingbody';
+$route['user/fundingbody/index/ajax_list_info'] = 'fundingbody/fundingbody';
+$route['user/fundingbody/index/export'] = 'fundingbody/fundingbody';
+
 //Routes for reports Page
 $route['user/reports'] = 'reports';
 $route['user/reports/index'] = 'reports';
