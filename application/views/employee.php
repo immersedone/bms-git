@@ -9,10 +9,10 @@
 
     <title>Employees | Banksia Gardens</title>
 
-    <?php foreach($css_files as $file): ?>
+    <?php foreach($employee->css_files as $file): ?>
       <link type="text/css" rel="stylesheet" href="<?php echo $file; ?>" />
     <?php endforeach; ?>
-    <?php foreach($js_files as $file): ?>
+    <?php foreach($employee->js_files as $file): ?>
       <script src="<?php echo $file; ?>"></script>
     <?php endforeach; ?>
 
@@ -60,7 +60,11 @@
         <div class="right_col" role="main">
           <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">  
-              <?php echo $output; ?>
+              <?php echo $employee->output; ?>
+              <?php if($multiView === "YES") {
+                    echo '<h4 class="projTitle">Extra Details</h4>';
+                    echo $fullDetails->output;
+                } ?>
             </div>
           </div>
         </div>
