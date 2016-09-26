@@ -51,8 +51,7 @@ class Reimbursements extends CI_Controller {
 			$usrArr += [$usr->PerID => $usr->FullName];
 		}
 		
-		//Available Days
-		$unpaidExp = $crud->basic_model->return_query("SELECT ExpID, CONCAT(ExpName, ' - ', Reason, ' - ', Amount) as ExpData FROM Expenditure WHERE IsPaid = 0");
+				$unpaidExp = $crud->basic_model->return_query("SELECT ExpID, CONCAT(ExpName, ' - ', Reason, ' - ', Amount) as ExpData FROM Expenditure");
 		
 		$expArr = array();
 		foreach($unpaidExp as $exp) {
@@ -72,9 +71,17 @@ class Reimbursements extends CI_Controller {
 		
 		$state = $crud->getState();
 
-		if($state === "edit") {
+		if ($state === "add" or $state === "edit") {
 			$crud->field_type("PerID", "readonly");
+			$unpaidExp = $crud->basic_model->return_query("SELECT ExpID, CONCAT(ExpName, ' - ', Reason, ' - ', Amount) as ExpData FROM Expenditure WHERE IsPaid = 0");
+
+			$expArr = array();
+			foreach($unpaidExp as $exp) {
+				$expArr += [$exp->ExpID => $exp->ExpData];
+			}
+			$crud->field_type("ExpList", "multiselect", $expArr);
 		}
+		
 
 		$crud->callback_before_update(array($this, 'update_expenditures'));
 

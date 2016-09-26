@@ -141,7 +141,9 @@ class Employee extends CI_Controller {
 		$crud->field_type('PersonalLeave', 'dropdown', $newPersonalLeaveArr);
 
 		//Call Model to get the User's Full Names
-		$users = $crud->basic_model->return_query("SELECT PerID, CONCAT(FirstName, ' ', MiddleName, ' ', LastName) as FullName FROM Person");
+		$users = $crud->basic_model->return_query("SELECT P.PerID, CONCAT(FirstName, ' ', MiddleName, ' ', LastName) as FullName FROM Person P
+		LEFT OUTER JOIN Employee E on E.PerID = P.PerID
+		WHERE E.PerID IS NULL");
 
 		//Convert Return Object into Associative Array
 		$usrArr = array();
@@ -151,7 +153,6 @@ class Employee extends CI_Controller {
 		
 		//Change the field type to a dropdown with values
 		//to add to the relational table
-		$crud->field_type("FullName", "dropdown", $usrArr);
 		$crud->field_type("PerID", "dropdown", $usrArr);
 
 		//Available Days
@@ -224,7 +225,7 @@ class Employee extends CI_Controller {
 			$crudTwo->set_subject('Person Details');
 
 			//Get the Person ID
-			$perID = $crudTwo->basic_model->return_query("SELECT PerID FROM Volunteer WHERE VolID='$pkID'");
+			$perID = $crudTwo->basic_model->return_query("SELECT PerID FROM Employee WHERE EmpID='$pkID'");
 			$perID = $perID[0]->PerID;
 
 			$crudTwo->basic_model->set_query_str('SELECT Sub.SuburbName as SubName, Sub.Postcode as Postcode, Per.* from `Person` Per

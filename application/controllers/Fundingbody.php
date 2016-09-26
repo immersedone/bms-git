@@ -30,8 +30,9 @@ class Fundingbody extends CI_Controller {
 		LEFT OUTER JOIN Suburb S on S.SuburbID = F.Location');
         $crud->display_as('SubName', 'Suburb');
         $crud->display_as('BodyName', 'Body Name');
+        $crud->display_as('ContactNo', 'Contact Number');
 	
-		$crud->columns('BodyName','SubName','Address','URL','Comments');
+		$crud->columns('BodyName','SubName','Address', 'ContactNo', 'URL','Comments');
 		$crud->field_type('Comments', 'text');
 		
 		$suburbs = $crud->basic_model->return_query("SELECT SuburbID, CONCAT(Postcode, ' - ', SuburbName) as FullSub FROM Suburb");

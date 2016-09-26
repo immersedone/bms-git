@@ -62,7 +62,7 @@ class People extends CI_Controller {
 		$crud->field_type('Hash', 'hidden');
 		$crud->field_type('Timeout', 'hidden');
 
-
+		$crud->required_fields('Firstname', 'Lastname', 'Address', 'Suburb');
 		//Call model to get languages
 		$languages = $crud->basic_model->return_query("SELECT `LangID`, `LangName`, `LangISO_639_1` FROM Language");
 		$langArr = array();

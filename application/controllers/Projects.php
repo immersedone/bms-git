@@ -149,13 +149,11 @@ class Projects extends CI_Controller {
 		$GCM->grids[3]->set_model('Extended_generic_model'); 
 		$GCM->grids[3]->set_table('Expenditure');
 		$GCM->grids[3]->set_subject('Expenditure');
-		$GCM->grids[3]->basic_model->set_query_str('SELECT Proj.Name, CONCAT(Per.FirstName, " ", Per.MiddleName, " ", Per.LastName) as FullName, CONCAT(sbPer.FirstName, " ", sbPer.MiddleName, " ", sbPer.LastName) as SpentByPer, Exp.* from `Expenditure` Exp
+		$GCM->grids[3]->basic_model->set_query_str('SELECT Proj.Name, CONCAT(sbPer.FirstName, " ", sbPer.MiddleName, " ", sbPer.LastName) as SpentByPer, Exp.* from `Expenditure` Exp
 		LEFT OUTER JOIN `Project` Proj ON Proj.ProjID=Exp.ProjID
-		LEFT OUTER JOIN `Person` Per ON Per.PerID=Exp.ApprovedBy 
 		LEFT OUTER JOIN `Person` sbPer ON sbPer.PerID=Exp.SpentBy WHERE Exp.ProjID='.$id);
-		$GCM->grids[3]->columns('Name', 'ExpName', 'Reason', 'Amount', 'FullName', 'SpentByPer', 'Type');
+		$GCM->grids[3]->columns('Name', 'ExpName', 'Reason', 'Amount','SpentByPer', 'Type');
 		$GCM->grids[3]->display_as('Name', 'Project Name');
-		$GCM->grids[3]->display_as('FullName', 'Approved By');
 		$GCM->grids[3]->display_as('SpentByPer', 'Spent By');
 		$GCM->grids[3]->unset_edit();
 		$GCM->grids[3]->unset_delete();
@@ -169,7 +167,7 @@ class Projects extends CI_Controller {
 		LEFT OUTER JOIN `FundingBody` FB on FB.FundBodyID=Fund.FundBodyID
 		LEFT OUTER JOIN `Project` Proj on Proj.ProjID=Fund.ProjID
 		LEFT OUTER JOIN `Person` Per on Per.PerID=Fund.ApprovedBy WHERE Fund.ProjID='.$id, ' GROUP BY FundID');
-		$GCM->grids[4]->columns('ProjName', 'FBName', 'Amount', 'PaymentType', 'FullName', 'ApprovedOn');
+		$GCM->grids[4]->columns('FBName', 'Amount', 'PaymentType', 'FullName', 'ApprovedOn');
 		$GCM->grids[4]->display_as('ProjName', 'Project Name');
 		$GCM->grids[4]->display_as('FBName', 'Funding Body');
 		$GCM->grids[4]->display_as('PaymentType', 'Payment Type');
@@ -235,7 +233,7 @@ class Projects extends CI_Controller {
 		LEFT OUTER JOIN `Project` Proj ON `PersonProject`.ProjID=Proj.ProjID 
 		LEFT OUTER JOIN `Suburb` Sub ON Sub.SuburbID=Per.SuburbID 
 		WHERE `PersonProject`.Role="VOLUNTEER" AND PersonProject.ProjID='.$id, ' GROUP BY FullName, Name, ProjRole');
-		$GCM->grids[5]->columns("Name", "FullName", "Address", "Postcode", "SubName", "WorkEmail", "PersonalEmail", "Mobile", "HomePhone");
+		$GCM->grids[5]->columns("FullName", "Address", "Postcode", "SubName", "WorkEmail", "PersonalEmail", "Mobile", "HomePhone");
 		$GCM->grids[5]->display_as("Name", "Project Name");
 		$GCM->grids[5]->display_as("ProjRole", "Project Role");
 		$GCM->grids[5]->display_as("FullName", "Full Name");
@@ -294,7 +292,7 @@ class Projects extends CI_Controller {
 		LEFT OUTER JOIN `Project` Proj ON `PersonProject`.ProjID=Proj.ProjID 
 		LEFT OUTER JOIN `Suburb` Sub ON Sub.SuburbID=Per.SuburbID 
 		WHERE `PersonProject`.Role="Employee" AND PersonProject.ProjID='.$id, ' GROUP BY FullName, Name, ProjRole');
-		$GCM->grids[6]->columns("Name", "FullName", "Address", "Postcode", "SubName", "WorkEmail", "PersonalEmail", "Mobile", "HomePhone");
+		$GCM->grids[6]->columns("FullName", "Address", "Postcode", "SubName", "WorkEmail", "PersonalEmail", "Mobile", "HomePhone");
 		$GCM->grids[6]->display_as("Name", "Project Name");
 		$GCM->grids[6]->display_as("ProjRole", "Project Role");
 		$GCM->grids[6]->display_as("FullName", "Full Name");

@@ -50,7 +50,7 @@
 						    	success: function(data) {
 						    		$("#field-ExpList option[value='"+value+"']").attr("data-expby", data.ExpBy);
 						    		if(data.ExpBy !== Per) {
-						    			$("#field-ExpList option[value='"+value+"']").attr("disabled", "disabled");
+						    			$("#field-ExpList option[value='"+value+"']").hide();
 						    		}
 						    		$("#field-ExpList").trigger("chosen:updated");
 						    	}
