@@ -38,7 +38,7 @@
 							//Disable Fields
 							$("#field-ApprovedBy option[value='"+value+"']").attr("disabled", "disabled");
 							$("#field-ExpList option").each(function(i) {
-								if($(this).data("expby") == value) {
+								if($(this).data("expby") != value) {
 									$(this).attr("disabled", "disabled");
 								}
 							});

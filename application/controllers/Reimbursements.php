@@ -39,7 +39,7 @@ class Reimbursements extends CI_Controller {
 		$crud->display_as('ApprovedBy', 'Approved By');
 		$crud->display_as('FullName', 'Reimbursement For');
 		$crud->display_as('IsPaid', 'Is Paid');
-		$crud->display_as('PerID', 'Spent By');
+		$crud->display_as('PerID', 'Reimbursement For');
 
 
 		//Call Model to get the User's Full Names
@@ -70,6 +70,11 @@ class Reimbursements extends CI_Controller {
 		
 		$crud->callback_before_insert(array($this,'reimbursement_add'));
 		
+		$state = $crud->getState();
+
+		if($state === "edit") {
+			$crud->field_type("PerID", "readonly");
+		}
 
 		$output = $crud->render();
 

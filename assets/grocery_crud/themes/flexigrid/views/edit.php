@@ -23,35 +23,6 @@
 <div id='main-table-box'>
 	<?php echo form_open( $update_url, 'method="post" id="crudForm"  enctype="multipart/form-data"'); ?>
 	<div class='form-div'>
-		<?php if($subject === "Reimbursement") { ?>
-			<script>
-				$(function() {
-					$("#field-PerID").on('change', function() {
-						var value = $(this).val();
-
-						//Enable All Fields (to clear previous disables)
-						$("#field-ApprovedBy option").prop("disabled", false);
-						$("#field-ExpList option").each(function(i) {
-							$(this).prop("disabled", false);
-						});
-
-						//Disable Fields
-						$("#field-ApprovedBy option[value='"+value+"']").attr("disabled", "disabled");
-						$("#field-ExpList option").each(function(i) {
-							if($(this).data("expby") == value) {
-								$(this).attr("disabled", "disabled");
-							}
-						});
-
-						//Change Approved By Selection to Nothing
-						$("#field-ApprovedBy").val($("#field-ApprovedBy option:first").val());
-						$("#field-ApprovedBy").trigger("chosen:updated");
-						$("#field-ExpList").val('').trigger("chosen:updated");
-						$(".chosen-multiple-select").trigger("chosen:updated");
-					});
-				});
-			</script>
-		<?php } ?>
 		<?php
 		$counter = 0;
 			foreach($fields as $field)
@@ -65,6 +36,8 @@
 					$(function() {
 						$("#field-ExpList > option").each(function(i) {
 						    var value = $(this).val();
+						    var Per = $("#field-PerID").html();
+						    //alert(Per);
 						    
 						    if(value === "") {
 						    	return true;
@@ -76,12 +49,42 @@
 						    	dataType: "json",
 						    	success: function(data) {
 						    		$("#field-ExpList option[value='"+value+"']").attr("data-expby", data.ExpBy);
+						    		if(data.ExpBy !== Per) {
+						    			$("#field-ExpList option[value='"+value+"']").attr("disabled", "disabled");
+						    		}
+						    		$("#field-ExpList").trigger("chosen:updated");
 						    	}
 						    });
+
 						});
+						
 					});
 				</script>
-			<?php } ?>
+			<?php } elseif($field->field_name === "PerID") {
+			//Get Project ID to convert to a name
+			$perID = $input_fields["PerID"]->input;
+			$perID = str_replace("</div>", "", $perID);
+			$perID = str_replace('<div id="field-PerID" class="readonly_label">', "", $perID);
+			//Echo out HTML AJAX for name conversion
+
+			$ajaxHTML = '<script type="text/javascript">
+			$(function() {
+				$.ajax({
+					url: "'. base_url() .'user/people/index/getPerName/' . $perID .'",
+					type: "POST",
+					dataType: "json",
+					success: function(data) {
+						$("div#field-PerID.readonly_label").attr("data-expby", "' . $perID .'");
+						$("div#field-PerID.readonly_label").text(data.PerName);
+					}
+
+				});
+			});
+			</script>';
+
+			echo $ajaxHTML;
+
+		}?>
 			<div class='form-field-box <?php echo $even_odd?>' id="<?php echo $field->field_name; ?>_field_box">
 				<div class='form-display-as-box' id="<?php echo $field->field_name; ?>_display_as_box">
 					<?php echo $input_fields[$field->field_name]->display_as?><?php echo ($input_fields[$field->field_name]->required)? "<span class='required'>*</span> " : ""?> :
@@ -125,6 +128,18 @@
 	<?php echo form_close(); ?>
 </div>
 </div>
+<?php
+echo $subject;
+if($subject === "Reimbursement") { ?>
+	<script type="text/javascript">
+	$(window).on("load", function() {
+		var selVal = $("#field-PerID.readonly_label").html();
+		//alert(selVal);
+		$("#field-ApprovedBy option[value='" + selVal + "']").attr("disabled", "disabled");
+		$("#field-ApprovedBy").trigger("chosen:updated");
+	});
+	</script>
+<?php } ?>
 <script>
 	var validation_url = '<?php echo $validation_url?>';
 	var list_url = '<?php echo $list_url?>';
