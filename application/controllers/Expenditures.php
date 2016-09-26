@@ -166,4 +166,14 @@ class Expenditures extends CI_Controller {
 		echo json_encode($resp);
 	}
 
+	public function getExpName($id) {
+		$crud = new grocery_CRUD();
+		$crud->set_model('Project_GC');
+		$res = $crud->basic_model->return_query("SELECT data FROM OptionType WHERE OptID='$id' LIMIT 1");
+
+		$resp = array();
+		$resp["ExpName"] = $res[0]->data;
+		echo json_encode($resp); 
+	}
+
 }
