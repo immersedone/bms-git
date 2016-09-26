@@ -3393,6 +3393,11 @@ class grocery_CRUD_States extends grocery_CRUD_Layout
 		return $this->states[$this->getStateCode()];
 	}
 
+	public function setState()
+	{
+		$this->states[$this->getStateCode()];
+	}
+
 	protected function getListUrl()
 	{
 		return $this->state_url('',true);
@@ -4079,7 +4084,14 @@ class Grocery_CRUD extends grocery_CRUD_States
 		return $this;
 	}
 
- 	
+ 	// Get Read Fields
+    public function output_read_fields() {
+    	return $this->read_fields;
+    }
+
+    public function add_read_fields($tableName, $fields) {
+
+    }
 
 	/**
 	 *
@@ -5720,5 +5732,7 @@ class UploadHandler
         header('Content-type: application/json');
         echo json_encode($success);
     }
+
+
 
 }
