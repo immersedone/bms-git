@@ -219,6 +219,7 @@ $route['user/expenditures/index/print'] = 'expenditures/expenditures';
 $route['user/expenditures/index/ajax_list'] = 'expenditures/expenditures';
 $route['user/expenditures/index/ajax_list_info'] = 'expenditures/expenditures';
 $route['user/expenditures/index/export'] = 'expenditures/expenditures';
+$route['user/expenditures/index/getExpBy/(:num)'] = 'expenditures/getExpBy/$1';
 
 
 //Routes for reimbursements Page
@@ -278,11 +279,6 @@ $route['user/funding/index/ajax_list'] = 'funding/funding';
 $route['user/funding/index/ajax_list_info'] = 'funding/funding';
 $route['user/funding/index/export'] = 'funding/funding';
 $route['user/funding/index/getFBName/(:num)'] = 'funding/getFBName/$1';
-
-//Routes for Funding Bodies
-$route['user/fundingbody'] = 'fundingbody';
-$route['user/fundingbody/index'] = 'fundingbody';
-$route['user/fundingbody/index/add'] = 'fundingbody/fundingbody';
 
 //Routes for reports Page
 $route['user/reports'] = 'reports';
