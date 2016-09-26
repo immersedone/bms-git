@@ -46,8 +46,8 @@ class Volunteer extends CI_Controller {
 		$crud->display_as("ProjID", "Project");
 		$crud->display_as("Supervisor", "Supervisor");
 		$crud->display_as("BGCSDepartment", "BGCS Department");
-		$crud->display_as("DateStarted", "Date Started");
-		$crud->display_as("DateFinished", "Date Finished");
+		$crud->display_as("DateStarted", "Date Started on Project");
+		$crud->display_as("DateFinished", "Date Finished on Project");
 		$crud->display_as("isActive", "Is Active");
 
 		$crud->add_fields("FullName", "ProjID", "Supervisor", "BGCSDepartment", "isActive", "DateStarted", "DateFinished", "RefFullName", "RefMobile", "RefHPhone", "RefRelToVol", "DaysAvailable", "ContSkills", "ContQual");
@@ -125,8 +125,8 @@ class Volunteer extends CI_Controller {
 			//$crud->display_as('WorkEmail', 'Work Email');
 			$crudTwo->display_as('PersonalEmail', 'Personal Email');
 			$crudTwo->display_as('HomePhone', 'Home Phone');
-			$crudTwo->display_as('DateStarted', 'Date Started');
-			$crudTwo->display_as('DateFinished', 'Date Finished');
+			$crudTwo->display_as('DateStarted', 'Date Started with BGCS');
+			$crudTwo->display_as('DateFinished', 'Date Finished with BGCS');
 			$crudTwo->display_as('ContractSigned', 'Contract Signed');
 			$crudTwo->display_as('PaperworkCompleted', 'Paperwork is Completed');
 			$crudTwo->display_as('SubName', 'Suburb');
@@ -146,6 +146,7 @@ class Volunteer extends CI_Controller {
 			$crudTwo->field_type('Password', 'hidden');
 			$crudTwo->field_type('Hash', 'hidden');
 			$crudTwo->field_type('Timeout', 'hidden');
+			$crudTwo->set_read_fields("Address", "SuburbID", "PersonalEmail", "Mobile", "HomePhone", "Status", "DateStarted", "DateFinished", "ContractSigned", "PaperworkCompleted", "WWC", "WWCFiled", "PoliceCheck", "TeacherRegCheck", "FAQual", "DateofBirth", "LanguagesSpoken", "EmergContName", "EmergContMob", "EmergContHPhone", "EmergContWPhone", "EmergContRelToPer");
 			$output["perID"] = $perID;
 			$crudTwo->setNewState($perID);
 

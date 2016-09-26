@@ -258,7 +258,8 @@ class Employee extends CI_Controller {
 			$crudTwo->field_type('Password', 'hidden');
 			$crudTwo->field_type('Hash', 'hidden');
 			$crudTwo->field_type('Timeout', 'hidden');
-			$output["perID"] = $perID;
+			//$output["perID"] = $perID;
+			$crudTwo->set_read_fields("Address", "SuburbID", "PersonalEmail", "Mobile", "HomePhone", "Status", "DateStarted", "DateFinished", "ContractSigned", "PaperworkCompleted", "WWC", "WWCFiled", "PoliceCheck", "TeacherRegCheck", "FAQual", "DateofBirth", "LanguagesSpoken", "EmergContName", "EmergContMob", "EmergContHPhone", "EmergContWPhone", "EmergContRelToPer");
 			$crudTwo->setNewState($perID);
 
 			$fullDetailsOP = $crudTwo->render();
