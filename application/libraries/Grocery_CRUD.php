@@ -3104,6 +3104,8 @@ class grocery_CRUD_States extends grocery_CRUD_Layout
     const STATE_READ = 18;
     const STATE_DELETE_MULTIPLE = '19';
 
+    public $extState;
+
 	protected $states = array(
 		0	=> 'unknown',
 		1	=> 'list',
@@ -3136,7 +3138,10 @@ class grocery_CRUD_States extends grocery_CRUD_Layout
         $second_parameter = $segment_object->second_parameter;
 
         $state_info = (object)array();
-
+        if(isset($this->extState)) {
+        	$state_info = $this->extState;
+        	return $state_info;
+        } else {
         switch ($state_code) {
             case self::STATE_LIST:
             case self::STATE_ADD:
@@ -3286,6 +3291,7 @@ class grocery_CRUD_States extends grocery_CRUD_Layout
         }
 
         return $state_info;
+    	}
     }
 
 	protected function getStateCode()
@@ -3507,6 +3513,10 @@ class grocery_CRUD_States extends grocery_CRUD_Layout
 	protected function getAjaxRelationManytoManyUrl()
 	{
 		return $this->state_url('ajax_relation_n_n');
+	}
+
+	public function setNewState($state) {
+		$this->extState = (object) array('primary_key' => $state);
 	}
 }
 

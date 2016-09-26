@@ -230,5 +230,95 @@ class People extends CI_Controller {
 		
 		echo json_encode($resp);
 	}
+	
+	public function output_people() {
+
+		$crud = new grocery_CRUD();
+		$crud->set_model('Extended_generic_model');
+		$crud->set_table('Person');
+		$crud->set_subject('Person');
+		$crud->basic_model->set_query_str('SELECT Sub.SuburbName as SubName, Sub.Postcode as Postcode, Per.* from `Person` Per
+		LEFT OUTER JOIN `Suburb` Sub ON Per.SuburbID=Sub.SuburbID');
+		$crud->columns('FirstName', 'LastName', 'Address', 'Postcode', 'SubName', 'PersonalEmail', 'Mobile', 'HomePhone');
+		$crud->add_fields('FirstName', 'MiddleName', 'LastName', 'Address', 'SuburbID', 'PersonalEmail', 'Mobile', 'HomePhone', 'Status', 'DateStarted', 'WWC', 'WWCFiled', 'LanguagesSpoken', 'EmergContName', 'EmergContMob', 'EmergContHPhone', 'EmergContWPhone', 'EmergContRelToPer');
+		$crud->edit_fields('FirstName', 'MiddleName', 'LastName','Address', 'SuburbID', 'PersonalEmail', 'Mobile', 'HomePhone', 'Status', 'DateStarted', 'DateFinished', 'ContractSigned', 'PaperworkCompleted', 'WWC', 'WWCFiled', 'PoliceCheck', 'TeacherRegCheck', 'FAQual', 'LanguagesSpoken', 'EmergContName', 'EmergContMob', 'EmergContHPhone', 'EmergContWPhone', 'EmergContRelToPer');	
+		$crud->display_as('FirstName', 'First Name');
+		$crud->display_as('MiddleName', 'Middle Name');
+		$crud->display_as('LastName', 'Last Name');
+		$crud->display_as('SuburbID', 'Suburb');
+		//$crud->display_as('WorkEmail', 'Work Email');
+		$crud->display_as('PersonalEmail', 'Personal Email');
+		$crud->display_as('HomePhone', 'Home Phone');
+		$crud->display_as('DateStarted', 'Date Started');
+		$crud->display_as('DateFinished', 'Date Finished');
+		$crud->display_as('ContractSigned', 'Contract Signed');
+		$crud->display_as('PaperworkCompleted', 'Paperwork is Completed');
+		$crud->display_as('SubName', 'Suburb');
+		$crud->display_as('PoliceCheck', 'Valid Police Check');
+		$crud->display_as('TeacherRegCheck', 'Valid Teacher Registration');
+		$crud->display_as('WWC', 'Working With Children Check (WWC)');
+		$crud->display_as('WWCFiled', 'Working With Children Check (WWC) is Filed');
+		$crud->display_as('DateofBirth', 'Date of Birth');
+		$crud->display_as('FAQual', 'First Aid Qualification Level');
+		$crud->display_as('LanguagesSpoken', 'Languages Spoken');
+		$crud->display_as('EmergContName', 'Emergency Contact Name');
+		$crud->display_as('EmergContMob', 'Emergency Contact Mobile');
+		$crud->display_as('EmergContHPhone', 'Emergency Contact Home Phone');
+		$crud->display_as('EmergContWPhone', 'Emergency Contact Work Phone');
+		$crud->display_as('EmergContRelToPer', 'Emergency Contact Relation');
+		$crud->field_type('Username', 'hidden');
+		$crud->field_type('Password', 'hidden');
+		$crud->field_type('Hash', 'hidden');
+		$crud->field_type('Timeout', 'hidden');
+
+
+		//Call model to get languages
+		$languages = $crud->basic_model->return_query("SELECT `LangID`, `LangName`, `LangISO_639_1` FROM Language");
+		$langArr = array();
+		foreach($languages as $lang) {
+			$langArr += [$lang->LangID => '(' . $lang->LangISO_639_1 . ') - ' . $lang->LangName];
+		}
+
+
+		$crud->field_type('LanguagesSpoken', 'multiselect', $langArr);
+		
+
+		//Prettify Status Field
+		$status = $crud->basic_model->return_query("SHOW COLUMNS FROM Person WHERE Field='Status'");
+
+		preg_match("/^enum\(\'(.*)\'\)$/", $status[0]->Type, $matches);
+		$statArr = explode("','", $matches[1]);
+		$newstatArr = array();
+		foreach($statArr as $contStat) {
+			if($contStat==="EMPLOYED") {
+				$newstatArr += [$contStat => "Employed"];
+			} else if($contStat==="ON_LEAVE") {
+				$newstatArr += [$contStat => "On Leave"];
+			} else if($contStat==="RESIGNED") {
+				$newstatArr += [$contStat => "Resigned"];
+			} else if($contStat==="RETIRED") {
+				$newstatArr += [$contStat => "Retired"];
+			}
+		}
+
+		$crud->field_type('Status', 'dropdown', $newstatArr);
+	
+		//Call Model to get the Project Names
+		$suburbs = $crud->basic_model->return_query("SELECT SuburbID, CONCAT(Postcode, ' - ', SuburbName) as FullSub FROM Suburb");
+		
+		//Convert Return Object into Associative Array
+		$subArr = array();
+		foreach($suburbs as $sub) {
+			$subArr += [$sub->SuburbID => $sub->FullSub];
+		}
+
+		//Change the field type to a dropdown with values
+		//to add to the relational table
+		$crud->field_type("SuburbID", "dropdown", $subArr);
+		
+		$output = $crud->render();
+
+		return $output->output;
+	}
 
 }

@@ -107,11 +107,68 @@ class Volunteer extends CI_Controller {
 		$crud->field_type("ProjThree_Sup", "dropdown", $usrArr);
 
 		$state = $crud->getState();
+		$stateInfo = $crud->getStateInfo();
+		
+		
 
 		$volunteerOP = $crud->render();
 		if($state === 'read') {
+			$pkID = $stateInfo->primary_key;
+			//Instantiate Second CRUD for Full Details
+			$crudTwo = new grocery_CRUD();
+			$crudTwo->set_model('Extended_generic_model');
+			$crudTwo->set_table('Person');
+			$crudTwo->set_subject('Person Details');
+
+			//Get the Person ID
+			$perID = $crudTwo->basic_model->return_query("SELECT PerID FROM Volunteer WHERE VolID='$pkID'");
+			$perID = $perID[0]->PerID;
+
+			$crudTwo->basic_model->set_query_str('SELECT Sub.SuburbName as SubName, Sub.Postcode as Postcode, Per.* from `Person` Per
+			LEFT OUTER JOIN `Suburb` Sub ON Per.SuburbID=Sub.SuburbID WHERE PerID="$perID"');
+			$crudTwo->columns('FirstName', 'LastName', 'Address', 'Postcode', 'SubName', 'PersonalEmail', 'Mobile', 'HomePhone');
+			$crudTwo->display_as('FirstName', 'First Name');
+			$crudTwo->display_as('MiddleName', 'Middle Name');
+			$crudTwo->display_as('LastName', 'Last Name');
+			$crudTwo->display_as('SuburbID', 'Suburb');
+			//$crud->display_as('WorkEmail', 'Work Email');
+			$crudTwo->display_as('PersonalEmail', 'Personal Email');
+			$crudTwo->display_as('HomePhone', 'Home Phone');
+			$crudTwo->display_as('DateStarted', 'Date Started');
+			$crudTwo->display_as('DateFinished', 'Date Finished');
+			$crudTwo->display_as('ContractSigned', 'Contract Signed');
+			$crudTwo->display_as('PaperworkCompleted', 'Paperwork is Completed');
+			$crudTwo->display_as('SubName', 'Suburb');
+			$crudTwo->display_as('PoliceCheck', 'Valid Police Check');
+			$crudTwo->display_as('TeacherRegCheck', 'Valid Teacher Registration');
+			$crudTwo->display_as('WWC', 'Working With Children Check (WWC)');
+			$crudTwo->display_as('WWCFiled', 'Working With Children Check (WWC) is Filed');
+			$crudTwo->display_as('DateofBirth', 'Date of Birth');
+			$crudTwo->display_as('FAQual', 'First Aid Qualification Level');
+			$crudTwo->display_as('LanguagesSpoken', 'Languages Spoken');
+			$crudTwo->display_as('EmergContName', 'Emergency Contact Name');
+			$crudTwo->display_as('EmergContMob', 'Emergency Contact Mobile');
+			$crudTwo->display_as('EmergContHPhone', 'Emergency Contact Home Phone');
+			$crudTwo->display_as('EmergContWPhone', 'Emergency Contact Work Phone');
+			$crudTwo->display_as('EmergContRelToPer', 'Emergency Contact Relation');
+			$crudTwo->field_type('Username', 'hidden');
+			$crudTwo->field_type('Password', 'hidden');
+			$crudTwo->field_type('Hash', 'hidden');
+			$crudTwo->field_type('Timeout', 'hidden');
+			$output["perID"] = $perID;
+			$crudTwo->setNewState($perID);
+
+			//echo $perID;
+			$sInf = $crudTwo->getStateInfo();
+
+			//print_r($sInf);
+
+			$fullDetailsOP = $crudTwo->render();
 			
-			$output["fullDetails"] = $volunteerOP;
+
+			//print_r($fullDetailsOP);
+
+			$output["fullDetails"] = $fullDetailsOP;
 			$output["volHistory"] = $volunteerOP;
 			$output["multiView"] = "YES";
 			

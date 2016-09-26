@@ -59,13 +59,29 @@
         <!-- page content -->
         <div class="right_col" role="main">
           <div class="row">
-            <div class="col-md-12 col-sm-12 col-xs-12">  
+            <div class="col-md-12 col-sm-12 col-xs-12" id="data">  
               <?php echo $volunteer->output; ?>
               <?php if($multiView === "YES") {
                 echo $fullDetails->output;
                 echo $volHistory->output;
-              }
+                /*$ajaxHTML = '<script type="text/javascript">
+                $(function() {
+                    $.ajax({
+                        url: "'. base_url() .'user/people/index/read/' . $perID .'",
+                        type: "POST",
+                        dataType: "json",
+                        success: function(data) {
+                            $("#data").append(data);
+                        }
 
+                    });
+                });
+                </script>';
+
+                }
+                echo $ajaxHTML;*/
+
+                }
               ?>
             </div>
           </div>
@@ -79,7 +95,7 @@
     
 
     <!-- jQuery -->
-    <script src="/assets/vendors/jquery/dist/jquery.min.js"></script>
+    <!--<script src="/assets/vendors/jquery/dist/jquery.min.js"></script>-->
     <!-- Bootstrap -->
     <script src="/assets/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- FastClick -->
