@@ -26,9 +26,21 @@ class Fundingbody extends CI_Controller {
         $crud->set_model('Extended_generic_model');
         $crud->set_table('FundingBody');
         $crud->set_subject('FundingBody');
-        $crud->basic_model->set_query_str('SELECT * FROM FundingBody');
+        $crud->basic_model->set_query_str('SELECT S.SuburbName as SubName, F.* FROM FundingBody F
+		LEFT OUTER JOIN Suburb S on S.SuburbID = F.Location');
         $crud->display_as('BodyName', 'Body Name');
-
+	
+		$crud->field_type('Comments', 'text');
+		
+		$suburbs = $crud->basic_model->return_query("SELECT SuburbID, CONCAT(Postcode, ' - ', SuburbName) as FullSub FROM Suburb");
+		
+		$subArr = array();
+		foreach($suburbs as $sub) {
+			$subArr += [$sub->SuburbID => $sub->FullSub];
+		}
+		$crud->field_type("Location", "dropdown", $subArr);
+		
+			
         $output = $crud->render();
         $this->render($output);
         }

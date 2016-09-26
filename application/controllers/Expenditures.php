@@ -39,10 +39,11 @@ class Expenditures extends CI_Controller {
 		$crud->display_as('FullName', 'Spent By');
 		$crud->display_as('SpentBy', 'Spent By');
 		$crud->display_as('Name', 'Project Name');
-		$crud->columns('ProjID','ExpName', 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType');
-		$crud->set_read_fields('ProjID','ExpName', 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType');
-		$crud->add_fields('ProjID','ExpName', 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType');
-		$crud->edit_fields('ProjID','ExpName', 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType');
+		$crud->display_as('ExpDate', 'Date of Expenditure');
+		$crud->columns('ProjID','ExpName', 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType', 'ExpDate');
+		$crud->set_read_fields('ProjID','ExpName', 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType', 'ExpDate');
+		$crud->add_fields('ProjID','ExpName', 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType', 'ExpDate');
+		$crud->edit_fields('ProjID','ExpName', 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType', 'ExpDate');
 
 		$projects = $crud->basic_model->return_query("SELECT ProjID, Name FROM Project");
 

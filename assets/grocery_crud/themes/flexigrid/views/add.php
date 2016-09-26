@@ -32,14 +32,14 @@
 							//Enable All Fields (to clear previous disables)
 							$("#field-ApprovedBy option").prop("disabled", false);
 							$("#field-ExpList option").each(function(i) {
-								$(this).prop("disabled", false);
+								$(this).show();
 							});
 
 							//Disable Fields
 							$("#field-ApprovedBy option[value='"+value+"']").attr("disabled", "disabled");
 							$("#field-ExpList option").each(function(i) {
 								if($(this).data("expby") != value) {
-									$(this).attr("disabled", "disabled");
+									$(this).hide();
 								}
 							});
 
