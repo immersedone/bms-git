@@ -62,25 +62,10 @@
             <div class="col-md-12 col-sm-12 col-xs-12" id="data">  
               <?php echo $volunteer->output; ?>
               <?php if($multiView === "YES") {
-                echo $fullDetails->output;
-                echo $volHistory->output;
-                /*$ajaxHTML = '<script type="text/javascript">
-                $(function() {
-                    $.ajax({
-                        url: "'. base_url() .'user/people/index/read/' . $perID .'",
-                        type: "POST",
-                        dataType: "json",
-                        success: function(data) {
-                            $("#data").append(data);
-                        }
-
-                    });
-                });
-                </script>';
-
-                }
-                echo $ajaxHTML;*/
-
+                    echo '<h4 class="projTitle">Extra Details</h4>';
+                    echo $fullDetails->output;
+                    echo '<h4 class="projTitle">Volunteer History</h4>';
+                    echo $volHistory->output;
                 }
               ?>
             </div>

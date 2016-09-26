@@ -3104,7 +3104,8 @@ class grocery_CRUD_States extends grocery_CRUD_Layout
     const STATE_READ = 18;
     const STATE_DELETE_MULTIPLE = '19';
 
-    public $extState;
+    private $extState;
+    private $stateCode;
 
 	protected $states = array(
 		0	=> 'unknown',
@@ -3296,14 +3297,20 @@ class grocery_CRUD_States extends grocery_CRUD_Layout
 
 	protected function getStateCode()
 	{
-		$state_string = $this->get_state_info_from_url()->operation;
+		if(isset($this->stateCode)) {
+			$state_code = $this->stateCode;
 
-		if( $state_string != 'unknown' && in_array( $state_string, $this->states ) )
-			$state_code =  array_search($state_string, $this->states);
-		else
-			$state_code = 0;
+			return $state_code;
+		} else {
+			$state_string = $this->get_state_info_from_url()->operation;
 
-		return $state_code;
+			if( $state_string != 'unknown' && in_array( $state_string, $this->states ) )
+				$state_code =  array_search($state_string, $this->states);
+			else
+				$state_code = 0;
+
+			return $state_code;
+		}
 	}
 
 	protected function state_url($url = '', $is_list_page = false)
@@ -3517,6 +3524,10 @@ class grocery_CRUD_States extends grocery_CRUD_Layout
 
 	public function setNewState($state) {
 		$this->extState = (object) array('primary_key' => $state);
+	}
+
+	public function setStateCode($stateCode) {
+		$this->stateCode = $stateCode;
 	}
 }
 

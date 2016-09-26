@@ -158,6 +158,16 @@ class Volunteer extends CI_Controller {
 			$output["perID"] = $perID;
 			$crudTwo->setNewState($perID);
 
+			$crudThree = new grocery_CRUD();
+			$crudThree->set_model('Extended_generic_model');
+			$crudThree->set_table('Volunteer');
+			$crudThree->set_subject('Volunteer History');
+			$crudThree->basic_model->set_query_str("SELECT * FROM Volunteer WHERE PerID='$perID' AND VolID!='$pkID'");
+			$crudThree->setStateCode(1);
+			$crudThree->unset_operations();
+			$volHistoryOP = $crudThree->render();
+
+
 			//echo $perID;
 			$sInf = $crudTwo->getStateInfo();
 
@@ -169,7 +179,7 @@ class Volunteer extends CI_Controller {
 			//print_r($fullDetailsOP);
 
 			$output["fullDetails"] = $fullDetailsOP;
-			$output["volHistory"] = $volunteerOP;
+			$output["volHistory"] = $volHistoryOP;
 			$output["multiView"] = "YES";
 			
 		} else {
