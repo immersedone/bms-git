@@ -148,8 +148,20 @@ class Employee extends CI_Controller {
 
 		//Convert Return Object into Associative Array
 		$usrArr = array();
+		$usrArrIDOnly = "";
+
+		for($i = 0; $i < count($users); $i++) {
+			if($i == count($users) - 1) {
+				$usrArrIDOnly .= $users[$i]->PerID;
+			} else {
+				$usrArrIDOnly .= $users[$i]->PerID.',';
+			}
+		}
+
+
 		foreach($users as $usr) {
 			$usrArr += [$usr->PerID => $usr->FullName];
+			
 		}
 		
 		//Change the field type to a dropdown with values
@@ -215,11 +227,13 @@ class Employee extends CI_Controller {
 		$stateInfo = $crud->getStateInfo();
 
         //Validation for Employee
-        $crud->set_rules('HrlyRate', 'numeric');
-        $crud->set_rules('SecHrlyRate', 'numeric');
-        $crud->set_rules('HrsPerFrtnt', 'numeric');
-        $crud->set_rules("DaysWork", "required");
+        $crud->set_rules('HrlyRate', 'Hourly Rate', 'numeric');
+        $crud->set_rules('SecHrlyRate', 'Second Hourly Rate', 'numeric');
+        $crud->set_rules('HrsPerFrtnt', 'Hours Per Fortnight', 'numeric');
+        //$crud->set_rules("DaysWork", "Days Available", "required");
         
+
+
 		
 		if ($state === "edit" || $state === "update" || $state === "update_validation") {
 			$crud->field_type("PerID", "readonly");
@@ -233,23 +247,12 @@ class Employee extends CI_Controller {
             'AnnualLeave',
             'PersonalLeave',
             'NHACEClass',
-            'BGCSDepartment',
-            'SuperFund');
-            $crud->set_rules("PerID", "required");
-		} else {
-			$crud->required_fields(
-            'PerID',
-            'EmpPosition',
-            'WorkMob',
-            'WorkEmail',
-            'EmpDate',
-            'HrlyRate',
-            'HrsPerFrtnt',
-            'AnnualLeave',
-            'PersonalLeave',
-            'NHACEClass',
-            'BGCSDepartment',
-            'SuperFund');
+            'BGCSDepartment');
+            //$crud->set_rules("PerID", "Employee Name", "required");
+		} else if ($state === "insert" || $state == "insert_validation" || $state === "add") {
+			//$crud->required_fields( 'PerID');
+			$crud->set_rules("PerID", "Employee Name", "in_list[" . $usrArrIDOnly . "]|required");
+            echo $usrArrIDOnly;
 		}
 
 		$employeeOP = $crud->render();
@@ -388,13 +391,34 @@ class Employee extends CI_Controller {
 	public function pp_insert() {
 
 		//Initialise and assign variables
-		$personID = $_POST['FullName'];
-		$projectID = $_POST['Name'];
-		$role = $_POST['Role'];
+		$PerID = $_POST['PerID'];
+		$EmpPosition = $_POST['EmpPosition'];
+		$EmpSecPosition = $_POST['EmpSecPosition'];
+		$BGCSDepartment = $_POST['BGCSDepartment'];
+		$Supervisor = $_POST['Supervisor'];
+		$WorkMob = $_POST['WorkMob'];
+		$WorkEmail = $_POST['WorkEmail'];
+		$EmpDate = $_POST['EmpDate'];
+		$Contract = $_POST['Contract'];
+		$ContStatus = $_POST['ContStatus'];
+		$ContStartDate = $_POST['ContStartDate'];
+		$ContEndDate = $_POST['ContEndDate'];
+		$HrlyRate = $_POST['HrlyRate'];
+		$SecHrlyRate = $_POST['SecHrlyRate'];
+		$HrsPerFrtnt = $_POST['HrsPerFrtnt'];
+		$DaysWork = $_POST['DaysWork'];
+		$NHACEClass = $_POST['NHACEClass'];
+		$NHACEDate = $_POST['NHACEDate'];
+		$AnnualLeave = $_POST['AnnualLeave'];
+		$PersonalLeave = $_POST['PersonalLeave'];
+		$FundUSI = $_POST['FundUSI'];
+		$MmbershpNo = $_POST['MmbershpNo'];
+		$SuperFund = $_POST['SuperFund'];
+		$TerminationDate = $_POST['TerminationDate'];
 
 		$crud = new grocery_CRUD();
 		$crud->set_model('Employee_GC');
-		$resp = $crud->basic_model->insert_pp($personID, $projectID, $role);
+		$resp = $crud->basic_model->insert_pp($PerID, $EmpPosition, $EmpSecPosition, $BGCSDepartment, $Supervisor, $WorkMob, $WorkEmail, $EmpDate, $Contract, $ContStatus, $ContStartDate, $ContEndDate, $HrlyRate, $SecHrlyRate, $HrsPerFrtnt, $DaysWork, $NHACEClass, $NHACEDate, $AnnualLeave, $PersonalLeave, $FundUSI , $MmbershpNo , $SuperFund, $TerminationDate);
 		echo $resp;
 	}
 }
