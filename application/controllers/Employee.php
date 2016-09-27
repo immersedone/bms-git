@@ -63,18 +63,17 @@ class Employee extends CI_Controller {
 		$crud->display_as("Pos2", "Secondary Position");
 		$crud->display_as("WEmail", "Work Email");
 
-        $crud->required_fields('FullName',
+        $crud->required_fields('PerID',
+                               'EmpPosition',
                                'WorkEmail',
                                'WorkMob',
-                               'EmpPosition',
-                               'PerID',
+                               'EmpDate',
                                'HrlyRate',
                                'HrsPerFrtnt',
                                'NHACEDate',
                                'DaysWork',
                                'AnnualLeave',
                                'PersonalLeave',
-                               'MmbershipNo',
                                'BGCSDepartment',
                                'SuperFund');
 
