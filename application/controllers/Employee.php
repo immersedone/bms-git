@@ -67,25 +67,7 @@ class Employee extends CI_Controller {
 		$crud->edit_fields('PerID', 'EmpPosition', 'EmpSecPosition', 'BGCSDepartment', 'Supervisor', 'WorkMob', 'WorkEmail', 'EmpDate', 'Contract', 'ContStatus', 'ContStartDate', 'ContEndDate', 'HrlyRate', 'SecHrlyRate', 'HrsPerFrtnt', 'DaysWork','NHACEClass', 'NHACEDate', 'AnnualLeave', 'PersonalLeave', 'FundUSI', 'MmbershpNo', 'SuperFund', 'TerminationDate');
 		$crud->set_read_fields('PerID', 'EmpPosition', 'EmpSecPosition', 'BGCSDepartment', 'Supervisor', 'WorkMob', 'WorkEmail', 'EmpDate', 'Contract', 'ContStatus', 'ContStartDate', 'ContEndDate', 'HrlyRate', 'SecHrlyRate', 'HrsPerFrtnt', 'DaysWork','NHACEClass', 'NHACEDate', 'AnnualLeave', 'PersonalLeave', 'FundUSI', 'MmbershpNo',  'SuperFund', 'TerminationDate');
 
-        //Validation for Employee
-        $crud->set_rules('HrlyRate', 'numeric');
-        $crud->set_rules('SecHrlyRate', 'numeric');
-        $crud->set_rules('HrsPerFrtnt', 'numeric');
 
-        $crud->required_fields(
-            'PerID',
-            'EmpPosition',
-            'WorkMob',
-            'WorkEmail',
-            'EmpDate',
-            'HrlyRate',
-            'HrsPerFrtnt',
-            'DaysWork',
-            'AnnualLeave',
-            'PersonalLeave',
-            'NHACEClass',
-            'BGCSDepartment',
-            'SuperFund');
 
 		//Enumerated Values for Contract
 		$contract = $crud->basic_model->return_query("SHOW COLUMNS FROM Employee WHERE Field='Contract'");
@@ -231,9 +213,43 @@ class Employee extends CI_Controller {
 		
 		$state = $crud->getState();
 		$stateInfo = $crud->getStateInfo();
+
+        //Validation for Employee
+        $crud->set_rules('HrlyRate', 'numeric');
+        $crud->set_rules('SecHrlyRate', 'numeric');
+        $crud->set_rules('HrsPerFrtnt', 'numeric');
+        $crud->set_rules("DaysWork", "required");
+        
 		
-		if ($state === "edit") {
+		if ($state === "edit" || $state === "update" || $state === "update_validation") {
 			$crud->field_type("PerID", "readonly");
+			$crud->required_fields(
+            'EmpPosition',
+            'WorkMob',
+            'WorkEmail',
+            'EmpDate',
+            'HrlyRate',
+            'HrsPerFrtnt',
+            'AnnualLeave',
+            'PersonalLeave',
+            'NHACEClass',
+            'BGCSDepartment',
+            'SuperFund');
+            $crud->set_rules("PerID", "required");
+		} else {
+			$crud->required_fields(
+            'PerID',
+            'EmpPosition',
+            'WorkMob',
+            'WorkEmail',
+            'EmpDate',
+            'HrlyRate',
+            'HrsPerFrtnt',
+            'AnnualLeave',
+            'PersonalLeave',
+            'NHACEClass',
+            'BGCSDepartment',
+            'SuperFund');
 		}
 
 		$employeeOP = $crud->render();
