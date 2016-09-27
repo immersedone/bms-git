@@ -232,6 +232,10 @@ class Employee extends CI_Controller {
 		$state = $crud->getState();
 		$stateInfo = $crud->getStateInfo();
 		
+		if ($state === "edit") {
+			$crud->field_type("PerID", "readonly");
+		}
+
 		$employeeOP = $crud->render();
 
 
