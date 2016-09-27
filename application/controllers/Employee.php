@@ -251,8 +251,8 @@ class Employee extends CI_Controller {
             //$crud->set_rules("PerID", "Employee Name", "required");
 		} else if ($state === "insert" || $state == "insert_validation" || $state === "add") {
 			//$crud->required_fields( 'PerID');
-			$crud->set_rules("PerID", "Employee Name", "in_list[" . $usrArrIDOnly . "]|required");
-            echo $usrArrIDOnly;
+			//$crud->set_rules("PerID", "Employee Name", "in_list[" . $usrArrIDOnly . "]|required");
+            //echo $usrArrIDOnly;
 		}
 
 		$employeeOP = $crud->render();
