@@ -63,22 +63,20 @@ class Employee extends CI_Controller {
 		$crud->display_as("Pos2", "Secondary Position");
 		$crud->display_as("WEmail", "Work Email");
 
-        $crud->required_fields('FullName');
-        $crud->required_fields('WorkEmail');
-        $crud->required_fields('WorkMob');
-        $crud->required_fields('EmpPosition');
-        $crud->required_fields('PerID');
-        $crud->required_fields('HrlyRate');
-        $crud->required_fields('HrsPerFrtnt');
-        $crud->required_fields('NHACEDate');
-        $crud->required_fields('DaysWork');
-        $crud->required_fields('AnnualLeave');
-        $crud->required_fields('PersonalLeave');
-        $crud->required_fields('MmbershipNo');
-        $crud->required_fields('BGCSDepartment');
-        $crud->required_fields('SuperFund');
-
-
+        $crud->required_fields('FullName',
+                               'WorkEmail',
+                               'WorkMob',
+                               'EmpPosition',
+                               'PerID',
+                               'HrlyRate',
+                               'HrsPerFrtnt',
+                               'NHACEDate',
+                               'DaysWork',
+                               'AnnualLeave',
+                               'PersonalLeave',
+                               'MmbershipNo',
+                               'BGCSDepartment',
+                               'SuperFund');
 
 		$crud->add_fields('PerID', 'EmpPosition', 'EmpSecPosition', 'BGCSDepartment', 'Supervisor', 'WorkMob', 'WorkEmail', 'EmpDate', 'Contract', 'ContStatus', 'ContStartDate', 'ContEndDate', 'HrlyRate', 'SecHrlyRate', 'HrsPerFrtnt', 'DaysWork','NHACEClass', 'NHACEDate', 'AnnualLeave', 'PersonalLeave', 'FundUSI', 'MmbershpNo', 'SuperFund' , 'TerminationDate');
 		$crud->edit_fields('PerID', 'EmpPosition', 'EmpSecPosition', 'BGCSDepartment', 'Supervisor', 'WorkMob', 'WorkEmail', 'EmpDate', 'Contract', 'ContStatus', 'ContStartDate', 'ContEndDate', 'HrlyRate', 'SecHrlyRate', 'HrsPerFrtnt', 'DaysWork','NHACEClass', 'NHACEDate', 'AnnualLeave', 'PersonalLeave', 'FundUSI', 'MmbershpNo', 'SuperFund', 'TerminationDate');
@@ -279,9 +277,6 @@ class Employee extends CI_Controller {
 			//$output["perID"] = $perID;
 			$crudTwo->set_read_fields("Address", "SuburbID", "PersonalEmail", "Mobile", "HomePhone", "Status", "DateStarted", "DateFinished", "ContractSigned", "PaperworkCompleted", "WWC", "WWCFiled", "PoliceCheck", "TeacherRegCheck", "FAQual", "DateofBirth", "LanguagesSpoken", "EmergContName", "EmergContMob", "EmergContHPhone", "EmergContWPhone", "EmergContRelToPer");
 			$crudTwo->setNewState($perID);
-
-
-
 
             $fullDetailsOP = $crudTwo->render();
 			
