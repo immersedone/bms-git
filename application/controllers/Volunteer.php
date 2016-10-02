@@ -152,26 +152,15 @@ class Volunteer extends CI_Controller {
 
 			$crudThree = new grocery_CRUD();
 			$crudThree->set_model('Extended_generic_model');
-			$crudThree->set_table('Volunteer');
+			$crudThree->set_table('PersonProject');
 			$crudThree->set_subject('Volunteer History');
-			$crudThree->basic_model->set_query_str("SELECT * FROM Volunteer WHERE PerID='$perID' AND VolID!='$pkID'");
-			$crudThree->columns("ProjID", "Supervisor", "BGCSDepartment", "isActive", "DateStarted", "DateFinished", "RefFullName", "RefMobile", "RefHPhone", "RefRelToVol", "DaysAvailable", "ContSkills", "ContQual");
-			$crudThree->display_as("ProjID", "Project Name");
-			$crudThree->display_as("BGCSDepartment", "BGCS Department");
-			$crudThree->display_as("DateStarted", "Date Started");
-			$crudThree->display_as("DateFinished", "Date Finished");
-			$crudThree->display_as("RefFullName", "Referee Full Name");
-			$crudThree->display_as("RefMobile", "Referee Mobile");
-			$crudThree->display_as("RefHPhone", "Referee Home Phone");
-			$crudThree->display_as("RefRelToVol", "Referee Relation to Volunteer");
-			$crudThree->display_as("DaysAvailable", "Days Available");
-			$crudThree->display_as("ContSkills", "Skills and Experience");
-			$crudThree->display_as("isActive", "Is Active");
-			$crudThree->display_as("ContQual", "Qualifications and Current Studies");
-			$crudThree->field_type("ProjID", "dropdown", $projArr);
-			$crudThree->field_type("BGCSDepartment", "dropdown", $bcgsArr);
-			$crudThree->field_type("DaysAvailable", "multiselect", $daysArr);
-			$crudThree->field_type("Supervisor", "dropdown", $usrArr);
+			$crudThree->basic_model->set_query_str("SELECT Proj.Name as ProjName, O1.Data as Role, O2.Data as Dept,  CONCAT(Per.FirstName, ' ', Per.MiddleName, ' ', Per.LastName) as SupName, PP.StartDate, PP.FinishDate FROM PersonProject PP
+			LEFT OUTER JOIN Person Per ON Per.PerID = PP.Supervisor
+			LEFT OUTER JOIN Project Proj ON Proj.ProjID = PP.ProjID
+			LEFT OUTER JOIN OptionType O1 on O1.OptID = PP.Role
+			LEFT OUTER JOIN OptionType O2 on O2.OptID = PP.BGCSDepartment
+			WHERE PP.PerID = '$perID'");
+			$crudThree->columns("ProjName", "Role", "Dept", "SupName", "StartDate", "FinishDate");
 			
 			$crudThree->setStateCode(1);
 			$crudThree->unset_add();

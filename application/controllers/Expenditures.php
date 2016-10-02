@@ -40,10 +40,10 @@ class Expenditures extends CI_Controller {
 		$crud->display_as('SpentBy', 'Spent By');
 		$crud->display_as('Name', 'Project Name');
 		$crud->display_as('ExpDate', 'Date of Expenditure');
-		$crud->columns('ProjID','ExpName', 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType', 'ExpDate');
-		$crud->set_read_fields('ProjID','ExpName', 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType', 'ExpDate');
-		$crud->add_fields('ProjID','ExpName', 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType', 'ExpDate');
-		$crud->edit_fields('ProjID','ExpName', 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType', 'ExpDate');
+		$crud->columns('ProjID','ExpName', 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType', 'ExpDate', 'FilePath');
+		$crud->set_read_fields('ProjID','ExpName', 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType', 'ExpDate', 'FilePath');
+		$crud->add_fields('ProjID','ExpName', 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType', 'ExpDate', 'FilePath');
+		$crud->edit_fields('ProjID','ExpName', 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType', 'ExpDate', 'FilePath');
 
 		$projects = $crud->basic_model->return_query("SELECT ProjID, Name FROM Project");
 
@@ -73,6 +73,7 @@ class Expenditures extends CI_Controller {
 		
 		//Change the field type to a dropdown with values
 		//to add to the relational table
+		$crud->set_field_upload('FilePath', 'assets/uploads/files/expenditures');
 		$crud->field_type("ExpType", "dropdown", $expArr);
 		$crud->field_type("EType", "dropdown", $expArr);
 		$crud->field_type("SpentBy", "dropdown", $usrArr);

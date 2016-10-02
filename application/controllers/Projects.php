@@ -226,57 +226,30 @@ class Projects extends CI_Controller {
 		$GCM->grid_add(5);
 
 		$GCM->grids[5]->set_model('Volunteer_GC');
-		$GCM->grids[5]->set_table('Person');
-		$GCM->grids[5]->set_subject('Volunteer');
-		$GCM->grids[5]->basic_model->set_query_str('SELECT Proj.Name, Proj.ProjID, `PersonProject`.Role as ProjRole, CONCAT(FirstName, " ", MiddleName, " ", LastName) as FullName, Sub.SuburbName as SubName, Sub.Postcode as Postcode, Per.* FROM `Person` Per 
-		LEFT OUTER JOIN `PersonProject` ON Per.PerID=`PersonProject`.PerID 
-		LEFT OUTER JOIN `Project` Proj ON `PersonProject`.ProjID=Proj.ProjID 
-		LEFT OUTER JOIN `Suburb` Sub ON Sub.SuburbID=Per.SuburbID 
-		WHERE `PersonProject`.Role="VOLUNTEER" AND PersonProject.ProjID='.$id, ' GROUP BY FullName, Name, ProjRole');
-		$GCM->grids[5]->columns("FullName", "Address", "Postcode", "SubName", "WorkEmail", "PersonalEmail", "Mobile", "HomePhone");
-		$GCM->grids[5]->display_as("Name", "Project Name");
-		$GCM->grids[5]->display_as("ProjRole", "Project Role");
-		$GCM->grids[5]->display_as("FullName", "Full Name");
-		$GCM->grids[5]->display_as("SubName", "Suburb");
-		$GCM->grids[5]->display_as("PersonalEmail", "Personal Email");
-		$GCM->grids[5]->display_as("HomePhone", "Home Phone");
-		$GCM->grids[5]->display_as("WorkEmail", "Work Email");
+		$GCM->grids[5]->set_table('PersonProject');
+		$GCM->grids[5]->set_subject('Volunteers');
+		$GCM->grids[5]->basic_model->set_query_str("SELECT CONCAT(Vol.FirstName, ' ', Vol.MiddleName, ' ', Vol.LastName) as VolName, O1.Data as Role, O2.Data as Dept,  CONCAT(Sup.FirstName, ' ', Sup.MiddleName, ' ', Sup.LastName) as SupName, PP.StartDate, PP.FinishDate FROM PersonProject PP
+			LEFT OUTER JOIN Person Vol ON Vol.PerID = PP.Supervisor
+			LEFT OUTER JOIN Person Sup ON Sup.PerID = PP.Supervisor
+			LEFT OUTER JOIN Project Proj ON Proj.ProjID = PP.ProjID
+			LEFT OUTER JOIN OptionType O1 on O1.OptID = PP.Role
+			LEFT OUTER JOIN OptionType O2 on O2.OptID = PP.BGCSDepartment
+			LEFT OUTER JOIN OptionType O3 on O3.OptID = PP.Position
+			WHERE O3.Data = 'Volunteer' 
+			AND PP.ProjID=".$id);
+		$GCM->grids[5]->columns("VolName", "Role", "Dept", "SupName", "StartDate", "FinishDate");
+		$GCM->grids[5]->display_as("VolName", "Volunteer Name");
+		$GCM->grids[5]->display_as("Role", "Project Role");
+		$GCM->grids[5]->display_as("Dept", "Banksia Deparment");
+		$GCM->grids[5]->display_as("SupName", "Supervisor Name");
 
-		
-		//Change the Add Volunteer Fields
-		$GCM->grids[5]->add_fields("FullName", "Name", "Role");
 
-		
-		//Call Model to get the Project Names
-		$projects = $GCM->grids[5]->basic_model->return_query("SELECT ProjID, Name FROM Project");
-		
-		//Convert Return Object into Associative Array
-		$prjArr = array();
-		foreach($projects as $prj) {
-			$prjArr += [$prj->ProjID => $prj->Name];
-		}
-
-		//Change the field type to a dropdown with values
-		//to add to the relational table
-		$GCM->grids[5]->field_type("Name", "dropdown", $prjArr);
-		
-		//Call Model to get the User's Full Names
-		$users = $GCM->grids[5]->basic_model->return_query("SELECT PerID, CONCAT(FirstName, ' ', MiddleName, ' ', LastName) as FullName FROM Person");
-
-		//Convert Return Object into Associative Array
-		$usrArr = array();
-		foreach($users as $usr) {
-			$usrArr += [$usr->PerID => $usr->FullName];
-		}
-		
-		//Change the field type to a dropdown with values
-		//to add to the relational table
-		$GCM->grids[5]->field_type("FullName", "dropdown", $usrArr);
 
 		//Change the default method to fire when adding
 		//a new person to a project
-		$GCM->grids[5]->callback_before_insert(array($this,'volunteer_add'));
+		//$GCM->grids[5]->callback_before_insert(array($this,'volunteer_add'));
 
+		$GCM->grids[5]->unset_add();
 		$GCM->grids[5]->unset_edit();
 		$GCM->grids[5]->unset_delete();
 		//$GCM->grids[5]->add_action('Delete', '', '', 'delete-icon', array($this, 'volunteer_delete'));
@@ -286,58 +259,31 @@ class Projects extends CI_Controller {
 		$GCM->grids[6]->set_table('Person');
 		$GCM->grids[6]->set_subject('Employee');
 		$GCM->grids[6]->basic_model->set_query_str(
-		'SELECT Proj.Name, Proj.ProjID, `PersonProject`.Role as ProjRole, CONCAT(FirstName, " ", MiddleName, " ", LastName) as FullName, Sub.SuburbName as SubName, 
-		Sub.Postcode as Postcode, Per.* FROM `Person` Per 
-		LEFT OUTER JOIN `PersonProject` ON Per.PerID=`PersonProject`.PerID 
-		LEFT OUTER JOIN `Project` Proj ON `PersonProject`.ProjID=Proj.ProjID 
-		LEFT OUTER JOIN `Suburb` Sub ON Sub.SuburbID=Per.SuburbID 
-		WHERE `PersonProject`.Role="Employee" AND PersonProject.ProjID='.$id, ' GROUP BY FullName, Name, ProjRole');
-		$GCM->grids[6]->columns("FullName", "Address", "Postcode", "SubName", "WorkEmail", "PersonalEmail", "Mobile", "HomePhone");
-		$GCM->grids[6]->display_as("Name", "Project Name");
-		$GCM->grids[6]->display_as("ProjRole", "Project Role");
-		$GCM->grids[6]->display_as("FullName", "Full Name");
-		$GCM->grids[6]->display_as("SubName", "Suburb");
-		$GCM->grids[6]->display_as("PersonalEmail", "Personal Email");
-		$GCM->grids[6]->display_as("HomePhone", "Home Phone");
-		$GCM->grids[6]->display_as("WorkEmail", "Work Email");
-		
-		//Change the Add Volunteer Fields
-		$GCM->grids[6]->add_fields("FullName", "Name", "Role");
+		"SELECT CONCAT(Emp.FirstName, ' ', Emp.MiddleName, ' ', Emp.LastName) as EmpName, O1.Data as Role, O2.Data as Dept, O3.Data as Position,  CONCAT(Sup.FirstName, ' ', Sup.MiddleName, ' ', Sup.LastName) as SupName, PP.StartDate, PP.FinishDate FROM PersonProject PP
+			LEFT OUTER JOIN Person Emp ON Emp.PerID = PP.Supervisor
+			LEFT OUTER JOIN Person Sup ON Sup.PerID = PP.Supervisor
+			LEFT OUTER JOIN Project Proj ON Proj.ProjID = PP.ProjID
+			LEFT OUTER JOIN OptionType O1 on O1.OptID = PP.Role
+			LEFT OUTER JOIN OptionType O2 on O2.OptID = PP.BGCSDepartment
+			LEFT OUTER JOIN OptionType O3 on O3.OptID = PP.Position
+			WHERE O3.Data != 'Volunteer' 
+			AND PP.ProjID=".$id);
+		$GCM->grids[6]->columns("EmpName", "Role", "Position", "Dept", "SupName", "StartDate", "FinishDate");
+		$GCM->grids[6]->display_as("EmpName", "Project Name");
+		$GCM->grids[6]->display_as("Role", "Project Role");
+		$GCM->grids[6]->display_as("Dept", "Banksia Department");
+		//$GCM->grids[6]->display_as("StartDate", "Personal Email");
+		//$GCM->grids[6]->display_as("FinishDate", "Home Phone");
 
-		
-		//Call Model to get the Project Names
-		$projects = $GCM->grids[6]->basic_model->return_query("SELECT ProjID, Name FROM Project");
-		
-		//Convert Return Object into Associative Array
-		$prjArr = array();
-		foreach($projects as $prj) {
-			$prjArr += [$prj->ProjID => $prj->Name];
-		}
-
-		//Change the field type to a dropdown with values
-		//to add to the relational table
-		$GCM->grids[6]->field_type("Name", "dropdown", $prjArr);
-		
-		//Call Model to get the User's Full Names
-		$users = $GCM->grids[6]->basic_model->return_query("SELECT PerID, CONCAT(FirstName, ' ', MiddleName, ' ', LastName) as FullName FROM Person");
-
-		//Convert Return Object into Associative Array
-		$usrArr = array();
-		foreach($users as $usr) {
-			$usrArr += [$usr->PerID => $usr->FullName];
-		}
-		
-		//Change the field type to a dropdown with values
-		//to add to the relational table
-		$GCM->grids[6]->field_type("FullName", "dropdown", $usrArr);
 
 		//Change the default method to fire when adding
 		//a new person to a project
-		$GCM->grids[6]->callback_before_insert(array($this,'employee_add'));
+		//$GCM->grids[6]->callback_before_insert(array($this,'employee_add'));
 
+		$GCM->grids[6]->unset_add();
 		$GCM->grids[6]->unset_edit();
 		$GCM->grids[6]->unset_delete();
-		$GCM->grids[6]->add_action('Delete', '', '', 'delete-icon', array($this, 'employee_delete'));
+		//$GCM->grids[6]->add_action('Delete', '', '', 'delete-icon', array($this, 'employee_delete'));
 		//$crud->callback_delete(array($this, 'volunteer_delete'));
 
 		$output = $GCM->render();
