@@ -247,7 +247,7 @@ class Projects extends CI_Controller {
 		$GCM->grids[5]->field_type("projectID", 'hidden', $id);
 		$volID = $GCM->grids[5]->basic_model->return_query("SELECT OptID FROM OptionType
 		WHERE data = 'Volunteer' and type = 'position'");
-		$GCM->grids[5]->field_type("position", 'hidden', $volID[0]);
+		$GCM->grids[5]->field_type("position", 'hidden', $volID[0]->OptID);
 
 		//BCGS Departments
 		$bcgs = $GCM->grids[5]->basic_model->return_query("SELECT OptID, data FROM OptionType WHERE type='BGCS_DEP'");
@@ -306,7 +306,7 @@ class Projects extends CI_Controller {
 		//$GCM->grids[6]->display_as("StartDate", "Personal Email");
 		//$GCM->grids[6]->display_as("FinishDate", "Home Phone");
 
-		$GCM->grids[6]->add_fields("EmpName", "Role", "position", "Dept", "SupName", "IsActive", "StartDate", "FinishDate", "projectID");
+		$GCM->grids[6]->add_fields("EmpName", "Role", "Position", "Dept", "SupName", "IsActive", "StartDate", "FinishDate", "projectID");
 		$GCM->grids[6]->field_type("projectID", 'hidden', $id);
 
 		//BCGS Departments
@@ -327,9 +327,16 @@ class Projects extends CI_Controller {
 		$usrArr = array();
 		foreach($users as $usr) {
 			$usrArr += [$usr->PerID => $usr->FullName];
-		}		
+		}	
+		//Position
+		$pos = $GCM->grids[6]->basic_model->return_query("SELECT OptID, data FROM OptionType WHERE type='Position'");
+		$posArr = array();
+		foreach($pos as $p) {
+			$posArr += [$p->OptID => $p->data];
+		}	
 		
-		$GCM->grids[6]->field_type("BGCSDepartment", "dropdown", $bcgsArr);
+		$GCM->grids[6]->field_type("Position", "dropdown", $posArr);
+		$GCM->grids[6]->field_type("Dept", "dropdown", $bcgsArr);
 		$GCM->grids[6]->field_type("Role", "dropdown", $roleArr);
 		$GCM->grids[6]->field_type("VolName", "dropdown", $usrArr);
 		$GCM->grids[6]->field_type("SupName", "dropdown", $usrArr);

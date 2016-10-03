@@ -360,7 +360,7 @@ class Employee extends CI_Controller {
 		$crud->display_as("SupName", "Supervisor Name");
 
 		//Change the Add Volunteer Fields
-		$crud->add_fields("EmpName", "Role", "position", "Dept", "SupName", "IsActive", "StartDate", "FinishDate", "projectID");
+		$crud->add_fields("EmpName", "Role", "Position", "Dept", "SupName", "IsActive", "StartDate", "FinishDate", "projectID");
 		$crud->field_type("projectID", 'hidden', $id);
 		
 		//Call Model to get the User's Full Names
@@ -424,8 +424,8 @@ class Employee extends CI_Controller {
 		$personID = $_POST['EmpName'];
 		$projectID = $_POST['projectID'];
 		$role = $_POST['Role'];
-		$position = $_POST['position'];
-		$BGSCDept = $_POST['Dept'];
+		$position = $_POST['Position'];
+		$BGCSDept = $_POST['Dept'];
 		$isActive = $_POST['IsActive'];
 		$supervisor = $_POST['SupName'];
 		$startdate = $_POST['StartDate'];
@@ -433,7 +433,7 @@ class Employee extends CI_Controller {
 
 		$crud = new grocery_CRUD();
 		$crud->set_model('Employee_GC');
-		$resp = $crud->basic_model->insert_pp($personID, $projectID, $role, $position, $BGSCDept, $isActive, $supervisor, $startdate, $finishdate);
+		$resp = $crud->basic_model->insert_pp($personID, $projectID, $role, $position, $BGCSDept, $isActive, $supervisor, $startdate, $finishdate);
 		echo $resp;
 	}
 }
