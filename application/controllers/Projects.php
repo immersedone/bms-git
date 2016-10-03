@@ -316,7 +316,7 @@ class Projects extends CI_Controller {
 			$bcgsArr += [$bc->OptID => $bc->data];
 		}
 		//Roles in a Project
-		$roles = $GCM->grids[6]->basic_model->return_query("SELECT OptID, data FROM OptionType WHERE type='BGCS_DEP'");
+		$roles = $GCM->grids[6]->basic_model->return_query("SELECT OptID, data FROM OptionType WHERE type='Role'");
 		$roleArr = array();
 		foreach($roles as $role) {
 			$roleArr += [$role->OptID => $role->data];

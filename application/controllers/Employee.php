@@ -304,9 +304,29 @@ class Employee extends CI_Controller {
 			//$output["perID"] = $perID;
 			$crudTwo->set_read_fields("Address", "SuburbID", "PersonalEmail", "Mobile", "HomePhone", "Status", "DateStarted", "DateFinished", "ContractSigned", "PaperworkCompleted", "WWC", "WWCFiled", "PoliceCheck", "TeacherRegCheck", "FAQual", "DateofBirth", "LanguagesSpoken", "EmergContName", "EmergContMob", "EmergContHPhone", "EmergContWPhone", "EmergContRelToPer");
 			$crudTwo->setNewState($perID);
-
             $fullDetailsOP = $crudTwo->render();
 			
+			$crudThree = new grocery_CRUD();
+			$crudThree->set_model('Extended_generic_model');
+			$crudThree->set_table('PersonProject');
+			$crudThree->set_subject('Employee History');
+			$crudThree->basic_model->set_query_str("SELECT Proj.Name as ProjName, O1.Data as Role, O2.Data as Dept,  CONCAT(Per.FirstName, ' ', Per.MiddleName, ' ', Per.LastName) as SupName, PP.StartDate, PP.FinishDate FROM PersonProject PP
+			LEFT OUTER JOIN Person Per ON Per.PerID = PP.Supervisor
+			LEFT OUTER JOIN Project Proj ON Proj.ProjID = PP.ProjID
+			LEFT OUTER JOIN OptionType O1 on O1.OptID = PP.Role
+			LEFT OUTER JOIN OptionType O2 on O2.OptID = PP.BGCSDepartment
+			WHERE PP.PerID = '$perID'");
+			$crudThree->columns("ProjName", "Role", "Dept", "SupName", "StartDate", "FinishDate");
+			
+			$crudThree->setStateCode(1);
+			$crudThree->unset_add();
+			$crudThree->unset_edit();
+			$crudThree->unset_delete();
+			$empHistoryOP = $crudThree->render();	
+
+
+			
+			$output["empHistory"] = $empHistoryOP;
 			$output["fullDetails"] = $fullDetailsOP;
 			$output["multiView"] = "YES";
 			
@@ -322,39 +342,26 @@ class Employee extends CI_Controller {
 	public function empproj($id) {
 
 		$crud = new grocery_CRUD();
-		$crud->set_model('Extended_generic_model');
-		$crud->set_table('Employee');
+		$crud->set_model('Employe_GC');
+		$crud->set_table('ProjectPerson');
 		$crud->set_subject('Employee');
-		$crud->basic_model->set_query_str(
-		'SELECT Proj.Name, Proj.ProjID, `PersonProject`.Role as ProjRole, CONCAT(FirstName, " ", MiddleName, " ", LastName) as FullName, Sub.SuburbName as SubName, 
-		Sub.Postcode as Postcode, Per.* FROM `Person` Per 
-		LEFT OUTER JOIN `PersonProject` ON Per.PerID=`PersonProject`.PerID 
-		LEFT OUTER JOIN `Project` Proj ON `PersonProject`.ProjID=Proj.ProjID 
-		LEFT OUTER JOIN `Suburb` Sub ON Sub.SuburbID=Per.SuburbID 
-		WHERE `PersonProject`.Role="Employee"', ' GROUP BY FullName, Name, ProjRole');
-		$crud->columns("Name", "FullName", "Address", "Postcode", "SubName", "WorkEmail", "PersonalEmail", "Mobile", "HomePhone");
-		$crud->display_as("Name", "Project Name");
-		$crud->display_as("ProjRole", "Project Role");
-		$crud->display_as("FullName", "Full Name");
-		$crud->display_as("SubName", "Suburb");
-		$crud->display_as("PerID", "Name");
+		$crud->basic_model->set_query_str("SELECT CONCAT(Emp.FirstName, ' ', Emp.MiddleName, ' ', Emp.LastName) as EmpName, O1.Data as Role, O2.Data as Dept, O3.Data as Position,  CONCAT(Sup.FirstName, ' ', Sup.MiddleName, ' ', Sup.LastName) as SupName, PP.StartDate, PP.FinishDate FROM PersonProject PP
+			LEFT OUTER JOIN Person Emp ON Emp.PerID = PP.Supervisor
+			LEFT OUTER JOIN Person Sup ON Sup.PerID = PP.Supervisor
+			LEFT OUTER JOIN Project Proj ON Proj.ProjID = PP.ProjID
+			LEFT OUTER JOIN OptionType O1 on O1.OptID = PP.Role
+			LEFT OUTER JOIN OptionType O2 on O2.OptID = PP.BGCSDepartment
+			LEFT OUTER JOIN OptionType O3 on O3.OptID = PP.Position
+			WHERE O3.Data != 'Volunteer' 
+			AND PP.ProjID=".$id);
+		$crud->columns("EmpName", "Role", "Position", "Dept", "SupName", "StartDate", "FinishDate");
+		$crud->display_as("Role", "Project Role");
+		$crud->display_as("EmpName", "Full Name");
+		$crud->display_as("SupName", "Supervisor Name");
 
 		//Change the Add Volunteer Fields
-		$crud->add_fields("FullName", "Name", "Role");
-
-		
-		//Call Model to get the Project Names
-		$projects = $crud->basic_model->return_query("SELECT ProjID, Name FROM Project WHERE ProjID=".$id);
-		
-		//Convert Return Object into Associative Array
-		$prjArr = array();
-		foreach($projects as $prj) {
-			$prjArr += [$prj->ProjID => $prj->Name];
-		}
-
-		//Change the field type to a dropdown with values
-		//to add to the relational table
-		$crud->field_type("Name", "dropdown", $prjArr);
+		$crud->add_fields("EmpName", "Role", "position", "Dept", "SupName", "IsActive", "StartDate", "FinishDate", "projectID");
+		$crud->field_type("projectID", 'hidden', $id);
 		
 		//Call Model to get the User's Full Names
 		$users = $crud->basic_model->return_query("SELECT PerID, CONCAT(FirstName, ' ', MiddleName, ' ', LastName) as FullName FROM Person");
@@ -364,10 +371,32 @@ class Employee extends CI_Controller {
 		foreach($users as $usr) {
 			$usrArr += [$usr->PerID => $usr->FullName];
 		}
+		//BCGS Departments
+		$bcgs = $crud->basic_model->return_query("SELECT OptID, data FROM OptionType WHERE type='BGCS_DEP'");
+		$bcgsArr = array();
+		foreach($bcgs as $bc) {
+			$bcgsArr += [$bc->OptID => $bc->data];
+		}
+		//Position
+		$pos = $crud->basic_model->return_query("SELECT OptID, data FROM OptionType WHERE type='Position'");
+		$posArr = array();
+		foreach($pos as $p) {
+			$posArr += [$p->OptID => $p->data];
+		}
+		//Roles in a Project
+		$roles = $crud->basic_model->return_query("SELECT OptID, data FROM OptionType WHERE type='Role'");
+		$roleArr = array();
+		foreach($roles as $role) {
+			$roleArr += [$role->OptID => $role->data];
+		}
 		
 		//Change the field type to a dropdown with values
 		//to add to the relational table
-		$crud->field_type("FullName", "dropdown", $usrArr);
+		$crud->field_type("Position", "dropdown", $posArr);
+		$crud->field_type("Dept", "dropdown", $bcgsArr);
+		$crud->field_type("Role", "dropdown", $roleArr);
+		$crud->field_type("EmpName", "dropdown", $usrArr);
+		$crud->field_type("SupName", "dropdown", $usrArr);
 
 		$output = $crud->render();
 
@@ -389,36 +418,20 @@ class Employee extends CI_Controller {
 	}
 
 	public function pp_insert() {
-
-		//Initialise and assign variables
-		$PerID = $_POST['PerID'];
-		$EmpPosition = $_POST['EmpPosition'];
-		$EmpSecPosition = $_POST['EmpSecPosition'];
-		$BGCSDepartment = $_POST['BGCSDepartment'];
-		$Supervisor = $_POST['Supervisor'];
-		$WorkMob = $_POST['WorkMob'];
-		$WorkEmail = $_POST['WorkEmail'];
-		$EmpDate = $_POST['EmpDate'];
-		$Contract = $_POST['Contract'];
-		$ContStatus = $_POST['ContStatus'];
-		$ContStartDate = $_POST['ContStartDate'];
-		$ContEndDate = $_POST['ContEndDate'];
-		$HrlyRate = $_POST['HrlyRate'];
-		$SecHrlyRate = $_POST['SecHrlyRate'];
-		$HrsPerFrtnt = $_POST['HrsPerFrtnt'];
-		$DaysWork = $_POST['DaysWork'];
-		$NHACEClass = $_POST['NHACEClass'];
-		$NHACEDate = $_POST['NHACEDate'];
-		$AnnualLeave = $_POST['AnnualLeave'];
-		$PersonalLeave = $_POST['PersonalLeave'];
-		$FundUSI = $_POST['FundUSI'];
-		$MmbershpNo = $_POST['MmbershpNo'];
-		$SuperFund = $_POST['SuperFund'];
-		$TerminationDate = $_POST['TerminationDate'];
+	
+		$personID = $_POST['VolName'];
+		$projectID = $_POST['projectID'];
+		$role = $_POST['Role'];
+		$position = $_POST['position'];
+		$BGSCDept = $_POST['Dept'];
+		$isActive = $_POST['IsActive'];
+		$supervisor = $_POST['SupName'];
+		$startdate = $_POST['StartDate'];
+		$finishdate = $_POST['FinishDate'];
 
 		$crud = new grocery_CRUD();
 		$crud->set_model('Employee_GC');
-		$resp = $crud->basic_model->insert_pp($PerID, $EmpPosition, $EmpSecPosition, $BGCSDepartment, $Supervisor, $WorkMob, $WorkEmail, $EmpDate, $Contract, $ContStatus, $ContStartDate, $ContEndDate, $HrlyRate, $SecHrlyRate, $HrsPerFrtnt, $DaysWork, $NHACEClass, $NHACEDate, $AnnualLeave, $PersonalLeave, $FundUSI , $MmbershpNo , $SuperFund, $TerminationDate);
+		$resp = $crud->basic_model->insert_pp($personID, $projectID, $role, $position, $BGSCDept, $isActive, $supervisor, $startdate, $finishdate);
 		echo $resp;
 	}
 }
