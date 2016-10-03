@@ -241,15 +241,46 @@ class Projects extends CI_Controller {
 		$GCM->grids[5]->display_as("VolName", "Volunteer Name");
 		$GCM->grids[5]->display_as("Role", "Project Role");
 		$GCM->grids[5]->display_as("Dept", "Banksia Deparment");
-		$GCM->grids[5]->display_as("SupName", "Supervisor Name");
+		$GCM->grids[5]->display_as("SupName", "Supervisor Name");	
 
+		$GCM->grids[5]->add_fields("EmpName", "Role", "position", "Dept", "SupName", "IsActive", "StartDate", "FinishDate", "projectID");
+		$GCM->grids[5]->field_type("projectID", 'hidden', $id);
+		$volID = $GCM->grids[5]->basic_model->return_query("SELECT OptID FROM OptionType
+		WHERE data = 'Volunteer' and type = 'position'");
+		$GCM->grids[5]->field_type("position", 'hidden', $volID[0]);
 
+		//BCGS Departments
+		$bcgs = $GCM->grids[5]->basic_model->return_query("SELECT OptID, data FROM OptionType WHERE type='BGCS_DEP'");
+		$bcgsArr = array();
+		foreach($bcgs as $bc) {
+			$bcgsArr += [$bc->OptID => $bc->data];
+		}
+		//Roles in a Project
+		$roles = $GCM->grids[5]->basic_model->return_query("SELECT OptID, data FROM OptionType WHERE type='BGCS_DEP'");
+		$roleArr = array();
+		foreach($roles as $role) {
+			$roleArr += [$role->OptID => $role->data];
+		}
+		
+		//Full Names
+		$users = $GCM->grids[5]->basic_model->return_query("SELECT PerID, CONCAT(FirstName, ' ', MiddleName, ' ', LastName) as FullName FROM Person");
+		$usrArr = array();
+		foreach($users as $usr) {
+			$usrArr += [$usr->PerID => $usr->FullName];
+		}		
+		
+		$GCM->grids[5]->field_type("BGCSDepartment", "dropdown", $bcgsArr);
+		$GCM->grids[5]->field_type("Role", "dropdown", $roleArr);
+		$GCM->grids[5]->field_type("VolName", "dropdown", $usrArr);
+		$GCM->grids[5]->field_type("SupName", "dropdown", $usrArr);
 
+	
+		
 		//Change the default method to fire when adding
 		//a new person to a project
-		//$GCM->grids[5]->callback_before_insert(array($this,'volunteer_add'));
+		$GCM->grids[5]->callback_before_insert(array($this,'volunteer_add'));
 
-		$GCM->grids[5]->unset_add();
+		//$GCM->grids[5]->unset_add();
 		$GCM->grids[5]->unset_edit();
 		$GCM->grids[5]->unset_delete();
 		//$GCM->grids[5]->add_action('Delete', '', '', 'delete-icon', array($this, 'volunteer_delete'));
@@ -275,10 +306,33 @@ class Projects extends CI_Controller {
 		//$GCM->grids[6]->display_as("StartDate", "Personal Email");
 		//$GCM->grids[6]->display_as("FinishDate", "Home Phone");
 
+		$GCM->grids[6]->add_fields("EmpName", "Role", "position", "Dept", "SupName", "IsActive", "StartDate", "FinishDate", "projectID");
+		$GCM->grids[6]->field_type("projectID", 'hidden', $id);
 
-		//Change the default method to fire when adding
-		//a new person to a project
-		//$GCM->grids[6]->callback_before_insert(array($this,'employee_add'));
+		//BCGS Departments
+		$bcgs = $GCM->grids[6]->basic_model->return_query("SELECT OptID, data FROM OptionType WHERE type='BGCS_DEP'");
+		$bcgsArr = array();
+		foreach($bcgs as $bc) {
+			$bcgsArr += [$bc->OptID => $bc->data];
+		}
+		//Roles in a Project
+		$roles = $GCM->grids[6]->basic_model->return_query("SELECT OptID, data FROM OptionType WHERE type='BGCS_DEP'");
+		$roleArr = array();
+		foreach($roles as $role) {
+			$roleArr += [$role->OptID => $role->data];
+		}
+		
+		//Full Names
+		$users = $GCM->grids[6]->basic_model->return_query("SELECT PerID, CONCAT(FirstName, ' ', MiddleName, ' ', LastName) as FullName FROM Person");
+		$usrArr = array();
+		foreach($users as $usr) {
+			$usrArr += [$usr->PerID => $usr->FullName];
+		}		
+		
+		$GCM->grids[6]->field_type("BGCSDepartment", "dropdown", $bcgsArr);
+		$GCM->grids[6]->field_type("Role", "dropdown", $roleArr);
+		$GCM->grids[6]->field_type("VolName", "dropdown", $usrArr);
+		$GCM->grids[6]->field_type("SupName", "dropdown", $usrArr);
 
 		$GCM->grids[6]->unset_add();
 		$GCM->grids[6]->unset_edit();

@@ -280,13 +280,19 @@ class Volunteer extends CI_Controller {
 	public function pp_insert() {
 
 		//Initialise and assign variables
-		$personID = $_POST['FullName'];
+		$personID = $_POST['EmpName'];
 		$projectID = $_POST['Name'];
 		$role = $_POST['Role'];
+		$position = $_POST['position'];
+		$BGSCDept = $_POST['Dept'];
+		$isActive = $_POST['IsActive'];
+		$supervisor = $_POST['SupName'];
+		$startdate = $_POST['StartDate'];
+		$finishdate = $_POST['FinishDate'];
 
 		$crud = new grocery_CRUD();
 		$crud->set_model('Volunteer_GC');
-		$resp = $crud->basic_model->insert_pp($personID, $projectID, $role);
+		$resp = $crud->basic_model->insert_pp($personID, $projectID, $role, $position, $BGSCDept, $isActive, $supervisor, $startdate, $finishdate);
 		echo $resp;
 	}
 
