@@ -217,9 +217,10 @@ class Volunteer extends CI_Controller {
 
 		$crud->add_fields("VolName", "Role", "position", "Dept", "SupName", "IsActive", "StartDate", "FinishDate", "projectID");
 		$crud->field_type("projectID", 'hidden', $id);
+		
 		$volID = $crud->basic_model->return_query("SELECT OptID FROM OptionType
 		WHERE data = 'Volunteer' and type = 'position'");
-		$crud->field_type("position", 'hidden', $volID[0]);
+		$crud->field_type("position", 'hidden', $volID[0]->OptID);
 
 		//BCGS Departments
 		$bcgs = $crud->basic_model->return_query("SELECT OptID, data FROM OptionType WHERE type='BGCS_DEP'");
