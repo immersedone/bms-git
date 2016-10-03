@@ -342,8 +342,8 @@ class Employee extends CI_Controller {
 	public function empproj($id) {
 
 		$crud = new grocery_CRUD();
-		$crud->set_model('Employe_GC');
-		$crud->set_table('ProjectPerson');
+		$crud->set_model('Employee_GC');
+		$crud->set_table('PersonProject');
 		$crud->set_subject('Employee');
 		$crud->basic_model->set_query_str("SELECT CONCAT(Emp.FirstName, ' ', Emp.MiddleName, ' ', Emp.LastName) as EmpName, O1.Data as Role, O2.Data as Dept, O3.Data as Position,  CONCAT(Sup.FirstName, ' ', Sup.MiddleName, ' ', Sup.LastName) as SupName, PP.StartDate, PP.FinishDate FROM PersonProject PP
 			LEFT OUTER JOIN Person Emp ON Emp.PerID = PP.Supervisor
@@ -398,7 +398,9 @@ class Employee extends CI_Controller {
 		$crud->field_type("EmpName", "dropdown", $usrArr);
 		$crud->field_type("SupName", "dropdown", $usrArr);
 
-		$output = $crud->render();
+		$output["multiView"] = "NO";	
+		
+		$output["employee"] = $crud->render();
 
 		$this->render($output);
 	}
@@ -419,7 +421,7 @@ class Employee extends CI_Controller {
 
 	public function pp_insert() {
 	
-		$personID = $_POST['VolName'];
+		$personID = $_POST['EmpName'];
 		$projectID = $_POST['projectID'];
 		$role = $_POST['Role'];
 		$position = $_POST['position'];

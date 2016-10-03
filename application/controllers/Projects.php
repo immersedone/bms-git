@@ -334,7 +334,7 @@ class Projects extends CI_Controller {
 		$GCM->grids[6]->field_type("VolName", "dropdown", $usrArr);
 		$GCM->grids[6]->field_type("SupName", "dropdown", $usrArr);
 
-		$GCM->grids[6]->unset_add();
+		//$GCM->grids[6]->unset_add();
 		$GCM->grids[6]->unset_edit();
 		$GCM->grids[6]->unset_delete();
 		//$GCM->grids[6]->add_action('Delete', '', '', 'delete-icon', array($this, 'employee_delete'));
