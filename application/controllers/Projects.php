@@ -357,6 +357,11 @@ class Projects extends CI_Controller {
 		return base_url().'user/employee/index/pp_delete/'.$primarykey.'/'.$row->ProjID;
 	}
 
+	function volunteer_add($primarykey, $row) {
+		print_r($row);
+		return base_url().'user/employee/index/pp_insert/'.$primarykey.'/'.$row->ProjID;
+	}
+
 	function setID($id) {
 		if(!get_cookie("projID")) {
 			set_cookie("projID", $id, time()+86400);

@@ -51,7 +51,7 @@ class Reimbursements extends CI_Controller {
 			$usrArr += [$usr->PerID => $usr->FullName];
 		}
 		
-				$unpaidExp = $crud->basic_model->return_query("SELECT ExpID, CONCAT(ExpName, ' - ', Reason, ' - ', Amount) as ExpData FROM Expenditure");
+		$unpaidExp = $crud->basic_model->return_query("SELECT ExpID, CONCAT(ExpName, ' - ', Reason, ' - ', Amount) as ExpData FROM Expenditure");
 		
 		$expArr = array();
 		foreach($unpaidExp as $exp) {

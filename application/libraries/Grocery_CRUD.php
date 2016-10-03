@@ -235,7 +235,8 @@ class grocery_CRUD_Field_Types
 					'password',
 					'readonly',
 					'dropdown',
-					'multiselect'
+					'multiselect',
+					'time'
 			);
 
 			if (in_array($real_type,$types_array)) {
@@ -268,6 +269,14 @@ class grocery_CRUD_Field_Types
 					$value = $field_info->extras[$value];
 				} else if(isset($this->default_true_false_text[$value])) {
 					$value = $this->default_true_false_text[$value];
+				}
+			break;
+			case 'time':
+				if(!empty($value) && $value != '00:00:00') {
+					list($hours,$minutes) = explode(":",substr($value,0));
+					$value = $hours.':'.$minutes;
+				} else {
+					$value = '';
 				}
 			break;
 			case 'string':
@@ -2314,6 +2323,46 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		$input = "<input id='field-{$field_info->name}' name='{$field_info->name}' type='text' value='$datetime' maxlength='19' class='datetime-input form-control' />
 		<a class='datetime-input-clear' tabindex='-1'>".$this->l('form_button_clear')."</a>
 		({$this->ui_date_format}) hh:mm:ss";
+		return $input;
+	}
+
+	protected function get_time_input($field_info,$value) {
+		$this->set_css($this->default_css_path.'/ui/simple/'.grocery_CRUD::JQUERY_UI_CSS);
+		$this->set_css($this->default_css_path.'/jquery_plugins/jquery.ui.datetime.css');
+		$this->set_css($this->default_css_path.'/jquery_plugins/jquery-ui-timepicker-addon.css');
+		$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/ui/'.grocery_CRUD::JQUERY_UI_JS);
+		$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/jquery-ui-timepicker-addon.js');
+			
+		if($this->language !== 'english') {
+			include($this->default_config_path.'/language_alias.php');
+				
+			if(array_key_exists($this->language, $language_alias)) {
+				$i18n_date_js_file = $this->default_javascript_path.'/jquery_plugins/ui/i18n/datepicker/jquery.ui.datepicker-'.$language_alias[$this->language].'.js';
+					
+				if(file_exists($i18n_date_js_file)) {
+					$this->set_js_lib($i18n_date_js_file);
+				}
+					
+				$i18n_datetime_js_file = $this->default_javascript_path.'/jquery_plugins/ui/i18n/timepicker/jquery-ui-timepicker-'.$language_alias[$this->language].'.js';
+					
+				if(file_exists($i18n_datetime_js_file)){
+					$this->set_js_lib($i18n_datetime_js_file);
+				}
+					
+			}
+				
+		}
+			
+		$this->set_js_config($this->default_javascript_path.'/jquery_plugins/config/jquery-ui-timepicker-addon.config.js');
+			
+		if(!empty($value) && $value != '00:00:00') {
+			list($hours,$minutes) = explode(":",substr($value,0,6));
+			$datetime = $hours.':'.$minutes;
+		} else {
+			$datetime = '';
+		}
+			
+		$input = "<input id='field-{$field_info->name}' name='{$field_info->name}' type='text' value='$datetime' maxlength='5' class='time-input' /> <a class='time-input-clear' tabindex='-1'>".$this->l('form_button_clear')."</a> (hh:mm)";
 		return $input;
 	}
 

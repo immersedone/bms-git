@@ -133,26 +133,26 @@ $route['user/projects/index/projread/list'] = 'projects/projread';
 $route['user/projects/index/projread/success'] = 'projects/projread';
 $route['user/projects/index/projread/(:num)'] = 'projects/projread/$1';
 
-$route['user/projects/index/projread/1/add/(:num)'] = 'milestones/mileproj/$1';
-$route['user/projects/index/projread/1/insert'] = 'milestones/mile_insert';
-$route['user/projects/index/projread/1/insert_validation'] = 'milestones/milestones';
-$route['user/projects/index/projread/1/ajax_list_info'] = 'milestones/milestones';
+$route['user/projects/index/projread/2/add/(:num)'] = 'milestones/mileproj/$1';
+$route['user/projects/index/projread/2/insert'] = 'milestones/mile_insert';
+$route['user/projects/index/projread/2/insert_validation'] = 'milestones/milestones';
+$route['user/projects/index/projread/2/ajax_list_info'] = 'milestones/milestones';
 
-$route['user/projects/index/projread/2/add/(:num)'] = 'expenditures/expendproj/$1';
-$route['user/projects/index/projread/2/insert'] = 'expenditures/exp_insert';
-$route['user/projects/index/projread/2/insert_validation'] = 'expenditures/expenditures';
+$route['user/projects/index/projread/3/add/(:num)'] = 'expenditures/expendproj/$1';
+$route['user/projects/index/projread/3/insert'] = 'expenditures/exp_insert';
+$route['user/projects/index/projread/3/insert_validation'] = 'expenditures/expenditures';
 
-$route['user/projects/index/projread/3/add/(:num)'] = 'funding/fundproj/$1';
-$route['user/projects/index/projread/3/insert'] = 'funding/fd_insert';
-$route['user/projects/index/projread/3/insert_validation'] = 'funding/funding';
+$route['user/projects/index/projread/4/add/(:num)'] = 'funding/fundproj/$1';
+$route['user/projects/index/projread/4/insert'] = 'funding/fd_insert';
+$route['user/projects/index/projread/4/insert_validation'] = 'funding/funding';
 
-$route['user/projects/index/projread/4/add/(:num)'] = 'volunteer/volproj/$1';
-$route['user/projects/index/projread/4/insert'] = 'volunteer/pp_insert';
-$route['user/projects/index/projread/4/insert_validation'] = 'volunteer/volunteer';
+$route['user/projects/index/projread/5/add/(:num)'] = 'volunteer/volproj/$1';
+$route['user/projects/index/projread/5/insert'] = 'volunteer/pp_insert';
+$route['user/projects/index/projread/5/insert_validation'] = 'volunteer/volunteer';
 
-$route['user/projects/index/projread/5/add/(:num)'] = 'employee/empproj/$1';
-$route['user/projects/index/projread/5/insert'] = 'employee/pp_insert';
-$route['user/projects/index/projread/5/insert_validation'] = 'employee/employee';
+$route['user/projects/index/projread/6/add/(:num)'] = 'employee/empproj/$1';
+$route['user/projects/index/projread/6/insert'] = 'employee/pp_insert';
+$route['user/projects/index/projread/6/insert_validation'] = 'employee/employee';
 //$route['user/projects/index/projread'] = 'projects/projread';
 $route['user/projects/index/read/(:num)'] = 'projects/projects/$1';
 $route['user/projects/index/delete/(:num)'] = 'projects/projects/$1';

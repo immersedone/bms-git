@@ -10,19 +10,22 @@ $this->set_js($this->default_theme_path.'/flexiajax/js/jquery.numeric.js');
 
 switch($subject) {
     case "Milestone":
-        $gridNo = 1;
-        break;
-    case "Expenditure":
         $gridNo = 2;
         break;
-    case "Funding":
+    case "Expenditure":
         $gridNo = 3;
         break;
-    case "Volunteer":
+    case "Funding":
         $gridNo = 4;
         break;
-    case "Employee":
+    case "Volunteers":
         $gridNo = 5;
+        break;
+    case "Volunteer";
+        $gridNo = 5;
+        break;
+    case "Employee":
+        $gridNo = 6;
         break;
 }
 

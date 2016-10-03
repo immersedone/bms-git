@@ -125,8 +125,21 @@
 </div>
 </div>
 <script>
+	<?php 
+    $fullURL = explode('/', $_SERVER['REQUEST_URI']);
+        if(end($fullURL) === "") {
+            array_pop($fullURL);
+        } 
+
+        if($fullURL[0] === "") {
+            array_shift($fullURL);
+        }
+        if(strtolower($fullURL[0]) === "user" && strtolower($fullURL[1]) === "projects" && strtolower($fullURL[2]) === "index" && strtolower($fullURL[3]) === "projread") {
+            $page = "PROJECT_VIEW";
+        }
+    ?>
 	var validation_url = '<?php echo $validation_url?>';
-	var list_url = '<?php echo $list_url?>';
+	var list_url = '<?php if($page === "PROJECT_VIEW"){ echo base_url(). 'user/projects/index/projread/list'; } else { echo $list_url; }?>';
 
 	var message_alert_add_form = "<?php echo $this->l('alert_add_form')?>";
 	var message_insert_error = "<?php echo $this->l('insert_error')?>";
