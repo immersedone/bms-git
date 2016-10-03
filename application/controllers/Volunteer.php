@@ -198,49 +198,53 @@ class Volunteer extends CI_Controller {
 
 		$crud = new grocery_CRUD();
 		$crud->set_model('Volunteer_GC');
-		$crud->set_table('Person');
+		$crud->set_table('PersonProject');
 		$crud->set_subject('Volunteer');
-		$crud->basic_model->set_query_str('SELECT Proj.Name, Proj.ProjID, `PersonProject`.Role as ProjRole, CONCAT(FirstName, " ", MiddleName, " ", LastName) as FullName, Sub.SuburbName as SubName, Sub.Postcode as Postcode, Per.* FROM `Person` Per 
-		LEFT OUTER JOIN `PersonProject` ON Per.PerID=`PersonProject`.PerID 
-		LEFT OUTER JOIN `Project` Proj ON `PersonProject`.ProjID=Proj.ProjID 
-		LEFT OUTER JOIN `Suburb` Sub ON Sub.SuburbID=Per.SuburbID 
-		WHERE `PersonProject`.Role="VOLUNTEER"', ' GROUP BY FullName, Name, ProjRole');
-		$crud->columns("Name", "FullName", "Address", "Postcode", "SubName", "WorkEmail", "PersonalEmail", "Mobile", "HomePhone");
-		$crud->display_as("Name", "Project Name");
-		$crud->display_as("ProjRole", "Project Role");
-		$crud->display_as("FullName", "Full Name");
-		$crud->display_as("SubName", "Suburb");
-		
-		//Change the Add Volunteer Fields
-		$crud->add_fields("FullName", "Name", "Role");
+		$crud->basic_model->set_query_str("SELECT CONCAT(Vol.FirstName, ' ', Vol.MiddleName, ' ', Vol.LastName) as VolName, O1.Data as Role, O2.Data as Dept,  CONCAT(Sup.FirstName, ' ', Sup.MiddleName, ' ', Sup.LastName) as SupName, PP.StartDate, PP.FinishDate FROM PersonProject PP
+			LEFT OUTER JOIN Person Vol ON Vol.PerID = PP.Supervisor
+			LEFT OUTER JOIN Person Sup ON Sup.PerID = PP.Supervisor
+			LEFT OUTER JOIN Project Proj ON Proj.ProjID = PP.ProjID
+			LEFT OUTER JOIN OptionType O1 on O1.OptID = PP.Role
+			LEFT OUTER JOIN OptionType O2 on O2.OptID = PP.BGCSDepartment
+			LEFT OUTER JOIN OptionType O3 on O3.OptID = PP.Position
+			WHERE O3.Data = 'Volunteer' 
+			AND PP.ProjID=".$id);
+		$crud->columns("VolName", "Role", "Dept", "SupName", "StartDate", "FinishDate");
+		$crud->display_as("VolName", "Volunteer Name");
+		$crud->display_as("Role", "Project Role");
+		$crud->display_as("Dept", "Banksia Deparment");
+		$crud->display_as("SupName", "Supervisor Name");	
 
-		
-		//Call Model to get the Project Names
-		$projects = $crud->basic_model->return_query("SELECT ProjID, Name FROM Project WHERE ProjID=".$id);
-		
-		//Convert Return Object into Associative Array
-		$prjArr = array();
-		foreach($projects as $prj) {
-			$prjArr += [$prj->ProjID => $prj->Name];
+		$crud->add_fields("VolName", "Role", "position", "Dept", "SupName", "IsActive", "StartDate", "FinishDate", "projectID");
+		$crud->field_type("projectID", 'hidden', $id);
+		$volID = $crud->basic_model->return_query("SELECT OptID FROM OptionType
+		WHERE data = 'Volunteer' and type = 'position'");
+		$crud->field_type("position", 'hidden', $volID[0]);
+
+		//BCGS Departments
+		$bcgs = $crud->basic_model->return_query("SELECT OptID, data FROM OptionType WHERE type='BGCS_DEP'");
+		$bcgsArr = array();
+		foreach($bcgs as $bc) {
+			$bcgsArr += [$bc->OptID => $bc->data];
 		}
-
-		//Change the field type to a dropdown with values
-		//to add to the relational table
-		$crud->field_type("Name", "dropdown", $prjArr);
+		//Roles in a Project
+		$roles = $crud->basic_model->return_query("SELECT OptID, data FROM OptionType WHERE type='Role'");
+		$roleArr = array();
+		foreach($roles as $role) {
+			$roleArr += [$role->OptID => $role->data];
+		}
 		
-		//Call Model to get the User's Full Names
+		//Full Names
 		$users = $crud->basic_model->return_query("SELECT PerID, CONCAT(FirstName, ' ', MiddleName, ' ', LastName) as FullName FROM Person");
-
-		//Convert Return Object into Associative Array
 		$usrArr = array();
 		foreach($users as $usr) {
 			$usrArr += [$usr->PerID => $usr->FullName];
-		}
+		}		
 		
-		//Change the field type to a dropdown with values
-		//to add to the relational table
-		$crud->field_type("FullName", "dropdown", $usrArr);
-
+		$crud->field_type("Dept", "dropdown", $bcgsArr);
+		$crud->field_type("Role", "dropdown", $roleArr);
+		$crud->field_type("VolName", "dropdown", $usrArr);
+		$crud->field_type("SupName", "dropdown", $usrArr);
 		//Change the default method to fire when adding
 		//a new person to a project
 		$crud->callback_before_insert(array($this,'volunteer_add'));
@@ -250,8 +254,10 @@ class Volunteer extends CI_Controller {
 		$crud->add_action('Delete', '', '', 'delete-icon', array($this, 'volunteer_delete'));
 		//$crud->callback_delete(array($this, 'volunteer_delete'));
 
-		$output = $crud->render();
-
+		$output["multiView"] = "NO";	
+		
+		$output["volunteer"] = $crud->render();
+	
 		$this->render($output);
 	}
 
@@ -280,8 +286,8 @@ class Volunteer extends CI_Controller {
 	public function pp_insert() {
 
 		//Initialise and assign variables
-		$personID = $_POST['EmpName'];
-		$projectID = $_POST['Name'];
+		$personID = $_POST['VolName'];
+		$projectID = $_POST['projectID'];
 		$role = $_POST['Role'];
 		$position = $_POST['position'];
 		$BGSCDept = $_POST['Dept'];
