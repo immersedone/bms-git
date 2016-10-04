@@ -53,7 +53,16 @@ $(function(){
 									if(save_and_close)
 									{
 										if ($('#save-and-go-back-button').closest('.ui-dialog').length === 0) {
-											window.location = data.success_list_url;
+											
+											//window.location = data.success_list_url;
+											
+											//Check to see if it is in Project View
+											//and redirect to different URL if it is
+											if (isProjectView !== null || isProjectView !== "" || typeof isProjectView !== 'undefined') {
+												window.location = success_list_url;
+											} else {
+												window.location = data.success_list_url;
+											}
 										} else {
 											$(".ui-dialog-content").dialog("close");
 											success_message(data.success_message);
