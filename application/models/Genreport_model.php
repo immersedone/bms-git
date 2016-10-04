@@ -34,6 +34,17 @@ class Genreport_model extends CI_Model {
 
     }
 
+    public function getReimbursements()
+    {
+        $query = $this->db->query("SELECT Reimbursement.ReimID FROM Reimbursement LEFT OUTER JOIN Person ON Reimbursement.ApprovedBy=Person.PerID LEFT OUTER JOIN Person as Per ON Reimbursement.PerID=Per.PerID");
+        $reimb = array();
+        foreach($query->result_array() as $row) {
+            $reimb[$row["ReimID"]] = $row["ReimID"];
+        }
+
+        return $reimb;
+    }
+
 }
 
 ?>

@@ -97,6 +97,7 @@
                                             <option value="allfun">All Funding</option>
                                             <option value="prjovr">Project Overview</option>-->
                                             <option value="empprj">Employees in a Project</option>
+                                            <option value="reimb">Reimbursements</option>
                                             <!--<option value="volprj">Volunteers in a Project</option>
                                             <option value="expprj">Expenditures in a Project</option>
                                             <option value="reiprj">Reimbursements in a Project</option>
@@ -113,6 +114,23 @@
                                         <select name="project">
                                             <option value="0"> --- Please select a project --- </option>
                                             <?php foreach($Projects as $key => $value) {
+                                                echo '<option value="' . $key . '">' . $value . '</option>';
+                                            }
+
+                                            ?>
+
+                                            
+                                        </select>
+                                    </div>
+                                    </div>
+
+                                    <!-- Select Type of Report -->
+                                    <div class="col-md-6">
+                                    <div class="control-form listProjects">
+                                        <h4>Select Reimbursement</h4>
+                                        <select name="reimbursement">
+                                            <option value="0"> --- Please select a project --- </option>
+                                            <?php foreach($Reimbursements as $key => $value) {
                                                 echo '<option value="' . $key . '">' . $value . '</option>';
                                             }
 
