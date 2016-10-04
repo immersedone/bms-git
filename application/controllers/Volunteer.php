@@ -32,7 +32,7 @@ class Volunteer extends CI_Controller {
 		$crud->set_subject('Volunteer');
 		$crud->basic_model->set_query_str('SELECT CONCAT(Per.FirstName, " ", Per.MiddleName, " ", Per.LastName) as FullName, Vol.* FROM `Volunteer` Vol 
 		LEFT OUTER JOIN Person Per on Per.PerID = Vol.PerID');
-		$crud->columns("FullName",  "ProjID", "Supervisor", "BGCSDepartment", "isActive", "DateStarted", "DateFinished", "RefFullName", "RefMobile", "RefHPhone", "RefRelToVol", "DaysAvailable", "ContSkills", "ContQual");
+		$crud->columns("FullName",  "isActive", "DateStarted", "DateFinished", "RefFullName", "RefMobile", "RefHPhone", "RefRelToVol", "DaysAvailable", "ContSkills", "ContQual");
 		$crud->display_as("BGCSDepartment", "Department Assigned To");
 		$crud->display_as("RefFullName", "Referee Full Name");
 		$crud->display_as("RefMobile", "Referee Mobile");
@@ -50,9 +50,9 @@ class Volunteer extends CI_Controller {
 		$crud->display_as("DateFinished", "Date Finished on Project");
 		$crud->display_as("isActive", "Is Active");
 
-		$crud->add_fields("PerID", "ProjID", "Supervisor", "BGCSDepartment", "isActive", "DateStarted", "DateFinished", "RefFullName", "RefMobile", "RefHPhone", "RefRelToVol", "DaysAvailable", "ContSkills", "ContQual");
-		$crud->edit_fields("PerID",  "ProjID", "Supervisor", "BGCSDepartment", "isActive", "DateStarted", "DateFinished", "RefFullName", "RefMobile", "RefHPhone", "RefRelToVol", "DaysAvailable", "ContSkills", "ContQual");
-		$crud->set_read_fields("PerID",  "ProjID", "Supervisor", "BGCSDepartment", "isActive", "DateStarted", "DateFinished", "RefFullName", "RefMobile", "RefHPhone", "RefRelToVol", "DaysAvailable", "ContSkills", "ContQual");
+		$crud->add_fields("PerID", "isActive", "DateStarted", "DateFinished", "RefFullName", "RefMobile", "RefHPhone", "RefRelToVol", "DaysAvailable", "ContSkills", "ContQual");
+		$crud->edit_fields("PerID", "isActive", "DateStarted", "DateFinished", "RefFullName", "RefMobile", "RefHPhone", "RefRelToVol", "DaysAvailable", "ContSkills", "ContQual");
+		$crud->set_read_fields("PerID", "isActive", "DateStarted", "DateFinished", "RefFullName", "RefMobile", "RefHPhone", "RefRelToVol", "DaysAvailable", "ContSkills", "ContQual");
 
 
 		//List of Projects
@@ -154,20 +154,41 @@ class Volunteer extends CI_Controller {
 			$crudThree->set_model('Extended_generic_model');
 			$crudThree->set_table('PersonProject');
 			$crudThree->set_subject('Volunteer History');
-			$crudThree->basic_model->set_query_str("SELECT Proj.Name as ProjName, O1.Data as Role, O2.Data as Dept,  CONCAT(Per.FirstName, ' ', Per.MiddleName, ' ', Per.LastName) as SupName, PP.StartDate, PP.FinishDate FROM PersonProject PP
+			$crudThree->basic_model->set_query_str("SELECT Proj.Name as ProjName, O1.Data as Role, O2.Data as Dept,  CONCAT(Per.FirstName, ' ', Per.MiddleName, ' ', Per.LastName) as SupName, PP.StartDate, PP.FinishDate, PP.PerID, PP.PersonProjectID FROM PersonProject PP
 			LEFT OUTER JOIN Person Per ON Per.PerID = PP.Supervisor
 			LEFT OUTER JOIN Project Proj ON Proj.ProjID = PP.ProjID
 			LEFT OUTER JOIN OptionType O1 on O1.OptID = PP.Role
 			LEFT OUTER JOIN OptionType O2 on O2.OptID = PP.BGCSDepartment
-			WHERE PP.PerID = '$perID'");
+			WHERE PP.PerID = '$perID' AND PP.IsActive='0'");
 			$crudThree->columns("ProjName", "Role", "Dept", "SupName", "StartDate", "FinishDate");
 			
 			$crudThree->setStateCode(1);
 			$crudThree->unset_add();
 			$crudThree->unset_edit();
 			$crudThree->unset_delete();
+			$crudThree->unset_export();
+			$crudThree->unset_print();
 			$volHistoryOP = $crudThree->render();
 
+			$crudFour = new grocery_CRUD();
+			$crudFour->set_model('Extended_generic_model');
+			$crudFour->set_table('PersonProject');
+			$crudFour->set_subject('Volunteer History');
+			$crudFour->basic_model->set_query_str("SELECT Proj.Name as ProjName, O1.Data as Role, O2.Data as Dept,  CONCAT(Per.FirstName, ' ', Per.MiddleName, ' ', Per.LastName) as SupName, PP.StartDate, PP.FinishDate FROM PersonProject PP
+			LEFT OUTER JOIN Person Per ON Per.PerID = PP.Supervisor
+			LEFT OUTER JOIN Project Proj ON Proj.ProjID = PP.ProjID
+			LEFT OUTER JOIN OptionType O1 on O1.OptID = PP.Role
+			LEFT OUTER JOIN OptionType O2 on O2.OptID = PP.BGCSDepartment
+			WHERE PP.PerID = '$perID' AND PP.IsActive='1'");
+			$crudFour->columns("ProjName", "Role", "Dept", "SupName", "StartDate", "FinishDate");
+			
+			$crudFour->setStateCode(1);
+			$crudFour->unset_add();
+			$crudFour->unset_edit();
+			$crudFour->unset_delete();
+			$crudFour->unset_export();
+			$crudFour->unset_print();
+			$volCurrentOP = $crudFour->render();
 
 			//echo $perID;
 			$sInf = $crudTwo->getStateInfo();
@@ -181,11 +202,13 @@ class Volunteer extends CI_Controller {
 
 			$output["fullDetails"] = $fullDetailsOP;
 			$output["volHistory"] = $volHistoryOP;
+			$output["volCurrent"] = $volCurrentOP;
 			$output["multiView"] = "YES";
 			
 		} else {
 			$output["fullDetails"] = "";
 			$output["volHistory"] = "";
+			$output["volCurrent"] = "";
 			$output["multiView"] = "NO";
 		}
 		$output["volunteer"] = $volunteerOP;

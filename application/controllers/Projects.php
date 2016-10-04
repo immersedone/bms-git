@@ -111,6 +111,8 @@ class Projects extends CI_Controller {
 		$GCM->grids[1]->unset_edit();
 		$GCM->grids[1]->unset_delete();
 		$GCM->grids[1]->unset_add();
+		//$GCM->grids[1]->setStateCode(18);
+		//$GCM->grids[1]->setNewState($id);
 
 		$GCM->grid_add(2);
 
