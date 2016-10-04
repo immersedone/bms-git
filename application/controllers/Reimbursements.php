@@ -30,14 +30,15 @@ class Reimbursements extends CI_Controller {
 		LEFT OUTER JOIN Person P on R.PerID=P.PerID");
 		$crud->set_table('Reimbursement');
 		$crud->set_subject('Reimbursement');
-		$crud->set_read_fields("ReimbDate", "ApprovedBy", "PerID", "ExpList", "IsPaid");
-		$crud->columns('FullName','ReimbDate', 'ApprovedBy', "ExpList",  'IsPaid'); //'Type', removed due to lack of implementation
-		$crud->add_fields('FullName', 'ReimbDate',  'ApprovedBy', "ExpList",  'IsPaid');
-		$crud->edit_fields('PerID', 'ReimbDate', 'ApprovedBy', "ExpList", 'IsPaid');
+		$crud->set_read_fields("ReimID", "ReimbDate", "ApprovedBy", "PerID", "ExpList", "IsPaid", "ReimbStatus");
+		$crud->columns('ReimID', 'FullName','ReimbDate', 'ApprovedBy', "ExpList",  'IsPaid', "ReimbStatus"); //'Type', removed due to lack of implementation
+		$crud->add_fields('FullName', 'ReimbDate',  'ApprovedBy', "ExpList",  'IsPaid', "ReimbStatus");
+		$crud->edit_fields('PerID', 'ReimbDate', 'ApprovedBy', "ExpList", 'IsPaid', "ReimbStatus");
 		$crud->display_as('ReimbDate', 'Date');
 		$crud->display_as('ExpList', 'Expenditures');
 		$crud->display_as('ApprovedBy', 'Approved By');
 		$crud->display_as('FullName', 'Reimbursement For');
+		$crud->display_as("ReimID", "Reimbursement #");
 		$crud->display_as('IsPaid', 'Is Paid');
 		$crud->display_as('PerID', 'Reimbursement For');
 

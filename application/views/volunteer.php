@@ -62,7 +62,7 @@
             <div class="col-md-12 col-sm-12 col-xs-12" id="data">  
               <?php echo $volunteer->output; ?>
               <?php if($multiView === "YES") {
-                    echo '<h4 class="projTitle">Extra Details</h4>';
+                    echo '<h4 class="projTitle">Person Details</h4>';
                     echo $fullDetails->output;
                     echo '<h4 class="projTitle">Current Projects</h4>';
                     echo $volCurrent->output;

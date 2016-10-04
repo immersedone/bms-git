@@ -46,8 +46,8 @@ class Volunteer extends CI_Controller {
 		$crud->display_as("ProjID", "Project");
 		$crud->display_as("Supervisor", "Supervisor");
 		$crud->display_as("BGCSDepartment", "BGCS Department");
-		$crud->display_as("DateStarted", "Date Started on Project");
-		$crud->display_as("DateFinished", "Date Finished on Project");
+		$crud->display_as("DateStarted", "Date Started as Volunteer");
+		$crud->display_as("DateFinished", "Date Finished as Volunteer");
 		$crud->display_as("isActive", "Is Active");
 
 		$crud->add_fields("PerID", "isActive", "DateStarted", "DateFinished", "RefFullName", "RefMobile", "RefHPhone", "RefRelToVol", "DaysAvailable", "ContSkills", "ContQual");
