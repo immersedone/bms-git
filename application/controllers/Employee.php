@@ -322,17 +322,36 @@ class Employee extends CI_Controller {
 			$crudThree->unset_add();
 			$crudThree->unset_edit();
 			$crudThree->unset_delete();
-			$empHistoryOP = $crudThree->render();	
+			$empHistoryOP = $crudThree->render();
 
+            $crudFour = new grocery_CRUD();
+            $crudFour->set_model('Extended_generic_model');
+            $crudFour->set_table('PersonProject');
+            $crudFour->set_subject('Employee History');
+            $crudFour->basic_model->set_query_str("SELECT Proj.Name as ProjName, O1.Data as Role, O2.Data as Dept,  CONCAT(Per.FirstName, ' ', Per.MiddleName, ' ', Per.LastName) as SupName, PP.StartDate FROM PersonProject PP
+			LEFT OUTER JOIN Person Per ON Per.PerID = PP.Supervisor
+			LEFT OUTER JOIN Project Proj ON Proj.ProjID = PP.ProjID
+			LEFT OUTER JOIN OptionType O1 on O1.OptID = PP.Role
+			LEFT OUTER JOIN OptionType O2 on O2.OptID = PP.BGCSDepartment
+			WHERE PP.PerID = '$perID'");
+            $crudFour->columns("ProjName", "Role", "Dept", "SupName", "StartDate");
 
+            $crudFour->setStateCode(1);
+            $crudFour->unset_add();
+            $crudFour->unset_edit();
+            $crudFour->unset_delete();
+            $empCurrentOP = $crudFour->render();
 			
 			$output["empHistory"] = $empHistoryOP;
 			$output["fullDetails"] = $fullDetailsOP;
+            $output["empCurrent"] = $empCurrentOP;
 			$output["multiView"] = "YES";
 			
 		} else {
+            $output["empCurrent"] = "";
 			$output["fullDetails"] = "";
 			$output["multiView"] = "NO";
+
 		}
 		$output["employee"] = $employeeOP;
 
