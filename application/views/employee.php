@@ -64,6 +64,8 @@
               <?php if($multiView === "YES") {
                     echo '<h4 class="projTitle">Extra Details</h4>';
                     echo $fullDetails->output;
+                    echo '<h4 class="projTitle">Current Projects</h4>';
+                    echo $empCurrent->output;
                     echo '<h4 class="projTitle">Employee History</h4>';
                     echo $empHistory->output;
                 } ?>
