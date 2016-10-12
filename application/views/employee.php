@@ -60,9 +60,10 @@
         <div class="right_col" role="main">
           <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">  
-              <?php echo $employee->output; ?>
+              <?php echo '<h4 class="projTitle">Employee Details</h4>';
+					echo $employee->output; ?>
               <?php if($multiView === "YES") {
-                    echo '<h4 class="projTitle">Extra Details</h4>';
+                    echo '<h4 class="projTitle">Personal Details</h4>';
                     echo $fullDetails->output;
                     echo '<h4 class="projTitle">Current Projects</h4>';
                     echo $empCurrent->output;

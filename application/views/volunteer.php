@@ -60,7 +60,8 @@
         <div class="right_col" role="main">
           <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12" id="data">  
-              <?php echo $volunteer->output; ?>
+              <?php echo '<h4 class="projTitle">Volunteer Details</h4>';
+                    echo $volunteer->output; ?>
               <?php if($multiView === "YES") {
                     echo '<h4 class="projTitle">Person Details</h4>';
                     echo $fullDetails->output;

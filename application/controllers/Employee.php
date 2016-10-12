@@ -317,6 +317,11 @@ class Employee extends CI_Controller {
 			LEFT OUTER JOIN OptionType O2 on O2.OptID = PP.BGCSDepartment
 			WHERE PP.PerID = '$perID'");
 			$crudThree->columns("ProjName", "Role", "Dept", "SupName", "StartDate", "FinishDate");
+			$crudThree->display_as('ProjName', 'Project Name');
+			$crudThree->display_as('Dept', 'Department');
+			$crudThree->display_as('SupName', "Supervisor's Name");
+			$crudThree->display_as('StartDate', 'Date Started');
+			$crudThree->display_as('FinishDate', 'Date Finished');
 			
 			$crudThree->setStateCode(1);
 			$crudThree->unset_add();
@@ -335,6 +340,11 @@ class Employee extends CI_Controller {
 			LEFT OUTER JOIN OptionType O2 on O2.OptID = PP.BGCSDepartment
 			WHERE PP.PerID = '$perID'");
             $crudFour->columns("ProjName", "Role", "Dept", "SupName", "StartDate");
+			$crudFour->display_as('ProjName', 'Project Name');
+			$crudFour->display_as('Dept', 'Department');
+			$crudFour->display_as('SupName', "Supervisor's Name");
+			$crudFour->display_as('StartDate', 'Date Started');
+			$crudFour->display_as('FinishDate', 'Date Finished');
 
             $crudFour->setStateCode(1);
             $crudFour->unset_add();
