@@ -70,6 +70,8 @@ class Reimbursements extends CI_Controller {
 		$crud->field_type("PerID", "dropdown", $usrArr);
 		
 		$crud->callback_before_insert(array($this,'reimbursement_add'));
+
+		$crud->add_action('Print', base_url().'/assets/grocery_crud/themes/flexigrid/css/images/print.png', '', '', array($this, 'print_reimb'));
 		
 		$state = $crud->getState();
 
@@ -86,10 +88,17 @@ class Reimbursements extends CI_Controller {
 		
 
 		$crud->callback_before_update(array($this, 'update_expenditures'));
+		$crud->unset_print();
+		$crud->unset_export();
 
 		$output = $crud->render();
 
 		$this->render($output);
+	}
+
+
+	function print_reimb($primary_key, $row) {
+		return base_url().'user/genreport/printreimb/'.$primary_key;
 	}
 
 	function reimbursement_add($post_array) {

@@ -310,6 +310,7 @@ $route['user/genreport/index'] = 'genreport';
 $route['user/genreport/createreport'] = 'genreport/createReport';
 $route['user/genreport/viewreport/(:any)'] = 'genreport/viewReport/$1';
 $route['user/genreport/viewreport'] = 'genreport/viewReport';
+$route['user/genreport/printreimb/(:num)'] = 'genreport/printReimbursement/$1';
 
 //Routes for Options Page
 $route['user/options'] = 'options';

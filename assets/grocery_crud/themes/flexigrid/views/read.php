@@ -15,6 +15,30 @@
 			</div>
 			<div class='clear'></div>
 		</div>
+		<?php 
+			if(isset($_SERVER["REQUEST_URI"])) {
+				$rQ = $_SERVER["REQUEST_URI"];
+
+				$exp = explode('/', $rQ);
+				$exp = array_map('strtolower', $exp);
+
+				if(in_array('reimbursements', $exp) && in_array('read', $exp) && in_array('index', $exp)) {
+					if(end($exp) == "" || is_nan(end($exp))) {
+						array_pop($exp);
+					} else {
+						$id = end($exp);
+					}
+				}
+			} else {
+				$rQ = "";
+			}
+
+		?>
+		<?php if( $rQ !== ""): ?>
+			<div class="printReimb" style="text-align:right;">
+				<a href="/user/genreport/printreimb/<?php echo $id; ?>">Print Reimbursement</a>
+			</div>
+		<?php endif;?>
 		<div title="<?php echo $this->l('minimize_maximize');?>" class="ptogtitle">
 			<span></span>
 		</div>
