@@ -126,7 +126,7 @@
 
                                     <!-- Select Type of Report -->
                                     <div class="col-md-6">
-                                    <div class="control-form listProjects">
+                                    <div class="control-form listReimbursements">
                                         <h4>Select Reimbursement</h4>
                                         <select name="reimbursement">
                                             <option value="0"> --- Please select a project --- </option>
@@ -138,6 +138,10 @@
 
                                             
                                         </select>
+                                    </div>
+                                    <div class="control-form optionCoverPage">
+                                        <label for="optionalCoverPage">Remove Cover Page for Reimbursement Report?</label>
+                                        <input type="checkbox" value="false" name="optionalCoverPage" />
                                     </div>
                                     </div>
 

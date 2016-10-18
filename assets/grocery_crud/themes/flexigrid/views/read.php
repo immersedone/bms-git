@@ -25,6 +25,7 @@
 				if(in_array('reimbursements', $exp) && in_array('read', $exp) && in_array('index', $exp)) {
 					if(end($exp) == "" || is_nan(end($exp))) {
 						array_pop($exp);
+						print_r($exp);
 					} else {
 						$id = end($exp);
 					}
@@ -36,7 +37,8 @@
 		?>
 		<?php if( $rQ !== ""): ?>
 			<div class="printReimb" style="text-align:right;">
-				<a href="/user/genreport/printreimb/<?php echo $id; ?>">Print Reimbursement</a>
+				<a href="/user/genreport/printreimb/<?php echo $id; ?>/1">Print Reimbursement</a>
+				<a href="/user/genreport/printreimb/<?php echo $id; ?>/0">Print Reimbursement without Cover Page</a>
 			</div>
 		<?php endif;?>
 		<div title="<?php echo $this->l('minimize_maximize');?>" class="ptogtitle">

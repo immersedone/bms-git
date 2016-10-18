@@ -42,6 +42,9 @@ class Genreport extends CI_Controller {
 		$data = array();
 		$projectID = $_POST['project'];
 		$reportType = $_POST['reportType'];
+		if(isset($_POST['optionalCoverPage'])) {
+			$optCP = $_POST['optionalCoverPage'];
+		}
 		$data["titleLine_One"] = $_POST['title_one'];
 		$data["titleLine_Two"] = $_POST['title_two'];
 		$data["today_date"] = date('d F Y');
@@ -57,7 +60,11 @@ class Genreport extends CI_Controller {
 		$pdfFilePath = "assets/public/Reports/Report.pdf";
 		$viewPath = base_url() . $pdfFilePath;
 
-		$html = $this->load->view('/include/Report_CoverPage', $data, TRUE);
+		if(isset($optCP) && $optCP == "false") {
+			$html = "";
+		} else {
+			$html = $this->load->view('/include/Report_CoverPage', $data, TRUE);
+		}
 
 		$this->load->library("grocery_CRUD");
 		$this->load->model("Grocery_crud_model");
@@ -143,10 +150,19 @@ class Genreport extends CI_Controller {
 		$data["prjName"] = "N/A";		
 		$data["ReimbursementID"] = $id;
 
+		$cp = $this->uri->segment(5);
+
+
 		$pdfFilePath = "assets/public/Reports/Report.pdf";
 		$viewPath = base_url() . $pdfFilePath;
 
-		$html = $this->load->view('/include/Report_CoverPage', $data, TRUE);
+		if($cp == 0) {
+			$html = "";
+		} else {
+			$html = $this->load->view('/include/Report_CoverPage', $data, TRUE);	
+		}
+
+		
 
 		$this->load->library("grocery_CRUD");
 		$this->load->model("Grocery_crud_model");

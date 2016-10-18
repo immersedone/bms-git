@@ -71,7 +71,9 @@ class Reimbursements extends CI_Controller {
 		
 		$crud->callback_before_insert(array($this,'reimbursement_add'));
 
-		$crud->add_action('Print', base_url().'/assets/grocery_crud/themes/flexigrid/css/images/print.png', '', '', array($this, 'print_reimb'));
+		$crud->add_action('Print w/ Cover Page', base_url().'/assets/grocery_crud/themes/flexigrid/css/images/print.png', '', '', array($this, 'print_reimb'));
+
+		$crud->add_action('Print w/o Cover Page', base_url().'/assets/grocery_crud/themes/flexigrid/css/images/printno.png', '', '', array($this, 'print_reimb_ncp'));
 		
 		$state = $crud->getState();
 
@@ -98,7 +100,11 @@ class Reimbursements extends CI_Controller {
 
 
 	function print_reimb($primary_key, $row) {
-		return base_url().'user/genreport/printreimb/'.$primary_key;
+		return base_url().'user/genreport/printreimb/'.$primary_key.'/1';
+	}
+
+	function print_reimb_ncp($primary_key, $row) {
+		return base_url().'user/genreport/printreimb/'.$primary_key.'/0';
 	}
 
 	function reimbursement_add($post_array) {
