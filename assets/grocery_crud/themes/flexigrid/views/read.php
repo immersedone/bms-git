@@ -25,13 +25,15 @@
 				if(in_array('reimbursements', $exp) && in_array('read', $exp) && in_array('index', $exp)) {
 					if(end($exp) == "" || is_nan(end($exp))) {
 						array_pop($exp);
-						print_r($exp);
 					} else {
 						$id = end($exp);
 					}
+				} elseif(in_array('projects', $exp) && in_array('projread', $exp) && in_array('index', $exp) && in_array('list', $exp)) {
+					$view = "projectList";
+					$rQ = "";
+				} else {
+					$rQ = "";
 				}
-			} else {
-				$rQ = "";
 			}
 
 		?>
@@ -41,7 +43,7 @@
 				<a href="/user/genreport/printreimb/<?php echo $id; ?>/0">Print Reimbursement without Cover Page</a>
 			</div>
 		<?php endif;?>
-		<div title="<?php echo $this->l('minimize_maximize');?>" class="ptogtitle">
+		<div title="<?php echo $this->l('minimize_maximize');?>" class="ptogtitle<?php if($view=='projectList'){ echo '-0'; } ?>">
 			<span></span>
 		</div>
 	</div>
@@ -747,6 +749,7 @@
 		<div id='report-error' class='report-div error'></div>
 		<div id='report-success' class='report-div success'></div>
 	</div>
+	<?php if($view !== "projectList"): ?>
 	<div class="pDiv">
 		<div class='form-button-box'>
 			<input type='button' value='<?php echo $this->l('form_back_to_list'); ?>' class="btn btn-large back-to-list" id="cancel-button" />
@@ -756,6 +759,7 @@
 		</div>
 		<div class='clear'></div>
 	</div>
+	<?php endif; ?>
 	<?php echo form_close(); ?>
 </div>
 </div>

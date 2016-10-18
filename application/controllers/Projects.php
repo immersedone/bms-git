@@ -98,6 +98,7 @@ class Projects extends CI_Controller {
 		$GCM->grid_add(1);
 		$GCM->grids[1]->set_model('Project_GC');
 		$GCM->grids[1]->set_table('Project');
+		$GCM->grids[1]->set_theme('flexigrid');
 		$GCM->grids[1]->set_subject('Project Details');
 		$GCM->grids[1]->basic_model->set_query_str('SELECT Name, Description, StartDate, FinishDate, TotalFunding FROM Project WHERE ProjID="'.$id.'"');
 		$GCM->grids[1]->columns("Name", "Description", "StartDate", "FinishDate", "Status", "TotalFunding");
@@ -111,8 +112,8 @@ class Projects extends CI_Controller {
 		$GCM->grids[1]->unset_edit();
 		$GCM->grids[1]->unset_delete();
 		$GCM->grids[1]->unset_add();
-		//$GCM->grids[1]->setStateCode(18);
-		//$GCM->grids[1]->setNewState($id);
+		$GCM->grids[1]->setStateCode(18);
+		$GCM->grids[1]->setNewState($id);
 
 		$GCM->grid_add(2);
 

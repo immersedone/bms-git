@@ -67,7 +67,11 @@ if($page === "PROJECT_VIEW" && $subject === "Milestone") {
         var unic_ids = {};
         var ajax_list_info_urls = {};
     }
-    var unic_name = 'grid_<?php echo $unic_id?>';
+    <?php if($page !== "PROJECT_VIEW"): ?>
+        var unic_name = 'grid_<?php echo $unic_id?>';
+    <?php else: ?>
+        var unic_name = 'grid_<?php echo $gridNo?>';
+    <?php endif; ?>
 
     subjects[unic_name] = '<?php echo $subject?>';
     unic_ids[unic_name] = '<?php echo $unic_id?>';
@@ -78,7 +82,11 @@ if($page === "PROJECT_VIEW" && $subject === "Milestone") {
 
     var message_alert_delete = "<?php echo $this->l('alert_delete'); ?>";
 </script>
+<?php if($view !== "PROJECT_VIEW"): ?>
 <div class="flexigrid" id="grid_<?php echo $unic_id?>" style='width: 100%;'>
+<?php else: ?>
+<div class="flexigrid" id="grid_<?php echo $gridNo?>" style='width: 100%;'>
+<?php endif; ?>
     <div class='report-error report-div error'></div>
     <div class='report-success report-div success report-list' <?php if($success_message !== null){?>style="display:block"<?php }?>>
         <?php if($success_message !== null){?>
@@ -89,9 +97,16 @@ if($page === "PROJECT_VIEW" && $subject === "Milestone") {
         <div class="ftitle">
             &nbsp;
         </div>
-        <div title="Minimize/Maximize Table" class="ptogtitle">
-            <span></span>
-        </div>
+        <?php if($page !== "PROJECT_VIEW"): ?>
+            <div title="Minimize/Maximize Table" class="ptogtitle">
+                <span></span>
+            </div>
+        <?php else: ?>
+            <div title="Minimize/Maximize Table" class="ptogtitle">
+                <span></span>
+            </div>
+        <?php endif; ?>
+        
     </div>
     <div id='main-table-box'>
         <?php if(!$unset_add){?>
