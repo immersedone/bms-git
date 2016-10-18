@@ -84,6 +84,7 @@ class Genreport extends CI_Controller {
 
 			$reimb = $this->Extended_generic_model->return_query('SELECT Re.*, CONCAT(Per.FirstName, " ", Per.MiddleName, " ", Per.LastName) as ApprovedBy, CONCAT(Pe.FirstName, " ", Pe.MiddleName, " ", Pe.LastName) as ApprovedFor FROM Reimbursement Re LEFT OUTER JOIN Person Per ON Re.ApprovedBy=Per.PerID LEFT OUTER JOIN Person Pe ON Re.PerID=Pe.PerID WHERE Re.ReimID='.$_POST['reimbursement']);
 			
+
 			$html .= "Reimbursement #: " .$_POST['reimbursement'];
 			$html .= "<br/>Date of Reimbursement: " . $reimb[0]->ReimbDate;
 			$html .= "<br/>Approved By: " . $reimb[0]->ApprovedBy;
@@ -95,18 +96,28 @@ class Genreport extends CI_Controller {
 			$html .= "<table><tbody>";
 			$html .= "<tr><th>Name</th><th>Company Name</th><th>Reason</th><th>Amount</th><th>GST</th><th>Type</th><th>Project</th></tr>";
 			
-			$exp = explode(",", $reimb[0]->ExpList);
+			if($reimb[0]->ExpList == "") {
+				$isEmpty = true;
+			} else {
+				$exp = explode(",", $reimb[0]->ExpList);
+				$isEmpty = false;
+			}
 			
 			$totalAm = 0;
 			$totalGST = 0;
-			foreach($exp as $row) {
-				$expDet = $this->Extended_generic_model->return_query("SELECT Ex.ExpName, Ex.CompanyName, Ex.Reason, Ex.Amount, Ex.GST, Opt.Data as Type, Prj.Name as PrjName FROM Expenditure Ex LEFT OUTER JOIN OptionType Opt ON Ex.ExpType=Opt.OptID LEFT OUTER JOIN Project Prj ON Ex.ProjID=Prj.ProjID WHERE Ex.ExpID='" . $row ."'");
-				$totalAm += $expDet[0]->Amount;
-				$totalGST += $expDet[0]->GST;
-				$html .= "<tr><td>" . $expDet[0]->ExpName ."</td><td>" . $expDet[0]->CompanyName ."</td><td>" . $expDet[0]->Reason ."</td><td>" . $expDet[0]->Amount ."</td><td>" . $expDet[0]->GST ."</td><td>" . $expDet[0]->Type ."</td><td>" . $expDet[0]->PrjName ."</td></tr>";
+
+			if($isEmpty == true) {
+				$html .= "<tr><td colspan='7' style='text-align:center;'>No Expenditures Listed</td></tr>";
+			} else {
+				foreach($exp as $row) {
+					$expDet = $this->Extended_generic_model->return_query("SELECT Ex.ExpName, Ex.CompanyName, Ex.Reason, Ex.Amount, Ex.GST, Opt.Data as Type, Prj.Name as PrjName FROM Expenditure Ex LEFT OUTER JOIN OptionType Opt ON Ex.ExpType=Opt.OptID LEFT OUTER JOIN Project Prj ON Ex.ProjID=Prj.ProjID WHERE Ex.ExpID='" . $row ."'");
+					$totalAm += $expDet[0]->Amount;
+					$totalGST += $expDet[0]->GST;
+					$html .= "<tr><td>" . $expDet[0]->ExpName ."</td><td>" . $expDet[0]->CompanyName ."</td><td>" . $expDet[0]->Reason ."</td><td>" . $expDet[0]->Amount ."</td><td>" . $expDet[0]->GST ."</td><td>" . $expDet[0]->Type ."</td><td>" . $expDet[0]->PrjName ."</td></tr>";
+				}
+				$html .= "<tr><td></td><td></td><td></td><td><b>Total Amount:</b></td><td>$" . $totalAm . "</td><td></td><td></td></tr>";
+				$html .= "<tr><td></td><td></td><td></td><td><b>Total GST:</b></td><td>$" . $totalGST . "</td><td></td><td></td></tr>";
 			}
-			$html .= "<tr><td></td><td></td><td></td><td><b>Total Amount:</b></td><td>$" . $totalAm . "</td><td></td><td></td></tr>";
-			$html .= "<tr><td></td><td></td><td></td><td><b>Total GST:</b></td><td>$" . $totalGST . "</td><td></td><td></td></tr>";
 
 			$html .= "</tbody></table>";
 		}

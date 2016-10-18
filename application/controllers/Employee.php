@@ -310,7 +310,7 @@ class Employee extends CI_Controller {
 			$crudThree->set_model('Extended_generic_model');
 			$crudThree->set_table('PersonProject');
 			$crudThree->set_subject('Employee History');
-			$crudThree->basic_model->set_query_str("SELECT Proj.Name as ProjName, O1.Data as Role, O2.Data as Dept,  CONCAT(Per.FirstName, ' ', Per.MiddleName, ' ', Per.LastName) as SupName, PP.StartDate, PP.FinishDate FROM PersonProject PP
+			$crudThree->basic_model->set_query_str("SELECT Proj.Name as ProjName, O1.Data as Role, O2.Data as Dept,  CONCAT(Per.FirstName, ' ', Per.MiddleName, ' ', Per.LastName) as SupName, PP.StartDate, PP.FinishDate, PP.PersonProjectID as PersonProjectID FROM PersonProject PP
 			LEFT OUTER JOIN Person Per ON Per.PerID = PP.Supervisor
 			LEFT OUTER JOIN Project Proj ON Proj.ProjID = PP.ProjID
 			LEFT OUTER JOIN OptionType O1 on O1.OptID = PP.Role
@@ -333,7 +333,7 @@ class Employee extends CI_Controller {
             $crudFour->set_model('Extended_generic_model');
             $crudFour->set_table('PersonProject');
             $crudFour->set_subject('Employee History');
-            $crudFour->basic_model->set_query_str("SELECT Proj.Name as ProjName, O1.Data as Role, O2.Data as Dept,  CONCAT(Per.FirstName, ' ', Per.MiddleName, ' ', Per.LastName) as SupName, PP.StartDate FROM PersonProject PP
+            $crudFour->basic_model->set_query_str("SELECT Proj.Name as ProjName, O1.Data as Role, O2.Data as Dept,  CONCAT(Per.FirstName, ' ', Per.MiddleName, ' ', Per.LastName) as SupName, PP.StartDate, PP.FinishDate, PP.PersonProjectID as PersonProjectID FROM PersonProject PP
 			LEFT OUTER JOIN Person Per ON Per.PerID = PP.Supervisor
 			LEFT OUTER JOIN Project Proj ON Proj.ProjID = PP.ProjID
 			LEFT OUTER JOIN OptionType O1 on O1.OptID = PP.Role
