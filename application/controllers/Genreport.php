@@ -72,12 +72,14 @@ class Genreport extends CI_Controller {
 
 		if($reportType === "empprj") {
 
-			$people = $this->Extended_generic_model->return_query('SELECT Proj.Name, Proj.ProjID, `PersonProject`.Role as ProjRole, CONCAT(FirstName, " ", MiddleName, " ", LastName) as FullName, Sub.SuburbName as SubName, 
-			Sub.Postcode as Postcode, Per.* FROM `Person` Per 
-			LEFT OUTER JOIN `PersonProject` ON Per.PerID=`PersonProject`.PerID 
-			LEFT OUTER JOIN `Project` Proj ON `PersonProject`.ProjID=Proj.ProjID 
-			LEFT OUTER JOIN `Suburb` Sub ON Sub.SuburbID=Per.SuburbID 
-			WHERE `PersonProject`.Role="Employee" AND `PersonProject`.ProjID='.$projectID);
+			$people = $this->Extended_generic_model->return_query("SELECT Proj.Name as ProjName, O1.Data as Role, CONCAT(Per.FirstName, ' ', Per.MiddleName, ' ', Per.LastName) as FullName, Per.*, Sub.Postcode as Postcode, Sub.SuburbName as SubName, Proj.ProjID as ProjID, Emp.*  FROM PersonProject PP
+			LEFT OUTER JOIN Person Per ON Per.PerID = PP.PerID
+			LEFT OUTER JOIN Project Proj ON Proj.ProjID = PP.ProjID
+			LEFT OUTER JOIN OptionType O1 on O1.OptID = PP.Role
+			LEFT OUTER JOIN OptionType O2 on O2.OptID = PP.BGCSDepartment
+			LEFT OUTER JOIN Suburb Sub on Per.SuburbID = Sub.SuburbID
+			LEFT OUTER JOIN Employee Emp on Per.PerID = Emp.PerID
+			WHERE PP.ProjID=".$projectID);
 			
 			$html .= "<table><tbody>";
 			$html .= "<tr><th>Full Name</th><th>Address</th><th>Postcode</th><th>Suburb</th><th>Work Email</th><th>Personal Email</th><th>Mobile</th><th>Home Phone</th></tr>";
