@@ -32,8 +32,8 @@ class Funding extends CI_Controller {
 		LEFT OUTER JOIN `FundingBody` FB on FB.FundBodyID=Fund.FundBodyID
 		LEFT OUTER JOIN `Project` Proj on Proj.ProjID=Fund.ProjID
 		LEFT OUTER JOIN `Person` Per on Per.PerID=Fund.ApprovedBy', ' GROUP BY FundID');
-		$crud->set_read_fields('ProjID', 'FundBodyID', 'Amount', 'PaymentType', 'ApprovedBy', 'ApprovedOn');
-		$crud->columns('ProjName', 'FBName', 'Amount', 'PaymentType', 'FullName', 'ApprovedOn');
+		$crud->set_read_fields('ProjID', 'FundBodyID', 'Amount', 'PaymentType', 'status', 'ApprovedBy', 'ApprovedOn');
+		$crud->columns('ProjName', 'FBName', 'Amount', 'PaymentType', 'FullName', 'status', 'ApprovedOn');
 		$crud->display_as('ProjName', 'Project');
 		$crud->display_as('FBName', 'Funding Body');
 		$crud->display_as('PaymentType', 'Payment Type');
@@ -44,7 +44,7 @@ class Funding extends CI_Controller {
 		$crud->display_as('FundBodyID', 'Funding Body');
 		
 		//Change the Insert Funding fields
-		$crud->add_fields("ProjName", "FBName", "Amount", "PaymentType", "FullName", "ApprovedOn");
+		$crud->add_fields("ProjName", "FBName", "Amount", "PaymentType", 'status', "FullName", "ApprovedOn");
 	
 		//Call Model to get the Project Names
 		$projects = $crud->basic_model->return_query("SELECT ProjID, Name as ProjName FROM Project");
@@ -108,7 +108,7 @@ class Funding extends CI_Controller {
 		LEFT OUTER JOIN `FundingBody` FB on FB.FundBodyID=Fund.FundBodyID
 		LEFT OUTER JOIN `Project` Proj on Proj.ProjID=Fund.ProjID
 		LEFT OUTER JOIN `Person` Per on Per.PerID=Fund.ApprovedBy', ' GROUP BY FundID');
-		$crud->columns('ProjName', 'FBName', 'Amount', 'PaymentType', 'FullName', 'ApprovedOn');
+		$crud->columns('ProjName', 'FBName', 'Amount', 'PaymentType', 'status', 'FullName', 'ApprovedOn');
 		$crud->display_as('ProjName', 'Project');
 		$crud->display_as('FBName', 'Funding Body');
 		$crud->display_as('PaymentType', 'Payment Type');
@@ -116,7 +116,7 @@ class Funding extends CI_Controller {
 		$crud->display_as('ApprovedOn', 'Approved On');
 		
 		//Change the Insert Funding fields
-		$crud->add_fields("ProjName", "FBName", "Amount", "PaymentType", "FullName", "ApprovedOn");
+		$crud->add_fields("ProjName", "FBName", "Amount", "PaymentType", 'status', "FullName", "ApprovedOn");
 	
 		//Call Model to get the Project Names
 		$projects = $crud->basic_model->return_query("SELECT ProjID, Name as ProjName FROM Project WHERE ProjID=".$id);
