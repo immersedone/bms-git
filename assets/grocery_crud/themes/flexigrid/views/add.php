@@ -139,9 +139,14 @@
         }
     ?>
 	var validation_url = '<?php echo $validation_url?>';
-	var list_url = '<?php if($page === "PROJECT_VIEW"){ echo base_url(). 'user/projects/index/projread/list'; } else { echo $list_url; }?>';
-	var isProjectView = <?php if ($page === "PROJECT_VIEW") { echo "true";} else { echo "false"; } ?>;
-	<?php if($page === "PROJECT_VIEW") { echo 'var success_list_url = "' . base_url().'user/projects/index/projread/list"';} ?>
+		<?php if(isset($page) && $page !== "" && $page === "PROJECT_VIEW"): ?>
+			var list_url = '<?php echo base_url(). 'user/projects/index/projread/list';?>';
+			var success_list_url = "<?php echo base_url().'user/projects/index/projread/list' ?>";
+		<?php else: ?>
+			var list_url = '<?php echo $list_url; ?>';
+		<?php endif; ?>
+	
+	var isProjectView = <?php if (isset($page) && $page === "PROJECT_VIEW") { echo "true";} else { echo "false"; } ?>;
 
 	var message_alert_add_form = "<?php echo $this->l('alert_add_form')?>";
 	var message_insert_error = "<?php echo $this->l('insert_error')?>";
