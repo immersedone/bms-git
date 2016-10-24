@@ -145,6 +145,7 @@ $route['user/projects/index/projread/3/insert_validation'] = 'expenditures/expen
 $route['user/projects/index/projread/4/add/(:num)'] = 'funding/fundproj/$1';
 $route['user/projects/index/projread/4/insert'] = 'funding/fd_insert';
 $route['user/projects/index/projread/4/insert_validation'] = 'funding/funding';
+$route['user/projects/index/projread/4/delete/(:num)'] = 'funding/fd_delete';
 
 $route['user/projects/index/projread/5/add/(:num)'] = 'volunteer/volproj/$1';
 $route['user/projects/index/projread/5/insert'] = 'volunteer/pp_insert';
@@ -286,6 +287,7 @@ $route['user/funding/index/getFBName/(:num)'] = 'funding/getFBName/$1';
 $route['user/fundingbody'] = 'fundingbody';
 $route['user/fundingbody/index'] = 'fundingbody';
 $route['user/fundingbody/index/add'] = 'fundingbody/fundingbody';
+$route['user/fundingbody/index/insert'] = 'fundingbody/fundingbody';
 $route['user/fundingbody/index/insert_validation'] = 'fundingbody/fundingbody';
 $route['user/fundingbody/index/edit/(:num)'] = 'fundingbody/fundingbody/$1';
 $route['user/fundingbody/index/update/(:num)'] = 'fundingbody/fundingbody/$1';
