@@ -41,6 +41,7 @@ class Projects extends CI_Controller {
 		$crud->display_as("FinishDate", "Finish Date");
 		$crud->display_as("Status", "Project Status");
 		$crud->display_as("TotalFunding", "Total Funding");
+		$crud->field_type("TotalFunding", "hidden");
 
 		//$crud->form_buttons('View Milestones', 'showMilestones', '');
 		//$crud->form_buttons('View Expenditures', 'showReimbursements', '');
@@ -221,10 +222,9 @@ class Projects extends CI_Controller {
 
 		//Change the default method to fire when organizing funding for a project
 		$GCM->grids[4]->callback_before_insert(array($this,'volunteer_add'));
+		$GCM->grids[4]->callback_before_delete(array($this,'delete_fund'));
 
 		$GCM->grids[4]->unset_edit();
-		$GCM->grids[4]->unset_delete();
-		//$GCM->grids[4]->add_action('Delete', '', '', 'delete-icon', array($this, 'delete_fund'));
 
 		$GCM->grid_add(5);
 
@@ -246,7 +246,7 @@ class Projects extends CI_Controller {
 		$GCM->grids[5]->display_as("Dept", "Banksia Deparment");
 		$GCM->grids[5]->display_as("SupName", "Supervisor Name");	
 
-		$GCM->grids[5]->add_fields("EmpName", "Role", "position", "Dept", "SupName", "IsActive", "StartDate", "FinishDate", "projectID");
+		$GCM->grids[5]->add_fields("VolName", "Role", "position", "Dept", "SupName", "IsActive", "StartDate", "FinishDate", "projectID");
 		$GCM->grids[5]->field_type("projectID", 'hidden', $id);
 		$volID = $GCM->grids[5]->basic_model->return_query("SELECT OptID FROM OptionType
 		WHERE data = 'Volunteer' and type = 'position'");
@@ -399,6 +399,12 @@ class Projects extends CI_Controller {
 		return $post_array;
 	}
 
+	function delete_fund($primarykey) {
+		$crud = new grocery_CRUD();
+		$crud->set_model('Funding_GC');
+		$resp = $crud->basic_model->delete_fund($primarykey);
+	}
+	
 	public function getProjName($id) {
 
 		$crud = new grocery_CRUD();

@@ -9,13 +9,12 @@
             parent::__construct();
         }
      
-        function delete_fund($fundbodyid, $projectid)
+        function delete_fund($id, $amount, $projID)
         {
-			//$amount = $this->db->simple_query("SELECT Amount FROM Funding WHERE ProjID='$projectid' AND FundBodyID='$fundbodyid' LIMIT 1");
             $resp = array();
 			
-            if($this->db->simple_query("DELETE FROM Funding WHERE ProjID='$projectid' AND FundBodyID='$fundbodyid' LIMIT 1")) {
-				//$this->db->simple_query("UPDATE Project SET `TotalFunding`=`TotalFunding`-$amount	WHERE `ProjID` = $projectID ");
+            if($this->db->simple_query("DELETE FROM Funding WHERE FundID='$id' LIMIT 1")) {
+				//$this->db->simple_query("UPDATE Project SET `TotalFunding`=`TotalFunding`-$amount	WHERE `ProjID` = $projID ");
                 $resp['success'] = TRUE;
                 $resp['success_message'] = "Successfully removed Item from Funding.";
             } else {
@@ -26,12 +25,12 @@
             echo json_encode($resp);
         }
 
-        function insert_fund($projectID, $fundbodyid, $amount, $PaymentType, $Approvedby, $ApprovedOn) {
+        function insert_fund($projectID, $fundbodyid, $amount, $PaymentType, $Approvedby, $ApprovedOn, $status) {
 
             $resp = array();
 
-            if($this->db->simple_query("INSERT INTO Funding (ProjID, FundBodyID, Amount, PaymentType, ApprovedBy, ApprovedOn) 
-			VALUES('$projectID', '$fundbodyid', '$amount', '$PaymentType', '$Approvedby', '$ApprovedOn')")) 
+            if($this->db->simple_query("INSERT INTO Funding (ProjID, FundBodyID, Amount, PaymentType, ApprovedBy, ApprovedOn, Status) 
+			VALUES('$projectID', '$fundbodyid', '$amount', '$PaymentType', '$Approvedby', '$ApprovedOn', '$status')")) 
 			{
 				$this->db->simple_query("UPDATE Project SET `TotalFunding`=`TotalFunding`+$amount
 				WHERE `ProjID` = $projectID ");

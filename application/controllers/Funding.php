@@ -86,12 +86,12 @@ class Funding extends CI_Controller {
 		$crud->field_type("FullName", "dropdown", $usrArr);
 
 		//Change the default method to fire when organizing funding for a project
-		$crud->callback_before_insert(array($this,'volunteer_add'));
+		$crud->callback_before_insert(array($this,'funding_add'));
 
 		$crud->unset_edit();
 		//$crud->unset_delete();
 		//$crud->add_action('Delete', '', '', 'delete-icon', array($this, 'delete_fund'));
-		//$crud->callback_delete(array($this, 'delete_fund'));
+		$crud->callback_delete(array($this, 'delete_fund'));
 		
 		$output = $crud->render();
 
@@ -161,17 +161,18 @@ class Funding extends CI_Controller {
 		$crud->callback_before_insert(array($this,'funding_add'));
 
 		$crud->unset_edit();
-		$crud->unset_delete();
-		$crud->add_action('Delete', '', '', 'delete-icon', array($this, 'delete_fund'));
-		//$crud->callback_delete(array($this, 'delete_fund'));
+		//$crud->unset_delete();
+		//$crud->add_action('Delete', '', '', 'delete-icon', array($this, 'delete_fund'));
+		$crud->callback_delete(array($this, 'delete_fund'));
 		
 		$output = $crud->render();
 
 		$this->render($output);
 	}
 
-	function delete_fund($primarykey, $row) {
-		return base_url().'user/funding/index/fd_delete/'.$primarykey.'/'.$row->ProjID;
+	function delete_fund($primarykey) {
+		$this->fd_delete($primarykey);
+		//return base_url().'user/funding/index/fd_delete/'.$primarykey.'/'.$row->ProjID;
 	}
 
 	function funding_add($post_array) {
@@ -179,11 +180,14 @@ class Funding extends CI_Controller {
 		$this->fd_insert($post_array);
 	}
 
-	public function fd_delete($uID, $pID) {
+	public function fd_delete($id) {
 
 		$crud = new grocery_CRUD();
 		$crud->set_model('Funding_GC');
-		$resp = $crud->basic_model->delete_fund($uID, $pID);
+		$rmAmt = $crud->basic_model->return_query("SELECT Amount, ProjID FROM Funding
+		WHERE fundID = '$id'");;
+		
+		$resp = $crud->basic_model->delete_fund($id, $rmAmt[0]->amount, $rmAmt[0]->ProjID);
 		echo $resp;
 		/*if($resp['result'] === "success") {
 			redirect(base_url().'/user/volunteer/');
@@ -202,10 +206,11 @@ class Funding extends CI_Controller {
 		$PaymentType = $_POST['PaymentType'];
 		$Approvedby = $_POST['FullName'];
 		$ApprovedOn = $_POST['ApprovedOn'];
+		$status = $_POST['status'];
 
 		$crud = new grocery_CRUD();
 		$crud->set_model('Funding_GC');
-		$resp = $crud->basic_model->insert_fund($projectID, $fundbodyid, $amount, $PaymentType, $Approvedby, $ApprovedOn);
+		$resp = $crud->basic_model->insert_fund($projectID, $fundbodyid, $amount, $PaymentType, $Approvedby, $ApprovedOn, $status);
 		echo $resp;
 	}
 
