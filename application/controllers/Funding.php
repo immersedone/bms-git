@@ -87,8 +87,7 @@ class Funding extends CI_Controller {
 
 		//Change the default method to fire when organizing funding for a project
 		$crud->callback_before_insert(array($this,'funding_add'));
-
-		$crud->unset_edit();
+		$crud->callback_update(array($this, 'update_fund'));
 		//$crud->unset_delete();
 		//$crud->add_action('Delete', '', '', 'delete-icon', array($this, 'delete_fund'));
 		$crud->callback_delete(array($this, 'delete_fund'));
@@ -159,10 +158,9 @@ class Funding extends CI_Controller {
 
 		//Change the default method to fire when organizing funding for a project
 		$crud->callback_before_insert(array($this,'funding_add'));
-
-		$crud->unset_edit();
 		//$crud->unset_delete();
 		//$crud->add_action('Delete', '', '', 'delete-icon', array($this, 'delete_fund'));
+		$crud->callback_edit(array($this, 'update_fund'));
 		$crud->callback_delete(array($this, 'delete_fund'));
 		
 		$output = $crud->render();
@@ -175,6 +173,11 @@ class Funding extends CI_Controller {
 		//return base_url().'user/funding/index/fd_delete/'.$primarykey.'/'.$row->ProjID;
 	}
 
+	function update_fund($primarykey) {
+		$this->fd_update($primarykey);
+		//return base_url().'user/funding/index/fd_delete/'.$primarykey.'/'.$row->ProjID;
+	}
+	
 	function funding_add($post_array) {
 		
 		$this->fd_insert($post_array);
@@ -185,9 +188,9 @@ class Funding extends CI_Controller {
 		$crud = new grocery_CRUD();
 		$crud->set_model('Funding_GC');
 		$rmAmt = $crud->basic_model->return_query("SELECT Amount, ProjID FROM Funding
-		WHERE fundID = '$id'");;
-		
-		$resp = $crud->basic_model->delete_fund($id, $rmAmt[0]->amount, $rmAmt[0]->ProjID);
+		WHERE fundID = '$id'");
+		$amt = $rmAmt[0]->Amount;
+		$resp = $crud->basic_model->delete_fund($id, $amt, $rmAmt[0]->ProjID);
 		echo $resp;
 		/*if($resp['result'] === "success") {
 			redirect(base_url().'/user/volunteer/');
@@ -211,6 +214,27 @@ class Funding extends CI_Controller {
 		$crud = new grocery_CRUD();
 		$crud->set_model('Funding_GC');
 		$resp = $crud->basic_model->insert_fund($projectID, $fundbodyid, $amount, $PaymentType, $Approvedby, $ApprovedOn, $status);
+		echo $resp;
+	}
+
+	public function fd_update($id) {
+
+		//Initialise and assign variables 
+		
+		$projectID = $_POST['ProjName'];
+		$newamount = $_POST['Amount'];
+		$PaymentType = $_POST['PaymentType'];
+		$Approvedby = $_POST['FullName'];
+		$ApprovedOn = $_POST['ApprovedOn'];
+		$status = $_POST['status'];
+						
+		$crud = new grocery_CRUD();
+		$crud->set_model('Funding_GC');
+		$rmAmt = $crud->basic_model->return_query("SELECT Amount FROM Funding
+		WHERE fundID = '$id'");
+		$amt = $rmAmt[0]->Amount;
+		
+		$resp = $crud->basic_model->insert_fund($id, $projectID, $oldamount, $newamount, $PaymentType, $Approvedby, $ApprovedOn, $status);
 		echo $resp;
 	}
 

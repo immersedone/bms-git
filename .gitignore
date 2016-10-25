@@ -6,3 +6,4 @@
 !*/cache/.htaccess
 /.project
 application/controllers/DueMilestones.php
+application/config/config.php
