@@ -232,7 +232,7 @@ class Projects extends CI_Controller {
 		$GCM->grids[5]->set_table('PersonProject');
 		$GCM->grids[5]->set_subject('Volunteers');
 		$GCM->grids[5]->basic_model->set_query_str("SELECT CONCAT(Vol.FirstName, ' ', Vol.MiddleName, ' ', Vol.LastName) as VolName, O1.Data as Role, O2.Data as Dept,  CONCAT(Sup.FirstName, ' ', Sup.MiddleName, ' ', Sup.LastName) as SupName, PP.StartDate, PP.FinishDate FROM PersonProject PP
-			LEFT OUTER JOIN Person Vol ON Vol.PerID = PP.Supervisor
+			LEFT OUTER JOIN Person Vol ON Vol.PerID = PP.PerID
 			LEFT OUTER JOIN Person Sup ON Sup.PerID = PP.Supervisor
 			LEFT OUTER JOIN Project Proj ON Proj.ProjID = PP.ProjID
 			LEFT OUTER JOIN OptionType O1 on O1.OptID = PP.Role
@@ -294,7 +294,7 @@ class Projects extends CI_Controller {
 		$GCM->grids[6]->set_subject('Employee');
 		$GCM->grids[6]->basic_model->set_query_str(
 		"SELECT CONCAT(Emp.FirstName, ' ', Emp.MiddleName, ' ', Emp.LastName) as EmpName, O1.Data as Role, O2.Data as Dept, O3.Data as Position,  CONCAT(Sup.FirstName, ' ', Sup.MiddleName, ' ', Sup.LastName) as SupName, PP.StartDate, PP.FinishDate FROM PersonProject PP
-			LEFT OUTER JOIN Person Emp ON Emp.PerID = PP.Supervisor
+			LEFT OUTER JOIN Person Emp ON Emp.PerID = PP.PerID
 			LEFT OUTER JOIN Person Sup ON Sup.PerID = PP.Supervisor
 			LEFT OUTER JOIN Project Proj ON Proj.ProjID = PP.ProjID
 			LEFT OUTER JOIN OptionType O1 on O1.OptID = PP.Role
