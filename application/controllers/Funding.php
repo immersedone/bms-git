@@ -160,21 +160,21 @@ class Funding extends CI_Controller {
 		$crud->callback_before_insert(array($this,'funding_add'));
 		//$crud->unset_delete();
 		//$crud->add_action('Delete', '', '', 'delete-icon', array($this, 'delete_fund'));
-		$crud->callback_edit(array($this, 'update_fund'));
-		$crud->callback_delete(array($this, 'delete_fund'));
+		$crud->callback_before_update(array($this, 'update_fund'));
+		$crud->callback_before_delete(array($this, 'delete_fund'));
 		
 		$output = $crud->render();
 
 		$this->render($output);
 	}
 
-	function delete_fund($primarykey) {
-		$this->fd_delete($primarykey);
+	function delete_fund($post_array) {
+		$this->fd_delete($post_array);
 		//return base_url().'user/funding/index/fd_delete/'.$primarykey.'/'.$row->ProjID;
 	}
 
-	function update_fund($primarykey) {
-		$this->fd_update($primarykey);
+	function update_fund($post_array) {
+		$this->fd_update($post_array);
 		//return base_url().'user/funding/index/fd_delete/'.$primarykey.'/'.$row->ProjID;
 	}
 	

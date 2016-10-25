@@ -120,6 +120,7 @@ class Projects extends CI_Controller {
 
 	   	$GCM->grids[2]->set_model('Milestone_GC'); 
 		$GCM->grids[2]->set_table('Milestone_new');
+		$GCM->grids[2]->set_theme('fleximulti');
 		$GCM->grids[2]->set_subject('Milestone');
 		$GCM->grids[2]->basic_model->set_query_str('SELECT P.Name as ProjName, M.* FROM Milestone_new M
 		LEFT OUTER JOIN Project P ON M.ProjID=P.ProjID WHERE M.ProjID='.$id);
@@ -152,13 +153,14 @@ class Projects extends CI_Controller {
 
 		$GCM->grids[3]->set_model('Extended_generic_model'); 
 		$GCM->grids[3]->set_table('Expenditure');
+		$GCM->grids[3]->set_theme('fleximulti');
 		$GCM->grids[3]->set_subject('Expenditure');
-		$GCM->grids[3]->basic_model->set_query_str('SELECT Proj.Name, CONCAT(sbPer.FirstName, " ", sbPer.MiddleName, " ", sbPer.LastName) as SpentByPer, Exp.* from `Expenditure` Exp
+		$GCM->grids[3]->basic_model->set_query_str('SELECT Proj.Name, CONCAT(sbPer.FirstName, " ", sbPer.MiddleName, " ", sbPer.LastName) as SpentBy, Exp.*, Exp.ProjID as ProjID from `Expenditure` Exp
 		LEFT OUTER JOIN `Project` Proj ON Proj.ProjID=Exp.ProjID
 		LEFT OUTER JOIN `Person` sbPer ON sbPer.PerID=Exp.SpentBy WHERE Exp.ProjID='.$id);
-		$GCM->grids[3]->columns('Name', 'ExpName', 'Reason', 'Amount','SpentByPer', 'Type');
-		$GCM->grids[3]->display_as('Name', 'Project Name');
-		$GCM->grids[3]->display_as('SpentByPer', 'Spent By');
+		$GCM->grids[3]->columns('ExpName', 'CompanyName', 'Reason', 'Amount','SpentByPer', 'Type');
+		$GCM->grids[3]->display_as('SpentBy', 'Spent By');
+
 		$GCM->grids[3]->unset_edit();
 		$GCM->grids[3]->unset_delete();
 
@@ -166,6 +168,7 @@ class Projects extends CI_Controller {
 
 		$GCM->grids[4]->set_model('Funding_GC');
 		$GCM->grids[4]->set_table('Funding');
+		$GCM->grids[4]->set_theme('fleximulti');
 		$GCM->grids[4]->set_subject('Funding');
 		$GCM->grids[4]->basic_model->set_query_str('SELECT Proj.Name as ProjName, FB.BodyName as FBName, CONCAT(Per.FirstName, " ", Per.MiddleName, " ", Per.LastName) as FullName, Fund.* from `Funding` Fund
 		LEFT OUTER JOIN `FundingBody` FB on FB.FundBodyID=Fund.FundBodyID
@@ -177,7 +180,10 @@ class Projects extends CI_Controller {
 		$GCM->grids[4]->display_as('PaymentType', 'Payment Type');
 		$GCM->grids[4]->display_as('FullName', 'Approved By');
 		$GCM->grids[4]->display_as('ApprovedOn', 'Approved On');
-		
+		//$GCM->grids[4]->callback_before_delete(array($this, 'fund_delete'));
+		$GCM->grids[4]->add_action('Delete', '', '', 'delete-icon fund_delete', array($this, 'fund_delete'));
+		$GCM->grids[4]->unset_delete();
+
 		//Change the Insert Funding fields
 		$GCM->grids[4]->add_fields("ProjName", "FBName", "Amount", "PaymentType", "FullName", "ApprovedOn");
 	
@@ -222,7 +228,7 @@ class Projects extends CI_Controller {
 
 		//Change the default method to fire when organizing funding for a project
 		$GCM->grids[4]->callback_before_insert(array($this,'volunteer_add'));
-		$GCM->grids[4]->callback_before_delete(array($this,'delete_fund'));
+		//$GCM->grids[4]->callback_before_delete(array($this,'delete_fund'));
 
 		$GCM->grids[4]->unset_edit();
 
@@ -230,6 +236,7 @@ class Projects extends CI_Controller {
 
 		$GCM->grids[5]->set_model('Volunteer_GC');
 		$GCM->grids[5]->set_table('PersonProject');
+		$GCM->grids[5]->set_theme('fleximulti');
 		$GCM->grids[5]->set_subject('Volunteers');
 		$GCM->grids[5]->basic_model->set_query_str("SELECT CONCAT(Vol.FirstName, ' ', Vol.MiddleName, ' ', Vol.LastName) as VolName, O1.Data as Role, O2.Data as Dept,  CONCAT(Sup.FirstName, ' ', Sup.MiddleName, ' ', Sup.LastName) as SupName, PP.StartDate, PP.FinishDate FROM PersonProject PP
 			LEFT OUTER JOIN Person Vol ON Vol.PerID = PP.PerID
@@ -291,9 +298,10 @@ class Projects extends CI_Controller {
 		$GCM->grid_add(6);
 		$GCM->grids[6]->set_model("Employee_GC");
 		$GCM->grids[6]->set_table('Person');
+		$GCM->grids[6]->set_theme('fleximulti');
 		$GCM->grids[6]->set_subject('Employee');
 		$GCM->grids[6]->basic_model->set_query_str(
-		"SELECT CONCAT(Emp.FirstName, ' ', Emp.MiddleName, ' ', Emp.LastName) as EmpName, O1.Data as Role, O2.Data as Dept, O3.Data as Position,  CONCAT(Sup.FirstName, ' ', Sup.MiddleName, ' ', Sup.LastName) as SupName, PP.StartDate, PP.FinishDate FROM PersonProject PP
+		"SELECT CONCAT(Emp.FirstName, ' ', Emp.MiddleName, ' ', Emp.LastName) as EmpName, O1.Data as Role, O2.Data as Dept, O3.Data as Position,  CONCAT(Sup.FirstName, ' ', Sup.MiddleName, ' ', Sup.LastName) as SupName, PP.StartDate, PP.FinishDate, Emp.* FROM PersonProject PP
 			LEFT OUTER JOIN Person Emp ON Emp.PerID = PP.PerID
 			LEFT OUTER JOIN Person Sup ON Sup.PerID = PP.Supervisor
 			LEFT OUTER JOIN Project Proj ON Proj.ProjID = PP.ProjID
@@ -357,6 +365,11 @@ class Projects extends CI_Controller {
 		//print_r($GCM->grids[1]);
 
 	   $this->_output_multi($output);
+	}
+
+
+	function fund_delete($primarykey, $row) {
+		return base_url().'user/funding/index/delete/'.$primarykey.'/';
 	}
 
 	function employee_read($primarykey, $row) {

@@ -1,12 +1,12 @@
 <?php
 if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-$this->set_css($this->default_theme_path.'/flexiajax/css/flexigrid.css');
+$this->set_css($this->default_theme_path.'/fleximulti/css/flexigrid.css');
 $this->set_js($this->default_javascript_path.'/jquery-1.11.1.min.js');
-$this->set_js($this->default_theme_path.'/flexiajax/js/cookies.js');
-$this->set_js($this->default_theme_path.'/flexiajax/js/flexigrid.js');
-$this->set_js($this->default_theme_path.'/flexiajax/js/jquery.form.js');
-$this->set_js($this->default_theme_path.'/flexiajax/js/jquery.numeric.js');
+$this->set_js($this->default_theme_path.'/fleximulti/js/cookies.js');
+$this->set_js($this->default_theme_path.'/fleximulti/js/flexigrid.js');
+$this->set_js($this->default_theme_path.'/fleximulti/js/jquery.form.js');
+$this->set_js($this->default_theme_path.'/fleximulti/js/jquery.numeric.js');
 
 switch($subject) {
     case "Milestone":
@@ -68,13 +68,15 @@ if($page === "PROJECT_VIEW" && $subject === "Milestone") {
         var ajax_list_info_urls = {};
     }
     <?php if($page !== "PROJECT_VIEW"): ?>
-        var unic_name = 'grid_<?php echo $unic_id?>';
+    var unic_name = 'grid_<?php echo $unic_id?>';
+    unic_ids[unic_name] = '<?php echo $unic_id?>';
     <?php else: ?>
-        var unic_name = 'grid_<?php echo $gridNo?>';
+    var unic_name = 'grid_<?php echo $gridNo?>';
+    unic_ids[unic_name] = 'grid_<?php echo $gridNo?>';
     <?php endif; ?>
 
     subjects[unic_name] = '<?php echo $subject?>';
-    unic_ids[unic_name] = '<?php echo $unic_id?>';
+    
 
     ajax_list_info_urls[unic_name] = '<?php echo $ajax_url; ?>';  
 
@@ -82,8 +84,8 @@ if($page === "PROJECT_VIEW" && $subject === "Milestone") {
 
     var message_alert_delete = "<?php echo $this->l('alert_delete'); ?>";
 </script>
-<?php if($view !== "PROJECT_VIEW"): ?>
-<div class="flexigrid" id="grid_<?php echo $unic_id?>" style='width: 100%;'>
+<?php if($page !== "PROJECT_VIEW"): ?>
+<div class="flexigrid" id="grid<?php echo $unic_id?>" style='width: 100%;'>
 <?php else: ?>
 <div class="flexigrid" id="grid_<?php echo $gridNo?>" style='width: 100%;'>
 <?php endif; ?>
@@ -102,7 +104,7 @@ if($page === "PROJECT_VIEW" && $subject === "Milestone") {
                 <span></span>
             </div>
         <?php else: ?>
-            <div title="Minimize/Maximize Table" class="ptogtitle">
+            <div title="Minimize/Maximize Table" class="ptogtitle" id="ptogtitle_<?php echo $subject ?>">
                 <span></span>
             </div>
         <?php endif; ?>
@@ -128,7 +130,7 @@ if($page === "PROJECT_VIEW" && $subject === "Milestone") {
         <div class='ajax_list'>
             <?php echo $list_view?>
         </div>
-        <?php echo form_open( $ajax_url, 'method="post" class="filtering_form" autocomplete = "off"'); ?>
+        <?php echo form_open( $ajax_url, 'method="post" class="filtering_form" id="'.$subject.'_search" autocomplete = "off"'); ?>
         <div class="sDiv quickSearchBox">
             <div class="sDiv2">
                 <?php echo $this->l('list_search');?>: <input type="text" class="qsbsearch_fieldox search_text" name="search_text" size="30">
