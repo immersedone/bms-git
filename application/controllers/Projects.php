@@ -266,7 +266,7 @@ class Projects extends CI_Controller {
 		}
 		
 		//Full Names
-		$users = $GCM->grids[5]->basic_model->return_query("SELECT PerID, CONCAT(FirstName, ' ', MiddleName, ' ', Per.LastName) FROM Person WHERE EXISTS(SELECT PerID FROM Volunteer)");
+		$users = $GCM->grids[5]->basic_model->return_query("SELECT PerID, CONCAT(FirstName, ' ', MiddleName, ' ', LastName) FROM Person WHERE EXISTS(SELECT PerID FROM Volunteer)");
 		$usrArr = array();
 		foreach($users as $usr) {
 			$usrArr += [$usr->PerID => $usr->FullName];
