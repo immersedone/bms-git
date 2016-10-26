@@ -54,15 +54,18 @@
 
         }
 
-        function update_fund($id, $projectID, $oldamount, $newamount, $PaymentType, $Approvedby, $ApprovedOn, $status) {
+        function update_fund($id, $newamount, $PaymentType, $Approvedby, $ApprovedOn, $status, $projectID, $oldamount) {
 
-            $resp = array();
+			$resp = array();
 
-            if($this->db->simple_query("UPDATE Funding SET Amount = '$newamount' , PaymentType = '$PaymentType', ApprovedBy = '$Approvedby', ApprovedOn = '$ApprovedOn' , status = '$status' WHERE FundID = '$id'"))
+            if($this->db->simple_query("UPDATE Funding SET Amount = '$newamount', PaymentType = '$PaymentType', Status = '$status', ApprovedBy = '$Approvedby', ApprovedOn = '$ApprovedOn' WHERE FundID = '$id'"))
 			{
 				if($oldamount != $newamount){
-					$this->db->simple_query("UPDATE Project SET `TotalFunding`=`TotalFunding` - '$oldamount' + '$amount'
-					WHERE `ProjID` = $projectID");
+                $currentAmt = $this->db->query('SELECT TotalFunding FROM Project');
+                $row = $currentAmt->row($projectID-1);
+                $newTotal = $row->TotalFunding + $newamount - $oldamount;
+				$this->db->simple_query("UPDATE Project SET `TotalFunding`='$newTotal'
+				WHERE `ProjID` = $projectID ");
 				}
                 $resp['success'] = TRUE;
                 $resp['success_list_url'] = base_url() . "user/funding";
