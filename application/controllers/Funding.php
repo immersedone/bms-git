@@ -44,6 +44,7 @@ class Funding extends CI_Controller {
 		$crud->display_as('FundBodyID', 'Funding Body');
 		
 		//Change the Insert Funding fields
+		$crud->edit_fields("Amount", "PaymentType", 'status', "FullName", "ApprovedOn");
 		$crud->add_fields("ProjName", "FBName", "Amount", "PaymentType", 'status', "FullName", "ApprovedOn");
 	
 		//Call Model to get the Project Names
@@ -87,7 +88,7 @@ class Funding extends CI_Controller {
 
 		//Change the default method to fire when organizing funding for a project
 		$crud->callback_before_insert(array($this,'funding_add'));
-		$crud->callback_update(array($this, 'update_fund'));
+		//$crud->callback_before_update(array($this,'update_fund'));
 		//$crud->unset_delete();
 		//$crud->add_action('Delete', '', '', 'delete-icon', array($this, 'delete_fund'));
 		$crud->callback_delete(array($this, 'delete_fund'));
@@ -160,7 +161,7 @@ class Funding extends CI_Controller {
 		$crud->callback_before_insert(array($this,'funding_add'));
 		//$crud->unset_delete();
 		//$crud->add_action('Delete', '', '', 'delete-icon', array($this, 'delete_fund'));
-		$crud->callback_before_update(array($this, 'update_fund'));
+		//$crud->callback_before_update(array($this, 'update_fund'));
 		$crud->callback_before_delete(array($this, 'delete_fund'));
 		
 		$output = $crud->render();
@@ -220,21 +221,20 @@ class Funding extends CI_Controller {
 	public function fd_update($id) {
 
 		//Initialise and assign variables 
-		
-		$projectID = $_POST['ProjName'];
 		$newamount = $_POST['Amount'];
 		$PaymentType = $_POST['PaymentType'];
 		$Approvedby = $_POST['FullName'];
 		$ApprovedOn = $_POST['ApprovedOn'];
 		$status = $_POST['status'];
-						
+					
 		$crud = new grocery_CRUD();
 		$crud->set_model('Funding_GC');
-		$rmAmt = $crud->basic_model->return_query("SELECT Amount FROM Funding
-		WHERE fundID = '$id'");
-		$amt = $rmAmt[0]->Amount;
+		$rmAmt = $crud->basic_model->return_query("SELECT Amount, ProjID FROM Funding WHERE fundID = '$id'");
+		$oldamount = $rmAmt[0]->Amount;
+		$projectID = $rmAmt[0]->ProjID;
 		
-		$resp = $crud->basic_model->insert_fund($id, $projectID, $oldamount, $newamount, $PaymentType, $Approvedby, $ApprovedOn, $status);
+		$resp = $crud->basic_model->update_fund($id, $newamount, $PaymentType, $Approvedby, $ApprovedOn, $status, $projectID, $oldamount);
+
 		echo $resp;
 	}
 
