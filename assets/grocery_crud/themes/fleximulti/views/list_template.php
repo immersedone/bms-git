@@ -45,15 +45,15 @@ if(strtolower($fullURL[0]) === "user" && strtolower($fullURL[1]) === "projects" 
 }
 
 if($page === "PROJECT_VIEW" && $subject === "Milestone") {
-    $ajax_url = base_url() . 'user/milestones/index/ajax_list';
+    $ajax_url = base_url() . 'user/milestones/mileproj/ajax_list_info/'. $_COOKIE['projID'];
 } elseif($page === "PROJECT_VIEW" && $subject === "Expenditure") {
-    $ajax_url = base_url() . 'user/expendproj/index/ajax_list';
+    $ajax_url = base_url() . 'user/expenditures/expendproj/ajax_list_info/'. $_COOKIE['projID'];
 } elseif($page === "PROJECT_VIEW" && $subject === "Funding") {
-    $ajax_url = base_url() . 'user/funding/index/ajax_list';
+    $ajax_url = base_url() . 'user/funding/fundproj/ajax_list_info/'. $_COOKIE['projID'];
 } elseif($page === "PROJECT_VIEW" && $subject === "Volunteers") {
-    $ajax_url = base_url() . 'user/volunteer/index/ajax_list';
+    $ajax_url = base_url() . 'user/volunteer/volproj/ajax_list_info/'. $_COOKIE['projID'];
 } elseif($page === "PROJECT_VIEW" && $subject === "Employee") {
-    $ajax_url = base_url() . 'user/employee/index/ajax_list';
+    $ajax_url = base_url() . 'user/employee/empproj/ajax_list_info/'. $_COOKIE['projID'];
 } else {
     $ajax_url = $ajax_list_info_url . '/' . $unic_id;
 }

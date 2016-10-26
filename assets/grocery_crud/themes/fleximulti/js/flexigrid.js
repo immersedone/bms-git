@@ -43,6 +43,7 @@ $(function(){
 
 	$('.filtering_form').submit(function(){
         var par = $(this).parent('.flexigrid');
+        var curr = $(this);
 
         var par_id = par.attr('id');
 		var crud_page =  parseInt($('.crud_page', par).val());
@@ -59,10 +60,10 @@ $(function(){
 			 url: ajax_list_info_urls[par_id],
 			 dataType: 'json',
                 beforeSend: function(){
-                    $('.ajax_refresh_and_loading',par).addClass('loading');
+                    $(curr).find('.ajax_refresh_and_loading').addClass('loading');
                 },
 			 success:    function(data){
-				$('.total_items', par).html( data.total_results);
+				$(curr).find('.total_items').html( data.total_results);
 
                  if($('.crud_page', par).val() == 0)
                      $('.crud_page', par).val('1');
@@ -85,14 +86,14 @@ $(function(){
 
 				this_form.ajaxSubmit({
                     beforeSend: function(){
-                        $('.ajax_refresh_and_loading',par).addClass('loading');
+                        $(curr).find('.ajax_refresh_and_loading').addClass('loading');
                     },
 					 success:    function(data){
 						$('.ajax_list', par).html(data);
-                         $('.ajax_refresh_and_loading',par).removeClass('loading');
+                         $(curr).find('.ajax_refresh_and_loading').removeClass('loading');
 					 }
 				});
-                 $('.ajax_refresh_and_loading',par).addClass('loading');
+                 $(curr).find('.ajax_refresh_and_loading').addClass('loading');
 			 }
 		});
 		

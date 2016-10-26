@@ -374,8 +374,9 @@ class Employee extends CI_Controller {
 		$crud->set_model('Employee_GC');
 		$crud->set_table('PersonProject');
 		$crud->set_subject('Employee');
-		$crud->basic_model->set_query_str("SELECT CONCAT(Emp.FirstName, ' ', Emp.MiddleName, ' ', Emp.LastName) as EmpName, O1.Data as Role, O2.Data as Dept, O3.Data as Position,  CONCAT(Sup.FirstName, ' ', Sup.MiddleName, ' ', Sup.LastName) as SupName, PP.StartDate, PP.FinishDate FROM PersonProject PP
-			LEFT OUTER JOIN Person Emp ON Emp.PerID = PP.Supervisor
+		$crud->basic_model->set_query_str(
+		"SELECT CONCAT(Emp.FirstName, ' ', Emp.MiddleName, ' ', Emp.LastName) as EmpName, O1.Data as Role, O2.Data as Dept, O3.Data as Position,  CONCAT(Sup.FirstName, ' ', Sup.MiddleName, ' ', Sup.LastName) as SupName, PP.StartDate, PP.FinishDate, Emp.* FROM PersonProject PP
+			LEFT OUTER JOIN Person Emp ON Emp.PerID = PP.PerID
 			LEFT OUTER JOIN Person Sup ON Sup.PerID = PP.Supervisor
 			LEFT OUTER JOIN Project Proj ON Proj.ProjID = PP.ProjID
 			LEFT OUTER JOIN OptionType O1 on O1.OptID = PP.Role

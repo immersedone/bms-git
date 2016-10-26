@@ -170,22 +170,22 @@ class Projects extends CI_Controller {
 		$GCM->grids[4]->set_table('Funding');
 		$GCM->grids[4]->set_theme('fleximulti');
 		$GCM->grids[4]->set_subject('Funding');
-		$GCM->grids[4]->basic_model->set_query_str('SELECT Proj.Name as ProjName, FB.BodyName as FBName, CONCAT(Per.FirstName, " ", Per.MiddleName, " ", Per.LastName) as FullName, Fund.* from `Funding` Fund
+		$GCM->grids[4]->basic_model->set_query_str('SELECT Proj.Name as ProjName, FB.BodyName as FBName, CONCAT(Per.FirstName, " ", Per.MiddleName, " ", Per.LastName) as SpentBy, Fund.* from `Funding` Fund
 		LEFT OUTER JOIN `FundingBody` FB on FB.FundBodyID=Fund.FundBodyID
 		LEFT OUTER JOIN `Project` Proj on Proj.ProjID=Fund.ProjID
 		LEFT OUTER JOIN `Person` Per on Per.PerID=Fund.ApprovedBy WHERE Fund.ProjID='.$id, ' GROUP BY FundID');
-		$GCM->grids[4]->columns('FBName', 'Amount', 'PaymentType', 'FullName', 'ApprovedOn');
+		$GCM->grids[4]->columns('FBName', 'Amount', 'PaymentType', 'SpentBy', 'ApprovedOn');
 		$GCM->grids[4]->display_as('ProjName', 'Project Name');
 		$GCM->grids[4]->display_as('FBName', 'Funding Body');
 		$GCM->grids[4]->display_as('PaymentType', 'Payment Type');
-		$GCM->grids[4]->display_as('FullName', 'Approved By');
+		$GCM->grids[4]->display_as('SpentBy', 'Approved By');
 		$GCM->grids[4]->display_as('ApprovedOn', 'Approved On');
 		//$GCM->grids[4]->callback_before_delete(array($this, 'fund_delete'));
 		$GCM->grids[4]->add_action('Delete', '', '', 'delete-icon fund_delete', array($this, 'fund_delete'));
 		$GCM->grids[4]->unset_delete();
 
 		//Change the Insert Funding fields
-		$GCM->grids[4]->add_fields("ProjName", "FBName", "Amount", "PaymentType", "FullName", "ApprovedOn");
+		$GCM->grids[4]->add_fields("ProjName", "FBName", "Amount", "PaymentType", "SpentBy", "ApprovedOn");
 	
 		//Call Model to get the Project Names
 		$projects = $GCM->grids[4]->basic_model->return_query("SELECT ProjID, Name as ProjName FROM Project");
@@ -224,7 +224,7 @@ class Projects extends CI_Controller {
 		
 		//Change the field type to a dropdown with values
 		//to add to the relational table
-		$GCM->grids[4]->field_type("FullName", "dropdown", $usrArr);
+		$GCM->grids[4]->field_type("SpentBy", "dropdown", $usrArr);
 
 		//Change the default method to fire when organizing funding for a project
 		$GCM->grids[4]->callback_before_insert(array($this,'volunteer_add'));

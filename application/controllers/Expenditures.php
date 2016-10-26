@@ -87,14 +87,13 @@ class Expenditures extends CI_Controller {
 	}
 
 	public function expendproj($id) {
-		echo $id;
 		$crud = new grocery_CRUD();
 		$crud->set_model('Expenditure_model'); 
 		$crud->set_table('Expenditure');
 		$crud->set_subject('Expenditure');
-		$crud->basic_model->set_query_str('SELECT Proj.Name, CONCAT(Per.FirstName, " ", Per.MiddleName, " ", Per.LastName) as FullName, Exp.* from `Expenditure` Exp
+		$crud->basic_model->set_query_str('SELECT Proj.Name, CONCAT(sbPer.FirstName, " ", sbPer.MiddleName, " ", sbPer.LastName) as SpentBy, Exp.*, Exp.ProjID as ProjID from `Expenditure` Exp
 		LEFT OUTER JOIN `Project` Proj ON Proj.ProjID=Exp.ProjID
-		LEFT OUTER JOIN `Person` Per ON Per.PerID=Exp.SpentBy');
+		LEFT OUTER JOIN `Person` sbPer ON sbPer.PerID=Exp.SpentBy WHERE Exp.ProjID='.$id);
 		$crud->columns('Name', 'ExpName', 'Reason', 'Amount', 'GST', 'FullName'); 
 		$crud->add_fields('ProjID', 'ExpName', 'Reason', 'Amount', 'GST', 'FullName');
 		$crud->display_as('ExpName', 'Expenditure Name');

@@ -234,7 +234,7 @@ class Volunteer extends CI_Controller {
 		$crud->set_table('PersonProject');
 		$crud->set_subject('Volunteer');
 		$crud->basic_model->set_query_str("SELECT CONCAT(Vol.FirstName, ' ', Vol.MiddleName, ' ', Vol.LastName) as VolName, O1.Data as Role, O2.Data as Dept,  CONCAT(Sup.FirstName, ' ', Sup.MiddleName, ' ', Sup.LastName) as SupName, PP.StartDate, PP.FinishDate FROM PersonProject PP
-			LEFT OUTER JOIN Person Vol ON Vol.PerID = PP.Supervisor
+			LEFT OUTER JOIN Person Vol ON Vol.PerID = PP.PerID
 			LEFT OUTER JOIN Person Sup ON Sup.PerID = PP.Supervisor
 			LEFT OUTER JOIN Project Proj ON Proj.ProjID = PP.ProjID
 			LEFT OUTER JOIN OptionType O1 on O1.OptID = PP.Role
