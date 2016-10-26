@@ -99,7 +99,7 @@ class Projects extends CI_Controller {
 		$GCM->grid_add(1);
 		$GCM->grids[1]->set_model('Project_GC');
 		$GCM->grids[1]->set_table('Project');
-		$GCM->grids[1]->set_theme('flexigrid');
+		$GCM->grids[1]->set_theme('fleximulti');
 		$GCM->grids[1]->set_subject('Project Details');
 		$GCM->grids[1]->basic_model->set_query_str('SELECT Name, Description, StartDate, FinishDate, TotalFunding FROM Project WHERE ProjID="'.$id.'"');
 		$GCM->grids[1]->columns("Name", "Description", "StartDate", "FinishDate", "Status", "TotalFunding");
@@ -360,7 +360,8 @@ class Projects extends CI_Controller {
 
 		$output = $GCM->render();
 
-
+		$pos = array_search(base_url() . 'assets/grocery_crud/themes/flexigrid/js/flexigrid-edit.js', $output['js_files']);
+		unset($output['js_files'][$pos]);
 	  	
 		//print_r($GCM->grids[1]);
 

@@ -9,6 +9,9 @@ $this->set_js($this->default_theme_path.'/fleximulti/js/jquery.form.js');
 $this->set_js($this->default_theme_path.'/fleximulti/js/jquery.numeric.js');
 
 switch($subject) {
+    case "Project Details":
+        $gridNo = 1;
+        break;
     case "Milestone":
         $gridNo = 2;
         break;
@@ -44,7 +47,7 @@ if(strtolower($fullURL[0]) === "user" && strtolower($fullURL[1]) === "projects" 
 if($page === "PROJECT_VIEW" && $subject === "Milestone") {
     $ajax_url = base_url() . 'user/milestones/index/ajax_list';
 } elseif($page === "PROJECT_VIEW" && $subject === "Expenditure") {
-    $ajax_url = base_url() . 'user/expenditures/index/ajax_list';
+    $ajax_url = base_url() . 'user/expendproj/index/ajax_list';
 } elseif($page === "PROJECT_VIEW" && $subject === "Funding") {
     $ajax_url = base_url() . 'user/funding/index/ajax_list';
 } elseif($page === "PROJECT_VIEW" && $subject === "Volunteers") {
@@ -110,7 +113,7 @@ if($page === "PROJECT_VIEW" && $subject === "Milestone") {
         <?php endif; ?>
         
     </div>
-    <div id='main-table-box'>
+    <div class='main-table-box'>
         <?php if(!$unset_add){?>
         <div class="tDiv">
             <div class="tDiv2">
