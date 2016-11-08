@@ -4150,3 +4150,32 @@ ul.notifications {
   border: 1px solid #e5e5e5; }
 
 /** /Dropzone.js **/
+
+
+
+div#ui-datepicker-div {
+    padding: 0;
+}
+
+.ui-datepicker-header.ui-widget-header.ui-helper-clearfix.ui-corner-all {
+    background: #349019;
+    color: black;
+    border: 1px solid #349019;
+}
+
+a.ui-state-default.ui-state-highlight, input.button.btn.btn-default.submit {
+    background: #349019;
+    color: white;
+    border: 1px solid #349019;
+}
+
+a.ui-state-default:hover, a.ui-state-default.ui-state-active {
+    background: #349019!important;
+    color: white!important;
+    border: 1px solid #349019!important;
+}
+
+.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus, .ui-button:hover, .ui-button:focus {
+    color: #5fd326;
+    background: #349019;
+}
