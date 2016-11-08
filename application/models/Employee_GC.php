@@ -26,11 +26,11 @@
             echo json_encode($resp);
         }
 
-        function insert_pp($personID, $projectID, $role, $position, $BGCSDept, $isActive, $supervisor, $startdate, $finishdate) {
+        function insert_pp($personID, $projectID, $role, $EmpVol, $isActive, $startdate, $finishdate) {
 
             $resp = array();
 
-            if($this->db->simple_query("INSERT INTO PersonProject (PerID, ProjID, Role, Position, BGCSDepartment, IsActive, Supervisor, StartDate, FinishDate) VALUES('$personID', '$projectID', '$role', '$position', '$BGCSDept', '$isActive', '$supervisor', '$startdate', '$finishdate')")) {
+            if($this->db->simple_query("INSERT INTO PersonProject (PerID, ProjID, Role, EmpVol, IsActive, StartDate, FinishDate) VALUES('$personID', '$projectID', '$role', '$EmpVol', '$isActive', '$startdate', '$finishdate')")) {
                 $resp['success'] = TRUE;
                 $resp['success_list_url'] = base_url() . "user/employee";
                 $resp['success_message'] = "Successfully added Employee to Project.";

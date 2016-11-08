@@ -230,37 +230,25 @@ class Volunteer extends CI_Controller {
 	public function volproj($id) {
 
 		$crud = new grocery_CRUD();
-		$crud->set_model('Volunteer_GC');
+		$crud->set_model('PerProj_GC');
 		$crud->set_table('PersonProject');
 		$crud->set_subject('Volunteer');
-		$crud->basic_model->set_query_str("SELECT CONCAT(Vol.FirstName, ' ', Vol.MiddleName, ' ', Vol.LastName) as VolName, O1.Data as Role, O2.Data as Dept,  CONCAT(Sup.FirstName, ' ', Sup.MiddleName, ' ', Sup.LastName) as SupName, PP.StartDate, PP.FinishDate FROM PersonProject PP
+		$crud->basic_model->set_query_str("SELECT CONCAT(Vol.FirstName, ' ', Vol.MiddleName, ' ', Vol.LastName) as VolName, O.Data as Role, PP.StartDate, PP.FinishDate FROM PersonProject PP
 			LEFT OUTER JOIN Person Vol ON Vol.PerID = PP.PerID
-			LEFT OUTER JOIN Person Sup ON Sup.PerID = PP.Supervisor
 			LEFT OUTER JOIN Project Proj ON Proj.ProjID = PP.ProjID
-			LEFT OUTER JOIN OptionType O1 on O1.OptID = PP.Role
-			LEFT OUTER JOIN OptionType O2 on O2.OptID = PP.BGCSDepartment
-			LEFT OUTER JOIN OptionType O3 on O3.OptID = PP.Position
-			WHERE O3.Data = 'Volunteer' 
+			LEFT OUTER JOIN OptionType O on O.OptID = PP.Role
+			WHERE PP.EmpVol = 'Vol'
 			AND PP.ProjID=".$id);
-		$crud->columns("VolName", "Role", "Dept", "SupName", "StartDate", "FinishDate");
+		$crud->columns("VolName", "Role", "StartDate", "FinishDate");
 		$crud->display_as("VolName", "Volunteer Name");
 		$crud->display_as("Role", "Project Role");
-		$crud->display_as("Dept", "Banksia Deparment");
-		$crud->display_as("SupName", "Supervisor Name");	
+		$crud->display_as("StartDate", "Start Date");
+		$crud->display_as("FinishDate", "Finish Date");	
 
-		$crud->add_fields("VolName", "Role", "position", "Dept", "SupName", "IsActive", "StartDate", "FinishDate", "projectID");
+		$crud->add_fields("VolName", "Role", "IsActive", "StartDate", "FinishDate", "projectID", "EmpVol");
+		$crud->field_type("EmpVol", 'hidden', 'Vol');
 		$crud->field_type("projectID", 'hidden', $id);
 		
-		$volID = $crud->basic_model->return_query("SELECT OptID FROM OptionType
-		WHERE data = 'Volunteer' and type = 'position'");
-		$crud->field_type("position", 'hidden', $volID[0]->OptID);
-
-		//BCGS Departments
-		$bcgs = $crud->basic_model->return_query("SELECT OptID, data FROM OptionType WHERE type='BGCS_DEP'");
-		$bcgsArr = array();
-		foreach($bcgs as $bc) {
-			$bcgsArr += [$bc->OptID => $bc->data];
-		}
 		//Roles in a Project
 		$roles = $crud->basic_model->return_query("SELECT OptID, data FROM OptionType WHERE type='Role'");
 		$roleArr = array();
@@ -269,24 +257,21 @@ class Volunteer extends CI_Controller {
 		}
 		
 		//Full Names
-		$users = $crud->basic_model->return_query("SELECT PerID, CONCAT(FirstName, ' ', MiddleName, ' ', LastName) as FullName FROM Person");
+		$users = $crud->basic_model->return_query("SELECT PerID, CONCAT(FirstName, ' ', MiddleName, ' ', LastName) as FullName FROM Person
+		WHERE PerID in (SELECT PerID FROM Volunteer)");
 		$usrArr = array();
 		foreach($users as $usr) {
 			$usrArr += [$usr->PerID => $usr->FullName];
 		}		
 		
-		$crud->field_type("Dept", "dropdown", $bcgsArr);
 		$crud->field_type("Role", "dropdown", $roleArr);
 		$crud->field_type("VolName", "dropdown", $usrArr);
-		$crud->field_type("SupName", "dropdown", $usrArr);
 		//Change the default method to fire when adding
 		//a new person to a project
 		$crud->callback_before_insert(array($this,'volunteer_add'));
 
 		$crud->unset_edit();
-		$crud->unset_delete();
-		$crud->add_action('Delete', '', '', 'delete-icon', array($this, 'volunteer_delete'));
-		//$crud->callback_delete(array($this, 'volunteer_delete'));
+		$crud->callback_delete(array($this, 'volunteer_delete'));
 
 		$output["multiView"] = "NO";	
 		
@@ -323,16 +308,14 @@ class Volunteer extends CI_Controller {
 		$personID = $_POST['VolName'];
 		$projectID = $_POST['projectID'];
 		$role = $_POST['Role'];
-		$position = $_POST['position'];
-		$BGSCDept = $_POST['Dept'];
+		$EmpVol = $_POST['EmpVol'];
 		$isActive = $_POST['IsActive'];
-		$supervisor = $_POST['SupName'];
 		$startdate = $_POST['StartDate'];
 		$finishdate = $_POST['FinishDate'];
 
 		$crud = new grocery_CRUD();
 		$crud->set_model('Volunteer_GC');
-		$resp = $crud->basic_model->insert_pp($personID, $projectID, $role, $position, $BGSCDept, $isActive, $supervisor, $startdate, $finishdate);
+		$resp = $crud->basic_model->insert_pp($personID, $projectID, $role, $EmpVol, $isActive, $startdate, $finishdate);
 		echo $resp;
 	}
 
