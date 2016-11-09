@@ -162,7 +162,7 @@ class Projects extends CI_Controller {
 		$GCM->grids[3]->display_as('SpentBy', 'Spent By');
 
 		$GCM->grids[3]->unset_edit();
-		$GCM->grids[3]->unset_delete();
+		//$GCM->grids[3]->unset_delete();
 
 		$GCM->grid_add(4);
 
@@ -227,7 +227,7 @@ class Projects extends CI_Controller {
 		$GCM->grids[4]->field_type("SpentBy", "dropdown", $usrArr);
 
 		//Change the default method to fire when organizing funding for a project
-		$GCM->grids[4]->callback_before_insert(array($this,'volunteer_add'));
+		//$GCM->grids[4]->callback_before_insert(array($this,'volunteer_add'));
 		//$GCM->grids[4]->callback_before_delete(array($this,'delete_fund'));
 
 		$GCM->grids[4]->unset_edit();
@@ -238,35 +238,25 @@ class Projects extends CI_Controller {
 		$GCM->grids[5]->set_table('PersonProject');
 		$GCM->grids[5]->set_theme('fleximulti');
 		$GCM->grids[5]->set_subject('Volunteers');
-		$GCM->grids[5]->basic_model->set_query_str("SELECT CONCAT(Vol.FirstName, ' ', Vol.MiddleName, ' ', Vol.LastName) as VolName, O1.Data as Role, O2.Data as Dept,  CONCAT(Sup.FirstName, ' ', Sup.MiddleName, ' ', Sup.LastName) as SupName, PP.StartDate, PP.FinishDate FROM PersonProject PP
+		$GCM->grids[5]->basic_model->set_query_str("SELECT CONCAT(Vol.FirstName, ' ', Vol.MiddleName, ' ', Vol.LastName) as VolName, O.Data as Role, PP.StartDate, PP.FinishDate FROM PersonProject PP
 			LEFT OUTER JOIN Person Vol ON Vol.PerID = PP.PerID
-			LEFT OUTER JOIN Person Sup ON Sup.PerID = PP.Supervisor
 			LEFT OUTER JOIN Project Proj ON Proj.ProjID = PP.ProjID
-			LEFT OUTER JOIN OptionType O1 on O1.OptID = PP.Role
-			LEFT OUTER JOIN OptionType O2 on O2.OptID = PP.BGCSDepartment
-			LEFT OUTER JOIN OptionType O3 on O3.OptID = PP.Position
-			WHERE O3.Data = 'Volunteer' 
+			LEFT OUTER JOIN OptionType O on O.OptID = PP.Role
+			WHERE PP.EmpVol = 'Vol'
 			AND PP.ProjID=".$id);
-		$GCM->grids[5]->columns("VolName", "Role", "Dept", "SupName", "StartDate", "FinishDate");
+		$GCM->grids[5]->columns("VolName", "Role", "StartDate", "FinishDate");
 		$GCM->grids[5]->display_as("VolName", "Volunteer Name");
-		$GCM->grids[5]->display_as("Role", "Project Role");
-		$GCM->grids[5]->display_as("Dept", "Banksia Deparment");
-		$GCM->grids[5]->display_as("SupName", "Supervisor Name");	
-
-		$GCM->grids[5]->add_fields("VolName", "Role", "position", "Dept", "SupName", "IsActive", "StartDate", "FinishDate", "projectID");
+		$GCM->grids[5]->display_as("Role", "Project Role");	
+		$GCM->grids[5]->display_as("StartDate", "Start Date");
+		$GCM->grids[5]->display_as("FinishDate", "Finish Date");
+		
+		/*
+		$GCM->grids[5]->add_fields("VolName", "Role", "IsActive", "StartDate", "FinishDate", "projectID", "EmpVol");
+		$GCM->grids[5]->field_type('EmpVol', 'hidden', 'Vol');
 		$GCM->grids[5]->field_type("projectID", 'hidden', $id);
-		$volID = $GCM->grids[5]->basic_model->return_query("SELECT OptID FROM OptionType
-		WHERE data = 'Volunteer' and type = 'position'");
-		$GCM->grids[5]->field_type("position", 'hidden', $volID[0]->OptID);
 
-		//BCGS Departments
-		$bcgs = $GCM->grids[5]->basic_model->return_query("SELECT OptID, data FROM OptionType WHERE type='BGCS_DEP'");
-		$bcgsArr = array();
-		foreach($bcgs as $bc) {
-			$bcgsArr += [$bc->OptID => $bc->data];
-		}
 		//Roles in a Project
-		$roles = $GCM->grids[5]->basic_model->return_query("SELECT OptID, data FROM OptionType WHERE type='BGCS_DEP'");
+		$roles = $GCM->grids[5]->basic_model->return_query("SELECT OptID, data FROM OptionType WHERE type='Role'");
 		$roleArr = array();
 		foreach($roles as $role) {
 			$roleArr += [$role->OptID => $role->data];
@@ -279,45 +269,36 @@ class Projects extends CI_Controller {
 			$usrArr += [$usr->PerID => $usr->FullName];
 		}		
 		
-		$GCM->grids[5]->field_type("BGCSDepartment", "dropdown", $bcgsArr);
 		$GCM->grids[5]->field_type("Role", "dropdown", $roleArr);
 		$GCM->grids[5]->field_type("VolName", "dropdown", $usrArr);
-		$GCM->grids[5]->field_type("SupName", "dropdown", $usrArr);
-
-	
-		
+		*/
 		//Change the default method to fire when adding
 		//a new person to a project
 		$GCM->grids[5]->callback_before_insert(array($this,'volunteer_add'));
 
-		//$GCM->grids[5]->unset_add();
+		//$GCM->grids[5]->callback_before_delete(array($this,'vol_delete'));
 		$GCM->grids[5]->unset_edit();
 		$GCM->grids[5]->unset_delete();
-		//$GCM->grids[5]->add_action('Delete', '', '', 'delete-icon', array($this, 'volunteer_delete'));
-
+		
 		$GCM->grid_add(6);
 		$GCM->grids[6]->set_model("Employee_GC");
 		$GCM->grids[6]->set_table('Person');
 		$GCM->grids[6]->set_theme('fleximulti');
 		$GCM->grids[6]->set_subject('Employee');
 		$GCM->grids[6]->basic_model->set_query_str(
-		"SELECT CONCAT(Emp.FirstName, ' ', Emp.MiddleName, ' ', Emp.LastName) as EmpName, O1.Data as Role, O2.Data as Dept, O3.Data as Position,  CONCAT(Sup.FirstName, ' ', Sup.MiddleName, ' ', Sup.LastName) as SupName, PP.StartDate, PP.FinishDate, Emp.* FROM PersonProject PP
+		"SELECT CONCAT(Emp.FirstName, ' ', Emp.MiddleName, ' ', Emp.LastName) as EmpName, O.Data as Role,  PP.StartDate, PP.FinishDate, Emp.* FROM PersonProject PP
 			LEFT OUTER JOIN Person Emp ON Emp.PerID = PP.PerID
-			LEFT OUTER JOIN Person Sup ON Sup.PerID = PP.Supervisor
 			LEFT OUTER JOIN Project Proj ON Proj.ProjID = PP.ProjID
-			LEFT OUTER JOIN OptionType O1 on O1.OptID = PP.Role
-			LEFT OUTER JOIN OptionType O2 on O2.OptID = PP.BGCSDepartment
-			LEFT OUTER JOIN OptionType O3 on O3.OptID = PP.Position
-			WHERE O3.Data != 'Volunteer' 
+			LEFT OUTER JOIN OptionType O on O.OptID = PP.Role
+			WHERE PP.EmpVol = 'Emp'
 			AND PP.ProjID=".$id);
-		$GCM->grids[6]->columns("EmpName", "Role", "Position", "Dept", "SupName", "StartDate", "FinishDate");
+		$GCM->grids[6]->columns("EmpName", "Role", "StartDate", "FinishDate");
 		$GCM->grids[6]->display_as("EmpName", "Project Name");
 		$GCM->grids[6]->display_as("Role", "Project Role");
-		$GCM->grids[6]->display_as("Dept", "Banksia Department");
-		//$GCM->grids[6]->display_as("StartDate", "Personal Email");
-		//$GCM->grids[6]->display_as("FinishDate", "Home Phone");
-
-		$GCM->grids[6]->add_fields("EmpName", "Role", "Position", "Dept", "SupName", "IsActive", "StartDate", "FinishDate", "projectID");
+		$GCM->grids[6]->display_as("StartDate", "Start Date");
+		$GCM->grids[6]->display_as("FinishDate", "Finish Date");
+		/*
+		$GCM->grids[6]->add_fields("EmpName", "Role", "IsActive", "StartDate", "FinishDate", "projectID");
 		$GCM->grids[6]->field_type("projectID", 'hidden', $id);
 
 		//BCGS Departments
@@ -351,7 +332,7 @@ class Projects extends CI_Controller {
 		$GCM->grids[6]->field_type("Role", "dropdown", $roleArr);
 		$GCM->grids[6]->field_type("VolName", "dropdown", $usrArr);
 		$GCM->grids[6]->field_type("SupName", "dropdown", $usrArr);
-
+		*/
 		//$GCM->grids[6]->unset_add();
 		$GCM->grids[6]->unset_edit();
 		$GCM->grids[6]->unset_delete();
@@ -368,6 +349,9 @@ class Projects extends CI_Controller {
 	   $this->_output_multi($output);
 	}
 
+	function vol_delete($primarykey, $row) {
+		return base_url().'user/volunteer/index/pp_delete/'.$primarykey.'/';
+	}
 
 	function fund_delete($primarykey, $row) {
 		return base_url().'user/funding/index/delete/'.$primarykey.'/';
@@ -385,7 +369,7 @@ class Projects extends CI_Controller {
 		print_r($row);
 		return base_url().'user/employee/index/pp_insert/'.$primarykey.'/'.$row->ProjID;
 	}
-
+	
 	function setID($id) {
 		if(!get_cookie("projID")) {
 			set_cookie("projID", $id, time()+86400);
