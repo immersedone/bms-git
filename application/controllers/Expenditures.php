@@ -45,6 +45,8 @@ class Expenditures extends CI_Controller {
 		$crud->add_fields('ProjID','ExpName', 'companyname', 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType', 'ExpDate', 'FilePath');
 		$crud->edit_fields('ProjID','ExpName', 'companyname', 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType', 'ExpDate', 'FilePath');
 
+		$crud->callback_before_delete(array($this,'crud_delete_file'));
+
 		$projects = $crud->basic_model->return_query("SELECT ProjID, Name FROM Project");
 
 		$prjArr = array();
@@ -79,6 +81,7 @@ class Expenditures extends CI_Controller {
 		$crud->field_type("SpentBy", "dropdown", $usrArr);
 		$crud->field_type("ProjID", "dropdown", $prjArr);
 		$crud->callback_before_insert(array($this,'expenditure_add'));
+
 		
 		
 		$output = $crud->render();
@@ -153,6 +156,15 @@ class Expenditures extends CI_Controller {
 		echo $resp;
 	}
 
+public function crud_delete_file($primary_key)
+{
+    $row = $this->db->where('id',$primary_key)->get('Expenditures')->row();
+
+    unlink('assets/uploads/files/expenditures'.$row->file_url);
+   
+    return true;
+}
+
 	public function getExpBy($id) {
 
 		$crud = new grocery_CRUD();
@@ -173,5 +185,4 @@ class Expenditures extends CI_Controller {
 		$resp["ExpName"] = $res[0]->data;
 		echo json_encode($resp); 
 	}
-
 }
