@@ -24,6 +24,11 @@ class Volunteer extends CI_Controller {
 		$this->load->view('volunteer', $output);
 	}
 
+	public function renderBaseTemplate($output = null) {
+		$this->load->view('basetemplate', $output);
+	}
+
+
 	public function volunteer() {
 
 		$crud = new grocery_CRUD();
@@ -222,24 +227,32 @@ class Volunteer extends CI_Controller {
 	public function volproj($id) {
 
 		$crud = new grocery_CRUD();
-		$crud->set_model('PerProj_GC');
-		$crud->set_table('PersonProject');
+		$crud->set_model('Volunteer_GC');
+		$crud->set_table('Person');
 		$crud->set_subject('Volunteer');
-		$crud->basic_model->set_query_str("SELECT CONCAT(Vol.FirstName, ' ', Vol.MiddleName, ' ', Vol.LastName) as VolName, O.Data as Role, PP.StartDate, PP.FinishDate FROM PersonProject PP
-			LEFT OUTER JOIN Person Vol ON Vol.PerID = PP.PerID
-			LEFT OUTER JOIN Project Proj ON Proj.ProjID = PP.ProjID
-			LEFT OUTER JOIN OptionType O on O.OptID = PP.Role
-			WHERE PP.EmpVol = 'Vol'
-			AND PP.ProjID=".$id);
-		$crud->columns("VolName", "Role", "StartDate", "FinishDate");
+		$crud->basic_model->set_query_str('SELECT * FROM (SELECT CONCAT(Per.FirstName, " ", Per.MiddleName, " ", Per.LastName) as VolName, PP.ProjID, PP.StartDate as StartDate, PP.FinishDate as FinishDate, Opt.Data as VolRole, Per.PerID FROM Person Per
+		LEFT OUTER JOIN PersonProject PP ON PP.PerID = Per.PerID
+		LEFT OUTER JOIN OptionType Opt ON Opt.OptID = PP.Role
+		WHERE PP.EmpVol="Vol" AND PP.ProjID="'. $id . '") x');
+		$crud->columns("VolName", "VolRole", "StartDate", "FinishDate");
 		$crud->display_as("VolName", "Volunteer Name");
-		$crud->display_as("Role", "Project Role");
+		$crud->display_as("VolRole", "Project Role");
 		$crud->display_as("StartDate", "Start Date");
 		$crud->display_as("FinishDate", "Finish Date");	
 
 		$crud->add_fields("VolName", "Role", "IsActive", "StartDate", "FinishDate", "projectID", "EmpVol");
 		$crud->field_type("EmpVol", 'hidden', 'Vol');
 		$crud->field_type("projectID", 'hidden', $id);
+		
+		$state = $crud->getState();
+
+		if ($state === "ajax_list") {
+			$crud->setStateCode(7);
+			
+		} else if ($state === "ajax_list_info") { 
+			$crud->setStateCode(8);
+		}
+
 		
 		//Roles in a Project
 		$roles = $crud->basic_model->return_query("SELECT OptID, data FROM OptionType WHERE type='Role'");
@@ -260,16 +273,17 @@ class Volunteer extends CI_Controller {
 		$crud->field_type("VolName", "dropdown", $usrArr);
 		//Change the default method to fire when adding
 		//a new person to a project
-		$crud->callback_before_insert(array($this,'volunteer_add'));
+		//$crud->callback_before_insert(array($this,'volunteer_add'));
 
 		$crud->unset_edit();
 		$crud->callback_delete(array($this, 'volunteer_delete'));
 
-		$output["multiView"] = "NO";	
+		//$output["multiView"] = "NO";	
 		
-		$output["volunteer"] = $crud->render();
+		//$output["volunteer"] = $crud->render();
+		$output = $crud->render();
 	
-		$this->render($output);
+		$this->renderBaseTemplate($output);
 	}
 
 	function volunteer_delete($primarykey, $row) {

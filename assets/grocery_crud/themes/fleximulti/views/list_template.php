@@ -45,15 +45,20 @@ if(strtolower($fullURL[0]) === "user" && strtolower($fullURL[1]) === "projects" 
 }
 
 if($page === "PROJECT_VIEW" && $subject === "Milestone") {
-    $ajax_url = base_url() . 'user/milestones/mileproj/ajax_list_info/'. $_COOKIE['projID'];
+    $ajax_list_url = base_url() . 'user/milestones/mileproj/ajax_list_info/'. $_COOKIE['projID'];
+    $ajax_url = base_url() . 'user/milestones/mileproj/ajax_list/'. $_COOKIE['projID'];
 } elseif($page === "PROJECT_VIEW" && $subject === "Expenditure") {
-    $ajax_url = base_url() . 'user/expenditures/expendproj/ajax_list_info/'. $_COOKIE['projID'];
+    $ajax_list_url = base_url() . 'user/expenditures/expendproj/ajax_list_info/'. $_COOKIE['projID'];
+    $ajax_url = base_url() . 'user/expenditures/expendproj/ajax_list/'. $_COOKIE['projID'];
 } elseif($page === "PROJECT_VIEW" && $subject === "Funding") {
-    $ajax_url = base_url() . 'user/funding/fundproj/ajax_list_info/'. $_COOKIE['projID'];
+    $ajax_list_url = base_url() . 'user/funding/fundproj/ajax_list_info/'. $_COOKIE['projID'];
+    $ajax_url = base_url() . 'user/funding/fundproj/ajax_list/'. $_COOKIE['projID'];
 } elseif($page === "PROJECT_VIEW" && $subject === "Volunteers") {
-    $ajax_url = base_url() . 'user/volunteer/volproj/ajax_list_info/'. $_COOKIE['projID'];
+    $ajax_list_url = base_url() . 'user/volunteer/volproj/ajax_list_info/'. $_COOKIE['projID'];
+    $ajax_url = base_url() . 'user/volunteer/volproj/ajax_list/'. $_COOKIE['projID'];
 } elseif($page === "PROJECT_VIEW" && $subject === "Employee") {
-    $ajax_url = base_url() . 'user/employee/empproj/ajax_list_info/'. $_COOKIE['projID'];
+    $ajax_list_url = base_url() . 'user/employee/empproj/ajax_list_info/'. $_COOKIE['projID'];
+    $ajax_url = base_url() . 'user/employee/empproj/ajax_list/'. $_COOKIE['projID'];
 } else {
     $ajax_url = $ajax_list_info_url . '/' . $unic_id;
 }
@@ -81,7 +86,7 @@ if($page === "PROJECT_VIEW" && $subject === "Milestone") {
     subjects[unic_name] = '<?php echo $subject?>';
     
 
-    ajax_list_info_urls[unic_name] = '<?php echo $ajax_url; ?>';  
+    ajax_list_info_urls[unic_name] = '<?php echo $ajax_list_url; ?>';  
 
     uniques_hash[unic_name] = '<?php echo $unique_hash; ?>';
 
@@ -133,7 +138,7 @@ if($page === "PROJECT_VIEW" && $subject === "Milestone") {
         <div class='ajax_list'>
             <?php echo $list_view?>
         </div>
-        <?php echo form_open( $ajax_url, 'method="post" class="filtering_form" id="'.$subject.'_search" autocomplete = "off"'); ?>
+        <?php echo form_open( $ajax_url, 'method="post" class="filtering_form" id="'.$subject.'_search" autocomplete = "off" data-ajax-list-info-url="' . $ajax_list_url . '"'); ?>
         <div class="sDiv quickSearchBox">
             <div class="sDiv2">
                 <?php echo $this->l('list_search');?>: <input type="text" class="qsbsearch_fieldox search_text" name="search_text" size="30">

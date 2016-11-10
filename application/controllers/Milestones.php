@@ -114,8 +114,8 @@ class Milestones extends CI_Controller {
 		$crud->set_model('Extended_generic_model'); 
 		$crud->set_table('Milestone_new');
 		$crud->set_subject('Milestone');
-		$crud->basic_model->set_query_str('SELECT P.Name as ProjName, M.* from `Milestone_new` M
-		LEFT OUTER JOIN `Project` P on M.ProjID=P.ProjID WHERE M.ProjID = "'.$id.'"');
+		$crud->basic_model->set_query_str('SELECT * FROM (SELECT P.Name as ProjName, M.* from `Milestone_new` M
+		LEFT OUTER JOIN `Project` P on M.ProjID=P.ProjID WHERE M.ProjID="'. $id .'") x');
 			
 		$crud->columns('ShortDesc', 'DueDate', 'RptType', 'Amount');
 		$crud->display_as('ProjID', 'Project Name');

@@ -151,15 +151,16 @@ class Projects extends CI_Controller {
 
 		$GCM->grid_add(3);
 
-		$GCM->grids[3]->set_model('Extended_generic_model'); 
+		$GCM->grids[3]->set_model('Extended_project_model'); 
 		$GCM->grids[3]->set_table('Expenditure');
 		$GCM->grids[3]->set_theme('fleximulti');
 		$GCM->grids[3]->set_subject('Expenditure');
-		$GCM->grids[3]->basic_model->set_query_str('SELECT Proj.Name, CONCAT(sbPer.FirstName, " ", sbPer.MiddleName, " ", sbPer.LastName) as SpentBy, Exp.*, Exp.ProjID as ProjID from `Expenditure` Exp
+		$GCM->grids[3]->basic_model->set_query_str('SELECT * FROM (SELECT Proj.Name, CONCAT(Per.FirstName, " ", Per.MiddleName, " ", Per.LastName) as FullName, Opt.Data as EType, Exp.* from `Expenditure` Exp
 		LEFT OUTER JOIN `Project` Proj ON Proj.ProjID=Exp.ProjID
-		LEFT OUTER JOIN `Person` sbPer ON sbPer.PerID=Exp.SpentBy WHERE Exp.ProjID='.$id);
+		LEFT OUTER JOIN `Person` Per ON Per.PerID=Exp.SpentBy
+		LEFT OUTER JOIN OptionType Opt ON Opt.OptID = Exp.ExpType WHERE Exp.ProjID='.$id.') x');
 		$GCM->grids[3]->columns('ExpName', 'CompanyName', 'Reason', 'Amount','SpentByPer', 'Type');
-		$GCM->grids[3]->display_as('SpentBy', 'Spent By');
+		$GCM->grids[3]->display_as('FullName', 'Spent By');
 
 		$GCM->grids[3]->unset_edit();
 		//$GCM->grids[3]->unset_delete();
@@ -170,10 +171,10 @@ class Projects extends CI_Controller {
 		$GCM->grids[4]->set_table('Funding');
 		$GCM->grids[4]->set_theme('fleximulti');
 		$GCM->grids[4]->set_subject('Funding');
-		$GCM->grids[4]->basic_model->set_query_str('SELECT Proj.Name as ProjName, FB.BodyName as FBName, CONCAT(Per.FirstName, " ", Per.MiddleName, " ", Per.LastName) as SpentBy, Fund.* from `Funding` Fund
+		$GCM->grids[4]->basic_model->set_query_str('SELECT * FROM (SELECT Proj.Name as ProjName, FB.BodyName as FBName, CONCAT(Per.FirstName, " ", Per.MiddleName, " ", Per.LastName) as SpentBy, Fund.* from `Funding` Fund
 		LEFT OUTER JOIN `FundingBody` FB on FB.FundBodyID=Fund.FundBodyID
 		LEFT OUTER JOIN `Project` Proj on Proj.ProjID=Fund.ProjID
-		LEFT OUTER JOIN `Person` Per on Per.PerID=Fund.ApprovedBy WHERE Fund.ProjID='.$id, ' GROUP BY FundID');
+		LEFT OUTER JOIN `Person` Per on Per.PerID=Fund.ApprovedBy WHERE Fund.ProjID='.$id.') x', ' GROUP BY FundID');
 		$GCM->grids[4]->columns('FBName', 'Amount', 'PaymentType', 'SpentBy', 'ApprovedOn');
 		$GCM->grids[4]->display_as('ProjName', 'Project Name');
 		$GCM->grids[4]->display_as('FBName', 'Funding Body');
@@ -238,12 +239,12 @@ class Projects extends CI_Controller {
 		$GCM->grids[5]->set_table('PersonProject');
 		$GCM->grids[5]->set_theme('fleximulti');
 		$GCM->grids[5]->set_subject('Volunteers');
-		$GCM->grids[5]->basic_model->set_query_str("SELECT CONCAT(Vol.FirstName, ' ', Vol.MiddleName, ' ', Vol.LastName) as VolName, O.Data as Role, PP.StartDate, PP.FinishDate FROM PersonProject PP
+		$GCM->grids[5]->basic_model->set_query_str("SELECT * FROM (SELECT CONCAT(Vol.FirstName, ' ', Vol.MiddleName, ' ', Vol.LastName) as VolName, O.Data as Role, PP.StartDate, PP.FinishDate FROM PersonProject PP
 			LEFT OUTER JOIN Person Vol ON Vol.PerID = PP.PerID
 			LEFT OUTER JOIN Project Proj ON Proj.ProjID = PP.ProjID
 			LEFT OUTER JOIN OptionType O on O.OptID = PP.Role
 			WHERE PP.EmpVol = 'Vol'
-			AND PP.ProjID=".$id);
+			AND PP.ProjID=".$id.") x");
 		$GCM->grids[5]->columns("VolName", "Role", "StartDate", "FinishDate");
 		$GCM->grids[5]->display_as("VolName", "Volunteer Name");
 		$GCM->grids[5]->display_as("Role", "Project Role");	
@@ -285,16 +286,13 @@ class Projects extends CI_Controller {
 		$GCM->grids[6]->set_table('Person');
 		$GCM->grids[6]->set_theme('fleximulti');
 		$GCM->grids[6]->set_subject('Employee');
-		$GCM->grids[6]->basic_model->set_query_str(
-		"SELECT CONCAT(Emp.FirstName, ' ', Emp.MiddleName, ' ', Emp.LastName) as EmpName, O.Data as Role,  PP.StartDate, PP.FinishDate, Emp.* FROM PersonProject PP
-			LEFT OUTER JOIN Person Emp ON Emp.PerID = PP.PerID
-			LEFT OUTER JOIN Project Proj ON Proj.ProjID = PP.ProjID
-			LEFT OUTER JOIN OptionType O on O.OptID = PP.Role
-			WHERE PP.EmpVol = 'Emp'
-			AND PP.ProjID=".$id);
-		$GCM->grids[6]->columns("EmpName", "Role", "StartDate", "FinishDate");
+		$GCM->grids[6]->basic_model->set_query_str('SELECT * FROM (SELECT CONCAT(Per.FirstName, " ", Per.MiddleName, " ", Per.LastName) as EmpName, PP.*, Opt.Data as EmpRole FROM Person Per
+		LEFT OUTER JOIN PersonProject PP ON PP.PerID = Per.PerID
+		LEFT OUTER JOIN OptionType Opt ON Opt.OptID = PP.Role
+		WHERE PP.EmpVol="Emp" AND PP.ProjID="'. $id . '") x');
+		$GCM->grids[6]->columns("EmpName", "EmpRole", "StartDate", "FinishDate");
 		$GCM->grids[6]->display_as("EmpName", "Project Name");
-		$GCM->grids[6]->display_as("Role", "Project Role");
+		$GCM->grids[6]->display_as("EmpRole", "Project Role");
 		$GCM->grids[6]->display_as("StartDate", "Start Date");
 		$GCM->grids[6]->display_as("FinishDate", "Finish Date");
 		/*

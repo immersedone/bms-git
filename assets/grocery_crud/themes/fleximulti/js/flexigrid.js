@@ -42,7 +42,7 @@ $(function(){
 	});
 
 	$('.filtering_form').submit(function(){
-        var par = $(this).parent('.flexigrid');
+        var par = $(this).closest('.flexigrid');
         var curr = $(this);
 
         var par_id = par.attr('id');
@@ -55,9 +55,10 @@ $(function(){
 			$('.crud_page', par).val('1');
 		
 		var this_form = $(this);
-
+		var ajax_url = $(this).attr('data-ajax-list-info-url');
 		$(this).ajaxSubmit({
-			 url: ajax_list_info_urls[par_id],
+			 //url: ajax_list_info_urls[unic_name],
+			 url: ajax_url,
 			 dataType: 'json',
                 beforeSend: function(){
                     $(curr).find('.ajax_refresh_and_loading').addClass('loading');
@@ -68,29 +69,29 @@ $(function(){
                  if($('.crud_page', par).val() == 0)
                      $('.crud_page', par).val('1');
 
-                 var crud_page 		= parseInt( $('.crud_page', par).val()) ;
-                 var per_page	 	= parseInt( $('.per_page', par).val() );
-                 var total_items 	= parseInt( $('.total_items', par).html() );
+                 var crud_page 		= parseInt( par.find('.crud_page').val()) ;
+                 var per_page	 	= parseInt( par.find('.per_page').val() );
+                 var total_items 	= parseInt( par.find('.total_items').html() );
 
                  $('.last-page-number', par).html( Math.ceil( total_items / per_page) );
 
                  if(total_items == 0)
-                     $('.page-starts-from', par).html( '0');
+                     this_form.closest('.flexigrid').find('.page-starts-from').html( '0');
                  else
-                     $('.page-starts-from', par).html( (crud_page - 1)*per_page + 1 );
+                     par.find('.page-starts-from').html( (crud_page - 1)*per_page + 1 );
 
                  if(crud_page*per_page > total_items)
-                     $('.page-ends-to', par).html( total_items );
+                     par.find('.page-ends-to').html( total_items );
                  else
-                     $('.page-ends-to', par).html( crud_page*per_page );
+                     par.find('.page-ends-to').html( crud_page*per_page );
 
 				this_form.ajaxSubmit({
                     beforeSend: function(){
                         $(curr).find('.ajax_refresh_and_loading').addClass('loading');
                     },
 					 success:    function(data){
-						$('.ajax_list', par).html(data);
-                         $(curr).find('.ajax_refresh_and_loading').removeClass('loading');
+						this_form.closest('.flexigrid').find('.ajax_list').html(data);
+                        $(curr).find('.ajax_refresh_and_loading').removeClass('loading');
 					 }
 				});
                  $(curr).find('.ajax_refresh_and_loading').addClass('loading');

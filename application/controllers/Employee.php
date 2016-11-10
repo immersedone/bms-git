@@ -22,6 +22,10 @@ class Employee extends CI_Controller {
 		$this->load->view('employee', $output);
 	}
 
+	public function renderBaseTemplate($output = null) {
+		$this->load->view('basetemplate', $output);
+	}
+
 
 	public function employee() {
 
@@ -364,23 +368,31 @@ class Employee extends CI_Controller {
 
 		$crud = new grocery_CRUD();
 		$crud->set_model('Employee_GC');
-		$crud->set_table('PersonProject');
+		$crud->set_table('Person');
 		$crud->set_subject('Employee');
-		$crud->basic_model->set_query_str("SELECT CONCAT(Emp.FirstName, ' ', Emp.MiddleName, ' ', Emp.LastName) as EmpName, O.Data as Role, PP.StartDate, PP.FinishDate FROM PersonProject PP
-			LEFT OUTER JOIN Person Emp ON Emp.PerID = PP.PerID
-			LEFT OUTER JOIN Project Proj ON Proj.ProjID = PP.ProjID
-			LEFT OUTER JOIN OptionType O on O.OptID = PP.Role
-			WHERE PP.EmpVol = 'Emp'
-			AND PP.ProjID=".$id);
-		$crud->columns("EmpName", "Role", "StartDate", "FinishDate");
+		$crud->basic_model->set_query_str('SELECT * FROM (SELECT CONCAT(Per.FirstName, " ", Per.MiddleName, " ", Per.LastName) as EmpName, PP.ProjID, PP.StartDate as StartDate, PP.FinishDate as FinishDate, Opt.Data as EmpRole, Per.PerID FROM Person Per
+		LEFT OUTER JOIN PersonProject PP ON PP.PerID = Per.PerID
+		LEFT OUTER JOIN OptionType Opt ON Opt.OptID = PP.Role
+		WHERE PP.EmpVol="Emp" AND PP.ProjID="'. $id . '") x');
+
+		$crud->columns("EmpName", "EmpRole", "StartDate", "FinishDate");
 		$crud->display_as("EmpName", "Employee Name");
-		$crud->display_as("Role", "Project Role");
+		$crud->display_as("EmpRole", "Project Role");
 		$crud->display_as("StartDate", "Start Date");
 		$crud->display_as("FinishDate", "Finish Date");	
+		$state = $crud->getState();
 
-		$crud->add_fields("EmpName", "Role", "IsActive", "StartDate", "FinishDate", "projectID", "EmpVol");
+		if ($state === "ajax_list") {
+			$crud->setStateCode(7);
+			
+		} else if ($state === "ajax_list_info") { 
+			$crud->setStateCode(8);
+		}
+		
+
+		$crud->add_fields("EmpName", "EmpRole", "IsActive", "StartDate", "FinishDate", "projectID", "EmpVol");
 		$crud->field_type("EmpVol", 'hidden', 'Emp');
-		$crud->field_type("projectID", 'hidden', $id);
+		//$crud->field_type("projectID", 'hidden', $id);
 		
 		//Roles in a Project
 		$roles = $crud->basic_model->return_query("SELECT OptID, data FROM OptionType WHERE type='Role'");
@@ -402,11 +414,12 @@ class Employee extends CI_Controller {
 		$crud->field_type("Role", "dropdown", $roleArr);
 		$crud->field_type("EmpName", "dropdown", $usrArr);
 
-		$output["multiView"] = "NO";	
+		//$output["multiView"] = "NO";	
 		
-		$output["employee"] = $crud->render();
+		//$output["employee"] = $crud->render();*/
 
-		$this->render($output);
+		$output = $crud->render();
+		$this->renderBaseTemplate($output);
 	}
 
 
