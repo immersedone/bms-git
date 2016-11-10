@@ -2207,7 +2207,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/jquery.uniform.min.js');
 		$this->set_js_config($this->default_javascript_path.'/jquery_plugins/config/jquery.uniform.config.js');
 
-		$value_is_null = empty($value) && $value !== '0' && $value !== 0 ? true : false;
+		$value_is_null = empty($value) && $value !== '0' && $value !== 0 || $value = null ? true : false;
 
 		$input = "<div class='pretty-radio-buttons'>";
 

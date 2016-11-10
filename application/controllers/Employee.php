@@ -392,7 +392,10 @@ class Employee extends CI_Controller {
 
 		$crud->add_fields("EmpName", "EmpRole", "IsActive", "StartDate", "FinishDate", "projectID", "EmpVol");
 		$crud->field_type("EmpVol", 'hidden', 'Emp');
-		//$crud->field_type("projectID", 'hidden', $id);
+		$crud->field_type("projectID", 'hidden', $id);
+		$crud->callback_add_field('IsActive', function() {
+			
+		});
 		
 		//Roles in a Project
 		$roles = $crud->basic_model->return_query("SELECT OptID, data FROM OptionType WHERE type='Role'");
@@ -411,8 +414,10 @@ class Employee extends CI_Controller {
 		
 		//Change the field type to a dropdown with values
 		//to add to the relational table
-		$crud->field_type("Role", "dropdown", $roleArr);
+		$crud->field_type("EmpRole", "dropdown", $roleArr);
 		$crud->field_type("EmpName", "dropdown", $usrArr);
+		$crud->field_type("StartDate", "date");
+		$crud->field_type("FinishDate", "date");
 
 		//$output["multiView"] = "NO";	
 		
