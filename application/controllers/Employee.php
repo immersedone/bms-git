@@ -29,10 +29,10 @@ class Employee extends CI_Controller {
 		$crud->set_model('Employee_GC');
 		$crud->set_table('Employee');
 		$crud->set_subject('Employee');
-		$crud->basic_model->set_query_str('SELECT CONCAT(Per.FirstName, " ", Per.MiddleName, " ", Per.LastName) as FullName, Emp.WorkEmail as WEmail, Per.Mobile, Opt1.data as Pos1, Opt2.data as Pos2, Emp.* from Employee Emp
+		$crud->basic_model->set_query_str('SELECT * FROM (SELECT CONCAT(Per.FirstName, " ", Per.MiddleName, " ", Per.LastName) as FullName, Emp.WorkEmail as WEmail, Per.Mobile, Opt1.data as Pos1, Opt2.data as Pos2, Emp.* from Employee Emp
 		LEFT OUTER JOIN Person Per ON Per.PerID = Emp.PerID
 		LEFT OUTER JOIN OptionType Opt1 ON Opt1.OptID = Emp.EmpPosition
-		LEFT OUTER JOIN OptionType Opt2 ON Opt2.OptID = Emp.EmpSecPosition');
+		LEFT OUTER JOIN OptionType Opt2 ON Opt2.OptID = Emp.EmpSecPosition) x');
 		$crud->columns('FullName', 'WEmail', 'Mobile', 'Pos1','Pos2');
 		$crud->display_as("FullName", "Full Name");
 		$crud->display_as("Pos1", "Position");
@@ -310,16 +310,12 @@ class Employee extends CI_Controller {
 			$crudThree->set_model('Extended_generic_model');
 			$crudThree->set_table('PersonProject');
 			$crudThree->set_subject('Employee History');
-			$crudThree->basic_model->set_query_str("SELECT Proj.Name as ProjName, O1.Data as Role, O2.Data as Dept,  CONCAT(Per.FirstName, ' ', Per.MiddleName, ' ', Per.LastName) as SupName, PP.StartDate, PP.FinishDate, PP.PersonProjectID as PersonProjectID FROM PersonProject PP
-			LEFT OUTER JOIN Person Per ON Per.PerID = PP.Supervisor
+			$crudThree->basic_model->set_query_str("SELECT * FROM (SELECT Proj.Name as ProjName, O1.Data as Role, PP.StartDate, PP.FinishDate, PP.PersonProjectID as PersonProjectID FROM PersonProject PP
 			LEFT OUTER JOIN Project Proj ON Proj.ProjID = PP.ProjID
 			LEFT OUTER JOIN OptionType O1 on O1.OptID = PP.Role
-			LEFT OUTER JOIN OptionType O2 on O2.OptID = PP.BGCSDepartment
-			WHERE PP.PerID = '$perID'");
-			$crudThree->columns("ProjName", "Role", "Dept", "SupName", "StartDate", "FinishDate");
+			WHERE PP.PerID = '$perID' ) x");
+			$crudThree->columns("ProjName", "Role", "StartDate", "FinishDate");
 			$crudThree->display_as('ProjName', 'Project Name');
-			$crudThree->display_as('Dept', 'Department');
-			$crudThree->display_as('SupName', "Supervisor's Name");
 			$crudThree->display_as('StartDate', 'Date Started');
 			$crudThree->display_as('FinishDate', 'Date Finished');
 			
@@ -333,16 +329,12 @@ class Employee extends CI_Controller {
             $crudFour->set_model('Extended_generic_model');
             $crudFour->set_table('PersonProject');
             $crudFour->set_subject('Employee History');
-            $crudFour->basic_model->set_query_str("SELECT Proj.Name as ProjName, O1.Data as Role, O2.Data as Dept,  CONCAT(Per.FirstName, ' ', Per.MiddleName, ' ', Per.LastName) as SupName, PP.StartDate, PP.FinishDate, PP.PersonProjectID as PersonProjectID FROM PersonProject PP
-			LEFT OUTER JOIN Person Per ON Per.PerID = PP.Supervisor
+            $crudFour->basic_model->set_query_str("SELECT * FROM (SELECT Proj.Name as ProjName, O1.Data as Role, PP.StartDate, PP.FinishDate, PP.PersonProjectID as PersonProjectID FROM PersonProject PP
 			LEFT OUTER JOIN Project Proj ON Proj.ProjID = PP.ProjID
 			LEFT OUTER JOIN OptionType O1 on O1.OptID = PP.Role
-			LEFT OUTER JOIN OptionType O2 on O2.OptID = PP.BGCSDepartment
-			WHERE PP.PerID = '$perID'");
-            $crudFour->columns("ProjName", "Role", "Dept", "SupName", "StartDate");
+			WHERE PP.PerID = '$perID') x");
+            $crudFour->columns("ProjName", "Role", "StartDate");
 			$crudFour->display_as('ProjName', 'Project Name');
-			$crudFour->display_as('Dept', 'Department');
-			$crudFour->display_as('SupName', "Supervisor's Name");
 			$crudFour->display_as('StartDate', 'Date Started');
 			$crudFour->display_as('FinishDate', 'Date Finished');
 

@@ -26,8 +26,8 @@ class Reimbursements extends CI_Controller {
 		$crud = new grocery_CRUD();
 		$crud->set_theme('flexigrid');
 		$crud->set_model('Reimbursement_GC');
-		$crud->basic_model->set_query_str("SELECT CONCAT(P.FirstName, ' ', P.MiddleName, ' ', P.LastName) as FullName, R.* FROM Reimbursement R
-		LEFT OUTER JOIN Person P on R.PerID=P.PerID");
+		$crud->basic_model->set_query_str("SELECT * FROM (SELECT CONCAT(P.FirstName, ' ', P.MiddleName, ' ', P.LastName) as FullName, R.* FROM Reimbursement R
+		LEFT OUTER JOIN Person P on R.PerID=P.PerID) x");
 		$crud->set_table('Reimbursement');
 		$crud->set_subject('Reimbursement');
 		$crud->set_read_fields("ReimID", "ReimbDate", "ApprovedBy", "PerID", "ExpList", "IsPaid", "ReimbStatus", "Comments");

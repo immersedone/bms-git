@@ -28,10 +28,10 @@ class Funding extends CI_Controller {
 		$crud->set_model('Funding_GC');
 		$crud->set_table('Funding');
 		$crud->set_subject('Funding');
-		$crud->basic_model->set_query_str('SELECT Proj.ProjID, Proj.Name as ProjName, FB.BodyName as FBName, CONCAT(Per.FirstName, " ", Per.MiddleName, " ", Per.LastName) as FullName, Fund.* from `Funding` Fund
+		$crud->basic_model->set_query_str('SELECT * FROM (SELECT Proj.Name as ProjName, FB.BodyName as FBName, CONCAT(Per.FirstName, " ", Per.MiddleName, " ", Per.LastName) as FullName, Fund.* from `Funding` Fund
 		LEFT OUTER JOIN `FundingBody` FB on FB.FundBodyID=Fund.FundBodyID
 		LEFT OUTER JOIN `Project` Proj on Proj.ProjID=Fund.ProjID
-		LEFT OUTER JOIN `Person` Per on Per.PerID=Fund.ApprovedBy', ' GROUP BY FundID');
+		LEFT OUTER JOIN `Person` Per on Per.PerID=Fund.ApprovedBy) x');
 		$crud->set_read_fields('ProjID', 'FundBodyID', 'Amount', 'PaymentType', 'status', 'ApprovedBy', 'ApprovedOn');
 		$crud->columns('ProjName', 'FBName', 'Amount', 'PaymentType', 'FullName', 'status', 'ApprovedOn');
 		$crud->display_as('ProjName', 'Project');
@@ -40,7 +40,6 @@ class Funding extends CI_Controller {
 		$crud->display_as('FullName', 'Approved By');
 		$crud->display_as('ApprovedBy', 'Approved By');
 		$crud->display_as('ApprovedOn', 'Approved On');
-		$crud->display_as('ProjID', 'Project Name');
 		$crud->display_as('FundBodyID', 'Funding Body');
 		
 		//Change the Insert Funding fields
