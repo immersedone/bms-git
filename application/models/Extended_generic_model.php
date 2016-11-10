@@ -59,7 +59,7 @@
     }
 
 	function get_total_results(){
-        $this->arrange_queries();
+        //$this->arrange_queries();
 		return $this->db->query($this->query_str)->num_rows();	
 	}
 
@@ -72,32 +72,22 @@
         $like_str = ''; 
         $or_like_array = $this->or_like_arr;
         $or_like_str = '';
-        $i = 0;
-        foreach ($like_array as $value) {
-            if($i==0){
-                $like_str = ' AND ('.$value;
-            }
-            else{
-                $like_str.= ' AND '.$value;
-            }
-            if($i==count($like_array)-1){
-                $like_str.= ')';
-            }
-            $i++;
-        }
-        $i=0;
-        foreach ($or_like_array as $value) {
-            if($i==0){
-                $or_like_str = ' AND ('.$value;
-            }
-            else{
-                $or_like_str.= ' OR '.$value;
-            }
-            if($i==count($or_like_array)-1){
-                $or_like_str.= ')';
-            }
-            $i++;
-        }
+		if(count($like_array)-1 == 0){
+			$like_str = ' WHERE '.$like_array[0];
+		}
+		if(count($or_like_array) > 0){
+			$or_like_str = ' WHERE ';
+			foreach ($or_like_array as $value) {
+				if ($i<count($or_like_array)){
+					$or_like_str .= $value." OR ";
+				}
+				else{
+					$or_like_str .= $value;
+				}
+				$i++;
+			}
+		}
+	
 		$query = $without_group_by_str.$like_str.$or_like_str.$this->group_by_str.$this->order_by_str;
 		if($limit) $query .= $this->limit_str;
 		$this->query_str = $query;
