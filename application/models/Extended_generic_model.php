@@ -78,6 +78,7 @@
     		if(count($like_array)-1 == 0){
     			$like_str = ' WHERE '.$like_array[0];
     		}
+			$i = 1;
     		if(count($or_like_array) > 0){
     			$or_like_str = ' WHERE ';
     			foreach ($or_like_array as $value) {
