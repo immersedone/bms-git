@@ -28,8 +28,8 @@ class People extends CI_Controller {
 		$crud->set_model('Extended_generic_model');
 		$crud->set_table('Person');
 		$crud->set_subject('Person');
-		$crud->basic_model->set_query_str('SELECT Sub.SuburbName as SubName, Sub.Postcode as Postcode, Per.* from `Person` Per
-		LEFT OUTER JOIN `Suburb` Sub ON Per.SuburbID=Sub.SuburbID');
+		$crud->basic_model->set_query_str('SELECT * FROM (SELECT Sub.SuburbName as SubName, Sub.Postcode as Postcode, Per.* from `Person` Per
+		LEFT OUTER JOIN `Suburb` Sub ON Per.SuburbID=Sub.SuburbID) x');
 		$crud->columns('FirstName', 'LastName', 'Address', 'Postcode', 'SubName', 'PersonalEmail', 'Mobile', 'HomePhone');
 		$crud->add_fields('FirstName', 'MiddleName', 'LastName', 'Address', 'SuburbID', 'PersonalEmail', 'Mobile', 'HomePhone', 'Status', 'DateStarted', 'WWC', 'WWCFiled', 'LanguagesSpoken', 'EmergContName', 'EmergContMob', 'EmergContHPhone', 'EmergContWPhone', 'EmergContRelToPer');
 		$crud->edit_fields('FirstName', 'MiddleName', 'LastName','Address', 'SuburbID', 'PersonalEmail', 'Mobile', 'HomePhone', 'Status', 'DateStarted', 'DateFinished', 'ContractSigned', 'PaperworkCompleted', 'WWC', 'WWCFiled', 'PoliceCheck', 'TeacherRegCheck', 'FAQual', 'LanguagesSpoken', 'EmergContName', 'EmergContMob', 'EmergContHPhone', 'EmergContWPhone', 'EmergContRelToPer');	
