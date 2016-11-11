@@ -96,10 +96,20 @@ $route['user/volunteer/index/delete/(:num)'] = 'volunteer/volunteer/$1';
 $route['user/volunteer/index/print'] = 'volunteer/volunteer';
 $route['user/volunteer/index/ajax_list'] = 'volunteer/volunteer';
 $route['user/volunteer/index/ajax_list_info'] = 'volunteer/volunteer';
+$route['user/volunteer/index/export'] = 'volunteer/volunteer';
+//Routes for Project Volunteer
 $route['user/volunteer/volproj/ajax_list/(:num)'] = 'volunteer/volproj/$1';
 $route['user/volunteer/volproj/ajax_list_info/(:num)'] = 'volunteer/volproj/$1';
 $route['user/volunteer/volproj/read/(:num)'] = 'volunteer/volproj/$1';
-$route['user/volunteer/index/export'] = 'volunteer/volunteer';
+$route['user/volunteer/volproj/edit/(:num)'] = 'volunteer/volproj/$1';
+$route['user/volunteer/volproj/insert_validation/(:num)'] = 'volunteer/volproj/$1';
+$route['user/volunteer/volproj/insert/(:num)'] = 'volunteer/volproj/$1';
+$route['user/volunteer/volproj/update/(:num)'] = 'volunteer/volproj/$1';
+$route['user/volunteer/volproj/update_validation/(:num)'] = 'volunteer/volproj/$1';
+$route['user/volunteer/volproj/success/(:num)'] = 'volunteer/volproj/$1';
+$route['user/volunteer/volproj/export/(:num)'] = 'volunteer/volproj/$1';
+$route['user/volunteer/volproj/add/(:num)'] = 'volunteer/volproj/$1';
+$route['user/volunteer/volproj/print/(:num)'] = 'volunteer/volproj/$1';
 
 //Routes for Employee Page
 $route['user/employee'] = 'employee';
@@ -119,10 +129,21 @@ $route['user/employee/index/delete/(:num)'] = 'employee/employee/$1';
 $route['user/employee/index/print'] = 'employee/employee';
 $route['user/employee/index/ajax_list'] = 'employee/employee';
 $route['user/employee/index/ajax_list_info'] = 'employee/employee';
+$route['user/employee/index/export'] = 'employee/employee';
+//Route for Project Employee
 $route['user/employee/empproj/ajax_list/(:num)'] = 'employee/empproj/$1';
 $route['user/employee/empproj/ajax_list_info/(:num)'] = 'employee/empproj/$1';
 $route['user/employee/empproj/read/(:num)'] = 'employee/empproj/$1';
-$route['user/employee/index/export'] = 'employee/employee';
+$route['user/employee/empproj/edit/(:num)'] = 'employee/empproj/$1';
+$route['user/employee/empproj/update_validation/(:num)'] = 'employee/empproj/$1';
+$route['user/employee/empproj/insert_validation/(:num)'] = 'employee/empproj/$1';
+$route['user/employee/empproj/add/(:num)'] = 'employee/empproj/$1';
+$route['user/employee/empproj/insert/(:num)'] = 'employee/empproj/$1';
+$route['user/employee/empproj/update/(:num)'] = 'employee/empproj/$1';
+$route['user/employee/empproj/export/(:num)'] = 'employee/empproj/$1';
+$route['user/employee/empproj/print/(:num)'] = 'employee/empproj/$1';
+$route['user/employee/empproj/success/(:num)'] = 'employee/empproj/$1';
+
 
 //Routes for Project Page
 $route['user/projects'] = 'projects';
@@ -174,10 +195,6 @@ $route['user/projects/index/getProjName/(:num)'] = 'projects/getProjName/$1';
 $route['user/milestones'] = 'milestones';
 $route['user/milestones/index'] = 'milestones';
 $route['user/milestones/index/add'] = 'milestones/milestones';
-$route['user/milestones/mileproj/add/(:num)'] = 'milestones/mileproj/$1';
-$route['user/milestones/mileproj/ajax_list/(:num)'] = 'milestones/mileproj/$1';
-$route['user/milestones/mileproj/ajax_list_info/(:num)'] = 'milestones/mileproj/$1';
-$route['user/milestones/mileproj/read/(:num)'] = 'milestones/mileproj/$1';
 $route['user/milestones/index/insert'] = 'milestones/milestones';
 $route['user/milestones/index/insert_validation'] = 'milestones/milestones';
 $route['user/milestones/index/edit/(:num)'] = 'milestones/milestones/$1';
@@ -191,6 +208,19 @@ $route['user/milestones/index/ajax_list'] = 'milestones/milestones';
 $route['user/milestones/index/ajax_list_info'] = 'milestones/milestones';
 $route['user/milestones/index/export'] = 'milestones/milestones';
 $route['user/milestones/index/upload_file/FilePath'] = 'milestones/milestones';
+//Routes for Project Milestones
+$route['user/milestones/mileproj/add/(:num)'] = 'milestones/mileproj/$1';
+$route['user/milestones/mileproj/ajax_list/(:num)'] = 'milestones/mileproj/$1';
+$route['user/milestones/mileproj/ajax_list_info/(:num)'] = 'milestones/mileproj/$1';
+$route['user/milestones/mileproj/read/(:num)'] = 'milestones/mileproj/$1';
+$route['user/milestones/mileproj/edit/(:num)'] = 'milestones/mileproj/$1';
+$route['user/milestones/mileproj/update/(:num)'] = 'milestones/mileproj/$1';
+$route['user/milestones/mileproj/update_validation/(:num)'] = 'milestones/mileproj/$1';
+$route['user/milestones/mileproj/insert/(:num)'] = 'milestones/mileproj/$1';
+$route['user/milestones/mileproj/insert_validation/(:num)'] = 'milestones/mileproj/$1';
+$route['user/milestones/mileproj/export/(:num)'] = 'milestones/mileproj/$1';
+$route['user/milestones/mileproj/print/(:num)'] = 'milestones/mileproj/$1';
+$route['user/milestones/mileproj/success/(:num)'] = 'milestones/mileproj/$1';
 
 //Routes for Upcoming Milestones Page
 $route['user/duemilestones'] = 'duemilestones';
@@ -216,10 +246,6 @@ $route['user/expenditures/index/add'] = 'expenditures/expenditures';
 $route['user/expenditures/index/insert'] = 'reimbursements/exp_insert';
 $route['user/expenditures/index/exp_insert'] = 'reimbursements/exp_insert';
 $route['user/expenditures/index/expenditure_add'] = 'reimbursements/expenditure_add';
-$route['user/expenditures/expendproj/add/(:num)'] = 'expenditures/expendproj/$1';
-$route['user/expenditures/expendproj/ajax_list_info/(:num)'] = 'expenditures/expendproj/$1';
-$route['user/expenditures/expendproj/ajax_list/(:num)'] = 'expenditures/expendproj/$1';
-$route['user/expenditures/expendproj/read/(:num)'] = 'expenditures/expendproj/$1';
 $route['user/expenditures/index/insert'] = 'expenditures/expenditures';
 $route['user/expenditures/index/insert_validation'] = 'expenditures/expenditures';
 $route['user/expenditures/index/edit/(:num)'] = 'expenditures/expenditures/$1';
@@ -235,6 +261,19 @@ $route['user/expenditures/index/export'] = 'expenditures/expenditures';
 $route['user/expenditures/index/getExpBy/(:num)'] = 'expenditures/getExpBy/$1';
 $route['user/expenditures/index/getExpName/(:num)'] = 'expenditures/getExpName/$1';
 $route['user/expenditures/index/upload_file/FilePath'] = 'expenditures/expenditures';
+//Routes for Project Expenditures
+$route['user/expenditures/expendproj/add/(:num)'] = 'expenditures/expendproj/$1';
+$route['user/expenditures/expendproj/ajax_list_info/(:num)'] = 'expenditures/expendproj/$1';
+$route['user/expenditures/expendproj/ajax_list/(:num)'] = 'expenditures/expendproj/$1';
+$route['user/expenditures/expendproj/read/(:num)'] = 'expenditures/expendproj/$1';
+$route['user/expenditures/expendproj/edit/(:num)'] = 'expenditures/expendproj/$1';
+$route['user/expenditures/expendproj/insert/(:num)'] = 'expenditures/expendproj/$1';
+$route['user/expenditures/expendproj/insert_validation/(:num)'] = 'expenditures/expendproj/$1';
+$route['user/expenditures/expendproj/update/(:num)'] = 'expenditures/expendproj/$1';
+$route['user/expenditures/expendproj/update_validation/(:num)'] = 'expenditures/expendproj/$1';
+$route['user/expenditures/expendproj/export/(:num)'] = 'expenditures/expendproj/$1';
+$route['user/expenditures/expendproj/print/(:num)'] = 'expenditures/expendproj/$1';
+$route['user/expenditures/expendproj/success/(:num)'] = 'expenditures/expendproj/$1';
 
 
 //Routes for reimbursements Page
@@ -292,11 +331,20 @@ $route['user/funding/index/delete/(:num)'] = 'funding/funding/$1';
 $route['user/funding/index/print'] = 'funding/funding';
 $route['user/funding/index/ajax_list'] = 'funding/funding';
 $route['user/funding/index/ajax_list_info'] = 'funding/funding';
+$route['user/funding/index/export'] = 'funding/funding';
+$route['user/funding/index/getFBName/(:num)'] = 'funding/getFBName/$1';
+//Routes for Project Funding
 $route['user/funding/fundproj/ajax_list/(:num)'] = 'funding/fundproj/$1';
 $route['user/funding/fundproj/ajax_list_info/(:num)'] = 'funding/fundproj/$1';
 $route['user/funding/fundproj/read/(:num)'] = 'funding/fundproj/$1';
-$route['user/funding/index/export'] = 'funding/funding';
-$route['user/funding/index/getFBName/(:num)'] = 'funding/getFBName/$1';
+$route['user/funding/fundproj/edit/(:num)'] = 'funding/fundproj/$1';
+$route['user/funding/fundproj/insert/(:num)'] = 'funding/fundproj/$1';
+$route['user/funding/fundproj/insert_validation/(:num)'] = 'funding/fundproj/$1';
+$route['user/funding/fundproj/update/(:num)'] = 'funding/fundproj/$1';
+$route['user/funding/fundproj/update_validation/(:num)'] = 'funding/fundproj/$1';
+$route['user/funding/fundproj/export/(:num)'] = 'funding/fundproj/$1';
+$route['user/funding/fundproj/print/(:num)'] = 'funding/fundproj/$1';
+$route['user/funding/fundproj/success/(:num)'] = 'funding/fundproj/$1';
 
 //Routes for funding body Page
 $route['user/fundingbody'] = 'fundingbody';
