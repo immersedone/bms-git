@@ -764,6 +764,21 @@
 </div>
 </div>
 <script>
+	<?php
+		//Check to see if it is coming from project View
+		$fullURL = explode('/', $_SERVER['REQUEST_URI']);
+		if(end($fullURL) === "") {
+	    	array_pop($fullURL);
+		} 
+
+		$fullURL = array_map('strtolower', $fullURL);
+
+		if(in_array("mileproj", $fullURL) || in_array("expendproj", $fullURL) || in_array("fundproj", $fullURL) || in_array("empproj", $fullURL)
+			|| in_array("volproj", $fullURL)) {
+			$list_url = base_url() . 'user/projects/index/projread/list';
+		}
+
+	?>
 	var validation_url = '<?php echo $validation_url?>';
 	var list_url = '<?php echo $list_url?>';
 

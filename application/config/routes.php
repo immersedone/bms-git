@@ -98,6 +98,7 @@ $route['user/volunteer/index/ajax_list'] = 'volunteer/volunteer';
 $route['user/volunteer/index/ajax_list_info'] = 'volunteer/volunteer';
 $route['user/volunteer/volproj/ajax_list/(:num)'] = 'volunteer/volproj/$1';
 $route['user/volunteer/volproj/ajax_list_info/(:num)'] = 'volunteer/volproj/$1';
+$route['user/volunteer/volproj/read/(:num)'] = 'volunteer/volproj/$1';
 $route['user/volunteer/index/export'] = 'volunteer/volunteer';
 
 //Routes for Employee Page
@@ -120,6 +121,7 @@ $route['user/employee/index/ajax_list'] = 'employee/employee';
 $route['user/employee/index/ajax_list_info'] = 'employee/employee';
 $route['user/employee/empproj/ajax_list/(:num)'] = 'employee/empproj/$1';
 $route['user/employee/empproj/ajax_list_info/(:num)'] = 'employee/empproj/$1';
+$route['user/employee/empproj/read/(:num)'] = 'employee/empproj/$1';
 $route['user/employee/index/export'] = 'employee/employee';
 
 //Routes for Project Page
@@ -175,6 +177,7 @@ $route['user/milestones/index/add'] = 'milestones/milestones';
 $route['user/milestones/mileproj/add/(:num)'] = 'milestones/mileproj/$1';
 $route['user/milestones/mileproj/ajax_list/(:num)'] = 'milestones/mileproj/$1';
 $route['user/milestones/mileproj/ajax_list_info/(:num)'] = 'milestones/mileproj/$1';
+$route['user/milestones/mileproj/read/(:num)'] = 'milestones/mileproj/$1';
 $route['user/milestones/index/insert'] = 'milestones/milestones';
 $route['user/milestones/index/insert_validation'] = 'milestones/milestones';
 $route['user/milestones/index/edit/(:num)'] = 'milestones/milestones/$1';
@@ -216,6 +219,7 @@ $route['user/expenditures/index/expenditure_add'] = 'reimbursements/expenditure_
 $route['user/expenditures/expendproj/add/(:num)'] = 'expenditures/expendproj/$1';
 $route['user/expenditures/expendproj/ajax_list_info/(:num)'] = 'expenditures/expendproj/$1';
 $route['user/expenditures/expendproj/ajax_list/(:num)'] = 'expenditures/expendproj/$1';
+$route['user/expenditures/expendproj/read/(:num)'] = 'expenditures/expendproj/$1';
 $route['user/expenditures/index/insert'] = 'expenditures/expenditures';
 $route['user/expenditures/index/insert_validation'] = 'expenditures/expenditures';
 $route['user/expenditures/index/edit/(:num)'] = 'expenditures/expenditures/$1';
@@ -290,6 +294,7 @@ $route['user/funding/index/ajax_list'] = 'funding/funding';
 $route['user/funding/index/ajax_list_info'] = 'funding/funding';
 $route['user/funding/fundproj/ajax_list/(:num)'] = 'funding/fundproj/$1';
 $route['user/funding/fundproj/ajax_list_info/(:num)'] = 'funding/fundproj/$1';
+$route['user/funding/fundproj/read/(:num)'] = 'funding/fundproj/$1';
 $route['user/funding/index/export'] = 'funding/funding';
 $route['user/funding/index/getFBName/(:num)'] = 'funding/getFBName/$1';
 
