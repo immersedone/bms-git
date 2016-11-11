@@ -110,6 +110,7 @@ $route['user/volunteer/volproj/success/(:num)'] = 'volunteer/volproj/$1';
 $route['user/volunteer/volproj/export/(:num)'] = 'volunteer/volproj/$1';
 $route['user/volunteer/volproj/add/(:num)'] = 'volunteer/volproj/$1';
 $route['user/volunteer/volproj/print/(:num)'] = 'volunteer/volproj/$1';
+$route['user/volunteer/volproj/delete/(:num)'] = 'volunteer/volproj/$1';
 
 //Routes for Employee Page
 $route['user/employee'] = 'employee';
@@ -143,6 +144,7 @@ $route['user/employee/empproj/update/(:num)'] = 'employee/empproj/$1';
 $route['user/employee/empproj/export/(:num)'] = 'employee/empproj/$1';
 $route['user/employee/empproj/print/(:num)'] = 'employee/empproj/$1';
 $route['user/employee/empproj/success/(:num)'] = 'employee/empproj/$1';
+$route['user/employee/empproj/delete/(:num)'] = 'employee/empproj/$1';
 
 
 //Routes for Project Page
@@ -221,6 +223,7 @@ $route['user/milestones/mileproj/insert_validation/(:num)'] = 'milestones/milepr
 $route['user/milestones/mileproj/export/(:num)'] = 'milestones/mileproj/$1';
 $route['user/milestones/mileproj/print/(:num)'] = 'milestones/mileproj/$1';
 $route['user/milestones/mileproj/success/(:num)'] = 'milestones/mileproj/$1';
+$route['user/milestones/mileproj/delete/(:num)'] = 'milestones/mileproj/$1';
 
 //Routes for Upcoming Milestones Page
 $route['user/duemilestones'] = 'duemilestones';
@@ -274,6 +277,7 @@ $route['user/expenditures/expendproj/update_validation/(:num)'] = 'expenditures/
 $route['user/expenditures/expendproj/export/(:num)'] = 'expenditures/expendproj/$1';
 $route['user/expenditures/expendproj/print/(:num)'] = 'expenditures/expendproj/$1';
 $route['user/expenditures/expendproj/success/(:num)'] = 'expenditures/expendproj/$1';
+$route['user/expenditures/expendproj/delete/(:num)'] = 'expenditures/expendproj/$1';
 
 
 //Routes for reimbursements Page
@@ -345,6 +349,7 @@ $route['user/funding/fundproj/update_validation/(:num)'] = 'funding/fundproj/$1'
 $route['user/funding/fundproj/export/(:num)'] = 'funding/fundproj/$1';
 $route['user/funding/fundproj/print/(:num)'] = 'funding/fundproj/$1';
 $route['user/funding/fundproj/success/(:num)'] = 'funding/fundproj/$1';
+$route['user/funding/fundproj/delete/(:num)'] = 'funding/fundproj/$1';
 
 //Routes for funding body Page
 $route['user/fundingbody'] = 'fundingbody';
