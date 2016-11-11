@@ -159,7 +159,7 @@ class Volunteer extends CI_Controller {
 			$crudThree->set_model('Extended_generic_model');
 			$crudThree->set_table('PersonProject');
 			$crudThree->set_subject('Volunteer History');
-			$crudFour->basic_model->set_query_str("SELECT * FROM (SELECT Proj.Name as ProjName, O1.Data as Role, PP.StartDate, PP.FinishDate, PP.PersonProjectID as PersonProjectID FROM PersonProject PP
+			$crudThree->basic_model->set_query_str("SELECT * FROM (SELECT Proj.Name as ProjName, O1.Data as Role, PP.StartDate, PP.FinishDate, PP.PersonProjectID as PersonProjectID FROM PersonProject PP
 			LEFT OUTER JOIN Project Proj ON Proj.ProjID = PP.ProjID
 			LEFT OUTER JOIN OptionType O1 on O1.OptID = PP.Role
 			WHERE PP.PerID = '$perID' AND PP.IsActive='0') x");
