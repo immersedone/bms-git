@@ -243,6 +243,9 @@ class Volunteer extends CI_Controller {
 		$crud->add_fields("VolName", "Role", "IsActive", "StartDate", "FinishDate", "projectID", "EmpVol");
 		$crud->field_type("EmpVol", 'hidden', 'Vol');
 		$crud->field_type("projectID", 'hidden', $id);
+		$crud->field_type("StartDate", "date");
+		$crud->field_type("FinishDate", "date");
+		$crud->field_type("IsActive", "true_false");
 		
 		$state = $crud->getState();
 
