@@ -109,8 +109,15 @@ class Expenditures extends CI_Controller {
 
 		$state = $crud->getState();
 
+		
+
+		$crud->callback_before_upload(array($this, 'check_upload'));
+
 		if($state === "edit" || $state === "update") {
 			$projects = $crud->basic_model->return_query("SELECT Pr.ProjID, Pr.Name FROM Project Pr LEFT OUTER JOIN Expenditure Exp ON Exp.ProjID=Pr.ProjID WHERE Exp.ExpID=".$id);
+			$prID = $this->db->query("SELECT ProjID FROM Expenditure WHERE ExpID='". $id ."' LIMIT 1")->row();
+			$crud->setStateUrlUpload($prID->ProjID);
+			$crud->setStateUrlDelete($prID->ProjID);
 		} else {
 			$projects = $crud->basic_model->return_query("SELECT ProjID, Name FROM Project WHERE ProjID=".$id);
 		}
@@ -142,6 +149,8 @@ class Expenditures extends CI_Controller {
 		foreach($users as $usr) {
 			$usrArr += [$usr->PerID => $usr->FullName];
 		}
+
+		
 		
 		//Change the field type to a dropdown with values
 		//to add to the relational table
@@ -150,10 +159,25 @@ class Expenditures extends CI_Controller {
 		$crud->set_field_upload('FilePath', 'assets/uploads/files/expenditures');
 		$crud->callback_before_insert(array($this,'expenditure_add'));
 		
+		
 
 		$output = $crud->render();
 
 		$this->render($output);
+	}
+
+	public function check_upload($files_to_upload, $field_info) {
+		print_r($files_to_upload);
+		print_r($field_info);
+
+		if(is_dir($field_info->upload_path))
+		{
+			return true;
+		}
+		else
+		{
+			return 'I am sorry but it seems that the folder that you are trying to upload doesn\'t exist.';    
+		}
 	}
 
 	public function callback_projID_edit($value, $primary_key) {

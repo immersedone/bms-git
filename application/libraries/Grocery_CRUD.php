@@ -3169,6 +3169,8 @@ class grocery_CRUD_States extends grocery_CRUD_Layout
 
     private $extState;
     private $stateCode;
+    private $fileUploadBool = false;
+    private $fileUploadProjID;
 
 	protected $states = array(
 		0	=> 'unknown',
@@ -3452,6 +3454,18 @@ class grocery_CRUD_States extends grocery_CRUD_Layout
 					: md5($this->get_controller_name().$this->get_method_name().$extra_values);
 	}
 
+	public function setStateUrlUpload($prjID) {
+		//$this->state_url('upload_file/'.$prjID.'/'.$field_name);
+		$this->fileUploadBool = true;
+		$this->fileUploadProjID = $prjID;
+	}
+
+	public function setStateUrlDelete($prjID) {
+		//$this->state_url('delete_file/'.$prjID.'/'.$field_name);
+		$this->fileUploadBool = true;
+		$this->fileUploadProjID = $prjID;
+	}
+
 	protected function get_method_name()
 	{
 		$ci = &get_instance();
@@ -3567,12 +3581,20 @@ class grocery_CRUD_States extends grocery_CRUD_Layout
 
 	protected function getUploadUrl($field_name)
 	{
-		return $this->state_url('upload_file/'.$field_name);
+		if($this->fileUploadBool == true) {
+			return $this->state_url($this->fileUploadProjID . '/upload_file/' . $field_name);
+		} else {
+			return $this->state_url('upload_file/'.$field_name);
+		}
 	}
 
 	protected function getFileDeleteUrl($field_name)
 	{
-		return $this->state_url('delete_file/'.$field_name);
+		if($this->fileUploadBool == true) {
+			return $this->state_url($this->fileUploadProjID . '/delete_file/' .$field_name);
+		} else {
+			return $this->state_url('delete_file/'.$field_name);
+		}
 	}
 
 	protected function getAjaxRelationUrl()
@@ -3592,6 +3614,8 @@ class grocery_CRUD_States extends grocery_CRUD_Layout
 	public function setStateCode($stateCode) {
 		$this->stateCode = $stateCode;
 	}
+
+	
 }
 
 
