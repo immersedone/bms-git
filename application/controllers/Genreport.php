@@ -89,11 +89,12 @@ class Genreport extends CI_Controller {
 		//YES == Remove Cover Page
 		//NO == Add in Optional Cover Page
 		if(isset($optCP) && $optCP == "YES") {
-			$html = "";
+			$coverPage = "";
 		} else {
-			$html = $this->load->view('/include/Report_CoverPage', $data, TRUE);
+			$coverPage = $this->load->view('/include/Report_CoverPage', $data, TRUE);
 		}
 
+		$html = "";
 
 		//Load GroceryCRUD to generate data
 		$this->load->library("grocery_CRUD");
@@ -381,13 +382,15 @@ class Genreport extends CI_Controller {
 			$html .= "<table><tbody>";
 			$html .= "<tr><th>Employee Name</th><th>Telephone</th><th>Mobile</th><th>Work Mob.</th><th>Email</th><th>Work Email</th><th>Emergency Contact</th><th>EC - Mobile</th><th>EC - Telephone</th><th>EC - Work Phone</th><th>EC - Relationship</th></tr>";
 
+			
+			for($i = 0; $i < 25; $i++){
 			//Loop
 			foreach($emp as $em) { 
 				$html .= "<tr><td>" . $em->FullName . "</td><td>" . $em->HomePhone . "</td><td>" . $em->Mobile . "</td><td>" . $em->WorkMob . "</td><td>" . $em->PersonalEmail . "</td><td>" . $em->WorkEmail . "</td><td>" . $em->EmergContName . "</td><td>" . $em->EmergContMob . "</td><td>" . $em->EmergContHPhone . "</td><td>" . $em->EmergContWPhone . "</td><td>" . $em->EmergContRelToPer . "</td></tr>";
 			}
-
+			}
 			$html .= "</tbody></table>";
-
+			
 		}
 		//Report for Contact Details - All Volunteers
 		elseif ($reportType == "cdet_vol") {
@@ -523,12 +526,23 @@ class Genreport extends CI_Controller {
 
 		//echo $html;
 		$this->pdf = $this->m_pdf->load("'utf-8', 'A4-L', '', '',10,10,10,10,6,3");
+		if(isset($coverPage) && $coverPage !== "") {
+			$this->pdf->AddPage('P', // L - landscape, P - portrait
+	        '', '', '', '',
+	        0, // margin_left
+	        0, // margin right
+	        0, // margin top
+	        0, // margin bottom
+	        6, // margin header
+	        3); // margin footer
+			$this->pdf->WriteHTML($coverPage);
+		}
 		$this->pdf->AddPage('L', // L - landscape, P - portrait
         '', '', '', '',
-        10, // margin_left
-        10, // margin right
-        10, // margin top
-        10, // margin bottom
+        15, // margin_left
+        15, // margin right
+        15, // margin top
+        15, // margin bottom
         6, // margin header
         3); // margin footer
 		$this->pdf->WriteHTML($html);
