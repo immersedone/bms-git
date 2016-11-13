@@ -265,7 +265,7 @@ $route['user/expenditures/index/export'] = 'expenditures/expenditures';
 $route['user/expenditures/index/getExpBy/(:num)'] = 'expenditures/getExpBy/$1';
 $route['user/expenditures/index/getExpName/(:num)'] = 'expenditures/getExpName/$1';
 $route['user/expenditures/index/upload_file/FilePath'] = 'expenditures/expenditures';
-$route['user/expenditures/index/delete_file/FilePath'] = 'expenditures/expenditures';
+$route['user/expenditures/index/delete_file/FilePath/(:any)'] = 'expenditures/expenditures/$1';
 //Routes for Project Expenditures
 $route['user/expenditures/expendproj/add/(:num)'] = 'expenditures/expendproj/$1';
 $route['user/expenditures/expendproj/ajax_list_info/(:num)'] = 'expenditures/expendproj/$1';
@@ -280,6 +280,8 @@ $route['user/expenditures/expendproj/export/(:num)'] = 'expenditures/expendproj/
 $route['user/expenditures/expendproj/print/(:num)'] = 'expenditures/expendproj/$1';
 $route['user/expenditures/expendproj/success/(:num)'] = 'expenditures/expendproj/$1';
 $route['user/expenditures/expendproj/delete/(:num)'] = 'expenditures/expendproj/$1';
+$route['user/expenditures/expendproj/delete_file/FilePath/(:any)'] = 'expenditures/expendproj/$1';
+$route['user/expenditures/expendproj/upload_file/FilePath/'] = 'expenditures/expendproj';
 
 
 //Routes for reimbursements Page
