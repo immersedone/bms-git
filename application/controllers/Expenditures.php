@@ -108,17 +108,16 @@ class Expenditures extends CI_Controller {
 		$crud->display_as('FullName', 'Spent By');
 		$crud->display_as('ProjID', 'Project Name');
 		$crud->display_as('Name', 'Project Name');
+		$crud->display_as('IsPaid'. 'Is Paid');
+		$crud->display_as('IsRejected'. 'Is Rejected');
 		$crud->display_as('FilePath', 'File Attached');
 		$crud->display_as("IsPaid", "Is Paid");
 		$crud->display_as("IsRejected", "Is Rejected");
 
 		$crud->display_as("ExpType", "Expenditure Type");
 		$crud->display_as("ExpDate", "Expenditure Date");
-		$crud->display_as("FilePath", "File Path");
+		//$crud->display_as("FilePath", "File Path");
 		$crud->display_as("SpentBy", "Spent By");
-
-
-		$crud->display_as('FilePath', 'File Attached');
 
 		$state = $crud->getState();
 
