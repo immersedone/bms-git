@@ -406,6 +406,29 @@
 
 			echo $ajaxHTML;
 
+		}  elseif($field->field_name === "SuperFund") {
+			//Get Project ID to convert to a name
+			$fbID = $input_fields["SuperFund"]->input;
+			$fbID = str_replace("</div>", "", $fbID);
+			$fbID = str_replace('<div id="field-SuperFund" class="readonly_label">', "", $fbID);
+			//Echo out HTML AJAX for name conversion
+
+			$ajaxHTML = '<script type="text/javascript">
+			$(function() {
+				$.ajax({
+					url: "'. base_url() .'user/people/index/getPosition/' . $fbID .'",
+					type: "POST",
+					dataType: "json",
+					success: function(data) {
+						$("div#field-SuperFund.readonly_label").text(data.Position);
+					}
+
+				});
+			});
+			</script>';
+
+			echo $ajaxHTML;
+
 		}   elseif($field->field_name === "EmpSecPosition") {
 			//Get Project ID to convert to a name
 			$fbID = $input_fields["EmpSecPosition"]->input;
