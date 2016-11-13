@@ -184,10 +184,10 @@ class Volunteer extends CI_Controller {
 			LEFT OUTER JOIN Project Proj ON Proj.ProjID = PP.ProjID
 			LEFT OUTER JOIN OptionType O1 on O1.OptID = PP.Role
 			WHERE PP.PerID = '$perID' AND PP.IsActive='1') x");
-			$crudThree->columns("ProjName", "Role",  "StartDate", "FinishDate");
-			$crudThree->display_as('ProjName', 'Project Name');
-			$crudThree->display_as('StartDate', 'Date Started');
-			$crudThree->display_as('FinishDate', 'Date Finished');
+			$crudFour->columns("ProjName", "Role",  "StartDate", "FinishDate");
+			$crudFour->display_as('ProjName', 'Project Name');
+			$crudFour->display_as('StartDate', 'Date Started');
+			$crudFour->display_as('FinishDate', 'Date Finished');
 			
 			$crudFour->setStateCode(1);
 			$crudFour->unset_add();

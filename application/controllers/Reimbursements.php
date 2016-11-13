@@ -162,5 +162,17 @@ class Reimbursements extends CI_Controller {
 		echo $resp;
 	}
 	
+	public function get_ExpList($id){
+
+		$crud = new grocery_CRUD();
+		$crud->set_model('Extended_generic_model');
+		$res = $crud->basic_model->return_query("SELECT CONCAT(ExpName, ' - ', Reason, ' - ', Amount) as Exp FROM Expenditure WHERE ExpID = '$id'"); 
+		
+		$resp = array();
+		$resp["ExpList"] = $res[0]->Exp;
+		echo json_encode($resp);
+	}
+	
+	
 	
 }
