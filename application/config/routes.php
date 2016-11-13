@@ -310,6 +310,7 @@ $route['user/reimbursements/index/print'] = 'reimbursements/reimbursements';
 $route['user/reimbursements/index/ajax_list'] = 'reimbursements/reimbursements';
 $route['user/reimbursements/index/ajax_list_info'] = 'reimbursements/reimbursements';
 $route['user/reimbursements/index/export'] = 'reimbursements/reimbursements';
+$route['user/reimbursements/index/get_ExpList/(:num)'] = 'reimbursements/get_ExpList/$1';
 
 
 //Routes for Adding Person to Project Page
