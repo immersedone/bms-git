@@ -102,6 +102,7 @@
 	                                        <select name="reportType" id="reportType" class="form-control">
 	                                            <option value="0"> --- Please select a Report Type --- </option>
 	                                            <option value="empprj">Employees in a Project</option>
+	                                            <option value="volprj">Volunteers in a Project</option>
 	                                            <option value="reimb">Reimbursement Report</option>
 	                                            <option value="exp_prj">Expenditure by Project and Date</option>
 	                                            <option value="exp_spv">Expenditure by Supervisor and Date</option>
@@ -348,6 +349,7 @@
 
    		//Individual Arrays for required elements
    		var empprjArray = ["listProj"];
+   		var volprjArray = ["listProj"];
    		var reimbArray = ["listReimb"];
    		var exp_prjArray = ["listProj", "showDate"];
    		var exp_spvArray = ["listSupervisor", "showDate"];
@@ -360,6 +362,7 @@
    		//Bind Report Types to an Array
    		var allArray = {
    			empprj:empprjArray, 
+   			volprj:volprjArray, 
    			reimb:reimbArray, 
    			exp_prj:exp_prjArray, 
    			exp_spv:exp_spvArray, 

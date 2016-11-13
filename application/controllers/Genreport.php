@@ -119,6 +119,26 @@ class Genreport extends CI_Controller {
 
 			$html .= "</tbody></table>";
 
+		}
+		else//Report for Employees in a Project
+		if($reportType === "volprj") {
+
+			$people = $this->Extended_generic_model->return_query("SELECT DISTINCT Proj.Name as ProjName, O1.Data as Role, CONCAT(Per.FirstName, ' ', Per.MiddleName, ' ', Per.LastName) as FullName, Per.*, Sub.Postcode as Postcode, Sub.SuburbName as SubName, Proj.ProjID as ProjID, Emp.*  FROM PersonProject PP
+			LEFT OUTER JOIN Person Per ON Per.PerID = PP.PerID
+			LEFT OUTER JOIN Project Proj ON Proj.ProjID = PP.ProjID
+			LEFT OUTER JOIN OptionType O1 on O1.OptID = PP.Role
+			LEFT OUTER JOIN Suburb Sub on Per.SuburbID = Sub.SuburbID
+			LEFT OUTER JOIN Employee Emp on Per.PerID = Emp.PerID
+			WHERE PP.ProjID=".$projectID." AND PP.EmpVol='Vol'");
+			
+			$html .= "<table><tbody>";
+			$html .= "<tr><th>Full Name</th><th>Address</th><th>Postcode</th><th>Suburb</th><th>Work Email</th><th>Personal Email</th><th>Mobile</th><th>Home Phone</th></tr>";
+			foreach($people as $ppl) {
+				$html .= "<tr><td> " . $ppl->FullName . "</td><td> " . $ppl->Address . "</td><td> " . $ppl->Postcode . "</td><td> " . $ppl->SubName . "</td><td> " . $ppl->WorkEmail . "</td><td> " . $ppl->PersonalEmail . "</td><td> " . $ppl->Mobile . "</td><td> " . $ppl->HomePhone . "</td></tr>";
+			}
+
+			$html .= "</tbody></table>";
+
 		} 
 		//Report for Reimbursements
 		elseif ($reportType === "reimb") {
