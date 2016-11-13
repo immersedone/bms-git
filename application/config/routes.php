@@ -281,7 +281,7 @@ $route['user/expenditures/expendproj/print/(:num)'] = 'expenditures/expendproj/$
 $route['user/expenditures/expendproj/success/(:num)'] = 'expenditures/expendproj/$1';
 $route['user/expenditures/expendproj/delete/(:num)'] = 'expenditures/expendproj/$1';
 $route['user/expenditures/expendproj/delete_file/FilePath/(:any)'] = 'expenditures/expendproj/$1';
-$route['user/expenditures/expendproj/upload_file/FilePath/'] = 'expenditures/expendproj';
+$route['user/expenditures/expendproj/upload_file/FilePath'] = 'expenditures/expendproj';
 
 
 //Routes for reimbursements Page
