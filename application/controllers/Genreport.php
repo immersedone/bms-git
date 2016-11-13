@@ -238,20 +238,182 @@ class Genreport extends CI_Controller {
 		//Report for Contact Details - All Employees
 		elseif ($reportType == "cdet_emp") {
 			
+
+			$emp = $this->Extended_generic_model->return_query(" SELECT
+				Emp.WorkEmail,
+				Emp.WorkMob,
+				Per.PersonalEmail,
+				Per.Mobile,
+				Per.HomePhone,
+				Per.EmergContName,
+				Per.EmergContMob,
+				Per.EmergContHPhone,
+				Per.EmergContWPhone,
+				Per.EmergContRelToPer,
+				CONCAT(Per.FirstName, ' ', Per.MiddleName, ' ', Per.LastName) AS FullName
+				FROM Employee Emp
+				LEFT OUTER JOIN Person Per ON Per.PerID=Emp.PerID 
+				ORDER BY Per.FirstName ASC
+			");
+
+			//Header 
+			$html .= "Report Created: " . date('d F Y');
+
+			//Content
+			$html .= "<h4>Employee Contact Details</h4>";
+			$html .= "<table><tbody>";
+			$html .= "<tr><th>Employee Name</th><th>Telephone</th><th>Mobile</th><th>Work Mob.</th><th>Email</th><th>Work Email</th><th>Emergency Contact</th><th>EC - Mobile</th><th>EC - Telephone</th><th>EC - Work Phone</th><th>EC - Relationship</th></tr>";
+
+			//Loop
+			foreach($emp as $em) { 
+				$html .= "<tr><td>" . $em->FullName . "</td><td>" . $em->HomePhone . "</td><td>" . $em->Mobile . "</td><td>" . $em->WorkMob . "</td><td>" . $em->PersonalEmail . "</td><td>" . $em->WorkEmail . "</td><td>" . $em->EmergContName . "</td><td>" . $em->EmergContMob . "</td><td>" . $em->EmergContHPhone . "</td><td>" . $em->EmergContWPhone . "</td><td>" . $em->EmergContRelToPer . "</td></tr>";
+			}
+
+			$html .= "</tbody></table>";
+
 		}
 		//Report for Contact Details - All Volunteers
 		elseif ($reportType == "cdet_vol") {
-			
+			$vol = $this->Extended_generic_model->return_query(" SELECT
+				Per.PersonalEmail,
+				Per.Mobile,
+				Per.HomePhone,
+				Per.EmergContName,
+				Per.EmergContMob,
+				Per.EmergContHPhone,
+				Per.EmergContWPhone,
+				Per.EmergContRelToPer,
+				CONCAT(Per.FirstName, ' ', Per.MiddleName, ' ', Per.LastName) AS FullName
+				FROM Volunteer Vol
+				LEFT OUTER JOIN Person Per ON Per.PerID=Vol.PerID 
+				ORDER BY Per.FirstName ASC
+			");
+
+			//Header 
+			$html .= "Report Created: " . date('d F Y');
+
+			//Content
+			$html .= "<h4>Volunteer Contact Details</h4>";
+			$html .= "<table><tbody>";
+			$html .= "<tr><th>Volunteer Name</th><th>Telephone</th><th>Mobile</th><th>Email</th><th>Emergency Contact</th><th>EC - Mobile</th><th>EC - Telephone</th><th>EC - Work Phone</th><th>EC - Relationship</th></tr>";
+
+			//Loop
+			foreach($vol as $vo) { 
+				$html .= "<tr><td>" . $vo->FullName . "</td><td>" . $vo->HomePhone . "</td><td>" . $vo->Mobile . "</td><td>" . $vo->PersonalEmail . "</td><td>" . $vo->EmergContName . "</td><td>" . $vo->EmergContMob . "</td><td>" . $vo->EmergContHPhone . "</td><td>" . $vo->EmergContWPhone . "</td><td>" . $vo->EmergContRelToPer . "</td></tr>";
+			}
+
+			$html .= "</tbody></table>";
 		}
 		//Report for Contract and WWC - Status Review
 		elseif ($reportType == "cont_srv") {
-			
+			$ppl = $this->Extended_generic_model->return_query("SELECT
+				CONCAT(FirstName, ' ', MiddleName, ' ', LastName) AS FullName,
+				ContractSigned,
+				PaperworkCompleted,
+				WWC,
+				WWCFiled,
+				PoliceCheck,
+				TeacherRegCheck,
+				PerID
+				FROM Person
+				ORDER BY FirstName ASC
+			");
+
+
+			//Header 
+			$html .= "Report Created: " . date('d F Y');
+
+			//Content
+			$html .= "<h4>Volunteer Contact Details</h4>";
+			$html .= "<table><tbody>";
+			$html .= "<tr><th>Full Name</th><th>Employee/Volunteer</th><th>Contract Signed</th><th>Paperwork Completed</th><th>WWC</th><th>WWC Filed</th><th>Police Check</th><th>Teacher Registration Check</th></tr>";
+
+			//Loop
+			foreach($ppl as $pp) { 
+
+				//Determine whether Person is Volunteer, Employee, Both or Neither
+				$checkEmp = $this->db->query("SELECT COUNT(*) as Count FROM Employee WHERE PerID='".$pp->PerID."'")->row_array();
+
+				if($checkEmp['Count'] > 0) {
+					$isEmp = true;
+				} else {
+					$isEmp = false;
+				}
+
+				$checkVol = $this->db->query("SELECT COUNT(*) as Count FROM Volunteer WHERE PerID='".$pp->PerID."'")->row_array();
+
+				if($checkVol['Count'] > 0) {
+					$isVol = true;
+				} else {
+					$isVol = false;
+				}
+
+				if($isEmp == true && $isVol == false) {
+					$empVol = "Employee";
+				} elseif($isEmp == false && $isVol == true) {
+					$empVol = "Volunteer";
+				} elseif ($isEmp == false && $isVol == false) {
+					$empVol = "N/A";
+				} else {
+					$empVol = "Both";
+				}
+
+				//Prettify Report
+				if($pp->ContractSigned == 0) {
+					$cs = "No";
+				} else {
+					$cs = "Yes";
+				}
+
+				if($pp->PaperworkCompleted == 0) {
+					$pc = "No";
+				} else {
+					$pc = "Yes";
+				}	
+
+				if($pp->WWC == 0) {
+					$wwc = "No";
+				} else {
+					$wwc = "Yes";
+				}	
+
+				if($pp->WWCFiled == 0) {
+					$wwcf = "No";
+				} else {
+					$wwcf = "Yes";
+				}	
+
+				if($pp->PoliceCheck == 0) {
+					$polc = "No";
+				} else {
+					$polc = "Yes";
+				}	
+
+				if($pp->TeacherRegCheck == 0) {
+					$trc = "No";
+				} else {
+					$trc = "Yes";
+				}	
+
+
+				$html .= "<tr><td>" . $pp->FullName . "</td><td>" . $empVol . "</td><td>" . $cs . "</td><td>" .  $pc . "</td><td>" .  $wwc . "</td><td>" .  $wwcf . "</td><td>" .  $polc . "</td><td>" .  $trc . "</td></tr>";
+			}
+
+			$html .= "</tbody></table>";
 		}
 
 		$html .= $this->load->view('/include/Report_EndHTML', $data, TRUE);
 
 		//echo $html;
-		$this->pdf = $this->m_pdf->load('utf-8', 'A4');
+		$this->pdf = $this->m_pdf->load("'utf-8', 'A4-L', '', '',10,10,10,10,6,3");
+		$this->pdf->AddPage('L', // L - landscape, P - portrait
+        '', '', '', '',
+        10, // margin_left
+        10, // margin right
+        10, // margin top
+        10, // margin bottom
+        6, // margin header
+        3); // margin footer
 		$this->pdf->WriteHTML($html);
 		$this->pdf->Output(FCPATH . $pdfFilePath, "F");
 

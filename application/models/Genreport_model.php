@@ -45,12 +45,14 @@ class Genreport_model extends CI_Model {
 
                 $amt = 0;
 
-                foreach($list as $l) {
-                    $qL = $this->db->query("SELECT Amount FROM Expenditure WHERE ExpID='" . $l . "' LIMIT 1");
-
-                    $r = $qL->row();
-                    $amt +=  $r->Amount;
+                if(!empty($list)) {
+                    foreach($list as $l) {
+                        $qL = $this->db->query("SELECT Amount FROM Expenditure WHERE ExpID='" . $l . "' LIMIT 1")->row();
+                        //echo $qL->Amount . "<br/>";
+                        $amt += $qL->Amount;
+                    }
                 }
+
             } else {
                 $amt = 0;
             }
@@ -71,7 +73,7 @@ class Genreport_model extends CI_Model {
             LEFT OUTER JOIN PersonProject PP ON Per.PerID=PP.PerID 
             LEFT OUTER JOIN OptionType Opt ON PP.Role=Opt.OptID 
             LEFT OUTER JOIN Project Proj ON PP.ProjID=Proj.ProjID
-            WHERE Opt.type='Role' AND Opt.data='Supervisor'");
+            WHERE Opt.type='Role' AND Opt.data='Supervisor' AND PP.EmpVol='Emp'");
         $supervisors = array();
 
         foreach($query->result_array() as $row) {

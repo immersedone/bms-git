@@ -98,6 +98,7 @@ $route['user/volunteer/index/print'] = 'volunteer/volunteer';
 $route['user/volunteer/index/ajax_list'] = 'volunteer/volunteer';
 $route['user/volunteer/index/ajax_list_info'] = 'volunteer/volunteer';
 $route['user/volunteer/index/export'] = 'volunteer/volunteer';
+$route['user/volunteer/index/prjvw/(:num)/(:num)/(:any)'] = 'volunteer/prjvw/$1/$2/$3';
 //Routes for Project Volunteer
 $route['user/volunteer/volproj/ajax_list/(:num)'] = 'volunteer/volproj/$1';
 $route['user/volunteer/volproj/ajax_list_info/(:num)'] = 'volunteer/volproj/$1';
@@ -132,6 +133,7 @@ $route['user/employee/index/print'] = 'employee/employee';
 $route['user/employee/index/ajax_list'] = 'employee/employee';
 $route['user/employee/index/ajax_list_info'] = 'employee/employee';
 $route['user/employee/index/export'] = 'employee/employee';
+$route['user/employee/index/prjvw/(:num)/(:num)/(:any)'] = 'employee/prjvw/$1/$2/$3';
 //Route for Project Employee
 $route['user/employee/empproj/ajax_list/(:num)'] = 'employee/empproj/$1';
 $route['user/employee/empproj/ajax_list_info/(:num)'] = 'employee/empproj/$1';
