@@ -385,7 +385,7 @@ class Employee extends CI_Controller {
 
 
 		$crud->set_subject('Employee');
-		$crud->basic_model->set_query_str('SELECT * FROM (SELECT CONCAT(Per.FirstName, " ", Per.MiddleName, " ", Per.LastName) as EmpName, PP.ProjID, PP.StartDate as StartDate, PP.FinishDate as FinishDate, Opt.Data as EmpRole, Per.PerID, PP.PersonProjectID FROM PersonProject PP 
+		$crud->basic_model->set_query_str('SELECT * FROM (SELECT CONCAT(Per.FirstName, " ", Per.MiddleName, " ", Per.LastName) as EmpName, PP.ProjID, PP.StartDate as StartDate, PP.FinishDate as FinishDate, Opt.Data as EmpRole, Per.PerID, PP.PersonProjectID, PP.Role FROM PersonProject PP 
 		LEFT OUTER JOIN Person Per ON PP.PerID = Per.PerID
 		LEFT OUTER JOIN Employee Emp ON Emp.PerID = Per.PerID
 		LEFT OUTER JOIN OptionType Opt ON Opt.OptID = PP.Role
@@ -493,7 +493,11 @@ class Employee extends CI_Controller {
 	
 		$personID = $_POST['EmpName'];
 		$projectID = $_POST['projectID'];
-		$role = $_POST['Role'];
+		if(isset($_POST['Role'])) {
+			$role = $_POST['Role'];
+		} else if (isset($_POST['EmpRole'])) {
+			$role = $_POST['EmpRole'];
+		}
 		$isActive = $_POST['IsActive'];
 		$EmpVol = $_POST['EmpVol'];
 		$startdate = $_POST['StartDate'];
