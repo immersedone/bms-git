@@ -109,11 +109,19 @@ class Expenditures extends CI_Controller {
 		$crud->display_as('Name', 'Project Name');
 		$crud->display_as('FilePath', 'File Attached');
 
+		$crud->display_as("ExpType", "Expenditure Type");
+		$crud->display_as("ExpDate", "Expenditure Date");
+		$crud->display_as("FilePath", "File Path");
+		$crud->display_as("SpentBy", "Spent By");
+
+
+		$crud->display_as('FilePath', 'File Attached');
+
 		$state = $crud->getState();
 
 		
 
-		$crud->callback_before_upload(array($this, 'check_upload'));
+		//$crud->callback_before_upload(array($this, 'check_upload'));
 
 		if($state === "edit" || $state === "update") {
 			$projects = $crud->basic_model->return_query("SELECT Pr.ProjID, Pr.Name FROM Project Pr LEFT OUTER JOIN Expenditure Exp ON Exp.ProjID=Pr.ProjID WHERE Exp.ExpID=".$id);
@@ -152,12 +160,20 @@ class Expenditures extends CI_Controller {
 			$usrArr += [$usr->PerID => $usr->FullName];
 		}
 
+		//Expenditure Types
+		$exptypes = $crud->basic_model->return_query("SELECT OptID, data FROM OptionType WHERE type = 'EXP_TYPE'");
+		$expArr = array();
+		foreach($exptypes as $exp) {
+			$expArr += [$exp->OptID => $exp->data];
+		}
+
 		
 		
 		//Change the field type to a dropdown with values
 		//to add to the relational table
 		$crud->field_type("FullName", "dropdown", $usrArr);
 		$crud->field_type("SpentBy", "dropdown", $usrArr);
+		$crud->field_type("ExpType", "dropdown", $expArr);
 		$crud->set_field_upload('FilePath', 'assets/uploads/files/expenditures');
 		$crud->callback_before_insert(array($this,'expenditure_add'));
 		
@@ -211,13 +227,15 @@ class Expenditures extends CI_Controller {
 		echo $resp;
 	}
 
-public function crud_delete_file($primary_key)
-{
-    $row = $this->db->where('id',$primary_key)->get('Expenditures')->row();
-    unlink('assets/uploads/files/expenditures'.$row->file_url);
-   
-    return true;
-}
+
+	public function crud_delete_file($primary_key)
+	{
+	    $row = $this->db->where('id',$primary_key)->get('Expenditures')->row();
+	    unlink('assets/uploads/files/expenditures'.$row->file_url);
+	   
+	    return true;
+	}
+
 
 	public function getExpBy($id) {
 

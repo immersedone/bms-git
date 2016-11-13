@@ -167,6 +167,8 @@ $route['user/projects/index/projread/2/add/(:num)'] = 'milestones/mileproj/$1';
 $route['user/projects/index/projread/2/insert'] = 'milestones/mile_insert';
 $route['user/projects/index/projread/2/insert_validation'] = 'milestones/milestones';
 $route['user/projects/index/projread/2/ajax_list_info'] = 'milestones/milestones';
+$route['user/projects/index/projread/2/(:num)/upload_file/FilePath'] = 'milestones/mileproj/$1';
+$route['user/projects/index/projread/2/(:num)/delete_file/FilePath/(:any)'] = 'milestones/mileproj/$1/$2';
 
 $route['user/projects/index/projread/3/add/(:num)'] = 'expenditures/expendproj/$1';
 $route['user/projects/index/projread/3/insert'] = 'expenditures/exp_insert';
@@ -226,6 +228,8 @@ $route['user/milestones/mileproj/export/(:num)'] = 'milestones/mileproj/$1';
 $route['user/milestones/mileproj/print/(:num)'] = 'milestones/mileproj/$1';
 $route['user/milestones/mileproj/success/(:num)'] = 'milestones/mileproj/$1';
 $route['user/milestones/mileproj/delete/(:num)'] = 'milestones/mileproj/$1';
+$route['user/milestones/mileproj/(:num)/delete_file/FilePath/(:any)'] = 'milestones/mileproj/$1/$2';
+$route['user/milestones/mileproj/(:num)/upload_file/FilePath'] = 'milestones/mileproj/$1';
 
 //Routes for Upcoming Milestones Page
 $route['user/duemilestones'] = 'duemilestones';

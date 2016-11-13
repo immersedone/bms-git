@@ -125,6 +125,7 @@ class Milestones extends CI_Controller {
 		$crud->display_as('DueDate', 'Due Date');
 		$crud->display_as('RptType', 'Type');
 		$crud->display_as('MSComplete', 'Complete');
+		$crud->display_as("FilePath", "File Path");
 		$crud->add_fields('ProjID', 'ShortDesc', 'DueDate', 'RptType', 'Amount', 'Comment', 'FilePath');
 
 		$state = $crud->getState();
@@ -139,6 +140,9 @@ class Milestones extends CI_Controller {
 
 		if($state === "edit" || $state === "update") {
 			$crud->callback_edit_field("ProjID", array($this, 'callback_projID_edit'));
+			$prID = $this->db->query("SELECT ProjID FROM Milestone_new WHERE MilestoneID='". $id ."' LIMIT 1")->row();
+			$crud->setStateUrlUpload($prID->ProjID);
+			$crud->setStateUrlDelete($prID->ProjID);
 		} else if ($state === "add" || $state === "insert") {
 			$crud->callback_add_field("ProjID", function() {
 				$id = get_cookie("projID");
@@ -147,6 +151,8 @@ class Milestones extends CI_Controller {
 				$readOnly = '<div id="field-ProjID" class="readonly_label">' . $q->Name .'</div>';
 				return $readOnly. '<input id="field-ProjID" name="ProjID" type="text" value="' . $id . '" class="numeric form-control" maxlength="255" style="display:none;">';
 			});
+			$crud->setStateUrlUpload($id);
+			$crud->setStateUrlDelete($id);
 		} else {
 			$crud->field_type("ProjID", "dropdown", $prjArr);
 		}
