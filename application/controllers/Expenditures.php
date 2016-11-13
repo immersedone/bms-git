@@ -102,12 +102,15 @@ class Expenditures extends CI_Controller {
 		$crud->columns('Name', 'ExpName', 'Reason', 'Amount', 'GST', 'FullName'); 
 		$crud->add_fields('ProjID', 'ExpName', 'Reason', 'Amount', 'GST', 'SpentBy');
 		$crud->edit_fields('ProjID','ExpName', 'companyname', 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType', 'ExpDate', 'FilePath');
+		$crud->set_read_fields("ProjID", "ExpName", "companyname", 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType', 'ExpDate', 'FilePath');
 		$crud->display_as('ExpName', 'Expenditure Name');
 		$crud->display_as('companyname', 'Company Name');
 		$crud->display_as('FullName', 'Spent By');
 		$crud->display_as('ProjID', 'Project Name');
 		$crud->display_as('Name', 'Project Name');
 		$crud->display_as('FilePath', 'File Attached');
+		$crud->display_as("IsPaid", "Is Paid");
+		$crud->display_as("IsRejected", "Is Rejected");
 
 		$crud->display_as("ExpType", "Expenditure Type");
 		$crud->display_as("ExpDate", "Expenditure Date");
@@ -140,6 +143,7 @@ class Expenditures extends CI_Controller {
 		if($state === "edit" || $state === "update") {
 			//$crud->field_type("ProjID", "readonly");
 			$crud->callback_edit_field("ProjID", array($this, 'callback_projID_edit'));
+			$crud->set_field_upload('FilePath', 'assets/uploads/files/expenditures');
 		} else if ($state === "add" || $state === "insert") {
 			$crud->callback_add_field("ProjID", function() {
 				$id = get_cookie("projID");
@@ -174,7 +178,7 @@ class Expenditures extends CI_Controller {
 		$crud->field_type("FullName", "dropdown", $usrArr);
 		$crud->field_type("SpentBy", "dropdown", $usrArr);
 		$crud->field_type("ExpType", "dropdown", $expArr);
-		$crud->set_field_upload('FilePath', 'assets/uploads/files/expenditures');
+		
 		$crud->callback_before_insert(array($this,'expenditure_add'));
 		
 		
