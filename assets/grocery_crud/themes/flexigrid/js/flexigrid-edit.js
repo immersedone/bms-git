@@ -72,14 +72,27 @@ $(function(){
 								}
 
 								form_success_message(data.success_message);
+
+								if(isProjectView !== false) {
+									$('#report-success > p > a').attr('href', success_list_url);	
+								}
+								
 							}
 							else
 							{
 								form_error_message(message_update_error);
+
+								if(isProjectView !== false) {
+									$('#report-error > p > a').attr('href', list_url);	
+								}
 							}
 						},
 						error: function(){
 							form_error_message( message_update_error );
+
+							if(isProjectView !== false) {
+								$('#report-error > p > a').attr('href', list_url);	
+							}
 						}
 					});
 				}
