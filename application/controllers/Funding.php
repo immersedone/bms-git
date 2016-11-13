@@ -109,7 +109,7 @@ class Funding extends CI_Controller {
 		LEFT OUTER JOIN `FundingBody` FB on FB.FundBodyID=Fund.FundBodyID
 		LEFT OUTER JOIN `Project` Proj on Proj.ProjID=Fund.ProjID
 		LEFT OUTER JOIN `Person` Per on Per.PerID=Fund.ApprovedBy WHERE Fund.ProjID="'.$id.'") x', ' GROUP BY FundID');
-		$crud->columns('ProjName', 'FBName', 'Amount', 'PaymentType', 'status', 'FullName', 'ApprovedOn');
+		$crud->columns('FBName', 'Amount', 'PaymentType', 'status', 'FullName', 'ApprovedOn');
 		$crud->display_as('ProjName', 'Project');
 		$crud->display_as('FBName', 'Funding Body');
 		$crud->display_as('FundBodyID', 'Funding Body');

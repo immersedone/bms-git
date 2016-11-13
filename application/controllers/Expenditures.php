@@ -99,7 +99,7 @@ class Expenditures extends CI_Controller {
 		LEFT OUTER JOIN `Project` Proj ON Proj.ProjID=Exp.ProjID
 		LEFT OUTER JOIN `Person` Per ON Per.PerID=Exp.SpentBy
 		LEFT OUTER JOIN OptionType Opt ON Opt.OptID = Exp.ExpType WHERE Exp.ProjID='.$id.') x');
-		$crud->columns('Name', 'ExpName', 'Reason', 'Amount', 'GST', 'FullName'); 
+		$crud->columns('ExpName', 'Reason', 'Amount', 'GST', 'FullName'); 
 		$crud->add_fields('ProjID', 'ExpName', 'Reason', 'Amount', 'GST', 'SpentBy');
 		$crud->edit_fields('ProjID','ExpName', 'companyname', 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType', 'ExpDate', 'FilePath');
 		$crud->set_read_fields("ProjID", "ExpName", "companyname", 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType', 'ExpDate', 'FilePath');
