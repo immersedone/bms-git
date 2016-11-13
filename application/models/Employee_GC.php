@@ -15,7 +15,7 @@
 
             $resp = array();
 
-            if($this->db->simple_query("DELETE FROM PersonProject WHERE ProjID='$projectid' AND PerID='$userid' AND EmpVol='Emp' LIMIT 1")) {
+            if($this->db->simple_query("DELETE FROM PersonProject WHERE ProjID='".$projectid."' AND PerID='".$userid."' AND EmpVol='Emp' LIMIT 1")) {
                 $resp['success'] = TRUE;
                 $resp['success_message'] = "Successfully removed Person from Project.";
             } else {

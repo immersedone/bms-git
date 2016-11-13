@@ -12,7 +12,7 @@
         function delete_pp($userid, $projectid)
         {
 
-            echo $userid . ' - '. $projectid;
+            //echo $userid . ' - '. $projectid;
             $resp = array();
 
             if($this->db->simple_query("DELETE FROM PersonProject WHERE ProjID='$projectid' AND PerID='$userid' AND EmpVol='Vol' LIMIT 1")) {

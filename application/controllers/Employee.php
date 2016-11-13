@@ -446,8 +446,8 @@ class Employee extends CI_Controller {
 		$crud->field_type("StartDate", "date");
 		$crud->field_type("FinishDate", "date");
 
-		$crud->unset_delete();
-		$crud->add_action('Delete', '', '', 'delete-icon delete-row', array($this, 'employee_delete'));
+		//$crud->unset_delete();
+		//$crud->add_action('Delete', '', '', 'delete-icon delete-row', array($this, 'employee_delete'));
 
 		//$output["multiView"] = "NO";	
 		

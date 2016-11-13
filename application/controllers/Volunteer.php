@@ -292,8 +292,8 @@ class Volunteer extends CI_Controller {
 		//$crud->callback_before_insert(array($this,'volunteer_add'));
 
 		//$crud->unset_edit();
-		$crud->unset_delete();
-		$crud->add_action('Delete', '', '', 'delete-icon delete-row', array($this, 'volunteer_delete'));
+		//$crud->unset_delete();
+		//$crud->add_action('Delete', '', '', 'delete-icon delete-row', array($this, 'volunteer_delete'));
 
 		//$output["multiView"] = "NO";	
 		
