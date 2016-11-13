@@ -211,6 +211,7 @@ $route['user/milestones/index/ajax_list'] = 'milestones/milestones';
 $route['user/milestones/index/ajax_list_info'] = 'milestones/milestones';
 $route['user/milestones/index/export'] = 'milestones/milestones';
 $route['user/milestones/index/upload_file/FilePath'] = 'milestones/milestones';
+$route['user/milestones/index/delete_file/FilePath/(:any)'] = 'milestones/milestones/$1';
 //Routes for Project Milestones
 $route['user/milestones/mileproj/add/(:num)'] = 'milestones/mileproj/$1';
 $route['user/milestones/mileproj/ajax_list/(:num)'] = 'milestones/mileproj/$1';
@@ -242,6 +243,7 @@ $route['user/duemilestones/index/ajax_list'] = 'duemilestones/duemilestones';
 $route['user/duemilestones/index/ajax_list_info'] = 'duemilestones/duemilestones';
 $route['user/duemilestones/index/export'] = 'duemilestones/duemilestones';
 $route['user/duemilestones/index/upload_file/FilePath'] = 'duemilestones/duemilestones';
+$route['user/duemilestones/index/delete_file/FilePath/(:any)'] = 'duemilestones/duemilestones/$1';
 
 //Routes for expenditures Page
 $route['user/expenditures'] = 'expenditures';

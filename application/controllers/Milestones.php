@@ -245,4 +245,12 @@ class Milestones extends CI_Controller {
 		$resp = $crud->basic_model->insert_mile($ProjID, $DueDate, $RptType, $ShortDesc, $Amount, $Comment);
 		echo $resp;
 	}
+
+	public function crud_delete_file($primary_key)
+	{
+    	$row = $this->db->where('id',$primary_key)->get('Milestones')->row();
+    	unlink('assets/uploads/files/'.$row->file_url);
+   
+    	return true;
+	}
 }
