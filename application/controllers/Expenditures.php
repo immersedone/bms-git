@@ -147,6 +147,7 @@ class Expenditures extends CI_Controller {
 		//to add to the relational table
 		$crud->field_type("FullName", "dropdown", $usrArr);
 		$crud->field_type("SpentBy", "dropdown", $usrArr);
+		$crud->set_field_upload('FilePath', 'assets/uploads/files/expenditures');
 		$crud->callback_before_insert(array($this,'expenditure_add'));
 		
 
