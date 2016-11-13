@@ -376,6 +376,8 @@
    		$('input[type=radio][name=optionalCoverPage]').change(function() {
    			if(this.value == 'YES') {
    				$('#customTitleCheck').slideUp();
+   				$('#customTitle').slideUp();
+   				$('input[type=radio][name=customTitleCheck][value="NO"]').prop("checked", "checked");
    				$('#customTitle input').prop("disabled", true);
    			} else {
    				$('#customTitleCheck').slideDown();
