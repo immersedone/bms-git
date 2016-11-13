@@ -228,10 +228,17 @@ class Volunteer extends CI_Controller {
 
 		$crud = new grocery_CRUD();
 		$crud->set_model('Volunteer_GC');
-		$crud->set_table('Person');
+
+		$state = $crud->getState();
+		if($state === "ajax_list") {
+			$crud->set_table('PersonProject');
+		} else {
+			$crud->set_table('PersonProject');
+		}
 		$crud->set_subject('Volunteer');
-		$crud->basic_model->set_query_str('SELECT * FROM (SELECT CONCAT(Per.FirstName, " ", Per.MiddleName, " ", Per.LastName) as VolName, PP.ProjID, PP.StartDate as StartDate, PP.FinishDate as FinishDate, Opt.Data as VolRole, Per.PerID FROM Person Per
-		LEFT OUTER JOIN PersonProject PP ON PP.PerID = Per.PerID
+		$crud->basic_model->set_query_str('SELECT * FROM (SELECT CONCAT(Per.FirstName, " ", Per.MiddleName, " ", Per.LastName) as VolName, PP.ProjID, PP.StartDate as StartDate, PP.FinishDate as FinishDate, Opt.Data as VolRole, Per.PerID, PP.IsActive as IsActive, PP.PersonProjectID FROM PersonProject PP 
+		LEFT OUTER JOIN Person Per ON PP.PerID = Per.PerID
+		LEFT OUTER JOIN Volunteer Vol ON Vol.PerID = Per.PerID
 		LEFT OUTER JOIN OptionType Opt ON Opt.OptID = PP.Role
 		WHERE PP.EmpVol="Vol" AND PP.ProjID="'. $id . '") x');
 		$crud->columns("VolName", "VolRole", "StartDate", "FinishDate");
@@ -239,21 +246,27 @@ class Volunteer extends CI_Controller {
 		$crud->display_as("VolRole", "Project Role");
 		$crud->display_as("StartDate", "Start Date");
 		$crud->display_as("FinishDate", "Finish Date");	
+		$crud->display_as("IsActive", "Is Active");
+		$crud->display_as("PerID", "Volunteer Name");
+		$crud->display_as("ProjID", "Project Name");
 
 		$crud->add_fields("VolName", "Role", "IsActive", "StartDate", "FinishDate", "projectID", "EmpVol");
+		$crud->edit_fields("ProjID","PerID", "Role", "IsActive", "StartDate", "FinishDate", "EmpVol");
 		$crud->field_type("EmpVol", 'hidden', 'Vol');
 		$crud->field_type("projectID", 'hidden', $id);
 		$crud->field_type("StartDate", "date");
 		$crud->field_type("FinishDate", "date");
-		$crud->field_type("IsActive", "true_false");
 		
-		$state = $crud->getState();
+		
 
 		if ($state === "ajax_list") {
 			$crud->setStateCode(7);
 			
 		} else if ($state === "ajax_list_info") { 
 			$crud->setStateCode(8);
+		} else if ($state === "edit" || $state === "update") {
+			$crud->callback_edit_field("ProjID", array($this, 'callback_projID_edit'));
+			$crud->callback_edit_field("PerID", array($this, 'callback_PerID_edit'));
 		}
 
 		
@@ -278,8 +291,9 @@ class Volunteer extends CI_Controller {
 		//a new person to a project
 		//$crud->callback_before_insert(array($this,'volunteer_add'));
 
-		$crud->unset_edit();
-		$crud->callback_delete(array($this, 'volunteer_delete'));
+		//$crud->unset_edit();
+		$crud->unset_delete();
+		$crud->add_action('Delete', '', '', 'delete-icon delete-row', array($this, 'volunteer_delete'));
 
 		//$output["multiView"] = "NO";	
 		
@@ -287,6 +301,19 @@ class Volunteer extends CI_Controller {
 		$output = $crud->render();
 	
 		$this->renderBaseTemplate($output);
+	}
+
+	public function callback_projID_edit($value, $primary_key) {
+		$q = $this->db->query('SELECT Name FROM Project WHERE ProjID="' . $value .'" LIMIT 1')->row();
+		//$projName = array_shift($q->result_array());
+		$readOnly = '<div id="field-ProjID" class="readonly_label">' . $q->Name .'</div>';
+		return $readOnly . '<input id="field-ProjID" name="ProjID" type="text" value="' . $value . '" class="numeric form-control" maxlength="255" style="display:none;">';
+	}
+
+	public function callback_PerID_edit($value, $primary_key) {
+		$q = $this->db->query('SELECT CONCAT(FirstName, " ", MiddleName, " ", LastName) as FullName FROM Person WHERE PerID="'.$value.'" LIMIT 1')->row();
+		$readOnly = '<div id="field-PerID" class="readonly_label">' . $q->FullName .'</div>';
+		return $readOnly . '<input id="field-PerID" name="PerID" type="text" value="' . $value . '" class="numeric form-control" maxlength="255" style="display:none;">';
 	}
 
 	function volunteer_delete($primarykey, $row) {

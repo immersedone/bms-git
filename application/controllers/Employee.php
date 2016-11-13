@@ -10,6 +10,7 @@ class Employee extends CI_Controller {
 		$this->load->helper('url');
 
 		$this->load->library('grocery_CRUD');
+		$this->load->library('Gmulti');
 	}
 
 	public function index()
@@ -257,6 +258,8 @@ class Employee extends CI_Controller {
 			//$crud->required_fields( 'PerID');
 			//$crud->set_rules("PerID", "Employee Name", "in_list[" . $usrArrIDOnly . "]|required");
             //echo $usrArrIDOnly;
+		} else if ($state === "read") {
+			$crud->set_theme("fleximulti");
 		}
 
 		$employeeOP = $crud->render();
@@ -268,6 +271,7 @@ class Employee extends CI_Controller {
 			$crudTwo = new grocery_CRUD();
 			$crudTwo->set_model('Extended_generic_model');
 			$crudTwo->set_table('Person');
+			$crudTwo->set_theme('fleximulti');
 			$crudTwo->set_subject('Person Details');
 
 			//Get the Person ID
@@ -313,6 +317,7 @@ class Employee extends CI_Controller {
 			$crudThree = new grocery_CRUD();
 			$crudThree->set_model('Extended_generic_model');
 			$crudThree->set_table('PersonProject');
+			$crudThree->set_theme('fleximulti');
 			$crudThree->set_subject('Employee History');
 			$crudThree->basic_model->set_query_str("SELECT * FROM (SELECT Proj.Name as ProjName, O1.Data as Role, PP.StartDate, PP.FinishDate, PP.PersonProjectID as PersonProjectID FROM PersonProject PP
 			LEFT OUTER JOIN Project Proj ON Proj.ProjID = PP.ProjID
@@ -332,6 +337,7 @@ class Employee extends CI_Controller {
             $crudFour = new grocery_CRUD();
             $crudFour->set_model('Extended_generic_model');
             $crudFour->set_table('PersonProject');
+            $crudFour->set_theme('fleximulti');
             $crudFour->set_subject('Employee History');
             $crudFour->basic_model->set_query_str("SELECT * FROM (SELECT Proj.Name as ProjName, O1.Data as Role, PP.StartDate, PP.FinishDate, PP.PersonProjectID as PersonProjectID FROM PersonProject PP
 			LEFT OUTER JOIN Project Proj ON Proj.ProjID = PP.ProjID
@@ -368,10 +374,20 @@ class Employee extends CI_Controller {
 
 		$crud = new grocery_CRUD();
 		$crud->set_model('Employee_GC');
-		$crud->set_table('Person');
+
+		$state = $crud->getState();
+
+		if($state === "ajax_list") {
+			$crud->set_table("PersonProject");
+		} else {
+			$crud->set_table("PersonProject");
+		}
+
+
 		$crud->set_subject('Employee');
-		$crud->basic_model->set_query_str('SELECT * FROM (SELECT CONCAT(Per.FirstName, " ", Per.MiddleName, " ", Per.LastName) as EmpName, PP.ProjID, PP.StartDate as StartDate, PP.FinishDate as FinishDate, Opt.Data as EmpRole, Per.PerID FROM Person Per
-		LEFT OUTER JOIN PersonProject PP ON PP.PerID = Per.PerID
+		$crud->basic_model->set_query_str('SELECT * FROM (SELECT CONCAT(Per.FirstName, " ", Per.MiddleName, " ", Per.LastName) as EmpName, PP.ProjID, PP.StartDate as StartDate, PP.FinishDate as FinishDate, Opt.Data as EmpRole, Per.PerID, PP.PersonProjectID FROM PersonProject PP 
+		LEFT OUTER JOIN Person Per ON PP.PerID = Per.PerID
+		LEFT OUTER JOIN Employee Emp ON Emp.PerID = Per.PerID
 		LEFT OUTER JOIN OptionType Opt ON Opt.OptID = PP.Role
 		WHERE PP.EmpVol="Emp" AND PP.ProjID="'. $id . '") x');
 
@@ -380,22 +396,31 @@ class Employee extends CI_Controller {
 		$crud->display_as("EmpRole", "Project Role");
 		$crud->display_as("StartDate", "Start Date");
 		$crud->display_as("FinishDate", "Finish Date");	
-		$state = $crud->getState();
+		$crud->display_as("IsActive", "Is Active");
+		$crud->display_as("PerID", "Employee Name");
+		$crud->display_as("ProjID", "Project ID");
+
+		
 
 		if ($state === "ajax_list") {
 			$crud->setStateCode(7);
 			
 		} else if ($state === "ajax_list_info") { 
 			$crud->setStateCode(8);
+		} else if ($state === "edit" || $state === "update") {
+			$crud->callback_edit_field("ProjID", array($this, 'callback_projID_edit'));
+			$crud->callback_edit_field("PerID", array($this, 'callback_PerID_edit'));
 		}
 		
 
 		$crud->add_fields("EmpName", "EmpRole", "IsActive", "StartDate", "FinishDate", "projectID", "EmpVol");
+		$crud->edit_fields("ProjID", "PerID", "Role", "IsActive", "StartDate", "FinishDate", "EmpVol");
 		$crud->field_type("EmpVol", 'hidden', 'Emp');
 		$crud->field_type("projectID", 'hidden', $id);
-		$crud->callback_add_field('IsActive', function() {
-			
-		});
+		$crud->field_type("IsActive", "true_false");
+		/*$crud->callback_add_field('IsActive', function() {
+
+		});*/
 		
 		//Roles in a Project
 		$roles = $crud->basic_model->return_query("SELECT OptID, data FROM OptionType WHERE type='Role'");
@@ -415,9 +440,14 @@ class Employee extends CI_Controller {
 		//Change the field type to a dropdown with values
 		//to add to the relational table
 		$crud->field_type("EmpRole", "dropdown", $roleArr);
+		$crud->field_type("Role", "dropdown", $roleArr);
+		$crud->field_type("IsActive", "true_false");
 		$crud->field_type("EmpName", "dropdown", $usrArr);
 		$crud->field_type("StartDate", "date");
 		$crud->field_type("FinishDate", "date");
+
+		$crud->unset_delete();
+		$crud->add_action('Delete', '', '', 'delete-icon delete-row', array($this, 'employee_delete'));
 
 		//$output["multiView"] = "NO";	
 		
@@ -425,6 +455,24 @@ class Employee extends CI_Controller {
 
 		$output = $crud->render();
 		$this->renderBaseTemplate($output);
+	}
+
+
+	public function callback_projID_edit($value, $primary_key) {
+		$q = $this->db->query('SELECT Name FROM Project WHERE ProjID="' . $value .'" LIMIT 1')->row();
+		//$projName = array_shift($q->result_array());
+		$readOnly = '<div id="field-ProjID" class="readonly_label">' . $q->Name .'</div>';
+		return $readOnly . '<input id="field-ProjID" name="ProjID" type="text" value="' . $value . '" class="numeric form-control" maxlength="255" style="display:none;">';
+	}
+
+	public function callback_PerID_edit($value, $primary_key) {
+		$q = $this->db->query('SELECT CONCAT(FirstName, " ", MiddleName, " ", LastName) as FullName FROM Person WHERE PerID="'.$value.'" LIMIT 1')->row();
+		$readOnly = '<div id="field-PerID" class="readonly_label">' . $q->FullName .'</div>';
+		return $readOnly . '<input id="field-PerID" name="PerID" type="text" value="' . $value . '" class="numeric form-control" maxlength="255" style="display:none;">';
+	}
+
+	function employee_delete($primarykey, $row) {
+		return base_url().'user/employee/index/pp_delete/'.$primarykey.'/'.$row->ProjID;
 	}
 
 

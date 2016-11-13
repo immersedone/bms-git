@@ -123,6 +123,16 @@ class People extends CI_Controller {
 		echo json_encode($resp);
 	}
 
+	public function getRole($id) {
+
+		$crud = new grocery_CRUD();
+		$crud->set_model("Project_GC");
+		$res = $crud->basic_model->return_query("SELECT data FROM OptionType WHERE OptID='" . $id ."' LIMIT 1");
+		$resp = array();
+		$resp["RoleName"] = $res[0]->data;
+		echo json_encode($resp);
+	}
+
 	public function getSBName($id) {
 
 		$crud = new grocery_CRUD();

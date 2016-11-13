@@ -32,7 +32,7 @@ switch($subject) {
         break;
 }
 
-$fullURL = explode('/', $_SERVER[REQUEST_URI]);
+$fullURL = explode('/', $_SERVER['REQUEST_URI']);
 if(end($fullURL) === "") {
     array_pop($fullURL);
 } 
@@ -42,6 +42,8 @@ if($fullURL[0] === "") {
 }
 if(strtolower($fullURL[0]) === "user" && strtolower($fullURL[1]) === "projects" && strtolower($fullURL[2]) === "index" && strtolower($fullURL[3]) === "projread" && strtolower($fullURL[4]) === "list") {
     $page = "PROJECT_VIEW";
+} else {
+    $page = "";
 }
 
 if($page === "PROJECT_VIEW" && $subject === "Milestone") {

@@ -7,6 +7,7 @@ class Funding extends CI_Controller {
 		parent::__construct();
 
 		$this->load->database();
+		$this->load->helper('cookie');
 		$this->load->helper('url');
 
 		$this->load->library('grocery_CRUD');
@@ -41,6 +42,7 @@ class Funding extends CI_Controller {
 		$crud->display_as('ApprovedBy', 'Approved By');
 		$crud->display_as('ApprovedOn', 'Approved On');
 		$crud->display_as('FundBodyID', 'Funding Body');
+
 		
 		//Change the Insert Funding fields
 		$crud->edit_fields("Amount", "PaymentType", 'status', "FullName", "ApprovedOn");
@@ -110,12 +112,17 @@ class Funding extends CI_Controller {
 		$crud->columns('ProjName', 'FBName', 'Amount', 'PaymentType', 'status', 'FullName', 'ApprovedOn');
 		$crud->display_as('ProjName', 'Project');
 		$crud->display_as('FBName', 'Funding Body');
+		$crud->display_as('FundBodyID', 'Funding Body');
 		$crud->display_as('PaymentType', 'Payment Type');
 		$crud->display_as('FullName', 'Approved By');
+		$crud->display_as('ApprovedBy', 'Approved By');
 		$crud->display_as('ApprovedOn', 'Approved On');
+		$crud->display_as("ProjID", "Project Name");
 		
 		//Change the Insert Funding fields
-		$crud->add_fields("ProjName", "FBName", "Amount", "PaymentType", 'status', "FullName", "ApprovedOn");
+		$crud->add_fields("ProjID", "FBName", "Amount", "PaymentType", 'status', "FullName", "ApprovedOn");
+		$crud->edit_fields("ProjID", "FundBodyID", "Amount", "PaymentType", 'status', "ApprovedBy", "ApprovedOn", "row");
+		$crud->field_type("row", "hidden", $id);
 	
 		//Call Model to get the Project Names
 		$projects = $crud->basic_model->return_query("SELECT ProjID, Name as ProjName FROM Project WHERE ProjID=".$id);
@@ -126,10 +133,6 @@ class Funding extends CI_Controller {
 			$prjArr += [$prj->ProjID => $prj->ProjName];
 		}
 
-		//Change the field type to a dropdown with values
-		//to add to the relational table
-		$crud->field_type("ProjName", "dropdown", $prjArr);
-		
 		//Call Model to get the names of the funding bodies
 		$fundingbodies = $crud->basic_model->return_query("SELECT FundBodyID, BodyName FROM FundingBody");
 		
@@ -139,9 +142,34 @@ class Funding extends CI_Controller {
 			$FBArr += [$fb->FundBodyID => $fb->BodyName];
 		}
 
+		$state = $crud->getState();
+
 		//Change the field type to a dropdown with values
 		//to add to the relational table
-		$crud->field_type("FBName", "dropdown", $FBArr);		
+		//$crud->field_type("ProjName", "dropdown", $prjArr);
+
+		if($state === "edit" || $state === "update") {
+			$crud->callback_edit_field("ProjID", array($this, 'callback_projID_edit'));
+			$crud->callback_edit_field("FundBodyID", array($this, 'callback_FBID_edit'));
+		} else if ($state === "add" || $state === "insert") {
+			$crud->callback_add_field("ProjID", function() {
+				$id = get_cookie("projID");
+				//echo $id;
+				$q = $this->db->query('SELECT Name FROM Project WHERE ProjID="' . $id .'" LIMIT 1')->row();
+				$readOnly = '<div id="field-ProjID" class="readonly_label">' . $q->Name .'</div>';
+				return $readOnly. '<input id="field-ProjID" name="ProjID" type="text" value="' . $id . '" class="numeric form-control" maxlength="255" style="display:none;">';
+			});
+			$crud->field_type("FBName", "dropdown", $FBArr);
+		} else {
+			$crud->field_type("ProjID", "dropdown", $prjArr);
+			$crud->field_type("FBName", "dropdown", $FBArr);
+			$crud->field_type("FundBodyID", "dropdown", $FBArr);	
+		}
+
+		
+		
+
+			
 				
 		//Call Model to get the User's Full Names
 		$users = $crud->basic_model->return_query("SELECT PerID, CONCAT(FirstName, ' ', MiddleName, ' ', LastName) as FullName FROM Person");
@@ -155,22 +183,50 @@ class Funding extends CI_Controller {
 		//Change the field type to a dropdown with values
 		//to add to the relational table
 		$crud->field_type("FullName", "dropdown", $usrArr);
+		$crud->field_type("ApprovedBy", "dropdown", $usrArr);
 
+		
+		//$crud->unset_edit();
+		//$crud->add_action('Edit', '', '', 'edit_button edit-icon', array($this, 'upd_fund_proj'));
 		//Change the default method to fire when organizing funding for a project
 		$crud->callback_before_insert(array($this,'funding_add'));
 		//$crud->unset_delete();
-		//$crud->add_action('Delete', '', '', 'delete-icon', array($this, 'delete_fund'));
-		//$crud->callback_before_update(array($this, 'update_fund'));
-		$crud->callback_before_delete(array($this, 'delete_fund'));
+		$crud->add_action('Delete', '', '', 'delete-icon delete-row', array($this, 'del_fund_proj'));
+		$crud->unset_delete();
+		$crud->callback_before_update(array($this, 'update_fund'));
+		//$crud->callback_before_delete(array($this, 'delete_fund'));
+
 		
 		$output = $crud->render();
 
 		$this->render($output);
 	}
 
+	public function callback_projID_edit($value, $primary_key) {
+		$q = $this->db->query('SELECT Name FROM Project WHERE ProjID="' . $value .'" LIMIT 1')->row();
+		//$projName = array_shift($q->result_array());
+		$readOnly = '<div id="field-ProjID" class="readonly_label">' . $q->Name .'</div>';
+		return $readOnly . '<input id="field-ProjID" name="ProjID" type="text" value="' . $value . '" class="numeric form-control" maxlength="255" style="display:none;">';
+	}
+
+	public function callback_FBID_edit($value, $primary_key) {
+		$q = $this->db->query('SELECT BodyName FROM FundingBody WHERE FundBodyID="'.$value.'" LIMIT 1')->row();
+		$readOnly = '<div id="field-FundBodyID" class="readonly_label">' . $q->BodyName .'</div>';
+		return $readOnly . '<input id="field-FundBodyID" name="FundBodyID" type="text" value="' . $value . '" class="numeric form-control" maxlength="255" style="display:none;">';
+	}
+
 	function delete_fund($post_array) {
 		$this->fd_delete($post_array);
 		//return base_url().'user/funding/index/fd_delete/'.$primarykey.'/'.$row->ProjID;
+	}
+
+	function del_fund_proj($primarykey, $row) {
+		//return base_url().'user/funding/index/fd_delete/'.$primarykey.'/'.$row->ProjID;	
+		return base_url().'user/funding/index/fd_delete/'.$primarykey;	
+	}
+
+	function upd_fund_proj($primarykey, $row) {
+		return base_url().'user/funding/index/fd_update/'.$primarykey;		
 	}
 
 	function update_fund($post_array) {
@@ -188,7 +244,7 @@ class Funding extends CI_Controller {
 		$crud = new grocery_CRUD();
 		$crud->set_model('Funding_GC');
 		$rmAmt = $crud->basic_model->return_query("SELECT Amount, ProjID FROM Funding
-		WHERE fundID = '$id'");
+		WHERE FundID = '$id'");
 		$amt = $rmAmt[0]->Amount;
 		$resp = $crud->basic_model->delete_fund($id, $amt, $rmAmt[0]->ProjID);
 		echo $resp;
@@ -199,15 +255,30 @@ class Funding extends CI_Controller {
 		}*/
 	}
 
+	public function fd_proj_del($id, $pID) {
+
+		$crud = new grocery_CRUD();
+		$crud->set_model("Funding_GC");
+
+	}
+
 	public function fd_insert() {
 
 		//Initialise and assign variables 
 		
-		$projectID = $_POST['ProjName'];
+		if(isset($_POST['ProjName'])) {
+			$projectID = $_POST['ProjName'];
+		} else if (isset($_POST['ProjID'])) {
+			$projectID = $_POST['ProjID'];
+		}
 		$fundbodyid = $_POST['FBName'];
 		$amount = $_POST['Amount'];
 		$PaymentType = $_POST['PaymentType'];
-		$Approvedby = $_POST['FullName'];
+		if(isset($_POST['FullName'])) {
+			$Approvedby = $_POST['FullName'];
+		} else if (isset($_POST['ApprovedBy'])) {
+			$Approvedby = $_POST['ApprovedBy'];
+		}
 		$ApprovedOn = $_POST['ApprovedOn'];
 		$status = $_POST['status'];
 
@@ -220,17 +291,34 @@ class Funding extends CI_Controller {
 	public function fd_update($id) {
 
 		//Initialise and assign variables 
+		if(isset($_POST['ProjName'])) {
+			$projectID = $_POST['ProjName'];
+		} else if (isset($_POST['ProjID'])) {
+			$projectID = $_POST['ProjID'];
+		}
 		$newamount = $_POST['Amount'];
 		$PaymentType = $_POST['PaymentType'];
-		$Approvedby = $_POST['FullName'];
+		if(isset($_POST['FullName'])) {
+			$Approvedby = $_POST['FullName'];
+		} else if (isset($_POST['ApprovedBy'])) {
+			$Approvedby = $_POST['ApprovedBy'];
+		}
 		$ApprovedOn = $_POST['ApprovedOn'];
 		$status = $_POST['status'];
+		
 					
 		$crud = new grocery_CRUD();
 		$crud->set_model('Funding_GC');
-		$rmAmt = $crud->basic_model->return_query("SELECT Amount, ProjID FROM Funding WHERE fundID = '$id'");
-		$oldamount = $rmAmt[0]->Amount;
-		$projectID = $rmAmt[0]->ProjID;
+
+		if(isset($_POST['row'])) {
+			$id = $_POST['row'];
+			$oAmt = $this->db->query("SELECT Amount FROM Funding WHERE FundID='".$id."'")->row();
+			$oldamount = $oAmt->Amount;
+		} else {
+			$rmAmt = $crud->basic_model->return_query("SELECT Amount FROM Funding WHERE FundID='". $id . "'");
+			$oldamount = $rmAmt[0]->Amount;
+		}
+		
 		
 		$resp = $crud->basic_model->update_fund($id, $newamount, $PaymentType, $Approvedby, $ApprovedOn, $status, $projectID, $oldamount);
 

@@ -725,6 +725,29 @@
 
 			echo $ajaxHTML;
 
+		} elseif($field->field_name === "Role") {
+			//Get Project ID to convert to a name
+			$roleID = $input_fields["Role"]->input;
+			$roleID = str_replace("</div>", "", $roleID);
+			$roleID = str_replace('<div id="field-Role" class="readonly_label">', "", $roleID);
+			//Echo out HTML AJAX for name conversion
+
+			$ajaxHTML = '<script type="text/javascript">
+			$(function() {
+				$.ajax({
+					url: "'. base_url() .'user/people/index/getRole/' . $roleID .'",
+					type: "POST",
+					dataType: "json",
+					success: function(data) {
+						$("div#field-Role.readonly_label").text(data.RoleName);
+					}
+
+				});
+			});
+			</script>';
+
+			echo $ajaxHTML;
+
 		}    ?>
 			<div class='form-field-box <?php echo $even_odd?>' id="<?php echo $field->field_name; ?>_field_box">
 				<div class='form-display-as-box' id="<?php echo $field->field_name; ?>_display_as_box">

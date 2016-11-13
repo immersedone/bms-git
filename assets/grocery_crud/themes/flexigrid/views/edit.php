@@ -129,7 +129,7 @@
 </div>
 </div>
 <?php
-echo $subject;
+//echo $subject;
 if($subject === "Reimbursement") { ?>
 	<script type="text/javascript">
 	$(window).on("load", function() {
@@ -154,11 +154,15 @@ if($subject === "Reimbursement") { ?>
 		if(in_array("mileproj", $fullURL) || in_array("expendproj", $fullURL) || in_array("fundproj", $fullURL) || in_array("empproj", $fullURL)
 			|| in_array("volproj", $fullURL)) {
 			$list_url = base_url() . 'user/projects/index/projread/list';
+			echo 'var success_list_url = "'.base_url().'user/projects/index/projread/list";';
+			$page = "PROJECT_VIEW";
 		}
 
 	?>
 	var validation_url = '<?php echo $validation_url?>';
 	var list_url = '<?php echo $list_url?>';
+
+	var isProjectView = <?php if (isset($page) && $page === "PROJECT_VIEW") { echo "true";} else { echo "false"; } ?>;
 
 	var message_alert_edit_form = "<?php echo $this->l('alert_edit_form')?>";
 	var message_update_error = "<?php echo $this->l('update_error')?>";

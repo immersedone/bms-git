@@ -250,6 +250,9 @@ class Projects extends CI_Controller {
 		$GCM->grids[5]->display_as("Role", "Project Role");	
 		$GCM->grids[5]->display_as("StartDate", "Start Date");
 		$GCM->grids[5]->display_as("FinishDate", "Finish Date");
+		$GCM->grids[5]->field_type("IsActive", "true_false");
+		$GCM->grids[5]->field_type("StartDate", "date");
+		$GCM->grids[5]->field_type("FinishDate", "date");
 		
 		/*
 		$GCM->grids[5]->add_fields("VolName", "Role", "IsActive", "StartDate", "FinishDate", "projectID", "EmpVol");
@@ -278,8 +281,11 @@ class Projects extends CI_Controller {
 		$GCM->grids[5]->callback_before_insert(array($this,'volunteer_add'));
 
 		//$GCM->grids[5]->callback_before_delete(array($this,'vol_delete'));
+		
 		$GCM->grids[5]->unset_edit();
 		$GCM->grids[5]->unset_delete();
+
+		$GCM->grids[5]->add_action('Delete', '', '', 'delete-icon', array($this, 'vol_delete'));
 		
 		$GCM->grid_add(6);
 		$GCM->grids[6]->set_model("Employee_GC");
@@ -334,7 +340,7 @@ class Projects extends CI_Controller {
 		//$GCM->grids[6]->unset_add();
 		$GCM->grids[6]->unset_edit();
 		$GCM->grids[6]->unset_delete();
-		//$GCM->grids[6]->add_action('Delete', '', '', 'delete-icon', array($this, 'employee_delete'));
+		$GCM->grids[6]->add_action('Delete', '', '', 'delete-icon', array($this, 'employee_delete'));
 		//$crud->callback_delete(array($this, 'volunteer_delete'));
 
 		$output = $GCM->render();
@@ -364,7 +370,7 @@ class Projects extends CI_Controller {
 	}
 
 	function volunteer_add($primarykey, $row) {
-		print_r($row);
+		//print_r($row);
 		return base_url().'user/employee/index/pp_insert/'.$primarykey.'/'.$row->ProjID;
 	}
 	

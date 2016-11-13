@@ -19,7 +19,7 @@
                 $newAmt = $row->TotalFunding - $amt;
 				$this->db->simple_query("UPDATE Project SET TotalFunding='$newAmt' WHERE ProjID='$projID'");
                 $resp['success'] = TRUE;
-                $resp['success_message'] = "'$amount' '$projID' Successfully removed Item from Funding.";
+                $resp['success_message'] = "Successfully removed Item from Funding.";
             } else {
                 $resp['success'] = FALSE;
                 $resp['error_message'] = "Failed to remove Item from Funding.\n Try again later or contact system administrator.";

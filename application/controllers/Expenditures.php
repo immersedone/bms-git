@@ -7,6 +7,7 @@ class Expenditures extends CI_Controller {
 		parent::__construct();
 
 		$this->load->database();
+		$this->load->helper('cookie');
 		$this->load->helper('url');
 
 		$this->load->library('grocery_CRUD');
@@ -98,22 +99,41 @@ class Expenditures extends CI_Controller {
 		LEFT OUTER JOIN `Person` Per ON Per.PerID=Exp.SpentBy
 		LEFT OUTER JOIN OptionType Opt ON Opt.OptID = Exp.ExpType WHERE Exp.ProjID='.$id.') x');
 		$crud->columns('Name', 'ExpName', 'Reason', 'Amount', 'GST', 'FullName'); 
-		$crud->add_fields('ProjID', 'ExpName', 'Reason', 'Amount', 'GST', 'FullName');
+		$crud->add_fields('ProjID', 'ExpName', 'Reason', 'Amount', 'GST', 'SpentBy');
+		$crud->edit_fields('ProjID','ExpName', 'companyname', 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType', 'ExpDate', 'FilePath');
 		$crud->display_as('ExpName', 'Expenditure Name');
 		$crud->display_as('companyname', 'Company Name');
 		$crud->display_as('FullName', 'Spent By');
 		$crud->display_as('ProjID', 'Project Name');
 		$crud->display_as('Name', 'Project Name');
 
-		$projects = $crud->basic_model->return_query("SELECT ProjID, Name FROM Project WHERE ProjID=".$id);
+		$state = $crud->getState();
+
+		if($state === "edit" || $state === "update") {
+			$projects = $crud->basic_model->return_query("SELECT Pr.ProjID, Pr.Name FROM Project Pr LEFT OUTER JOIN Expenditure Exp ON Exp.ProjID=Pr.ProjID WHERE Exp.ExpID=".$id);
+		} else {
+			$projects = $crud->basic_model->return_query("SELECT ProjID, Name FROM Project WHERE ProjID=".$id);
+		}
 
 		$prjArr = array();
 		foreach($projects as $prj) {
 			$prjArr += [$prj->ProjID => $prj->Name];
 		}
 
-		$crud->field_type("ProjID", "dropdown", $prjArr);
-
+		if($state === "edit" || $state === "update") {
+			//$crud->field_type("ProjID", "readonly");
+			$crud->callback_edit_field("ProjID", array($this, 'callback_projID_edit'));
+		} else if ($state === "add" || $state === "insert") {
+			$crud->callback_add_field("ProjID", function() {
+				$id = get_cookie("projID");
+				//echo $id;
+				$q = $this->db->query('SELECT Name FROM Project WHERE ProjID="' . $id .'" LIMIT 1')->row();
+				$readOnly = '<div id="field-ProjID" class="readonly_label">' . $q->Name .'</div>';
+				return $readOnly. '<input id="field-ProjID" name="ProjID" type="text" value="' . $id . '" class="numeric form-control" maxlength="255" style="display:none;">';
+			});
+		}  else {
+			$crud->field_type("ProjID", "dropdown", $prjArr);
+		}
 		//Call Model to get the User's Full Names
 		$users = $crud->basic_model->return_query("SELECT PerID, CONCAT(FirstName, ' ', MiddleName, ' ', LastName) as FullName FROM Person");
 
@@ -126,12 +146,20 @@ class Expenditures extends CI_Controller {
 		//Change the field type to a dropdown with values
 		//to add to the relational table
 		$crud->field_type("FullName", "dropdown", $usrArr);
+		$crud->field_type("SpentBy", "dropdown", $usrArr);
 		$crud->callback_before_insert(array($this,'expenditure_add'));
 		
 
 		$output = $crud->render();
 
 		$this->render($output);
+	}
+
+	public function callback_projID_edit($value, $primary_key) {
+		$q = $this->db->query('SELECT Name FROM Project WHERE ProjID="' . $value .'" LIMIT 1')->row();
+		//$projName = array_shift($q->result_array());
+		$readOnly = '<div id="field-ProjID" class="readonly_label">' . $q->Name .'</div>';
+		return $readOnly . '<input id="field-ProjID" name="ProjID" type="text" value="' . $value . '" class="numeric form-control" maxlength="255" style="display:none;">';
 	}
 	
 	function expenditure_add($post_array) {

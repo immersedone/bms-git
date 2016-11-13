@@ -6,6 +6,13 @@ table th
 }
 
 /* CSS Document */
+
+a.edit_button {
+	display: inline-block;
+}
+.flexigrid .tools {
+	text-align: right;
+}
 .flexigrid {
 	font-family:Arial,Helvetica,sans-serif;
 	font-size:11px;

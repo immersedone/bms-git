@@ -126,26 +126,73 @@ class Milestones extends CI_Controller {
 		$crud->display_as('MSComplete', 'Complete');
 		$crud->add_fields('ProjID', 'ShortDesc', 'DueDate', 'RptType', 'Amount', 'Comment', 'FilePath');
 
-		$projects = $crud->basic_model->return_query("SELECT ProjID, Name FROM Project WHERE ProjID=".$id);
+		$state = $crud->getState();
+
+		$projects = $crud->basic_model->return_query("SELECT Pr.ProjID, Pr.Name FROM Project Pr LEFT OUTER JOIN Milestone_new Ms ON Ms.ProjID=Pr.ProjID WHERE Ms.milestoneID=".$id);
 
 		$prjArr = array();
 		foreach($projects as $prj) {
 			$prjArr += [$prj->ProjID => $prj->Name];
 		}
 
+
+		if($state === "edit" || $state === "update") {
+			$crud->callback_edit_field("ProjID", array($this, 'callback_projID_edit'));
+		} else if ($state === "add" || $state === "insert") {
+			$crud->callback_add_field("ProjID", function() {
+				$id = get_cookie("projID");
+				//echo $id;
+				$q = $this->db->query('SELECT Name FROM Project WHERE ProjID="' . $id .'" LIMIT 1')->row();
+				$readOnly = '<div id="field-ProjID" class="readonly_label">' . $q->Name .'</div>';
+				return $readOnly. '<input id="field-ProjID" name="ProjID" type="text" value="' . $id . '" class="numeric form-control" maxlength="255" style="display:none;">';
+			});
+		} else {
+			$crud->field_type("ProjID", "dropdown", $prjArr);
+		}
+
+		//print_r($projects);
+		//echo $id;
+
+
+		//Prettify Report Type
+		$rptType = $crud->basic_model->return_query("SHOW COLUMNS FROM Milestone_new WHERE Field='RptType'");
+		preg_match("/^enum\(\'(.*)\'\)$/", $rptType[0]->Type, $matchesRpt);
+		$rptTypeArr = explode("','", $matchesRpt[1]);
+		$newRptTypeArr = array();
+		foreach($rptTypeArr as $rpt) {
+			if($rpt==="REPORT") {
+				$newRptTypeArr += [$rpt => "Report"];
+			} else if($rpt==="PAYMENT") {
+				$newRptTypeArr += [$rpt => "Payment"];
+			} else if($rpt==="REP_PAY") {
+				$newRptTypeArr += [$rpt => "Report &amp; Payment"];
+			} else if($rpt==="FINAL_REP") {
+				$newRptTypeArr += [$rpt => "Final Report"];
+			}
+		}
+
+
+		$crud->field_type('RptType', 'dropdown', $newRptTypeArr);
 		
-		$rptArr = array("Report", "Payment", "Report & Payment", "Final Payment");
+		//$rptArr = array("Report", "Payment", "Report & Payment", "Final Payment");
 		$crud->field_type("DueDate", 'datetime');
 		$crud->field_type("Comment", 'text');
-		$crud->field_type("RptType", "enum", $rptArr);
+		//$crud->field_type("RptType", "enum", $rptArr);
 
 		$crud->set_field_upload('FilePath', 'assets/uploads/files/');
 		
-		$crud->field_type("ProjID", "dropdown", $prjArr);
+		
 		
 		$output = $crud->render();
 
 		$this->render($output);
+	}
+
+	public function callback_projID_edit($value, $primary_key) {
+		$q = $this->db->query('SELECT Name FROM Project WHERE ProjID="' . $value .'" LIMIT 1')->row();
+		//$projName = array_shift($q->result_array());
+		$readOnly = '<div id="field-ProjID" class="readonly_label">' . $q->Name .'</div>';
+		return $readOnly . '<input id="field-ProjID" name="ProjID" type="text" value="' . $value . '" class="numeric form-control" maxlength="255" style="display:none;">';
 	}
 
 	function milestone_add($post_array) {

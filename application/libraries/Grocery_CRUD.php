@@ -2207,11 +2207,13 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/jquery.uniform.min.js');
 		$this->set_js_config($this->default_javascript_path.'/jquery_plugins/config/jquery.uniform.config.js');
 
-		$value_is_null = empty($value) && $value !== '0' && $value !== 0 || $value = null ? true : false;
+		$value_is_null = empty($value) && $value !== '0' && $value !== 0 || $value == null ? true : false;
 
 		$input = "<div class='pretty-radio-buttons'>";
 
 		$true_string = is_array($field_info->extras) && array_key_exists(1,$field_info->extras) ? $field_info->extras[1] : $this->default_true_false_text[1];
+
+		
 		$checked = $value === '1' || ($value_is_null && $field_info->default === '1') ? "checked = 'checked'" : "";
 		$input .= "<label><input id='field-{$field_info->name}-true' class='radio-uniform'  type='radio' name='{$field_info->name}' value='1' $checked /> ".$true_string."</label> ";
 
@@ -2872,7 +2874,14 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		{
 			$field_info = $types[$field->field_name];
 
-			$field_value = !empty($field_values) && isset($field_values->{$field->field_name}) ? $field_values->{$field->field_name} : null;
+			if(isset($field_info->default)) {
+				$field_value = !empty($field_values) && isset($field_values->{$field->field_name}) ? $field_values->{$field->field_name} : $field_info->default;
+			} else {
+				$field_value = !empty($field_values) && isset($field_values->{$field->field_name}) ? $field_values->{$field->field_name} : null;	
+			}
+			
+			
+ 
 
 			if(!isset($this->callback_add_field[$field->field_name]))
 			{
@@ -2915,7 +2924,12 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		{
 			$field_info = $types[$field->field_name];
 
-			$field_value = !empty($field_values) && isset($field_values->{$field->field_name}) ? $field_values->{$field->field_name} : null;
+			if(isset($field_info->default)) {
+				$field_value = !empty($field_values) && isset($field_values->{$field->field_name}) ? $field_values->{$field->field_name} : $field_info->default;
+			} else {
+				$field_value = !empty($field_values) && isset($field_values->{$field->field_name}) ? $field_values->{$field->field_name} : null;	
+			}
+ 
 			if(!isset($this->callback_edit_field[$field->field_name]))
 			{
 				$field_input = $this->get_field_input($field_info, $field_value);

@@ -12,10 +12,12 @@
         function delete_pp($userid, $projectid)
         {
 
+            echo $userid . ' - '. $projectid;
             $resp = array();
 
-            if($this->db->simple_query("DELETE FROM PersonProject WHERE ProjID='$projectid' AND PerID='$userid' AND Role='VOLUNTEER' LIMIT 1")) {
+            if($this->db->simple_query("DELETE FROM PersonProject WHERE ProjID='$projectid' AND PerID='$userid' AND EmpVol='Vol' LIMIT 1")) {
                 $resp['success'] = TRUE;
+                $resp['success_list_url'] = base_url() . "user/projects/index/projread/list";
                 $resp['success_message'] = "Successfully removed Person from Project.";
             } else {
                 $resp['success'] = FALSE;

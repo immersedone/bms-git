@@ -453,6 +453,7 @@ class Grocery_crud_model  extends CI_Model  {
     		$db_field_types[$db_field_type->Field]['db_type'] = $db_type;
     		$db_field_types[$db_field_type->Field]['db_null'] = $db_field_type->Null == 'YES' ? true : false;
     		$db_field_types[$db_field_type->Field]['db_extra'] = $db_field_type->Extra;
+            $db_field_types[$db_field_type->Field]['default'] = $db_field_type->Default;  // <------ DEFAULT FIELD
     	}
 
     	$results = $this->db->field_data($this->table_name);
