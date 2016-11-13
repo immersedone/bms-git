@@ -125,7 +125,9 @@ class Milestones extends CI_Controller {
 		$crud->display_as('DueDate', 'Due Date');
 		$crud->display_as('RptType', 'Type');
 		$crud->display_as('MSComplete', 'Complete');
-		$crud->display_as("FilePath", "File Path");
+		$crud->display_as('PaymentMode', 'Payment Mode');
+		$crud->display_as('ReportIsDue', 'Report Is Due');
+		$crud->display_as("FilePath", "File Attached");
 		$crud->add_fields('ProjID', 'ShortDesc', 'DueDate', 'RptType', 'Amount', 'Comment', 'FilePath');
 
 		$state = $crud->getState();
