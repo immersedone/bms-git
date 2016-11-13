@@ -799,6 +799,8 @@
 		if(in_array("mileproj", $fullURL) || in_array("expendproj", $fullURL) || in_array("fundproj", $fullURL) || in_array("empproj", $fullURL)
 			|| in_array("volproj", $fullURL)) {
 			$list_url = base_url() . 'user/projects/index/projread/list';
+		} else if (in_array("employee", $fullURL) && in_array("prjvw", $fullURL) || in_array("volunteer", $fullURL) && in_array("prjvw", $fullURL)) {
+			$list_url = $_SERVER['HTTP_REFERER'];
 		}
 
 	?>

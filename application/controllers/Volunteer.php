@@ -159,7 +159,7 @@ class Volunteer extends CI_Controller {
 			$crudThree->set_model('Extended_generic_model');
 			$crudThree->set_table('PersonProject');
 			$crudThree->set_subject('Volunteer History');
-			$crudThree->basic_model->set_query_str("SELECT * FROM (SELECT Proj.Name as ProjName, O1.Data as Role, PP.StartDate, PP.FinishDate, PP.PersonProjectID as PersonProjectID FROM PersonProject PP
+			$crudThree->basic_model->set_query_str("SELECT * FROM (SELECT Proj.Name as ProjName, O1.Data as Role, PP.StartDate, PP.FinishDate, PP.PersonProjectID as PersonProjectID, PP.PerID FROM PersonProject PP
 			LEFT OUTER JOIN Project Proj ON Proj.ProjID = PP.ProjID
 			LEFT OUTER JOIN OptionType O1 on O1.OptID = PP.Role
 			WHERE PP.PerID = '$perID' AND PP.IsActive='0') x");
@@ -169,32 +169,26 @@ class Volunteer extends CI_Controller {
 			$crudThree->display_as('FinishDate', 'Date Finished');
 			
 			$crudThree->setStateCode(1);
-			$crudThree->unset_add();
-			$crudThree->unset_edit();
-			$crudThree->unset_delete();
-			$crudThree->unset_export();
-			$crudThree->unset_print();
+			$crudThree->unset_operations();
+			$crudThree->add_action('View', '', '', 'read-icon', array($this, 'link_prjvw_eh'));
 			$volHistoryOP = $crudThree->render();
 
 			$crudFour = new grocery_CRUD();
 			$crudFour->set_model('Extended_generic_model');
 			$crudFour->set_table('PersonProject');
-			$crudFour->set_subject('Volunteer History');
-			$crudFour->basic_model->set_query_str("SELECT * FROM (SELECT Proj.Name as ProjName, O1.Data as Role, PP.StartDate, PP.FinishDate, PP.PersonProjectID as PersonProjectID FROM PersonProject PP
+			$crudFour->set_subject('Current Projects');
+			$crudFour->basic_model->set_query_str("SELECT * FROM (SELECT Proj.Name as ProjName, O1.Data as Role, PP.StartDate, PP.FinishDate, PP.PersonProjectID as PersonProjectID, PP.PerID FROM PersonProject PP
 			LEFT OUTER JOIN Project Proj ON Proj.ProjID = PP.ProjID
 			LEFT OUTER JOIN OptionType O1 on O1.OptID = PP.Role
 			WHERE PP.PerID = '$perID' AND PP.IsActive='1') x");
-			$crudThree->columns("ProjName", "Role",  "StartDate", "FinishDate");
-			$crudThree->display_as('ProjName', 'Project Name');
-			$crudThree->display_as('StartDate', 'Date Started');
-			$crudThree->display_as('FinishDate', 'Date Finished');
+			$crudFour->columns("ProjName", "Role",  "StartDate", "FinishDate");
+			$crudFour->display_as('ProjName', 'Project Name');
+			$crudFour->display_as('StartDate', 'Date Started');
+			$crudFour->display_as('FinishDate', 'Date Finished');
 			
 			$crudFour->setStateCode(1);
-			$crudFour->unset_add();
-			$crudFour->unset_edit();
-			$crudFour->unset_delete();
-			$crudFour->unset_export();
-			$crudFour->unset_print();
+			$crudFour->unset_operations();
+			$crudFour->add_action('View', '', '', 'read-icon', array($this, 'link_prjvw_cp'));
 			$volCurrentOP = $crudFour->render();
 
 			//echo $perID;
@@ -314,6 +308,49 @@ class Volunteer extends CI_Controller {
 		$q = $this->db->query('SELECT CONCAT(FirstName, " ", MiddleName, " ", LastName) as FullName FROM Person WHERE PerID="'.$value.'" LIMIT 1')->row();
 		$readOnly = '<div id="field-PerID" class="readonly_label">' . $q->FullName .'</div>';
 		return $readOnly . '<input id="field-PerID" name="PerID" type="text" value="' . $value . '" class="numeric form-control" maxlength="255" style="display:none;">';
+	}
+
+	function link_prjvw_cp($primarykey, $row) {
+		return base_url().'user/volunteer/index/prjvw/'.$primarykey.'/'.$row->PerID.'/Current%20Projects';
+	}
+
+	function link_prjvw_eh($primarykey, $row) {
+		return base_url().'user/volunteer/index/prjvw/'.$primarykey.'/'.$row->PerID.'/Volunteer%20History';
+	}
+
+	public function prjvw($row, $uid, $subject) {
+		
+		//Start New Crud
+		$crud = new grocery_CRUD();
+		$crud->set_model('Volunteer_GC');
+		$crud->set_subject(urldecode($subject));
+		$crud->set_table('PersonProject');
+
+		//Get Project ID
+		$prID = $this->db->query("SELECT ProjID FROM PersonProject WHERE PersonProjectID='".$row."' LIMIT 1")->row();
+		$pID = $prID->ProjID;
+
+		$crud->basic_model->set_query_str('SELECT * FROM (SELECT  CONCAT(Per.FirstName, " ", Per.MiddleName, " ", Per.LastName) as VolName, PP.ProjID, PP.StartDate as StartDate, PP.FinishDate as FinishDate, Opt.Data as Role, Per.PerID, PP.IsActive as IsActive, PP.PersonProjectID FROM PersonProject PP 
+		LEFT OUTER JOIN Person Per ON PP.PerID = Per.PerID
+		LEFT OUTER JOIN Employee Emp ON Emp.PerID = Per.PerID
+		LEFT OUTER JOIN OptionType Opt ON Opt.OptID = PP.Role
+		WHERE PP.EmpVol="Vol" AND PP.ProjID="'. $pID . '" AND PP.PerID="' . $uid . '") x');
+		$crud->display_as("PerID", "Volunteer Name");
+		$crud->display_as("ProjID", "Project Name");
+		$crud->display_as("Role", "Project Role");
+		$crud->display_as("IsActive", "Is Active");
+		$crud->display_as("StartDate", "Start Date");
+		$crud->display_as("FinishDate", "Finish Date");
+		$crud->set_read_fields("PerID", "ProjID", "Role", "IsActive", "StartDate", "FinishDate");
+
+		//$crud->field_type("EmpVol", "dropdown", array("Emp" => "Employee", "Vol" => "Volunteer"));
+
+		$crud->setStateCode(18);
+		$crud->setNewState($row);
+
+		$output = $crud->render();
+		$this->renderBaseTemplate($output);
+
 	}
 
 	function volunteer_delete($primarykey, $row) {
