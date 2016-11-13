@@ -365,25 +365,22 @@
 			$fbID = $input_fields["ExpList"]->input;
 			$fbID = str_replace("</div>", "", $fbID);
 			$fbID = str_replace('<div id="field-ExpList" class="readonly_label">', "", $fbID);
-			$test = explode(',', $fbID); 
-			$ajaxHTML = '';
-			//Echo out HTML AJAX for name conversion
-			foreach($test as $i){
-				$ajaxHTML .= '<script type="text/javascript">
-				$(function() {
-					$.ajax({
-						url: "'. base_url() .'user/reimbursements/index/get_ExpList/' . $i .'",
-						type: "POST",
-						dataType: "json",
-						success: function(data) {							
-							$("div#field-ExpList.readonly_label").append(data.ExpList);
-							
-						}
-					});
-				});
-				</script>';
+			
+			$ajaxHTML = '<script type="text/javascript">
+			$(function() {
+				$.ajax({
+					url: "'. base_url() .'user/reimbursements/index/getExpList/",
+					type: "POST",
+					data: {"expList": "' . $fbID .'"},
+					dataType: "json",
+					success: function(data) {
+						$("div#field-ExpList.readonly_label").html(data.ExpList);
+					}
 
-			}
+				});
+			});
+			</script>';
+			
 			echo $ajaxHTML;
 			
 		}  elseif($field->field_name === "EmpPosition") {
