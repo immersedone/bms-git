@@ -259,7 +259,7 @@ class Employee extends CI_Controller {
 			//$crud->set_rules("PerID", "Employee Name", "in_list[" . $usrArrIDOnly . "]|required");
             //echo $usrArrIDOnly;
 		} else if ($state === "read") {
-			$crud->set_theme("fleximulti");
+			//$crud->set_theme("fleximulti");
 		}
 
 		$employeeOP = $crud->render();
@@ -271,7 +271,7 @@ class Employee extends CI_Controller {
 			$crudTwo = new grocery_CRUD();
 			$crudTwo->set_model('Extended_generic_model');
 			$crudTwo->set_table('Person');
-			$crudTwo->set_theme('fleximulti');
+			//$crudTwo->set_theme('fleximulti');
 			$crudTwo->set_subject('Person Details');
 
 			//Get the Person ID
@@ -317,7 +317,7 @@ class Employee extends CI_Controller {
 			$crudThree = new grocery_CRUD();
 			$crudThree->set_model('Extended_generic_model');
 			$crudThree->set_table('PersonProject');
-			$crudThree->set_theme('fleximulti');
+			//$crudThree->set_theme('fleximulti');
 			$crudThree->set_subject('Employee History');
 			$crudThree->basic_model->set_query_str("SELECT * FROM (SELECT Proj.Name as ProjName, O1.Data as Role, PP.StartDate, PP.FinishDate, PP.PersonProjectID as PersonProjectID FROM PersonProject PP
 			LEFT OUTER JOIN Project Proj ON Proj.ProjID = PP.ProjID
@@ -337,7 +337,7 @@ class Employee extends CI_Controller {
             $crudFour = new grocery_CRUD();
             $crudFour->set_model('Extended_generic_model');
             $crudFour->set_table('PersonProject');
-            $crudFour->set_theme('fleximulti');
+            //$crudFour->set_theme('fleximulti');
             $crudFour->set_subject('Employee History');
             $crudFour->basic_model->set_query_str("SELECT * FROM (SELECT Proj.Name as ProjName, O1.Data as Role, PP.StartDate, PP.FinishDate, PP.PersonProjectID as PersonProjectID FROM PersonProject PP
 			LEFT OUTER JOIN Project Proj ON Proj.ProjID = PP.ProjID
