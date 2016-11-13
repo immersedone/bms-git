@@ -58,7 +58,7 @@ $(function(){
 											
 										//Check to see if it is in Project View
 										//and redirect to different URL if it is
-										if (isProjectView !== null || isProjectView !== "" || typeof isProjectView !== 'undefined') {
+										if (isProjectView !== false) {
 											window.location = success_list_url;
 										} else {
 											window.location = data.success_list_url;
