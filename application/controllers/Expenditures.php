@@ -40,6 +40,7 @@ class Expenditures extends CI_Controller {
 		$crud->display_as('SpentBy', 'Spent By');
 		$crud->display_as('Name', 'Project Name');
 		$crud->display_as('ExpDate', 'Date of Expenditure');
+		$crud->display_as('FilePath', 'File Attached');
 		$crud->columns('ProjID','ExpName', 'companyname', 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType', 'ExpDate', 'FilePath');
 		$crud->set_read_fields('ProjID','ExpName', 'companyname', 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType', 'ExpDate', 'FilePath');
 		$crud->add_fields('ProjID','ExpName', 'companyname', 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType', 'ExpDate', 'FilePath');
@@ -106,6 +107,7 @@ class Expenditures extends CI_Controller {
 		$crud->display_as('FullName', 'Spent By');
 		$crud->display_as('ProjID', 'Project Name');
 		$crud->display_as('Name', 'Project Name');
+		$crud->display_as('FilePath', 'File Attached');
 
 		$state = $crud->getState();
 
@@ -212,7 +214,6 @@ class Expenditures extends CI_Controller {
 public function crud_delete_file($primary_key)
 {
     $row = $this->db->where('id',$primary_key)->get('Expenditures')->row();
-
     unlink('assets/uploads/files/expenditures'.$row->file_url);
    
     return true;
