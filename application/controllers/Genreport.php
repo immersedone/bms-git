@@ -234,6 +234,103 @@ class Genreport extends CI_Controller {
 		//Report for Pending Milestones
 		elseif ($reportType == "pend_mst") {
 			
+			$mst = $this->Extended_generic_model->return_query('SELECT 
+				P.Name as ProjName, 
+				M.* 
+				FROM `Milestone_new` M
+				LEFT OUTER JOIN `Project` P ON M.ProjID=P.ProjID 
+				WHERE M.Status!="Completed"
+				AND M.DueDate <= "' . $toDate . '"
+				ORDER BY M.DueDate ASC
+			');
+
+			//Header 
+			$html .= "Report Created: " . date('d F Y');
+
+			//Content
+			$html .= "<h4>Pending Milestones</h4>";
+			$html .= "<table><tbody>";
+			$html .= "<tr><th>Project Name</th><th>Description</th><th>Due Date</th><th>Report Type</th><th>Report Is Due</th><th>Payment Mode</th><th>Status</th><th>Amount</th><th>Comment</th></tr>";
+
+			//Loop
+			foreach($mst as $em) { 
+
+
+				//Prettify Fields
+
+				if($em->ReportIsDue == 0) {
+					$RptID = "No";
+				} else {
+					$RptID = "Yes";
+				}
+
+				if($em->RptType === "REPORT") {
+					$RptType = "Report";
+				} elseif($em->RptType === "PAYMENT") {
+					$RptType = "Payment";
+				} elseif($em->RptType === "REP_PAY") {
+					$RptType = "Report &amp; Payment";
+				} elseif($em->RptType === "FINAL_REP") {
+					$RptType = "Final Report";
+				}
+
+
+				$html .= "<tr><td>" . $em->ProjName . "</td><td>" . $em->ShortDesc . "</td><td>" . date('d F Y', strtotime($em->DueDate)) . "</td><td>" . $RptType . "</td><td>" . $RptID . "</td><td>" . $em->PaymentMode . "</td><td>" . $em->Status . "</td><td>$" . number_format($em->Amount, 2) . "</td><td>" . $em->Comment . "</td></tr>";
+			}
+
+			$html .= "</tbody></table>";
+
+		}
+		//Report for Pending Milestones
+		elseif ($reportType == "future_mst") {
+			
+			$mst = $this->Extended_generic_model->return_query('SELECT 
+				P.Name as ProjName, 
+				M.* 
+				FROM `Milestone_new` M
+				LEFT OUTER JOIN `Project` P ON M.ProjID=P.ProjID 
+				WHERE M.Status!="Completed"
+				AND M.DueDate <= "' . $toDate . '"
+				AND M.DueDate >= now()
+				ORDER BY M.DueDate ASC
+			');
+
+			//Header 
+			$html .= "Report Created: " . date('d F Y');
+
+			//Content
+			$html .= "<h4>Future Milestones</h4>";
+			$html .= "<table><tbody>";
+			$html .= "<tr><th>Project Name</th><th>Description</th><th>Due Date</th><th>Report Type</th><th>Report Is Due</th><th>Payment Mode</th><th>Status</th><th>Amount</th><th>Comment</th></tr>";
+
+			//Loop
+			foreach($mst as $em) { 
+
+
+				//Prettify Fields
+
+				if($em->ReportIsDue == 0) {
+					$RptID = "No";
+				} else {
+					$RptID = "Yes";
+				}
+
+				if($em->RptType === "REPORT") {
+					$RptType = "Report";
+				} elseif($em->RptType === "PAYMENT") {
+					$RptType = "Payment";
+				} elseif($em->RptType === "REP_PAY") {
+					$RptType = "Report &amp; Payment";
+				} elseif($em->RptType === "FINAL_REP") {
+					$RptType = "Final Report";
+				}
+
+
+				$html .= "<tr><td>" . $em->ProjName . "</td><td>" . $em->ShortDesc . "</td><td>" . date('d F Y', strtotime($em->DueDate)) . "</td><td>" . $RptType . "</td><td>" . $RptID . "</td><td>" . $em->PaymentMode . "</td><td>" . $em->Status . "</td><td>$" . number_format($em->Amount, 2) . "</td><td>" . $em->Comment . "</td></tr>";
+			}
+
+			$html .= "</tbody></table>";
+
 		}
 		//Report for Contact Details - All Employees
 		elseif ($reportType == "cdet_emp") {

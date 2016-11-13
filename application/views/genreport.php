@@ -106,6 +106,7 @@
 	                                            <option value="exp_prj">Expenditure by Project and Date</option>
 	                                            <option value="exp_spv">Expenditure by Supervisor and Date</option>
 	                                            <option value="pend_mst">Pending Milestones</option>
+	                                            <option value="future_mst">Future Milestones</option>
 	                                            <option value="cdet_emp">Contact Details - All Employees</option>
 	                                            <option value="cdet_vol">Contact Details - All Volunteers</option>
 	                                            <option value="cont_srv">Contract and WWC - Status Review</option>
@@ -236,6 +237,18 @@
                                		</div>
                                	</div>
 
+                               	<!-- Date Range --> 
+                               	<div class="col-md-12 control-wrap hideForm" id="dateFuture" style="display:none;">
+                               		<div class="col-md-12">
+                               		<div class="control-form">
+                               			<h4>Select Future Date</h4>
+                               			<hr/>
+                               			<label for="toDate" class="control-label">To:</label>
+                               			<input type="date" name="toDate" class="input-date form-control datepicker" placeholder="DD/MM/YYYY" required="required" />
+                               		</div>
+                               		</div>
+                               	</div>
+
 
 
                                	
@@ -309,7 +322,7 @@
 
       		var dateInput = $('.datepicker');
       		dateInput.datepicker({
-      			yearRange: "-100:+0",
+      			yearRange: "-20:+5",
       			dateFormat: "yy-mm-dd",
       			changeMonth: true,
       			changeYear: true
@@ -329,7 +342,8 @@
    			listProj:"#listProj", 
    			listReimb:"#listReimb",
    			listSupervisor:"#listSupervisor",
-   			showDate:"#dateRange"
+   			showDate:"#dateRange",
+   			showFutureDate:"#dateFuture"
 		};
 
    		//Individual Arrays for required elements
@@ -337,7 +351,8 @@
    		var reimbArray = ["listReimb"];
    		var exp_prjArray = ["listProj", "showDate"];
    		var exp_spvArray = ["listSupervisor", "showDate"];
-   		var pend_mstArray = ["showDate"];
+   		var pend_mstArray = ["showFutureDate"];
+   		var future_mstArray = ["showFutureDate"];
    		var cdet_empArray = [];
    		var cdet_volArray = [];
    		var cont_srvArray = [];
@@ -348,7 +363,8 @@
    			reimb:reimbArray, 
    			exp_prj:exp_prjArray, 
    			exp_spv:exp_spvArray, 
-   			pend_mst:pend_mstArray, 
+   			pend_mst:pend_mstArray,
+   			future_mst:future_mstArray, 
    			cdet_emp:cdet_empArray, 
    			cdet_vol:cdet_volArray, 
    			cont_srv:cont_srvArray

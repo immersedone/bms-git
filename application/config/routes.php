@@ -236,6 +236,7 @@ $route['user/milestones/mileproj/(:num)/upload_file/FilePath'] = 'milestones/mil
 //Routes for Upcoming Milestones Page
 $route['user/duemilestones'] = 'duemilestones';
 $route['user/duemilestones/index'] = 'duemilestones';
+$route['user/duemilestones/index/'] = 'duemilestones';
 $route['user/duemilestones/index/insert'] = 'duemilestones/duemilestones';
 $route['user/duemilestones/index/insert_validation'] = 'duemilestones/duemilestones';
 $route['user/duemilestones/index/edit/(:num)'] = 'duemilestones/duemilestones/$1';
