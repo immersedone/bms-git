@@ -96,6 +96,32 @@ class Genreport extends CI_Controller {
 		if(isset($optCP) && $optCP == "YES") {
 			$coverPage = "";
 		} else {
+
+			//If Custom Title is not set
+			if($_POST['customTitleCheck'] === "NO") {
+
+				//Array for Pre-Defined Titles - Line #1
+				//Index is the Name for Report Type
+				//Value is the Title for Line #1
+				$lineOneArr = array(
+					"empprj" => "Employee Listing",
+					"volprj" => "Volunteer Listing",
+					"reimb" => "Reimbursement Details",
+					"exp_prj" => "Expenditures by Project",
+					"exp_spv" => "Expenditures by Supervisors",
+					"pend_mst" => "Pending Milestones",
+					"future_mst" => "Future Milestones",
+					"cdet_emp" => "Contact Details - Employees",
+					"cdet_vol" => "Contact Details - Volunteers",
+					"cont_srv" => "Contract & WWC"
+				);
+
+				$data["titleLine_One"] = $lineOneArr[$reportType];
+
+				//Make 2nd Line "Report" and Current Year
+				$data["titleLine_Two"] = "Report " . date('Y');
+			}
+
 			$coverPage = $this->load->view('/include/Report_CoverPage', $data, TRUE);
 		}
 
@@ -564,7 +590,7 @@ class Genreport extends CI_Controller {
 			$html .= "Report Created: " . date('d F Y');
 
 			//Content
-			$html .= "<h4>Volunteer Contact Details</h4>";
+			$html .= "<h4>Contract & WWC - Status Review</h4>";
 			$html .= "<table><tbody>";
 			$html .= "<tr><th>Full Name</th><th>Employee/Volunteer</th><th>Contract Signed</th><th>Paperwork Completed</th><th>WWC</th><th>WWC Filed</th><th>Police Check</th><th>Teacher Registration Check</th></tr>";
 
