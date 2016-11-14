@@ -60,7 +60,7 @@
         <div class="right_col" role="main">
           <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">  
-				<h1>Milestones due</h1>
+				<h4 class="projTitle">Milestones Due</h4>
               <?php echo $output; ?>
             </div>
           </div>
