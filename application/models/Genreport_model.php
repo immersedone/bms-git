@@ -83,6 +83,26 @@ class Genreport_model extends CI_Model {
         return $supervisors;
     }
 
+    public function getSupervisorsAllPrj()
+    {
+        $query = $this->db->query("SELECT 
+            Per.PerID as PerID, 
+            CONCAT(Per.FirstName, ' ', Per.MiddleName, ' ', Per.LastName) as FullName
+            FROM  PersonProject PP
+            LEFT OUTER JOIN Person Per ON Per.PerID=PP.PerID 
+            LEFT OUTER JOIN Employee Emp on Emp.PerID=PP.PerID
+            LEFT OUTER JOIN OptionType Opt ON PP.Role=Opt.OptID 
+            LEFT OUTER JOIN Project Proj ON PP.ProjID=Proj.ProjID
+            WHERE Opt.type='Role' AND Opt.data='Supervisor' AND PP.EmpVol='Emp'");
+        $supervisors = array();
+
+        foreach($query->result_array() as $row) {
+            $supervisors[$row["PerID"]] = $row["FullName"];
+        }
+
+        return $supervisors;
+    }
+
 }
 
 ?>
