@@ -19,7 +19,7 @@ class Genreport extends CI_Controller {
 		$data = array();
 		$data["Projects"] = $this->Genreport_model->getProjects();
 		$data["Reimbursements"] = $this->Genreport_model->getReimbursements();
-		$data["Supervisors"] = $this->Genreport_model->getSupervisors();
+		$data["Supervisors"] = $this->Genreport_model->getSupervisorsAllPrj();
 		$this->load->view('genreport', $data);
 		
 	}
@@ -76,6 +76,11 @@ class Genreport extends CI_Controller {
 
 		if(isset($_POST['toDate'])) {
 			$toDate = $_POST['toDate'];
+		}
+
+
+		if(isset($_POST['supervisor'])) {
+			$supervisor = $_POST['supervisor'];
 		}
 
 		
@@ -251,6 +256,121 @@ class Genreport extends CI_Controller {
 		//Report for Expenditure by Supervisor & Date
 		elseif ($reportType == "exp_spv") {
 			
+			//Get Supervisor Name
+			$supName = $this->Extended_generic_model->return_query("SELECT
+				CONCAT(Per.FirstName, ' ', Per.MiddleName, ' ', Per.LastName) as FullName
+				FROM Person Per
+				WHERE Per.PerID='" . $supervisor . "'
+			");
+			
+			//Get Count of Total Projects (used for Loop)
+			$countProj = $this->Extended_generic_model->return_query("SELECT
+				COUNT(*) as Count,
+				Prj.ProjID as ProjID
+				FROM PersonProject PP 
+				LEFT OUTER JOIN Person Per ON Per.PerID=PP.PerID
+				LEFT OUTER JOIN Employee Emp ON Emp.PerID=PP.PerID
+				LEFT OUTER JOIN OptionType Opt ON PP.Role=Opt.OptID
+				LEFT OUTER JOIN Project Prj ON PP.ProjID=Prj.ProjID
+				WHERE Opt.type='Role'
+				AND Opt.data='Supervisor'
+				AND PP.EmpVol='Emp'
+				AND PP.PerID='" . $supervisor . "'
+			");
+
+			//Get Array of Project ID's (used for Loop)
+			$getProjID = $this->Extended_generic_model->return_query("SELECT
+				Prj.ProjID as ProjID,
+				Prj.Name as ProjName
+				FROM PersonProject PP 
+				LEFT OUTER JOIN Person Per ON Per.PerID=PP.PerID
+				LEFT OUTER JOIN Employee Emp ON Emp.PerID=PP.PerID
+				LEFT OUTER JOIN OptionType Opt ON PP.Role=Opt.OptID
+				LEFT OUTER JOIN Project Prj ON PP.ProjID=Prj.ProjID
+				WHERE Opt.type='Role'
+				AND Opt.data='Supervisor'
+				AND PP.EmpVol='Emp'
+				AND PP.PerID='" . $supervisor . "'
+				ORDER BY Prj.ProjID
+			");
+
+			//Bind Variables
+			$spvName = $supName[0]->FullName;
+			$projCount = $countProj[0]->Count;
+
+			$html .= "Supervisor Name: " . $spvName . "<br/>";
+			$html .= "Number of Projects: " . $projCount;
+
+			$projIDArr = array();
+			$projNameArr = array();
+
+			//Loop through and add ProjectID to array
+			foreach($getProjID as $gPr) {
+				array_push($projIDArr, $gPr->ProjID);
+				array_push($projNameArr, $gPr->ProjName);
+			}
+
+
+			for($i = 0; $i < $projCount; $i++) {
+
+				//Get Expenditures for a Specific Project in Array
+				$spv = $this->Extended_generic_model->return_query("SELECT
+				Exp.ExpID as ExpID,
+				Exp.ExpName as ExpName,
+				Exp.CompanyName as ExpCPName,
+				Exp.Reason as ExpReason,
+				Exp.Amount as ExpAmount,
+				Exp.GST as ExpGST,
+				Opt.data as ExpType,
+				CONCAT(Per.FirstName, ' ', Per.MiddleName, ' ', Per.LastName) as ExpSpentBy,
+				Exp.IsPaid as ExpIsPaid,
+				Exp.IsRejected as ExpIsRejected,
+				Exp.ExpDate as ExpDate,
+				Prj.Name as ProjName
+				FROM Expenditure Exp
+				LEFT OUTER JOIN Person Per ON Per.PerID=Exp.SpentBy
+				LEFT OUTER JOIN Project Prj ON Exp.ProjID=Prj.ProjID
+				LEFT OUTER JOIN OptionType Opt ON Exp.ExpType=Opt.OptID
+				WHERE Prj.ProjID='" . $projIDArr[$i] . "'
+				AND Exp.ExpDate >= '" . $fromDate . "'
+				AND Exp.ExpDate <= '" . $toDate . "'
+				");
+
+				//Check to see if List is empty
+				if(empty($spv)) {
+					$isEmpty = true;
+				} else {
+					$isEmpty = false;
+				}
+
+				//Variables for Counting
+				$totalAm = 0;
+				$totalGST = 0;
+
+				//Spit out Table Header for Project
+				$html .= "<h4>Expenditures for \"" . $projNameArr[$i] . "\"</h4>";
+				$html .= "<table><tbody>";
+				$html .= "<tr><th>Name</th><th>Company Name</th><th>Reason</th><th>Amount</th><th>GST</th><th>Type</th><th>Spent By</th></tr>";
+
+				if($isEmpty == true) {
+					$html .= "<tr><td colspan='7' style='text-align:center;'>No Expenditures Listed</td></tr>";
+				} else {
+					//Run Loop 
+					foreach($spv as $row) {
+						$totalAm += $row->ExpAmount;
+						$totalGST += $row->ExpGST;
+						$html .= "<tr><td>" . $row->ExpName ."</td><td>" . $row->ExpCPName ."</td><td>" . $row->ExpReason ."</td><td>$" . $row->ExpAmount ."</td><td>$" . $row->ExpGST ."</td><td>" . $row->ExpType ."</td><td>" . $row->ExpSpentBy . "</td></tr>";
+					}
+
+					$html .= "<tr><td></td><td></td><td></td><td><b>Total Amount:</b></td><td>$" . number_format($totalAm, 2) . "</td><td></td><td></td></tr>";
+					$html .= "<tr><td></td><td></td><td></td><td><b>Total GST:</b></td><td>$" . number_format($totalGST, 2) . "</td><td></td><td></td></tr>";
+				}
+
+				//Spit out Table Footer for Project
+
+				$html .= "</tbody></table>";
+			}
+
 		}
 		//Report for Pending Milestones
 		elseif ($reportType == "pend_mst") {

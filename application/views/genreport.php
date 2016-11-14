@@ -206,7 +206,7 @@
                                     <div class="control-form listSupervisors">
                                         <h4>Select Supervisor</h4>
                                         <hr/>
-                                        <p><small><i>The list are of active Supervisors (Employee).</i></small></p>
+                                        <p><small><i>The list are of active Supervisors (Employee) across all projects.</i></small></p>
                                         <select name="supervisor" class="form-control">
                                             <option value="0"> --- Please select a supervisor --- </option>
                                             <?php foreach($Supervisors as $key => $value) {
