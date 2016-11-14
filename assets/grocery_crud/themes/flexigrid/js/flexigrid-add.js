@@ -23,7 +23,7 @@ $(function(){
 		$('#crudForm').submit(function(){
 			var my_crud_form = $(this);
 
-			$.ajax({
+			$(this).ajaxSubmit({
 				method: "POST",
 				url: validation_url,
 				dataType: 'json',
@@ -78,11 +78,11 @@ $(function(){
 									form_success_message(data.success_message);
 								}
 								else if(data.exists)
-								{
-									$(".ui-dialog-content").dialog("close");
-									form_error_message(data.error_message);
-									return true;
-								}
+ 								{
+ 									$(".ui-dialog-content").dialog("close");
+ 									form_error_message(data.error_message);
+ 									return true;
+ 								}
 								else
 								{
 									alert( message_insert_error );
