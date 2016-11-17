@@ -68,6 +68,8 @@ class People extends CI_Controller {
 			'PersonalEmail',
 			'Mobile',
 			'SuburbID');
+
+		$crud->set_rules("LanguagesSpoken", "Languages Spoken", "trim|numeric|callback_multi_LS");
 		//Call model to get languages
 		$languages = $crud->basic_model->return_query("SELECT `LangID`, `LangName`, `LangISO_639_1` FROM Language");
 		$langArr = array();
@@ -115,6 +117,19 @@ class People extends CI_Controller {
 		$output = $crud->render();
 
 		$this->render($output);
+	}
+
+	public function multi_LS() {
+		
+		$langArr = $this->input->post('LanguagesSpoken[]');
+		if(empty($langArr)) {
+			$this->form_validation->set_message('multi_LS', 'Languages Spoken is required and must not be empty.');
+
+			return false;
+		} else {
+			return true;
+		}
+
 	}
 
 	public function getPerName($id) {
