@@ -45,7 +45,14 @@ class Milestones extends CI_Controller {
 		$crud->display_as('FilePath', 'File Attached');
 
 		$crud->add_fields('ProjID', 'ShortDesc', 'DueDate', 'RptType', 'ReportIsDue', 'PaymentMode', 'Status', 'Amount', 'Comment', 'FilePath');
-
+		
+		$crud->required_fields(
+		'ProjID',
+		'DueDate',
+		'RptType',
+		'FilePath'
+		);
+		
 		$crud->callback_column('MSComplete', array($this, 'check_complete'));
 		//$crud->callback_column('MSComplete', array($this, 'field_width'));
 
@@ -131,7 +138,13 @@ class Milestones extends CI_Controller {
 		$crud->add_fields('ProjID', 'ShortDesc', 'DueDate', 'RptType', 'Amount', 'Comment', 'FilePath');
 
 		$state = $crud->getState();
-
+					
+		$crud->required_fields(
+		'DueDate',
+		'RptType',
+		'FilePath'
+		);	
+		
 		$projects = $crud->basic_model->return_query("SELECT Pr.ProjID, Pr.Name FROM Project Pr LEFT OUTER JOIN Milestone_new Ms ON Ms.ProjID=Pr.ProjID WHERE Ms.milestoneID=".$id);
 
 		$prjArr = array();

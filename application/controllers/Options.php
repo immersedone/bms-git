@@ -59,7 +59,10 @@ class Options extends CI_Controller {
 			$crud->field_type("type", "dropdown", $optArr);
 
 		}
-
+		$crud->required_fields(
+		'type',
+		'data'
+		);
 
 		$output = $crud->render();	
 

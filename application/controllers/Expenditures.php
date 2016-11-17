@@ -49,8 +49,18 @@ class Expenditures extends CI_Controller {
 
 		$crud->callback_before_delete(array($this,'crud_delete_file'));
 
+		$crud->required_fields(
+		'ProjID',
+		'ExpName',
+		'Reason',
+		'Amount',
+		'GST',
+		'SpentBy',
+		'ExpType'
+		);		
+		
 		$projects = $crud->basic_model->return_query("SELECT ProjID, Name FROM Project");
-
+		
 		$prjArr = array();
 		foreach($projects as $prj) {
 			$prjArr += [$prj->ProjID => $prj->Name];
@@ -101,7 +111,7 @@ class Expenditures extends CI_Controller {
 		LEFT OUTER JOIN `Person` Per ON Per.PerID=Exp.SpentBy
 		LEFT OUTER JOIN OptionType Opt ON Opt.OptID = Exp.ExpType WHERE Exp.ProjID='.$id.') x');
 		$crud->columns('ExpName', 'Reason', 'Amount', 'GST', 'FullName'); 
-		$crud->add_fields('ProjID', 'ExpName', 'Reason', 'Amount', 'GST', 'SpentBy');
+		$crud->add_fields('ProjID', 'ExpName', 'Reason', 'Amount', 'GST', 'SpentBy',  'ExpType', 'ExpDate', 'FilePath');
 		$crud->edit_fields('ProjID','ExpName', 'companyname', 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType', 'ExpDate', 'FilePath');
 		$crud->set_read_fields("ProjID", "ExpName", "companyname", 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType', 'ExpDate', 'FilePath');
 		$crud->display_as('ExpName', 'Expenditure Name');
@@ -122,7 +132,14 @@ class Expenditures extends CI_Controller {
 
 		$state = $crud->getState();
 
-		
+		$crud->required_fields(
+		'ExpName',
+		'Reason',
+		'Amount',
+		'GST',
+		'SpentBy',
+		'ExpType'
+		);		
 
 		//$crud->callback_before_upload(array($this, 'check_upload'));
 

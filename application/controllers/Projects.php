@@ -42,11 +42,13 @@ class Projects extends CI_Controller {
 		$crud->display_as("Status", "Project Status");
 		$crud->display_as("TotalFunding", "Total Funding");
 		$crud->field_type("TotalFunding", "hidden");
-
-		//$crud->form_buttons('View Milestones', 'showMilestones', '');
-		//$crud->form_buttons('View Expenditures', 'showReimbursements', '');
-		//$crud->form_buttons('View Reimbursements', 'showReimbursements', '');
-		//$crud->form_buttons('View Funding', 'showFunding', '');
+	
+		$crud->required_fields(
+		'Name',
+		'Description',
+		'StartDate',
+		'Status'
+		);
 
 		//Prettify Report Type
 		$stat = $crud->basic_model->return_query("SHOW COLUMNS FROM Project WHERE Field='Status'");
@@ -137,6 +139,9 @@ class Projects extends CI_Controller {
 		$GCM->grids[2]->add_fields('ShortDesc', 'DueDate', 'RptType', 'Amount', 'Comment', 'FilePath', 'ProjID');
 		$GCM->grids[2]->callback_before_insert(array($this, 'addProjID'));
 		
+		$GCM->grids[2]->required_fields(
+		'ShortDesc'
+		);
 
 		$projects = $GCM->grids[2]->basic_model->return_query("SELECT ProjID, Name FROM Project WHERE ProjID='".$id."'");
 

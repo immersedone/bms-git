@@ -88,6 +88,13 @@ class Reimbursements extends CI_Controller {
 			$crud->field_type("ExpList", "multiselect", $expArr);
 		}
 		
+		$crud->required_fields(
+		'FullName',
+		'ExpList',
+		'IsPaid',
+		'ReimbStatus'
+		);
+		
 
 		$crud->callback_before_update(array($this, 'update_expenditures'));
 		$crud->unset_print();

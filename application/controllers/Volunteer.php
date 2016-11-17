@@ -105,7 +105,25 @@ class Volunteer extends CI_Controller {
 		$state = $crud->getState();
 		$stateInfo = $crud->getStateInfo();
 		
-		
+		if ($state === "edit" || $state === "update" || $state === "update_validation") {
+			$crud->field_type("PerID", "readonly");
+			$crud->required_fields(
+            'RefFullName',
+			'DateStarted',
+            //'DaysAvailable',
+            'ContSkills',
+            'ContQual');
+            //$crud->set_rules("PerID", "Employee Name", "required");
+		} else if ($state === "insert" || $state == "insert_validation" || $state === "add") {
+			$crud->required_fields(
+			'PerID',
+            'RefFullName',
+            //'DaysAvailable',
+            'ContSkills',
+            'ContQual');
+			//$crud->set_rules("PerID", "Employee Name", "in_list[" . $usrArrIDOnly . "]|required");
+            //echo $usrArrIDOnly;
+		} 
 
 		$volunteerOP = $crud->render();
 		if($state === 'read') {
@@ -251,7 +269,11 @@ class Volunteer extends CI_Controller {
 		$crud->field_type("StartDate", "date");
 		$crud->field_type("FinishDate", "date");
 		
-		
+		$crud->required_fields(
+		'VolName',
+		'Role',
+		'IsActive',
+		'StartDate');
 
 		if ($state === "ajax_list") {
 			$crud->setStateCode(7);

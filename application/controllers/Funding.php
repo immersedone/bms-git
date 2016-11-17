@@ -42,12 +42,18 @@ class Funding extends CI_Controller {
 		$crud->display_as('ApprovedBy', 'Approved By');
 		$crud->display_as('ApprovedOn', 'Approved On');
 		$crud->display_as('FundBodyID', 'Funding Body');
-
 		
 		//Change the Insert Funding fields
 		$crud->edit_fields("Amount", "PaymentType", 'status', "FullName", "ApprovedOn");
 		$crud->add_fields("ProjName", "FBName", "Amount", "PaymentType", 'status', "FullName", "ApprovedOn");
-	
+		
+		$crud->required_fields(
+		'ProjName',
+		'FBName', 
+		'Amount', 
+		'PaymentType', 
+		'status');
+		
 		//Call Model to get the Project Names
 		$projects = $crud->basic_model->return_query("SELECT ProjID, Name as ProjName FROM Project");
 		
@@ -123,6 +129,12 @@ class Funding extends CI_Controller {
 		$crud->add_fields("ProjID", "FBName", "Amount", "PaymentType", 'status', "FullName", "ApprovedOn");
 		$crud->edit_fields("ProjID", "FundBodyID", "Amount", "PaymentType", 'status', "ApprovedBy", "ApprovedOn", "row");
 		$crud->field_type("row", "hidden", $id);
+	
+		$crud->required_fields(
+		'FBName', 
+		'Amount', 
+		'PaymentType', 
+		'status');	
 	
 		//Call Model to get the Project Names
 		$projects = $crud->basic_model->return_query("SELECT ProjID, Name as ProjName FROM Project WHERE ProjID=".$id);

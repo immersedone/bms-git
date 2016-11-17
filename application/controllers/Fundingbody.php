@@ -29,11 +29,26 @@ class Fundingbody extends CI_Controller {
         $crud->basic_model->set_query_str('SELECT * FROM (SELECT CONCAT(S.Postcode, " - ", S.SuburbName) as SubName, F.* FROM FundingBody F
 		LEFT OUTER JOIN Suburb S on S.SuburbID = F.Location) x');
         $crud->display_as('SubName', 'Suburb');
-        $crud->display_as('BodyName', 'Body Name');
-        $crud->display_as('ContactNo', 'Contact Number');
+        $crud->display_as('BodyName', 'Funding Body Name');
+        $crud->display_as('ContactPhone', 'Contact Phone Number');
+        $crud->display_as('ContactMob', 'Contact Mobile Number');
+        $crud->display_as('ContactEmail', 'Contact Email');
+        $crud->display_as('ContactName', 'Contact Name');
 	
-		$crud->columns('BodyName','SubName','Address', 'ContactPhone', 'URL','Comments');
+		$crud->columns('BodyName', 'SubName', 'Address', 'ContactPhone', 'URL', 'Comments');
+		$crud->add_fields('BodyName', 'SubName', 'Address', 'ContactPhone', 'ContactMob', 'ContactEmail', 'ContactName', 'URL', 'Comments');
+		$crud->edit_fields('BodyName', 'SubName', 'Address', 'ContactPhone', 'ContactMob', 'ContactEmail', 'ContactName', 'URL', 'Comments');
 		$crud->field_type('Comments', 'text');
+		
+		$crud->required_fields(
+		'BodyName',
+		'SubName',
+		'Address', 
+		'ContactPhone' 
+		);
+		
+		
+		
 		
 		$suburbs = $crud->basic_model->return_query("SELECT SuburbID, CONCAT(Postcode, ' - ', SuburbName) as FullSub FROM Suburb");
 		

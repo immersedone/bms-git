@@ -255,7 +255,8 @@ class Employee extends CI_Controller {
             'BGCSDepartment');
             //$crud->set_rules("PerID", "Employee Name", "required");
 		} else if ($state === "insert" || $state == "insert_validation" || $state === "add") {
-			//$crud->required_fields( 'PerID');
+			$crud->required_fields(
+            'EmpPosition');
 			//$crud->set_rules("PerID", "Employee Name", "in_list[" . $usrArrIDOnly . "]|required");
             //echo $usrArrIDOnly;
 		} else if ($state === "read") {
@@ -399,7 +400,12 @@ class Employee extends CI_Controller {
 		$crud->display_as("PerID", "Employee Name");
 		$crud->display_as("ProjID", "Project ID");
 
-		
+		$crud->required_fields(
+		'EmpName',
+		'EmpRole',
+		'IsActive',
+		'StartDate');
+
 
 		if ($state === "ajax_list") {
 			$crud->setStateCode(7);
