@@ -101,6 +101,7 @@ class Volunteer extends CI_Controller {
 		$crud->field_type("FullName", "dropdown", $usrArr);
 		$crud->field_type("PerID", "dropdown", $usrArr);
 		$crud->field_type("Supervisor", "dropdown", $usrArr);
+		$crud->set_rules("DaysAvailable", "Days Available", "trim|numeric|callback_multi_LS");
 
 		$state = $crud->getState();
 		$stateInfo = $crud->getStateInfo();
@@ -110,7 +111,7 @@ class Volunteer extends CI_Controller {
 			$crud->required_fields(
             'RefFullName',
 			'DateStarted',
-            //'DaysAvailable',
+            'DaysAvailable',
             'ContSkills',
             'ContQual');
             //$crud->set_rules("PerID", "Employee Name", "required");
@@ -118,7 +119,8 @@ class Volunteer extends CI_Controller {
 			$crud->required_fields(
 			'PerID',
             'RefFullName',
-            //'DaysAvailable',
+			'DateStarted',
+            'DaysAvailable',
             'ContSkills',
             'ContQual');
 			//$crud->set_rules("PerID", "Employee Name", "in_list[" . $usrArrIDOnly . "]|required");
@@ -335,7 +337,19 @@ class Volunteer extends CI_Controller {
 	function link_prjvw_cp($primarykey, $row) {
 		return base_url().'user/volunteer/index/prjvw/'.$primarykey.'/'.$row->PerID.'/Current%20Projects';
 	}
+	
+	public function multi_LS() {
+		
+		$dayArr = $this->input->post('DaysAvailable[]');
+		if(empty($dayArr)) {
+			$this->form_validation->set_message('multi_LS', 'Days Available is required and must not be empty.');
 
+			return false;
+		} else {
+			return true;
+		}
+
+	}
 	function link_prjvw_eh($primarykey, $row) {
 		return base_url().'user/volunteer/index/prjvw/'.$primarykey.'/'.$row->PerID.'/Volunteer%20History';
 	}

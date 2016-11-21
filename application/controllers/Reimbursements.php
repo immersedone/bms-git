@@ -88,6 +88,9 @@ class Reimbursements extends CI_Controller {
 			$crud->field_type("ExpList", "multiselect", $expArr);
 		}
 		
+		$crud->set_rules("ExpList", "Expenditures", "trim|numeric|callback_multi_LS");
+		
+		
 		$crud->required_fields(
 		'FullName',
 		'ExpList',
@@ -118,6 +121,21 @@ class Reimbursements extends CI_Controller {
 		
 		$this->reimb_insert($post_array);
 	}
+	
+	public function multi_LS() {
+		
+		$expListArr = $this->input->post('ExpList[]');
+		if(empty($expListArr)) {
+			$this->form_validation->set_message('multi_LS', 'At least one expenditure must be selected to reimburse.');
+
+			return false;
+		} else {
+			return true;
+		}
+
+	}
+	
+	
 
 	function update_expenditures($post_array, $primary_key) {
 		if(!empty($post_array['ExpList'])) {

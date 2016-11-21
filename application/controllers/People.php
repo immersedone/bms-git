@@ -67,7 +67,8 @@ class People extends CI_Controller {
 			'Address',
 			'PersonalEmail',
 			'Mobile',
-			'SuburbID');
+			'SuburbID',
+			'LanguagesSpoken');
 
 		$crud->set_rules("LanguagesSpoken", "Languages Spoken", "trim|numeric|callback_multi_LS");
 		//Call model to get languages

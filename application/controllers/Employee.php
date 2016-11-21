@@ -235,6 +235,7 @@ class Employee extends CI_Controller {
         $crud->set_rules('HrlyRate', 'Hourly Rate', 'numeric');
         $crud->set_rules('SecHrlyRate', 'Second Hourly Rate', 'numeric');
         $crud->set_rules('HrsPerFrtnt', 'Hours Per Fortnight', 'numeric');
+		$crud->set_rules("DaysWork", "Days Available", "trim|numeric|callback_multi_LS");
         //$crud->set_rules("DaysWork", "Days Available", "required");
         
 
@@ -252,11 +253,23 @@ class Employee extends CI_Controller {
             'AnnualLeave',
             'PersonalLeave',
             'NHACEClass',
-            'BGCSDepartment');
+            'BGCSDepartment',
+			'DaysWork');
             //$crud->set_rules("PerID", "Employee Name", "required");
 		} else if ($state === "insert" || $state == "insert_validation" || $state === "add") {
 			$crud->required_fields(
-            'EmpPosition');
+            'PerID',
+            'EmpPosition',
+            'WorkMob',
+            'WorkEmail',
+            'EmpDate',
+            'HrlyRate',
+            'HrsPerFrtnt',
+            'AnnualLeave',
+            'PersonalLeave',
+            'NHACEClass',
+            'BGCSDepartment',
+			'DaysWork');
 			//$crud->set_rules("PerID", "Employee Name", "in_list[" . $usrArrIDOnly . "]|required");
             //echo $usrArrIDOnly;
 		} else if ($state === "read") {
@@ -474,6 +487,19 @@ class Employee extends CI_Controller {
 		$q = $this->db->query('SELECT CONCAT(FirstName, " ", MiddleName, " ", LastName) as FullName FROM Person WHERE PerID="'.$value.'" LIMIT 1')->row();
 		$readOnly = '<div id="field-PerID" class="readonly_label">' . $q->FullName .'</div>';
 		return $readOnly . '<input id="field-PerID" name="PerID" type="text" value="' . $value . '" class="numeric form-control" maxlength="255" style="display:none;">';
+	}	
+	
+	public function multi_LS() {
+		
+		$dayArr = $this->input->post('DaysWork[]');
+		if(empty($dayArr)) {
+			$this->form_validation->set_message('multi_LS', 'Days Available is required and must not be empty.');
+
+			return false;
+		} else {
+			return true;
+		}
+
 	}
 
 	function employee_delete($primarykey, $row) {
