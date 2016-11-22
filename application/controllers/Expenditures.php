@@ -160,7 +160,6 @@ class Expenditures extends CI_Controller {
 		if($state === "edit" || $state === "update") {
 			//$crud->field_type("ProjID", "readonly");
 			$crud->callback_edit_field("ProjID", array($this, 'callback_projID_edit'));
-			$crud->set_field_upload('FilePath', 'assets/uploads/files/expenditures');
 		} else if ($state === "add" || $state === "insert") {
 			$crud->callback_add_field("ProjID", function() {
 				$id = get_cookie("projID");
@@ -169,7 +168,8 @@ class Expenditures extends CI_Controller {
 				$readOnly = '<div id="field-ProjID" class="readonly_label">' . $q->Name .'</div>';
 				return $readOnly. '<input id="field-ProjID" name="ProjID" type="text" value="' . $id . '" class="numeric form-control" maxlength="255" style="display:none;">';
 			});
-			$crud->set_field_upload('FilePath', 'assets/uploads/files/expenditures');
+			$crud->setStateUrlUpload($id);
+			$crud->setStateUrlDelete($id);
 		}  else {
 			$crud->field_type("ProjID", "dropdown", $prjArr);
 		}
@@ -196,6 +196,7 @@ class Expenditures extends CI_Controller {
 		$crud->field_type("FullName", "dropdown", $usrArr);
 		$crud->field_type("SpentBy", "dropdown", $usrArr);
 		$crud->field_type("ExpType", "dropdown", $expArr);
+		$crud->set_field_upload('FilePath', 'assets/uploads/files/expenditures');
 		
 		$crud->callback_before_insert(array($this,'expenditure_add'));
 		
