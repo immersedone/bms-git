@@ -69,10 +69,10 @@
 				}
                 $resp['success'] = TRUE;
                 $resp['success_list_url'] = base_url() . "user/funding";
-                $resp['success_message'] = "Successfully added Funding to Project.";
+                $resp['success_message'] = "Successfully updated Funding";
             } else {
                 $resp['success'] = FALSE;
-                $resp['error_message'] = "Successfully added Funding to Project.";
+                $resp['error_message'] = "Failed to update Funding.";
                 $resp['error_fields'] = "";
             }
 

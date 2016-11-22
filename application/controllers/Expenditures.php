@@ -244,10 +244,16 @@ class Expenditures extends CI_Controller {
 		$gst = $_POST['GST'];
 		$SpentBy = $_POST['SpentBy'];
 		$ProjectID = $_POST['ProjID'];
+		$ExpDate = $_POST['ExpDate'];
+		$FilePath = $_POST['FilePath'];
+
+		$newDateRep = preg_replace('/\//', '-',$ExpDate);
+		$newDate = date("Y-m-d H:i:s", strtotime($newDateRep));
+		
 		
 		$crud = new grocery_CRUD();
 		$crud->set_model('Expenditure_model');
-		$resp = $crud->basic_model->insert_expenditure($ExpName, $Reason, $CompanyName, $amount, $gst, $SpentBy, $ProjectID);
+		$resp = $crud->basic_model->insert_expenditure($ExpName, $Reason, $CompanyName, $amount, $gst, $SpentBy, $FilePath, $newDate, $ProjectID);
 		echo $resp;
 	}
 

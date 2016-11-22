@@ -240,6 +240,7 @@ $route['user/milestones/mileproj/(:num)/upload_file/FilePath'] = 'milestones/mil
 $route['user/duemilestones'] = 'duemilestones';
 $route['user/duemilestones/index'] = 'duemilestones';
 $route['user/duemilestones/index/'] = 'duemilestones';
+$route['user/duemilestones/index/add'] = 'duemilestones/duemilestones';
 $route['user/duemilestones/index/insert'] = 'duemilestones/duemilestones';
 $route['user/duemilestones/index/insert_validation'] = 'duemilestones/duemilestones';
 $route['user/duemilestones/index/edit/(:num)'] = 'duemilestones/duemilestones/$1';

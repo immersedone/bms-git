@@ -260,14 +260,12 @@ class Milestones extends CI_Controller {
 		$ShortDesc = $_POST['ShortDesc'];
 		$FilePath = $_POST['FilePath'];
 
-		//Redundant (Old DB Table)
-		/*$Title = $_POST['Title'];
-		$Description = $_POST['Description'];
-		$StartDate = $_POST['StartDate'];
-		$FinishDate = $_POST['FinishDate'];*/
+		$newDateRep = preg_replace('/\//', '-',$DueDate);
+		$newDate = date("Y-m-d H:i:s", strtotime($newDateRep));
+		
 		$crud = new grocery_CRUD();
 		$crud->set_model('Milestone_GC');
-		$resp = $crud->basic_model->insert_mile($ProjID, $ShortDesc, $DueDate, $RptType, $ReportIsDue, $PaymentMode, $Status, $Amount, $Comment, $FilePath);
+		$resp = $crud->basic_model->insert_mile($ProjID, $ShortDesc, $newDate, $RptType, $ReportIsDue, $PaymentMode, $Status, $Amount, $Comment, $FilePath);
 		echo $resp;
 	}
 

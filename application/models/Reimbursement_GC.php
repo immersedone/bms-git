@@ -25,14 +25,14 @@
             echo json_encode($resp);
         }
 
-        function insert_reimb($reason, $date, $Approvedby, $ispaid, $perid)  //Removed type/ReimbID Temporarily
+        function insert_reimb($newDate, $expStr, $Approvedby, $ispaid, $perid, $Comments)  //Removed type/ReimbID Temporarily
 		{
 
             $resp = array();
             //$newDate = strtotime($date);
             
 
-            if($this->db->simple_query("INSERT INTO Reimbursement (ReimbDate, ExpList, ApprovedBy, IsPaid, PerID) VALUES('$reason', '".$date."', '$Approvedby', '$ispaid', '$perid')")) 
+            if($this->db->simple_query("INSERT INTO Reimbursement (ReimbDate, ExpList, ApprovedBy, IsPaid, PerID, Comments) VALUES('$newDate', '$expStr', '$Approvedby', '$ispaid', '$perid', '$Comments')")) 
 			{
 				//$this->db->simple_query("UPDATE Reimbursement SET `Amount`=`Amount`+$amount WHERE `PerID` = $perid ");
                 $resp['success'] = TRUE;

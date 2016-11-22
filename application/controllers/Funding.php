@@ -34,7 +34,8 @@ class Funding extends CI_Controller {
 		LEFT OUTER JOIN `Project` Proj on Proj.ProjID=Fund.ProjID
 		LEFT OUTER JOIN `Person` Per on Per.PerID=Fund.ApprovedBy) x');
 		$crud->set_read_fields('ProjID', 'FundBodyID', 'Amount', 'PaymentType', 'status', 'ApprovedBy', 'ApprovedOn');
-		$crud->columns('ProjName', 'FBName', 'Amount', 'PaymentType', 'FullName', 'status', 'ApprovedOn');
+		$crud->columns('ProjName', 'FBName', 'Amount', 'PaymentType', 'ApprovedBy', 'status', 'ApprovedOn');
+		$crud->display_as('ProjID', 'Project');
 		$crud->display_as('ProjName', 'Project');
 		$crud->display_as('FBName', 'Funding Body');
 		$crud->display_as('PaymentType', 'Payment Type');
@@ -44,12 +45,12 @@ class Funding extends CI_Controller {
 		$crud->display_as('FundBodyID', 'Funding Body');
 		
 		//Change the Insert Funding fields
-		$crud->edit_fields("Amount", "PaymentType", 'status', "FullName", "ApprovedOn");
-		$crud->add_fields("ProjName", "FBName", "Amount", "PaymentType", 'status', "FullName", "ApprovedOn");
+		$crud->edit_fields("ProjID", "FundBodyID", "Amount", "PaymentType", 'status', "ApprovedBy", "ApprovedOn");
+		$crud->add_fields("ProjID", "FundBodyID", "Amount", "PaymentType", 'status', "ApprovedBy", "ApprovedOn");
 		
 		$crud->required_fields(
-		'ProjName',
-		'FBName', 
+		'ProjID',
+		'FundBodyID', 
 		'Amount', 
 		'PaymentType', 
 		'status');
@@ -65,7 +66,7 @@ class Funding extends CI_Controller {
 
 		//Change the field type to a dropdown with values
 		//to add to the relational table
-		$crud->field_type("ProjName", "dropdown", $prjArr);
+		$crud->field_type("ProjID", "dropdown", $prjArr);
 		
 		//Call Model to get the names of the funding bodies
 		$fundingbodies = $crud->basic_model->return_query("SELECT FundBodyID, BodyName FROM FundingBody");
@@ -78,7 +79,7 @@ class Funding extends CI_Controller {
 
 		//Change the field type to a dropdown with values
 		//to add to the relational table
-		$crud->field_type("FBName", "dropdown", $FBArr);		
+		$crud->field_type("FundBodyID", "dropdown", $FBArr);		
 				
 		//Call Model to get the User's Full Names
 		$users = $crud->basic_model->return_query("SELECT PerID, CONCAT(FirstName, ' ', MiddleName, ' ', LastName) as FullName FROM Person");
@@ -89,9 +90,10 @@ class Funding extends CI_Controller {
 			$usrArr += [$usr->PerID => $usr->FullName];
 		}
 		
+
 		//Change the field type to a dropdown with values
 		//to add to the relational table
-		$crud->field_type("FullName", "dropdown", $usrArr);
+		$crud->field_type("ApprovedBy", "dropdown", $usrArr);
 
 		//Change the default method to fire when organizing funding for a project
 		$crud->callback_before_insert(array($this,'funding_add'));
@@ -126,7 +128,7 @@ class Funding extends CI_Controller {
 		$crud->display_as("ProjID", "Project Name");
 		
 		//Change the Insert Funding fields
-		$crud->add_fields("ProjID", "FBName", "Amount", "PaymentType", 'status', "FullName", "ApprovedOn");
+		$crud->add_fields("ProjID", "FundBodyID", "Amount", "PaymentType", 'status', "ApprovedBy", "ApprovedOn");
 		$crud->edit_fields("ProjID", "FundBodyID", "Amount", "PaymentType", 'status', "ApprovedBy", "ApprovedOn", "row");
 		$crud->field_type("row", "hidden", $id);
 	
@@ -278,43 +280,29 @@ class Funding extends CI_Controller {
 
 		//Initialise and assign variables 
 		
-		if(isset($_POST['ProjName'])) {
-			$projectID = $_POST['ProjName'];
-		} else if (isset($_POST['ProjID'])) {
-			$projectID = $_POST['ProjID'];
-		}
-		$fundbodyid = $_POST['FBName'];
+		$projectID = $_POST['ProjID'];
+		$fundbodyid = $_POST['FundBodyID'];
 		$amount = $_POST['Amount'];
 		$PaymentType = $_POST['PaymentType'];
-		if(isset($_POST['FullName'])) {
-			$Approvedby = $_POST['FullName'];
-		} else if (isset($_POST['ApprovedBy'])) {
-			$Approvedby = $_POST['ApprovedBy'];
-		}
+		$Approvedby = $_POST['ApprovedBy'];
 		$ApprovedOn = $_POST['ApprovedOn'];
 		$status = $_POST['status'];
 
+		$newDateRep = preg_replace('/\//', '-',$ApprovedOn);
+		$newDate = date("Y-m-d H:i:s", strtotime($newDateRep));
 		$crud = new grocery_CRUD();
 		$crud->set_model('Funding_GC');
-		$resp = $crud->basic_model->insert_fund($projectID, $fundbodyid, $amount, $PaymentType, $Approvedby, $ApprovedOn, $status);
+		$resp = $crud->basic_model->insert_fund($projectID, $fundbodyid, $amount, $PaymentType, $Approvedby, $newDate, $status);
 		echo $resp;
 	}
 
 	public function fd_update($id) {
 
 		//Initialise and assign variables 
-		if(isset($_POST['ProjName'])) {
-			$projectID = $_POST['ProjName'];
-		} else if (isset($_POST['ProjID'])) {
-			$projectID = $_POST['ProjID'];
-		}
+		$projectID = $_POST['ProjID'];
 		$newamount = $_POST['Amount'];
 		$PaymentType = $_POST['PaymentType'];
-		if(isset($_POST['FullName'])) {
-			$Approvedby = $_POST['FullName'];
-		} else if (isset($_POST['ApprovedBy'])) {
-			$Approvedby = $_POST['ApprovedBy'];
-		}
+		$Approvedby = $_POST['ApprovedBy'];
 		$ApprovedOn = $_POST['ApprovedOn'];
 		$status = $_POST['status'];
 		
@@ -330,9 +318,11 @@ class Funding extends CI_Controller {
 			$rmAmt = $crud->basic_model->return_query("SELECT Amount FROM Funding WHERE FundID='". $id . "'");
 			$oldamount = $rmAmt[0]->Amount;
 		}
+				
+		$newDateRep = preg_replace('/\//', '-',$ApprovedOn);
+		$newDate = date("Y-m-d H:i:s", strtotime($newDateRep));
 		
-		
-		$resp = $crud->basic_model->update_fund($id, $newamount, $PaymentType, $Approvedby, $ApprovedOn, $status, $projectID, $oldamount);
+		$resp = $crud->basic_model->update_fund($id, $newamount, $PaymentType, $Approvedby, $newDate, $status, $projectID, $oldamount);
 
 		echo $resp;
 	}

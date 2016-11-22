@@ -163,6 +163,7 @@ class Reimbursements extends CI_Controller {
 		$ispaid = $_POST['IsPaid'];
 		$exp = $_POST['ExpList'];
 		$Approvedby = $_POST['ApprovedBy'];
+		$Comments = $_POST['Comments'];
 
 		$expStr = "";
 
@@ -183,7 +184,7 @@ class Reimbursements extends CI_Controller {
 		$newDate = date("Y-m-d H:i:s", strtotime($newDateRep));
 		$crud = new grocery_CRUD();
 		$crud->set_model('Reimbursement_GC');
-		$resp = $crud->basic_model->insert_reimb($newDate, $expStr, $Approvedby, $ispaid, $perid);
+		$resp = $crud->basic_model->insert_reimb($newDate, $expStr, $Approvedby, $ispaid, $perid, $Comments);
 		echo $resp;
 	}
 	

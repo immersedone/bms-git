@@ -8,31 +8,13 @@
         function __construct() {
             parent::__construct();
         }
-     /*
-        function delete_reimb($expid, $perid)
-        {
 
-            $resp = array();
-
-            if($this->db->simple_query("DELETE FROM Reimbursement WHERE ExpID='$expid' OR PerID='$perid' LIMIT 1")) {
-                $resp['success'] = TRUE;
-                $resp['success_message'] = "Successfully removed Reimbursement";
-            } else {
-                $resp['success'] = FALSE;
-                $resp['error_message'] = "Failed to remove Item from Reimbursement\n Try again later or contact system administrator.";
-            }
-
-            echo json_encode($resp);
-        }
-		
-	*/
-
-        function insert_expenditure($ExpName, $Reason, $CompanyName, $amount, $gst, $SpentBy, $ProjectID)  
+        function insert_expenditure($ExpName, $Reason, $CompanyName, $amount, $gst, $SpentBy, $FilePath, $newDate, $ProjectID)  
 		{
 
             $resp = array();
 
-            if($this->db->simple_query("INSERT INTO Expenditure (ExpName, Reason, CompanyName, Amount, GST, SpentBy, ProjID) VALUES('$ExpName', '$Reason', '$CompanyName', '$amount', '$gst', '$SpentBy', '$ProjectID')")) 
+            if($this->db->simple_query("INSERT INTO Expenditure (ExpName, CompanyName, Reason, Amount, GST, SpentBy, ExpDate, FilePath, ProjID) VALUES('$ExpName', '$CompanyName', '$Reason', '$amount', '$gst', '$SpentBy', '$newDate', '$FilePath', '$ProjectID')")) 
 			{
                 $resp['success'] = TRUE;
                 $resp['success_list_url'] = base_url() . "user/expenditures";

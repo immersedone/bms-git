@@ -55,9 +55,9 @@ class Volunteer extends CI_Controller {
 		$crud->display_as("DateFinished", "Date Finished as Volunteer");
 		$crud->display_as("isActive", "Is Active");
 
-		$crud->add_fields("PerID", "isActive", "DateStarted", "DateFinished", "RefFullName", "RefMobile", "RefHPhone", "RefRelToVol", "DaysAvailable", "ContSkills", "ContQual");
-		$crud->edit_fields("PerID", "isActive", "DateStarted", "DateFinished", "RefFullName", "RefMobile", "RefHPhone", "RefRelToVol", "DaysAvailable", "ContSkills", "ContQual");
-		$crud->set_read_fields("PerID", "isActive", "DateStarted", "DateFinished", "RefFullName", "RefMobile", "RefHPhone", "RefRelToVol", "DaysAvailable", "ContSkills", "ContQual");
+		$crud->add_fields("PerID", "isActive", "Supervisor", "BGCSDepartment", "DateStarted", "DateFinished", "RefFullName", "RefMobile", "RefHPhone", "RefRelToVol", "DaysAvailable", "ContSkills", "ContQual");
+		$crud->edit_fields("PerID", "isActive",  "Supervisor", "BGCSDepartment", "DateStarted", "DateFinished", "RefFullName", "RefMobile", "RefHPhone", "RefRelToVol", "DaysAvailable", "ContSkills", "ContQual");
+		$crud->set_read_fields("PerID", "isActive",  "Supervisor", "BGCSDepartment", "DateStarted", "DateFinished", "RefFullName", "RefMobile", "RefHPhone", "RefRelToVol", "DaysAvailable", "ContSkills", "ContQual");
 
 
 		//List of Projects
@@ -426,9 +426,15 @@ class Volunteer extends CI_Controller {
 		$startdate = $_POST['StartDate'];
 		$finishdate = $_POST['FinishDate'];
 
+		$newDateRep = preg_replace('/\//', '-',$startdate);
+		$newStart = date("Y-m-d H:i:s", strtotime($newDateRep));
+
+		$newDateRep = preg_replace('/\//', '-',$finishdate);
+		$newFinish = date("Y-m-d H:i:s", strtotime($newDateRep));
+		
 		$crud = new grocery_CRUD();
 		$crud->set_model('Volunteer_GC');
-		$resp = $crud->basic_model->insert_pp($personID, $projectID, $role, $EmpVol, $isActive, $startdate, $finishdate);
+		$resp = $crud->basic_model->insert_pp($personID, $projectID, $role, $EmpVol, $isActive, $newStart, $newFinish);
 		echo $resp;
 	}
 

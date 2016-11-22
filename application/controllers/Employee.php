@@ -581,9 +581,15 @@ class Employee extends CI_Controller {
 		$startdate = $_POST['StartDate'];
 		$finishdate = $_POST['FinishDate'];
 
+		$newDateRep = preg_replace('/\//', '-',$startdate);
+		$newStart = date("Y-m-d H:i:s", strtotime($newDateRep));
+
+		$newDateRep = preg_replace('/\//', '-',$finishdate);
+		$newFinish = date("Y-m-d H:i:s", strtotime($newDateRep));
+
 		$crud = new grocery_CRUD();
 		$crud->set_model('Employee_GC');
-		$resp = $crud->basic_model->insert_pp($personID, $projectID, $role, $EmpVol, $isActive, $startdate, $finishdate);
+		$resp = $crud->basic_model->insert_pp($personID, $projectID, $role, $EmpVol, $isActive, $newStart, $newFinish);
 		echo $resp;
 	}
 }
