@@ -34,7 +34,7 @@ class Expenditures extends CI_Controller {
 		LEFT OUTER JOIN `Person` Per ON Per.PerID=Exp.SpentBy
 		LEFT OUTER JOIN OptionType Opt ON Opt.OptID = Exp.ExpType) x');
 		$crud->display_as('ExpName', 'Expenditure Name');
-		$crud->display_as('companyname', 'Company Name');
+		$crud->display_as('CompanyName', 'Company Name');
 		$crud->display_as('ExpType', 'Expenditure Type');
 		$crud->display_as('EType', 'Expenditure Type');
 		$crud->display_as('SpentBy', 'Spent By');
@@ -42,10 +42,10 @@ class Expenditures extends CI_Controller {
 		$crud->display_as('ExpDate', 'Date of Expenditure');
 		$crud->display_as('FilePath', 'File Attached');
 		$crud->display_as("ProjID", "Project Name");
-		$crud->columns('Name','ExpName', 'companyname', 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType', 'ExpDate', 'FilePath');
-		$crud->set_read_fields('ProjID','ExpName', 'companyname', 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType', 'ExpDate', 'FilePath');
-		$crud->add_fields('ProjID','ExpName', 'companyname', 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType', 'ExpDate', 'FilePath');
-		$crud->edit_fields('ProjID','ExpName', 'companyname', 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType', 'ExpDate', 'FilePath');
+		$crud->columns('Name','ExpName', 'CompanyName', 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType', 'ExpDate', 'FilePath');
+		$crud->set_read_fields('ProjID','ExpName', 'CompanyName', 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType', 'ExpDate', 'FilePath');
+		$crud->add_fields('ProjID','ExpName', 'CompanyName', 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType', 'ExpDate', 'FilePath');
+		$crud->edit_fields('ProjID','ExpName', 'CompanyName', 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType', 'ExpDate', 'FilePath');
 
 		$crud->callback_before_delete(array($this,'crud_delete_file'));
 
@@ -92,7 +92,7 @@ class Expenditures extends CI_Controller {
 		$crud->field_type("EType", "dropdown", $expArr);
 		$crud->field_type("SpentBy", "dropdown", $usrArr);
 		$crud->field_type("ProjID", "dropdown", $prjArr);
-		$crud->callback_before_insert(array($this,'expenditure_add'));
+		//$crud->callback_before_insert(array($this,'expenditure_add'));
 
 		
 		
@@ -112,10 +112,10 @@ class Expenditures extends CI_Controller {
 		LEFT OUTER JOIN OptionType Opt ON Opt.OptID = Exp.ExpType WHERE Exp.ProjID='.$id.') x');
 		$crud->columns('ExpName', 'Reason', 'Amount', 'GST', 'FullName'); 
 		$crud->add_fields('ProjID', 'ExpName', 'Reason', 'Amount', 'GST', 'SpentBy',  'ExpType', 'ExpDate', 'FilePath');
-		$crud->edit_fields('ProjID','ExpName', 'companyname', 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType', 'ExpDate', 'FilePath');
-		$crud->set_read_fields("ProjID", "ExpName", "companyname", 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType', 'ExpDate', 'FilePath');
+		$crud->edit_fields('ProjID','ExpName', 'CompanyName', 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType', 'ExpDate', 'FilePath');
+		$crud->set_read_fields("ProjID", "ExpName", "CompanyName", 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType', 'ExpDate', 'FilePath');
 		$crud->display_as('ExpName', 'Expenditure Name');
-		$crud->display_as('companyname', 'Company Name');
+		$crud->display_as('CompanyName', 'Company Name');
 		$crud->display_as('FullName', 'Spent By');
 		$crud->display_as('ProjID', 'Project Name');
 		$crud->display_as('Name', 'Project Name');
@@ -169,6 +169,7 @@ class Expenditures extends CI_Controller {
 				$readOnly = '<div id="field-ProjID" class="readonly_label">' . $q->Name .'</div>';
 				return $readOnly. '<input id="field-ProjID" name="ProjID" type="text" value="' . $id . '" class="numeric form-control" maxlength="255" style="display:none;">';
 			});
+			$crud->set_field_upload('FilePath', 'assets/uploads/files/expenditures');
 		}  else {
 			$crud->field_type("ProjID", "dropdown", $prjArr);
 		}
@@ -237,6 +238,7 @@ class Expenditures extends CI_Controller {
 		
 		$ExpName = $_POST['ExpName'];
 		$Reason = $_POST['Reason'];
+		$CompanyName = $_POST['CompanyName'];
 		$amount = $_POST['Amount'];
 		$gst = $_POST['GST'];
 		$SpentBy = $_POST['SpentBy'];
@@ -244,7 +246,7 @@ class Expenditures extends CI_Controller {
 		
 		$crud = new grocery_CRUD();
 		$crud->set_model('Expenditure_model');
-		$resp = $crud->basic_model->insert_expenditure($ExpName, $Reason, $amount, $gst, $SpentBy, $ProjectID);
+		$resp = $crud->basic_model->insert_expenditure($ExpName, $Reason, $CompanyName, $amount, $gst, $SpentBy, $ProjectID);
 		echo $resp;
 	}
 
