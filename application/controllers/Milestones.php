@@ -130,12 +130,12 @@ class Milestones extends CI_Controller {
 		$crud->display_as('ProjName', 'Project Name');
 		$crud->display_as('ShortDesc', 'Description');
 		$crud->display_as('DueDate', 'Due Date');
-		$crud->display_as('RptType', 'Type');
+		$crud->display_as('RptType', 'Report Type');
 		$crud->display_as('MSComplete', 'Complete');
 		$crud->display_as('PaymentMode', 'Payment Mode');
 		$crud->display_as('ReportIsDue', 'Report Is Due');
 		$crud->display_as("FilePath", "File Attached");
-		$crud->add_fields('ProjID', 'ShortDesc', 'DueDate', 'RptType', 'Amount', 'Comment', 'FilePath');
+		$crud->add_fields('ProjID', 'ShortDesc', 'DueDate', 'RptType', 'ReportIsDue', 'PaymentMode', 'Status', 'Amount', 'Comment', 'FilePath');
 
 		$state = $crud->getState();
 					
@@ -253,18 +253,21 @@ class Milestones extends CI_Controller {
 		$RptType = $_POST['RptType'];
 		$Amount = $_POST['Amount'];
 		$Comment = $_POST['Comment'];
+		$ReportIsDue = $_POST['ReportIsDue'];
+		$PaymentMode = $_POST['PaymentMode'];
+		$Status = $_POST['Status'];
 		$DueDate = $_POST['DueDate'];
 		$ShortDesc = $_POST['ShortDesc'];
+		$FilePath = $_POST['FilePath'];
 
 		//Redundant (Old DB Table)
 		/*$Title = $_POST['Title'];
 		$Description = $_POST['Description'];
 		$StartDate = $_POST['StartDate'];
 		$FinishDate = $_POST['FinishDate'];*/
-
 		$crud = new grocery_CRUD();
 		$crud->set_model('Milestone_GC');
-		$resp = $crud->basic_model->insert_mile($ProjID, $DueDate, $RptType, $ShortDesc, $Amount, $Comment);
+		$resp = $crud->basic_model->insert_mile($ProjID, $ShortDesc, $DueDate, $RptType, $ReportIsDue, $PaymentMode, $Status, $Amount, $Comment, $FilePath);
 		echo $resp;
 	}
 

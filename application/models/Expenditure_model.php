@@ -36,10 +36,10 @@
 			{
                 $resp['success'] = TRUE;
                 $resp['success_list_url'] = base_url() . "user/expenditures";
-                $resp['success_message'] = "Successfully added Reimbursement to Person";
+                $resp['success_message'] = "Successfully added Expenditure to Project";
             } else {
                 $resp['success'] = FALSE;
-                $resp['error_message'] = "Failed to added Reimbursement to Person";
+                $resp['error_message'] = "Failed to added Expenditure to Project";
                 $resp['error_fields'] = $this->db->error();
             }
 
