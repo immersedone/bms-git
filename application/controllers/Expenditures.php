@@ -47,7 +47,7 @@ class Expenditures extends CI_Controller {
 		$crud->add_fields('ProjID','ExpName', 'CompanyName', 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType', 'ExpDate', 'FilePath');
 		$crud->edit_fields('ProjID','ExpName', 'CompanyName', 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType', 'ExpDate', 'FilePath');
 
-		$crud->callback_before_delete(array($this,'crud_delete_file'));
+		//$crud->callback_before_delete(array($this,'crud_delete_file'));
 
 		$crud->required_fields(
 		'ProjID',
@@ -255,6 +255,9 @@ class Expenditures extends CI_Controller {
 	public function crud_delete_file($primary_key)
 	{
 	    $row = $this->db->where('id',$primary_key)->get('Expenditures')->row();
+		
+		
+		
 	    unlink('assets/uploads/files/expenditures'.$row->file_url);
 	   
 	    return true;

@@ -159,6 +159,10 @@ class Volunteer extends CI_Controller {
 			$crudTwo->display_as('TeacherRegCheck', 'Valid Teacher Registration');
 			$crudTwo->display_as('WWC', 'Working With Children Check (WWC)');
 			$crudTwo->display_as('WWCFiled', 'Working With Children Check (WWC) is Filed');
+			$crudTwo->display_as('WWCExpiry', 'Working With Children Check (WWC) Expiry Date');
+			$crudTwo->display_as('TeacherExipry', 'Valid Teacher Registration Expiry Date');
+			$crudTwo->display_as('FAQualExpiry', 'First Aid Qualification Expiry');
+			$crudTwo->display_as('PoliceCheckDate', 'Date of Police Check');
 			$crudTwo->display_as('DateofBirth', 'Date of Birth');
 			$crudTwo->display_as('FAQual', 'First Aid Qualification Level');
 			$crudTwo->display_as('LanguagesSpoken', 'Languages Spoken');
@@ -171,7 +175,7 @@ class Volunteer extends CI_Controller {
 			$crudTwo->field_type('Password', 'hidden');
 			$crudTwo->field_type('Hash', 'hidden');
 			$crudTwo->field_type('Timeout', 'hidden');
-			$crudTwo->set_read_fields("Address", "SuburbID", "PersonalEmail", "Mobile", "HomePhone", "Status", "DateStarted", "DateFinished", "ContractSigned", "PaperworkCompleted", "WWC", "WWCFiled", "PoliceCheck", "TeacherRegCheck", "FAQual", "DateofBirth", "LanguagesSpoken", "EmergContName", "EmergContMob", "EmergContHPhone", "EmergContWPhone", "EmergContRelToPer");
+			$crudTwo->set_read_fields("Address", "SuburbID", "PersonalEmail", "Mobile", "HomePhone", 'Status', 'DateStarted', 'DateFinished', 'ContractSigned', 'PaperworkCompleted', 'WWC', 'WWCFiled', 'WWCExpiry', 'PoliceCheck', 'PoliceCheckDate', 'TeacherRegCheck', 'TeacherExipry', 'FAQual', 'FAQaulExpiry', 'LanguagesSpoken', 'EmergContName', 'EmergContMob', 'EmergContHPhone', 'EmergContWPhone', 'EmergContRelToPer');
 			$output["perID"] = $perID;
 			$crudTwo->setNewState($perID);
 
