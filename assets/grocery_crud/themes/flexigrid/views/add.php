@@ -7,6 +7,32 @@
 
 	$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/jquery.noty.js');
 	$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/config/jquery.noty.config.js');
+
+	if(isset($subject)) {
+		switch($subject) {
+		    case "Project Details":
+		        $gridNo = 1;
+		        break;
+		    case "Milestone":
+		        $gridNo = 2;
+		        break;
+		    case "Expenditure":
+		        $gridNo = 3;
+		        break;
+		    case "Funding":
+		        $gridNo = 4;
+		        break;
+		    case "Volunteers":
+		        $gridNo = 5;
+		        break;
+		    case "Volunteer";
+		        $gridNo = 5;
+		        break;
+		    case "Employee":
+		        $gridNo = 6;
+		        break;
+		}
+	}
 ?>
 <div class="flexigrid crud-form" style='width: 100%;' data-unique-hash="<?php echo $unique_hash; ?>">
 	<div class="mDiv">
@@ -138,12 +164,14 @@
             $page = "PROJECT_VIEW";
         }
     ?>
-	var validation_url = '<?php echo $validation_url?>';
+	
 		<?php if(isset($page) && $page !== "" && $page === "PROJECT_VIEW"): ?>
 			var list_url = '<?php echo base_url(). 'user/projects/index/projread/list';?>';
 			var success_list_url = "<?php echo base_url().'user/projects/index/projread/list' ?>";
+			var validation_url = '<?php echo base_url() . "/user/projects/index/projread/" . $gridNo . "/" . $_COOKIE['projID'] . "/insert_validation";?>';
 		<?php else: ?>
 			var list_url = '<?php echo $list_url; ?>';
+			var validation_url = '<?php echo $validation_url?>';
 		<?php endif; ?>
 	
 	var isProjectView = <?php if (isset($page) && $page === "PROJECT_VIEW") { echo "true";} else { echo "false"; } ?>;
