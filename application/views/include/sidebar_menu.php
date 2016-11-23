@@ -29,7 +29,7 @@
                   </li>
                   <li><a><i class="fa fa-table"></i> Reports<span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="#">View All Reports</a></li>
+                      <!--<li><a href="#">View All Reports</a></li>-->
                       <li><a href="/user/genreport">Generate Custom Report</a></li>
                     </ul>
                   </li>
