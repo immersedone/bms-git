@@ -29,8 +29,13 @@
     <!-- JQVMap -->
     <link href="/assets/vendors/jqvmap/dist/jqvmap.min.css" rel="stylesheet"/>
 
+    <!-- Theme Style -->
+    <link href="/assets/css/style.css" rel="stylesheet">
+
     <!-- Custom Theme Style -->
     <link href="/assets/css/custom.css" rel="stylesheet">
+
+    <script src="/assets/js/js.cookie.js"></script>
   </head>
 
   <body class="nav-md">
@@ -58,67 +63,71 @@
 
         <!-- page content -->
         <div class="right_col" role="main">
-          <div class="row">
-            <div class="col-md-12 col-sm-12 col-xs-12">  
-                
-                <?php 
-                    //If there is an output, display it
-                    if(isset($output)) { 
-                        echo $output; 
-                    } 
-                ?>
-                <h3>Viewing all Reports</h3>
+          <div class="row first">
 
+            <div class="col-md-12 col-sm-12 col-xs-12 bg_norm">  
+                <div class="dashboard_generate"> 
+                    <div class="row x_custom x_title">
+                        <div class="col-md-12">
+                            <h3>Viewing all Reports</h3>
+                        </div>
+                    </div>
+                    <div class="row x_custom">
+                        <div class="col-md-12">
+                            <p>If you wish to create a new report, click <a href='/genreport'>here</a>. To view and delete Reports, please use the form below: </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+          </div>
+
+          <div class="row mTop">
+            <div class="col-md-12 col-sm-12 col-xs-12 bg_norm">  
+                <div class="dashboard_generate"> 
+                    <div class="row x_custom x_title">
+                        <div class="col-md-12">
+                            <h3>Form</h3>
+                        </div>
+                    </div>
+
+
+                    <div class="row x_custom">
+                        <div class="col-md-12">
+                            <?php echo $output ;?>
+                        </div>
+                    </div>
+
+                </div>
             </div>
           </div>
         </div>
         <!-- /page content -->
+        <script src="https://code.jquery.com/jquery-migrate-1.4.1.min.js"></script>
+        <script src="<?php echo base_url();?>/assets/grocery_crud/js/jquery_plugins/jquery.fancybox.js"></script>
+        <script src="<?php echo base_url();?>/assets/grocery_crud/js/jquery_plugins/jquery.fancybox.pack.js"></script>
+        <script type="text/javascript">
+            $(".view-report").each(function(){
+                $(this).attr('data-fancybox-type', 'iframe');
+            });
 
-        <?php include_once("include/footer.php"); ?>
-      </div>
-    </div>
+            $('.view-report').on('click', function(e) {
+                e.preventDefault();
 
-    <!-- jQuery -->
-    <script src="/assets/vendors/jquery/dist/jquery.min.js"></script>
-    <!-- Bootstrap -->
-    <script src="/assets/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
-    <!-- FastClick -->
-    <script src="/assets/vendors/fastclick/lib/fastclick.js"></script>
-    <!-- NProgress -->
-    <script src="/assets/vendors/nprogress/nprogress.js"></script>
-    <!-- Chart.js -->
-    <script src="/assets/vendors/Chart.js/dist/Chart.min.js"></script>
-    <!-- gauge.js -->
-    <script src="/assets/vendors/gauge.js/dist/gauge.min.js"></script>
-    <!-- bootstrap-progressbar -->
-    <script src="/assets/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
-    <!-- iCheck -->
-    <script src="/assets/vendors/iCheck/icheck.min.js"></script>
-    <!-- Skycons -->
-    <script src="/assets/vendors/skycons/skycons.js"></script>
-    <!-- Flot -->
-    <script src="/assets/vendors/Flot/jquery.flot.js"></script>
-    <script src="/assets/vendors/Flot/jquery.flot.pie.js"></script>
-    <script src="/assets/vendors/Flot/jquery.flot.time.js"></script>
-    <script src="/assets/vendors/Flot/jquery.flot.stack.js"></script>
-    <script src="/assets/vendors/Flot/jquery.flot.resize.js"></script>
-    <!-- Flot plugins -->
-    <script src="/assets/vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>
-    <script src="/assets/vendors/flot-spline/js/jquery.flot.spline.min.js"></script>
-    <script src="/assets/vendors/flot.curvedlines/curvedLines.js"></script>
-    <!-- DateJS -->
-    <script src="/assets/vendors/DateJS/build/date.js"></script>
-    <!-- JQVMap -->
-    <script src="/assets/vendors/jqvmap/dist/jquery.vmap.js"></script>
-    <script src="/assets/vendors/jqvmap/dist/maps/jquery.vmap.world.js"></script>
-    <script src="/assets/vendors/jqvmap/examples/js/jquery.vmap.sampledata.js"></script>
-    <!-- bootstrap-daterangepicker -->
-    <script src="/assets/js/moment/moment.min.js"></script>
-    <script src="/assets/js/datepicker/daterangepicker.js"></script>
 
-    <!-- Custom Theme Scripts -->
-    <script src="/assets/js/custom.min.js"></script>
+                $(this).fancybox({
+                    maxWidth: 800,
+                    fitToView: false,
+                    width: '100%',
+                    height: '100%',
+                    autoSize: true,
+                    closeClick: false,
+                    openEffect: 'elastic',
+                    closeEffect: 'elastic',
+                    type: 'iframe'
+                });
 
-   
-  </body>
-</html>
+            });
+        </script>
+        <?php include_once('include/footer.php'); ?>

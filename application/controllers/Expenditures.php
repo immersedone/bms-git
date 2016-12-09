@@ -1,14 +1,12 @@
 <?php
+defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Expenditures extends CI_Controller {
+class Expenditures extends MY_Controller {
 
 	public function __construct()
 	{
 		parent::__construct();
 
-		$this->load->database();
-		$this->load->helper('cookie');
-		$this->load->helper('url');
 
 		$this->load->library('grocery_CRUD');
 	}

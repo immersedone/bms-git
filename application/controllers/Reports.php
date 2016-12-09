@@ -1,52 +1,93 @@
 <?php
+defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Reports extends CI_Controller {
+class Reports extends MY_Controller {
 
 	public function __construct()
 	{
 		parent::__construct();
 
-		$this->load->database();
-		$this->load->helper('url');
 
 		$this->load->library('grocery_CRUD');
 	}
 
 	public function index()
 	{
-		
-		$this->render((object)array('output' => '' , 'js_files' => array() , 'css_files' => array()));
-		
+
+		//$this->render((object)array('output' => '' , 'js_files' => array() , 'css_files' => array()));
+		$this->reports();
 	}
 
 	public function render($output = null) {
-		$this->load->view('reports', $output);
+		$this->load->view('reports', $output);		
+
 	}
 
 	public function reports() {
 
+		$crud = new grocery_CRUD();
+		$crud->set_model('Extended_generic_model');
+		$crud->set_table('Files');
+		$crud->set_subject('Reports');
+		$crud->basic_model->set_query_str("SELECT * FROM Files WHERE Type='REPORT'");
+		$crud->columns('Title', 'CreatedOn', 'CreatedBy');
+
+
+
+		//Prettify Fields
+		$crud->display_as('TempName', 'TemporaryName');
+		$crud->display_as('CreatedOn', 'Created On');
+		$crud->display_as('CreatedBy', 'Created By');
+
+		//User Array
+		//Call Model to get the User's Full Names
+		$users = $crud->basic_model->return_query("SELECT PerID, CONCAT(FirstName, ' ', MiddleName, ' ', LastName) as FullName FROM Person");
+
+		//Convert Return Object into Associative Array
+		$usrArr = array();
+		foreach($users as $usr) {
+			$usrArr += [$usr->PerID => $usr->FullName];
+		}
+
+		//Field Types
+		$crud->field_type('CreatedBy', 'dropdown', $usrArr);
+
+
+		//Unset All Actions Actions Except for Delete
+		$crud->unset_edit();
+		$crud->unset_read();
+		$crud->unset_add();
+		$crud->unset_print();
+		$crud->unset_export();
+
+		//Add View Action
+		$crud->add_action('View', '', '', 'read-icon view-report', array($this, 'report_view'));
+
+		//Callback before delete to remove File from directory
+		$crud->callback_before_delete(array($this, 'delete_file_before_delete'));
+
+
+
+		$output = $crud->render();
+		$this->render($output);
 		
 	}
 
-	function createReport() {
-		/*
-		// As PDF creation takes a bit of memory, we're saving the created file in /downloads/reports/
-		$pdfFilePath = FCPATH."/downloads/reports/$filename.pdf";
-		$data['page_title'] = 'Hello world'; // pass data to the view
-		 
-		if (file_exists($pdfFilePath) == FALSE)
-		{
-		    ini_set('memory_limit','32M'); // boost the memory limit if it's low <img class="emoji" draggable="false" alt="😉" src="https://s.w.org/images/core/emoji/72x72/1f609.png">
-		    $html = $this->load->view('pdf_report', $data, true); // render the view into HTML
-		     
-		    $this->load->library('pdf');
-		    $pdf = $this->pdf->load();
-		    $pdf->SetFooter($_SERVER['HTTP_HOST'].'|{PAGENO}|'.date(DATE_RFC822)); // Add a footer for good measure <img class="emoji" draggable="false" alt="😉" src="https://s.w.org/images/core/emoji/72x72/1f609.png">
-		    $pdf->WriteHTML($html); // write the HTML into the PDF
-		    $pdf->Output($pdfFilePath, 'F'); // save to file because we can
-		}
-		 
-		redirect("/downloads/reports/$filename.pdf");*/
+	public function delete_file_before_delete($primary_key) {
 
+		$q = $this->db->query("SELECT * FROM Files WHERE FileID='".$primary_key."' LIMIT 1")->row();
+
+		if(!unlink(FCPATH . $q->Directory . $q->TempName)) {
+			return false;
+		} else {
+			return true;
+		}
 	}
+
+	public function report_view($primarykey, $row) {
+		$q = $this->db->query("SELECT * FROM Files WHERE FileID='".$primarykey."' LIMIT 1")->row();
+
+		return base_url().$q->Directory.$q->TempName;
+	}
+
 }

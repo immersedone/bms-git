@@ -6,7 +6,7 @@
 	Theme Name:		Login Page
 	Revision: 		v1.0
 
-	Authors: 		Adam Salek		-	S
+	Authors: 		Adam Salek		-	S3462148
 					Ryan Bargholz	-	S3485754
 					Truc Minh Phan	- 	S3545017
 
@@ -55,9 +55,10 @@
 				<h4>Banksia Gardens</h4>
 			</div>
 			<div class="col-md-12 content">
-				<form action="#" method="POST">
+				
+				<?php echo form_open('login/auth'); ?>
 					<label for="username">Username or Email:</label>
-					<input type="text" name="username" required="required" />
+					<input type="text" name="username" required="required"/>
 					<label for="password">Password:</label>
 					<input type="password" name="password" required="required" />
 					<a href="/forgot" class="__flRight">Forgot Password?</a>

@@ -53,6 +53,11 @@ $route['default_controller'] = 'login';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
+//Login/Logout Controller
+$route['/'] = 'login';
+$route[''] = 'login';
+$route['logout'] = 'logout';
+
 //Add Page Specific Routes and Controller Routes for Grocery CRUD
 $route['user'] = 'user';
 
@@ -434,3 +439,20 @@ $route['user/statistics/index/print'] = 'statistics/statistics';
 $route['user/statistics/index/ajax_list'] = 'statistics/statistics';
 $route['user/statistics/index/ajax_list_info'] = 'statistics/statistics';
 $route['user/statistics/index/export'] = 'statistics/statistics';
+
+//Routes for Reports Page
+$route['user/reports'] = 'reports';
+$route['user/reports/index'] = 'reports';
+$route['user/reports/index/add'] = 'reports/reports';
+$route['user/reports/index/insert'] = 'reports/reports';
+$route['user/reports/index/insert_validation'] = 'reports/reports';
+$route['user/reports/index/edit/(:num)'] = 'reports/reports/$1';
+$route['user/reports/index/update/(:num)'] = 'reports/reports/$1';
+$route['user/reports/index/update_validation/(:num)'] = 'reports/reports/$1';
+$route['user/reports/index/success/(:num)'] = 'reports/reports/$1';
+$route['user/reports/index/read/(:num)'] = 'reports/reports/$1';
+$route['user/reports/index/delete/(:num)'] = 'reports/reports/$1';
+$route['user/reports/index/print'] = 'reports/reports';
+$route['user/reports/index/ajax_list'] = 'reports/reports';
+$route['user/reports/index/ajax_list_info'] = 'reports/reports';
+$route['user/reports/index/export'] = 'reports/reports';

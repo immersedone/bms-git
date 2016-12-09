@@ -37,6 +37,7 @@
 						$("#field-ExpList > option").each(function(i) {
 						    var value = $(this).val();
 						    var Per = $("#field-PerID").html();
+						    var csrf_token = Cookies.get('csrf_cookie');
 						    //alert(Per);
 						    
 						    if(value === "") {
@@ -46,6 +47,7 @@
 						    $.ajax({
 						    	url: "<?php echo base_url(); ?>user/expenditures/index/getExpBy/" + value,
 						    	type: "POST",
+						    	data: { "csrf_token": csrf_token},
 						    	dataType: "json",
 						    	success: function(data) {
 						    		$("#field-ExpList option[value='"+value+"']").attr("data-expby", data.ExpBy);
@@ -69,9 +71,11 @@
 
 			$ajaxHTML = '<script type="text/javascript">
 			$(function() {
+				var csrf_token = Cookies.get("csrf_cookie");
 				$.ajax({
 					url: "'. base_url() .'user/people/index/getPerName/' . $perID .'",
 					type: "POST",
+					data: { "csrf_token": csrf_token},
 					dataType: "json",
 					success: function(data) {
 						$("div#field-PerID.readonly_label").attr("data-expby", "' . $perID .'");

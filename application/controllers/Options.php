@@ -1,13 +1,12 @@
 <?php
+defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Options extends CI_Controller {
+class Options extends MY_Controller {
 
 	public function __construct()
 	{
 		parent::__construct();
 
-		$this->load->database();
-		$this->load->helper('url');
 
 		$this->load->library('grocery_CRUD');
 	}
@@ -18,6 +17,7 @@ class Options extends CI_Controller {
 
 		//$this->render((object)array('output' => '' , 'js_files' => array() , 'css_files' => array(), 'options' => ''));
 		$this->options();
+
 	}
 
 	public function render($output = null) {

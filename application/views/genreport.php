@@ -30,6 +30,7 @@
 
     <!-- Custom Theme Style -->
     <link href="/assets/css/custom.css" rel="stylesheet">
+    <script src="/assets/js/js.cookie.js"></script>
   </head>
 
   <body class="nav-md">
@@ -90,7 +91,7 @@
                     <div class="row x_custom">
                         <div class="col-md-12">
                             <form onsubmit="validate()" class="genRep" method="POST" action="/user/genreport/createreport">
-                                
+                                <input type="hidden" name="csrf_token" value="<?php echo $_COOKIE['csrf_cookie']  ?>" />
                                 <!-- First Row in Form -->
                                 <div class="col-md-12 control-wrap">
 
@@ -126,8 +127,8 @@
 	                                        </div>
 	                                        <div class="form-group" id="customTitleCheck" style="display:none;">
 		                                        <label for="customTitleCheck" class="control-label">Add Custom Title to Cover Page? </label>
-		                                        <input type="radio" value="YES" name="customTitleCheck" required="required" checked="checked"/> Yes
-		                                        <input type="radio" value="NO" name="customTitleCheck" required="required"/> No
+		                                        <input type="radio" value="YES" name="customTitleCheck" required="required" /> Yes
+		                                        <input type="radio" value="NO" name="customTitleCheck" required="required" checked="checked"/> No
 	                                        </div>
 	                                    </div>
                                     </div>
@@ -270,7 +271,14 @@
         </div>
         <!-- /page content -->
 
-        <?php include_once("include/footer.php"); ?>
+        <!-- footer content -->
+        <footer>
+          <div class="pull-right">
+            Created By BMS Project Team</a>
+          </div>
+          <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
       </div>
     </div>
 
@@ -426,6 +434,7 @@
    				$('.genRep #reportType').prop("disabled", false);
    				$('.genRep input[name=optionalCoverPage]').prop("disabled", false);
    				$('.genRep input[name=customTitleCheck]').prop("disabled", false);
+                $('.genRep input[name=csrf_token]').prop("disabled", false);
    				$('.reportName input').prop("disabled", false);
    				$('.formSubmitCont input').prop("disabled", false);
 

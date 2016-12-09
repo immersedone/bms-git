@@ -1,6 +1,7 @@
 <?php
+defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Volunteer extends CI_Controller {
+class Volunteer extends MY_Controller {
 
 	//public $multiView;
 
@@ -8,8 +9,6 @@ class Volunteer extends CI_Controller {
 	{
 		parent::__construct();
 
-		$this->load->database();
-		$this->load->helper('url');
 
 		$this->load->library('grocery_CRUD');
 	}

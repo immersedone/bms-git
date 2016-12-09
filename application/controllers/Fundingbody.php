@@ -1,11 +1,11 @@
 <?php
-class Fundingbody extends CI_Controller {
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Fundingbody extends MY_Controller {
     public function __construct()
     {
         parent::__construct();
 
-        $this->load->database();
-        $this->load->helper('url');
 
         $this->load->library('grocery_CRUD');
     }

@@ -150,3 +150,15 @@ label[for=password] {
 	display: table;
 	clear: both;	
 }
+
+div.errors {
+	display:none;
+    position: absolute;
+    top: 315px;
+    width: 100%;
+    left: 0;
+    text-align: center;
+    color: white;
+    background: maroon;
+    padding: 20px;
+}

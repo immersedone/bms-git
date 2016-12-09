@@ -1,15 +1,15 @@
 <?php
+defined('BASEPATH') OR exit('No direct script access allowed');
 
-class People extends CI_Controller {
+class People extends MY_Controller {
 
 	public function __construct()
 	{
 		parent::__construct();
 
-		$this->load->database();
-		$this->load->helper('url');
 
 		$this->load->library('grocery_CRUD');
+		$this->load->library('bcrypt');
 	}
 
 	public function index()
@@ -24,6 +24,9 @@ class People extends CI_Controller {
 
 	public function all_people() {
 
+		$tempPass = "d3F!_P4s$)";
+		$tempHash = $this->bcrypt->hash_password($tempPass);
+
 		$crud = new grocery_CRUD();
 		$crud->set_model('Extended_generic_model');
 		$crud->set_table('Person');
@@ -31,8 +34,9 @@ class People extends CI_Controller {
 		$crud->basic_model->set_query_str('SELECT * FROM (SELECT Sub.SuburbName as SubName, Sub.Postcode as Postcode, Per.* from `Person` Per
 		LEFT OUTER JOIN `Suburb` Sub ON Per.SuburbID=Sub.SuburbID) x');
 		$crud->columns('FirstName', 'LastName', 'Address', 'Postcode', 'SubName', 'PersonalEmail', 'Mobile', 'HomePhone');
-		$crud->add_fields('FirstName', 'MiddleName', 'LastName', 'Address', 'DateofBirth', 'SuburbID', 'PersonalEmail', 'Mobile', 'HomePhone', 'Status', 'DateStarted', 'WWC', 'WWCFiled', 'WWCExpiry', 'PoliceCheck', 'PoliceCheckDate', 'TeacherRegCheck', 'TeacherExipry', 'FAQual', 'FAQaulExpiry', 'LanguagesSpoken', 'EmergContName', 'EmergContMob', 'EmergContHPhone', 'EmergContWPhone', 'EmergContRelToPer');
+		$crud->add_fields('FirstName', 'MiddleName', 'LastName', 'Address', 'DateofBirth', 'SuburbID', 'PersonalEmail', 'Mobile', 'HomePhone', 'Status', 'DateStarted', 'WWC', 'WWCFiled', 'WWCExpiry', 'PoliceCheck', 'PoliceCheckDate', 'TeacherRegCheck', 'TeacherExipry', 'FAQual', 'FAQaulExpiry', 'LanguagesSpoken', 'EmergContName', 'EmergContMob', 'EmergContHPhone', 'EmergContWPhone', 'EmergContRelToPer', 'Username', 'Password');
 		$crud->edit_fields('FirstName', 'MiddleName', 'LastName','Address', 'DateofBirth', 'SuburbID', 'PersonalEmail', 'Mobile', 'HomePhone', 'Status', 'DateStarted', 'DateFinished', 'ContractSigned', 'PaperworkCompleted', 'WWC', 'WWCFiled', 'WWCExpiry', 'PoliceCheck', 'PoliceCheckDate', 'TeacherRegCheck', 'TeacherExipry', 'FAQual', 'FAQaulExpiry', 'LanguagesSpoken', 'EmergContName', 'EmergContMob', 'EmergContHPhone', 'EmergContWPhone', 'EmergContRelToPer');	
+		$crud->set_read_fields('Username', 'FirstName', 'MiddleName', 'LastName','Address', 'DateofBirth', 'SuburbID', 'PersonalEmail', 'Mobile', 'HomePhone', 'Status', 'DateStarted', 'DateFinished', 'ContractSigned', 'PaperworkCompleted', 'WWC', 'WWCFiled', 'WWCExpiry', 'PoliceCheck', 'PoliceCheckDate', 'TeacherRegCheck', 'TeacherExipry', 'FAQual', 'FAQaulExpiry', 'LanguagesSpoken', 'EmergContName', 'EmergContMob', 'EmergContHPhone', 'EmergContWPhone', 'EmergContRelToPer');	
 		$crud->display_as('FirstName', 'First Name');
 		$crud->display_as('MiddleName', 'Middle Name');
 		$crud->display_as('LastName', 'Last Name');
@@ -61,10 +65,19 @@ class People extends CI_Controller {
 		$crud->display_as('EmergContHPhone', 'Emergency Contact Home Phone');
 		$crud->display_as('EmergContWPhone', 'Emergency Contact Work Phone');
 		$crud->display_as('EmergContRelToPer', 'Emergency Contact Relation');
-		$crud->field_type('Username', 'hidden');
-		$crud->field_type('Password', 'hidden');
 		$crud->field_type('Hash', 'hidden');
 		$crud->field_type('Timeout', 'hidden');
+
+		$state = $crud->getState();
+
+		if($state == "insert" || $state == "add") {
+			$crud->field_type('Username', 'hidden');
+			$crud->field_type('Password', 'hidden', $tempHash);
+		}
+		
+
+		//Generate Username
+		$crud->callback_before_insert(array($this, 'create_user'));
 
 		$crud->required_fields('FirstName', 
 			'LastName',
@@ -122,6 +135,34 @@ class People extends CI_Controller {
 		$output = $crud->render();
 
 		$this->render($output);
+	}
+
+	public function create_user($post_array) {
+
+		$FName = strtolower($post_array["FirstName"]);
+		$MName = strtolower($post_array["MiddleName"]);
+		$LName = strtolower($post_array["LastName"]);
+
+		$newUN = $FName . '.' . substr($MName, 0, 1) . $LName;
+
+		$check = $this->db->query("SELECT * FROM Person WHERE Username='$newUN'");
+
+		$findUN = "";
+		$x = 1;
+
+		while($check->result_id->num_rows > 0) {
+			$findUN = $newUN . $x;
+			$check = $this->db->query("SELECT * FROM Person WHERE Username='$findUN'");
+			$x++;
+		}
+
+		if($findUN === "") {
+			$findUN = $newUN;
+		}
+
+		$post_array["Username"] = $findUN;
+
+		return $post_array;
 	}
 
 	public function multi_LS() {

@@ -1,13 +1,11 @@
 <?php
 
-class Genreport extends CI_Controller {
+class Genreport extends MY_Controller {
 
 	public function __construct()
 	{
 		parent::__construct();
 
-		$this->load->database();
-		$this->load->helper('url');
 
 		$this->load->library('grocery_CRUD');
 		$this->load->model('Genreport_model');
@@ -16,6 +14,7 @@ class Genreport extends CI_Controller {
 
 	public function index()
 	{
+
 		$data = array();
 		$data["Projects"] = $this->Genreport_model->getProjects();
 		$data["Reimbursements"] = $this->Genreport_model->getReimbursements();
@@ -46,7 +45,7 @@ class Genreport extends CI_Controller {
 		$optCP = $_POST['optionalCoverPage'];
 		$data["today_date"] = date('d F Y');
 		$data["today_year"] = date('Y');
-		$data["name"] = "Jaime de Loma-Osorio Ricon"; //To Change upon Login/Register Functions
+		$data["name"] = $_SESSION["session_user"]["bms_psnfullName"];
 
 		
 		//Check if Variable Exist & get extra data
@@ -86,9 +85,36 @@ class Genreport extends CI_Controller {
 		
 
 		//PDF Path & Declarations
-		$pdfFilePath = "assets/public/Reports/Report.pdf";
-		$viewPath = base_url() . $pdfFilePath;
+		//$pdfFilePath = "assets/public/Reports/Report.pdf";
+		$pdfFilePath = "assets/public/Reports/";
+		$FileStorageName = uniqid(md5(rand())) . '-' . time() . '.pdf';
+		$viewPath = base_url() . $pdfFilePath . $FileStorageName;
 
+
+		//If Custom Title is not set
+		if(isset($_POST['customTitleCheck']) && $_POST['customTitleCheck'] === "NO") {
+
+			//Array for Pre-Defined Titles - Line #1
+			//Index is the Name for Report Type
+			//Value is the Title for Line #1
+			$lineOneArr = array(
+				"empprj" => "Employee Listing",
+				"volprj" => "Volunteer Listing",
+				"reimb" => "Reimbursement Details",
+				"exp_prj" => "Expenditures by Project",
+				"exp_spv" => "Expenditures by Supervisors",
+				"pend_mst" => "Pending Milestones",
+				"future_mst" => "Future Milestones",
+				"cdet_emp" => "Contact Details - Employees",
+				"cdet_vol" => "Contact Details - Volunteers",
+				"cont_srv" => "Contract & WWC"
+			);
+
+			$data["titleLine_One"] = $lineOneArr[$reportType];
+
+			//Make 2nd Line "Report" and Current Year
+			$data["titleLine_Two"] = "Report " . date('Y');
+		}
 
 		//Determine whether or not to display Cover Page
 		//YES == Remove Cover Page
@@ -97,35 +123,12 @@ class Genreport extends CI_Controller {
 			$coverPage = "";
 		} else {
 
-			//If Custom Title is not set
-			if($_POST['customTitleCheck'] === "NO") {
-
-				//Array for Pre-Defined Titles - Line #1
-				//Index is the Name for Report Type
-				//Value is the Title for Line #1
-				$lineOneArr = array(
-					"empprj" => "Employee Listing",
-					"volprj" => "Volunteer Listing",
-					"reimb" => "Reimbursement Details",
-					"exp_prj" => "Expenditures by Project",
-					"exp_spv" => "Expenditures by Supervisors",
-					"pend_mst" => "Pending Milestones",
-					"future_mst" => "Future Milestones",
-					"cdet_emp" => "Contact Details - Employees",
-					"cdet_vol" => "Contact Details - Volunteers",
-					"cont_srv" => "Contract & WWC"
-				);
-
-				$data["titleLine_One"] = $lineOneArr[$reportType];
-
-				//Make 2nd Line "Report" and Current Year
-				$data["titleLine_Two"] = "Report " . date('Y');
-			}
-
 			$coverPage = $this->load->view('/include/Report_CoverPage', $data, TRUE);
 		}
 
 		$html = "";
+		$title = $data["titleLine_One"] . ' ' . $data["titleLine_Two"];
+		$fileName = $title . '.pdf';
 
 		//Load GroceryCRUD to generate data
 		$this->load->library("grocery_CRUD");
@@ -692,7 +695,11 @@ class Genreport extends CI_Controller {
         6, // margin header
         3); // margin footer
 		$this->pdf->WriteHTML($html);
-		$this->pdf->Output(FCPATH . $pdfFilePath, "F");
+		$this->pdf->Output(FCPATH . $pdfFilePath . $FileStorageName, "F");
+
+
+		//Save File to Database
+		$this->db->query("INSERT INTO Files(Title, Name, Directory, FileName, TempName, CreatedOn, Extension, CreatedBy, Type) VALUES ('".$title."', '".$title."', '$pdfFilePath', '".$fileName."', '$FileStorageName', now(), 'pdf', '" . $_SESSION['session_user']['bms_psnid'] ."', 'REPORT')");
 
 		$this->viewReport($viewPath);
 
@@ -711,8 +718,10 @@ class Genreport extends CI_Controller {
 		$cp = $this->uri->segment(5);
 
 
-		$pdfFilePath = "assets/public/Reports/Report.pdf";
-		$viewPath = base_url() . $pdfFilePath;
+		$pdfFilePath = "assets/public/Reports/";
+		$FileStorageName = uniqid(md5(rand())) . '-' . time() . '.pdf';
+		$viewPath = base_url() . $pdfFilePath . $FileStorageName;
+
 
 		if($cp == 0) {
 			$html = "";
@@ -773,7 +782,7 @@ class Genreport extends CI_Controller {
 		//echo $html;
 		$this->pdf = $this->m_pdf->load('utf-8', 'A4');
 		$this->pdf->WriteHTML($html);
-		$this->pdf->Output(FCPATH . $pdfFilePath, "F");
+		$this->pdf->Output(FCPATH . $pdfFilePath . $FileStorageName, "F");
 
 		$this->viewReport($viewPath);
 	}

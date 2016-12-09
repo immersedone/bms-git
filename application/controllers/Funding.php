@@ -1,14 +1,11 @@
 <?php
+defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Funding extends CI_Controller {
+class Funding extends MY_Controller {
 
 	public function __construct()
 	{
 		parent::__construct();
-
-		$this->load->database();
-		$this->load->helper('cookie');
-		$this->load->helper('url');
 
 		$this->load->library('grocery_CRUD');
 	}
@@ -48,6 +45,8 @@ class Funding extends CI_Controller {
 		$crud->edit_fields("ProjID", "FundBodyID", "Amount", "PaymentType", 'status', "ApprovedBy", "ApprovedOn");
 		$crud->add_fields("ProjID", "FundBodyID", "Amount", "PaymentType", 'status', "ApprovedBy", "ApprovedOn");
 		
+		$state = $crud->getState();
+
 		$crud->required_fields(
 		'ProjID',
 		'FundBodyID', 
@@ -93,7 +92,16 @@ class Funding extends CI_Controller {
 
 		//Change the field type to a dropdown with values
 		//to add to the relational table
-		$crud->field_type("ApprovedBy", "dropdown", $usrArr);
+		if($state == "add" || $state == "insert") {
+			$crud->field_type("ApprovedBy", "hidden", $_SESSION['session_user']['bms_psnid']);
+		} elseif($state == "edit" || $state == "update") {
+			$crud->callback_edit_field("ApprovedBy", array($this, 'callback_AppBy_edit'));
+			$crud->callback_edit_field("ProjID", array($this, 'callback_projID_edit'));
+			$crud->callback_edit_field("FundBodyID", array($this, 'callback_FBID_edit'));
+		} else {
+
+			$crud->field_type("ApprovedBy", "dropdown", $usrArr);
+		}
 
 		//Change the default method to fire when organizing funding for a project
 		$crud->callback_before_insert(array($this,'funding_add'));
@@ -163,6 +171,7 @@ class Funding extends CI_Controller {
 		//$crud->field_type("ProjName", "dropdown", $prjArr);
 
 		if($state === "edit" || $state === "update") {
+			$crud->callback_edit_field("ApprovedBy", array($this, 'callback_AppBy_edit'));
 			$crud->callback_edit_field("ProjID", array($this, 'callback_projID_edit'));
 			$crud->callback_edit_field("FundBodyID", array($this, 'callback_FBID_edit'));
 		} else if ($state === "add" || $state === "insert") {
@@ -173,6 +182,7 @@ class Funding extends CI_Controller {
 				$readOnly = '<div id="field-ProjID" class="readonly_label">' . $q->Name .'</div>';
 				return $readOnly. '<input id="field-ProjID" name="ProjID" type="text" value="' . $id . '" class="numeric form-control" maxlength="255" style="display:none;">';
 			});
+			$crud->field_type("ApprovedBy", "hidden", $_SESSION['session_user']['bms_psnid']);
 			$crud->field_type("FBName", "dropdown", $FBArr);
 		} else {
 			$crud->field_type("ProjID", "dropdown", $prjArr);
@@ -214,6 +224,14 @@ class Funding extends CI_Controller {
 		$output = $crud->render();
 
 		$this->render($output);
+	}
+
+	public function callback_AppBy_edit($value, $primary_key) {
+		$q = $this->db->query('SELECT CONCAT( FirstName, " ", MiddleName, " ", LastName) as FullName FROM Person WHERE PerID="'.$value.'" LIMIT 1')->row();
+
+		$readOnly = '<div id="field-ApprovedBy" class="readonly_label">' . $q->FullName .'</div>';
+		return $readOnly . '<input id="field-ApprovedBy" name="ApprovedBy" type="text" value="' . $value . '" class="numeric form-control" maxlength="255" style="display:none;">';
+
 	}
 
 	public function callback_projID_edit($value, $primary_key) {

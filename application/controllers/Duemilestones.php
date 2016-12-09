@@ -1,14 +1,12 @@
 <?php
+defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Duemilestones extends CI_Controller {
+class Duemilestones extends MY_Controller {
 
 	public function __construct()
 	{
 		parent::__construct();
 
-		$this->load->database();
-		$this->load->helper('cookie');
-		$this->load->helper('url');
 
 		$this->load->library('grocery_CRUD');
 	}
@@ -16,7 +14,9 @@ class Duemilestones extends CI_Controller {
 	public function index()
 	{
 		//$this->render((object)array('output' => '' , 'js_files' => array() , 'css_files' => array()));
+
 		$this->duemilestones();
+
 	}
 
 	public function render($output = null) {

@@ -91,7 +91,7 @@
 					$(function() {
 						$("#field-ExpList > option").each(function(i) {
 						    var value = $(this).val();
-						    
+						    var csrf_token = Cookies.get('csrf_cookie');
 						    if(value === "") {
 						    	return true;
 						    }
@@ -99,6 +99,7 @@
 						    $.ajax({
 						    	url: "<?php echo base_url(); ?>user/expenditures/index/getExpBy/" + value,
 						    	type: "POST",
+						    	data: {"csrf_token": csrf_token},
 						    	dataType: "json",
 						    	success: function(data) {
 						    		$("#field-ExpList option[value='"+value+"']").attr("data-expby", data.ExpBy);

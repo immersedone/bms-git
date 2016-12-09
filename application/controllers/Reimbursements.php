@@ -1,12 +1,11 @@
 <?php
-class Reimbursements extends CI_Controller {
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Reimbursements extends MY_Controller {
 
 	public function __construct()
 	{
 		parent::__construct();
-
-		$this->load->database();
-		$this->load->helper('url');
 
 		$this->load->library('grocery_CRUD');
 	}
@@ -61,11 +60,20 @@ class Reimbursements extends CI_Controller {
         }
 		$crud->field_type("ExpList", "multiselect", $expArr);
 		
-		
+		$state = $crud->getState();
+
 		
 		//Change the field type to a dropdown with values
 		//to add to the relational table
-		$crud->field_type("ApprovedBy", "dropdown", $usrArr);
+		if($state == "add" || $state == "insert") {
+			$crud->field_type("ApprovedBy", "hidden", $_SESSION["session_user"]["bms_psnid"]);
+		} elseif ($state == "edit" || $state == "update") {
+			$crud->callback_edit_field("ApprovedBy", array($this, 'callback_AppBy_edit'));
+		} else {
+			$crud->field_type("ApprovedBy", "dropdown", $usrArr);
+		}
+
+		
 		$crud->field_type("FullName", "dropdown", $usrArr);
 		$crud->field_type("PerID", "dropdown", $usrArr);
 		
@@ -106,6 +114,14 @@ class Reimbursements extends CI_Controller {
 		$output = $crud->render();
 
 		$this->render($output);
+	}
+
+	public function callback_AppBy_edit($value, $primary_key) {
+		$q = $this->db->query('SELECT CONCAT( FirstName, " ", MiddleName, " ", LastName) as FullName FROM Person WHERE PerID="'.$value.'" LIMIT 1')->row();
+
+		$readOnly = '<div id="field-ApprovedBy" class="readonly_label">' . $q->FullName .'</div>';
+		return $readOnly . '<input id="field-ApprovedBy" name="ApprovedBy" type="text" value="' . $value . '" class="numeric form-control" maxlength="255" style="display:none;">';
+
 	}
 
 

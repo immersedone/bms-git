@@ -1,13 +1,12 @@
 <?php
+defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Employee extends CI_Controller {
+class Employee extends MY_Controller {
 
 	public function __construct()
 	{
 		parent::__construct();
 
-		$this->load->database();
-		$this->load->helper('url');
 
 		$this->load->library('grocery_CRUD');
 		$this->load->library('Gmulti');

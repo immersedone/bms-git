@@ -70,9 +70,11 @@
 
 			$ajaxHTML = '<script type="text/javascript">
 			$(function() {
+				var csrf_token = Cookies.get("csrf_cookie");
 				$.ajax({
 					url: "'. base_url() .'user/projects/index/getProjName/' . $projID .'",
 					type: "POST",
+					data: { "csrf_token": csrf_token },
 					dataType: "json",
 					success: function(data) {
 						$("div#field-ProjID.readonly_label").text(data.ProjName);
@@ -93,9 +95,11 @@
 
 			$ajaxHTML = '<script type="text/javascript">
 			$(function() {
+				var csrf_token = Cookies.get("csrf_cookie");
 				$.ajax({
 					url: "'. base_url() .'user/projects/index/getProjName/' . $projID .'",
 					type: "POST",
+					data: { "csrf_token": csrf_token },
 					dataType: "json",
 					success: function(data) {
 						$("div#field-ProjOne.readonly_label").text(data.ProjName);
@@ -116,9 +120,11 @@
 
 			$ajaxHTML = '<script type="text/javascript">
 			$(function() {
+				var csrf_token = Cookies.get("csrf_cookie");
 				$.ajax({
 					url: "'. base_url() .'user/projects/index/getProjName/' . $projID .'",
 					type: "POST",
+					data: { "csrf_token": csrf_token },
 					dataType: "json",
 					success: function(data) {
 						$("div#field-ProjTwo.readonly_label").text(data.ProjName);
@@ -139,9 +145,11 @@
 
 			$ajaxHTML = '<script type="text/javascript">
 			$(function() {
+				var csrf_token = Cookies.get("csrf_cookie");
 				$.ajax({
 					url: "'. base_url() .'user/projects/index/getProjName/' . $projID .'",
 					type: "POST",
+					data: { "csrf_token": csrf_token },
 					dataType: "json",
 					success: function(data) {
 						$("div#field-ProjThree.readonly_label").text(data.ProjName);
@@ -162,9 +170,11 @@
 
 			$ajaxHTML = '<script type="text/javascript">
 			$(function() {
+				var csrf_token = Cookies.get("csrf_cookie");
 				$.ajax({
 					url: "'. base_url() .'user/people/index/getPerName/' . $perID .'",
 					type: "POST",
+					data: { "csrf_token": csrf_token },
 					dataType: "json",
 					success: function(data) {
 						$("div#field-ApprovedBy.readonly_label").text(data.PerName);
@@ -185,9 +195,11 @@
 
 			$ajaxHTML = '<script type="text/javascript">
 			$(function() {
+				var csrf_token = Cookies.get("csrf_cookie");
 				$.ajax({
 					url: "'. base_url() .'user/people/index/getPerName/' . $perID .'",
 					type: "POST",
+					data: { "csrf_token": csrf_token },
 					dataType: "json",
 					success: function(data) {
 						$("div#field-Supervisor.readonly_label").text(data.PerName);
@@ -208,9 +220,11 @@
 
 			$ajaxHTML = '<script type="text/javascript">
 			$(function() {
+				var csrf_token = Cookies.get("csrf_cookie");
 				$.ajax({
 					url: "'. base_url() .'user/people/index/getPerName/' . $perID .'",
 					type: "POST",
+					data: { "csrf_token": csrf_token },
 					dataType: "json",
 					success: function(data) {
 						$("div#field-ProjOne_Sup.readonly_label").text(data.PerName);
@@ -231,9 +245,11 @@
 
 			$ajaxHTML = '<script type="text/javascript">
 			$(function() {
+				var csrf_token = Cookies.get("csrf_cookie");
 				$.ajax({
 					url: "'. base_url() .'user/people/index/getPerName/' . $perID .'",
 					type: "POST",
+					data: { "csrf_token": csrf_token },
 					dataType: "json",
 					success: function(data) {
 						$("div#field-ProjTwo_Sup.readonly_label").text(data.PerName);
@@ -254,9 +270,11 @@
 
 			$ajaxHTML = '<script type="text/javascript">
 			$(function() {
+				var csrf_token = Cookies.get("csrf_cookie");
 				$.ajax({
 					url: "'. base_url() .'user/people/index/getPerName/' . $perID .'",
 					type: "POST",
+					data: { "csrf_token": csrf_token },
 					dataType: "json",
 					success: function(data) {
 						$("div#field-ProjThree_Sup.readonly_label").text(data.PerName);
@@ -277,9 +295,11 @@
 
 			$ajaxHTML = '<script type="text/javascript">
 			$(function() {
+				var csrf_token = Cookies.get("csrf_cookie");
 				$.ajax({
 					url: "'. base_url() .'user/people/index/getPerName/' . $perID .'",
 					type: "POST",
+					data: { "csrf_token": csrf_token },
 					dataType: "json",
 					success: function(data) {
 						$("div#field-SpentBy.readonly_label").text(data.PerName);
@@ -300,9 +320,11 @@
 
 			$ajaxHTML = '<script type="text/javascript">
 			$(function() {
+				var csrf_token = Cookies.get("csrf_cookie");
 				$.ajax({
 					url: "'. base_url() .'user/people/index/getPerName/' . $perID .'",
 					type: "POST",
+					data: { "csrf_token": csrf_token },
 					dataType: "json",
 					success: function(data) {
 						$("div#field-PerID.readonly_label").text(data.PerName);
@@ -323,9 +345,11 @@
 
 			$ajaxHTML = '<script type="text/javascript">
 			$(function() {
+				var csrf_token = Cookies.get("csrf_cookie");
 				$.ajax({
 					url: "'. base_url() .'user/funding/index/getFBName/' . $fbID .'",
 					type: "POST",
+					data: { "csrf_token": csrf_token },
 					dataType: "json",
 					success: function(data) {
 						$("div#field-FundBodyID.readonly_label").text(data.FBName);
@@ -346,9 +370,11 @@
 
 			$ajaxHTML = '<script type="text/javascript">
 			$(function() {
+				var csrf_token = Cookies.get("csrf_cookie");
 				$.ajax({
 					url: "'. base_url() .'user/people/index/getSBName/' . $fbID .'",
 					type: "POST",
+					data: { "csrf_token": csrf_token },
 					dataType: "json",
 					success: function(data) {
 						$("div#field-SuburbID.readonly_label").text(data.SBName);
@@ -368,10 +394,11 @@
 			
 			$ajaxHTML = '<script type="text/javascript">
 			$(function() {
+				var csrf_token = Cookies.get("csrf_cookie");
 				$.ajax({
 					url: "'. base_url() .'user/reimbursements/index/getExpList/",
 					type: "POST",
-					data: {"expList": "' . $fbID .'"},
+					data: {"expList": "' . $fbID .'", "csrf_token": csrf_token},
 					dataType: "json",
 					success: function(data) {
 						$("div#field-ExpList.readonly_label").html(data.ExpList);
@@ -392,9 +419,11 @@
 
 			$ajaxHTML = '<script type="text/javascript">
 			$(function() {
+				var csrf_token = Cookies.get("csrf_cookie");
 				$.ajax({
 					url: "'. base_url() .'user/people/index/getPosition/' . $fbID .'",
 					type: "POST",
+					data: { "csrf_token": csrf_token },
 					dataType: "json",
 					success: function(data) {
 						$("div#field-EmpPosition.readonly_label").text(data.Position);
@@ -415,9 +444,11 @@
 
 			$ajaxHTML = '<script type="text/javascript">
 			$(function() {
+				var csrf_token = Cookies.get("csrf_cookie");
 				$.ajax({
 					url: "'. base_url() .'user/people/index/getPosition/' . $fbID .'",
 					type: "POST",
+					data: { "csrf_token": csrf_token },
 					dataType: "json",
 					success: function(data) {
 						$("div#field-SuperFund.readonly_label").text(data.Position);
@@ -438,9 +469,11 @@
 
 			$ajaxHTML = '<script type="text/javascript">
 			$(function() {
+				var csrf_token = Cookies.get("csrf_cookie");
 				$.ajax({
 					url: "'. base_url() .'user/people/index/getPosition/' . $fbID .'",
 					type: "POST",
+					data: { "csrf_token": csrf_token },
 					dataType: "json",
 					success: function(data) {
 						$("div#field-EmpSecPosition.readonly_label").text(data.Position);
@@ -461,10 +494,11 @@
 
 			$ajaxHTML = '<script type="text/javascript">
 			$(function() {
+				var csrf_token = Cookies.get("csrf_cookie");
 				$.ajax({
 					url: "'. base_url() .'user/people/index/getLangName/",
 					type: "POST",
-					data: {"languages": "' . $fbID .'"},
+					data: {"languages": "' . $fbID .'", "csrf_token": csrf_token},
 					dataType: "json",
 					success: function(data) {
 						$("div#field-LanguagesSpoken.readonly_label").html(data.Languages);
@@ -485,10 +519,11 @@
 
 			$ajaxHTML = '<script type="text/javascript">
 			$(function() {
+				var csrf_token = Cookies.get("csrf_cookie");
 				$.ajax({
 					url: "'. base_url() .'user/people/index/getDays/",
 					type: "POST",
-					data: {"days": "' . $fbID .'"},
+					data: {"days": "' . $fbID .'", "csrf_token": csrf_token},
 					dataType: "json",
 					success: function(data) {
 						$("div#field-DaysWork.readonly_label").html(data.Days);
@@ -509,10 +544,11 @@
 
 			$ajaxHTML = '<script type="text/javascript">
 			$(function() {
+				var csrf_token = Cookies.get("csrf_cookie");
 				$.ajax({
 					url: "'. base_url() .'user/people/index/getDays/",
 					type: "POST",
-					data: {"days": "' . $fbID .'"},
+					data: {"days": "' . $fbID .'", "csrf_token": csrf_token},
 					dataType: "json",
 					success: function(data) {
 						$("div#field-DaysAvailable.readonly_label").html(data.Days);
@@ -533,10 +569,11 @@
 
 			$ajaxHTML = '<script type="text/javascript">
 			$(function() {
+				var csrf_token = Cookies.get("csrf_cookie");
 				$.ajax({
 					url: "'. base_url() .'user/people/index/getNHACE/",
 					type: "POST",
-					data: {"NHACE": "' . $fbID .'"},
+					data: {"NHACE": "' . $fbID .'", "csrf_token": csrf_token},
 					dataType: "json",
 					success: function(data) {
 						$("div#field-NHACEClass.readonly_label").html(data.NHACE);
@@ -557,10 +594,11 @@
 
 			$ajaxHTML = '<script type="text/javascript">
 			$(function() {
+				var csrf_token = Cookies.get("csrf_cookie");
 				$.ajax({
 					url: "'. base_url() .'user/people/index/getBGCS/",
 					type: "POST",
-					data: {"BGCS": "' . $fbID .'"},
+					data: {"BGCS": "' . $fbID .'", "csrf_token": csrf_token},
 					dataType: "json",
 					success: function(data) {
 						$("div#field-BGCSDepartment.readonly_label").html(data.BGCS);
@@ -581,10 +619,11 @@
 
 			$ajaxHTML = '<script type="text/javascript">
 			$(function() {
+				var csrf_token = Cookies.get("csrf_cookie");
 				$.ajax({
 					url: "'. base_url() .'user/people/index/getBGCS/",
 					type: "POST",
-					data: {"BGCS": "' . $fbID .'"},
+					data: {"BGCS": "' . $fbID .'", "csrf_token": csrf_token},
 					dataType: "json",
 					success: function(data) {
 						$("div#field-ProjOne_Dep.readonly_label").html(data.BGCS);
@@ -605,10 +644,11 @@
 
 			$ajaxHTML = '<script type="text/javascript">
 			$(function() {
+				var csrf_token = Cookies.get("csrf_cookie");
 				$.ajax({
 					url: "'. base_url() .'user/people/index/getBGCS/",
 					type: "POST",
-					data: {"BGCS": "' . $fbID .'"},
+					data: {"BGCS": "' . $fbID .'", "csrf_token": csrf_token},
 					dataType: "json",
 					success: function(data) {
 						$("div#field-ProjTwo_Dep.readonly_label").html(data.BGCS);
@@ -629,10 +669,11 @@
 
 			$ajaxHTML = '<script type="text/javascript">
 			$(function() {
+				var csrf_token = Cookies.get("csrf_cookie");
 				$.ajax({
 					url: "'. base_url() .'user/people/index/getBGCS/",
 					type: "POST",
-					data: {"BGCS": "' . $fbID .'"},
+					data: {"BGCS": "' . $fbID .'", "csrf_token": csrf_token},
 					dataType: "json",
 					success: function(data) {
 						$("div#field-ProjThree_Dep.readonly_label").html(data.BGCS);
@@ -663,6 +704,7 @@
 			}
 			$ajaxHTML = '<script type="text/javascript">
 			$(function() {
+				var csrf_token = Cookies.get("csrf_cookie");
 				var data = "' . $data .'";
 				$("div#field-AnnualLeave.readonly_label").text(data);
 			});
@@ -689,6 +731,7 @@
 			}
 			$ajaxHTML = '<script type="text/javascript">
 			$(function() {
+				var csrf_token = Cookies.get("csrf_cookie");
 				var data = "' . $data .'";
 				$("div#field-PersonalLeave.readonly_label").text(data);
 			});
@@ -718,6 +761,7 @@
 			}
 			$ajaxHTML = '<script type="text/javascript">
 			$(function() {
+				var csrf_token = Cookies.get("csrf_cookie");
 				var data = "' . $data .'";
 				$("div#field-Contract.readonly_label").text(data);
 			});
@@ -741,6 +785,7 @@
 			}
 			$ajaxHTML = '<script type="text/javascript">
 			$(function() {
+				var csrf_token = Cookies.get("csrf_cookie");
 				var data = "' . $data .'";
 				$("div#field-ContStatus.readonly_label").text(data);
 			});
@@ -757,9 +802,11 @@
 
 			$ajaxHTML = '<script type="text/javascript">
 			$(function() {
+				var csrf_token = Cookies.get("csrf_cookie");
 				$.ajax({
 					url: "'. base_url() .'user/expenditures/index/getExpName/' . $perID .'",
 					type: "POST",
+					data: { "csrf_token": csrf_token },
 					dataType: "json",
 					success: function(data) {
 						$("div#field-ExpType.readonly_label").text(data.ExpName);
@@ -780,9 +827,11 @@
 
 			$ajaxHTML = '<script type="text/javascript">
 			$(function() {
+				var csrf_token = Cookies.get("csrf_cookie");
 				$.ajax({
 					url: "'. base_url() .'user/people/index/getRole/' . $roleID .'",
 					type: "POST",
+					data: { "csrf_token": csrf_token },
 					dataType: "json",
 					success: function(data) {
 						$("div#field-Role.readonly_label").text(data.RoleName);

@@ -1,19 +1,19 @@
 <?php
+defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Statistics extends CI_Controller {
+class Statistics extends MY_Controller {
 
 	public function __construct()
 	{
 		parent::__construct();
 
-		$this->load->database();
-		$this->load->helper('url');
 
 		$this->load->library('grocery_CRUD');
 	}
 
 	public function index()
 	{
+
 		$this->render((object)array('output' => '' , 'js_files' => array() , 'css_files' => array()));
 		//$this->projects();
 		//$this->load->view('statistics');
