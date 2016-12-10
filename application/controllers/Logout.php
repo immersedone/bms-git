@@ -11,9 +11,9 @@ class Logout extends CI_Controller {
 
 	public function index() {
 
-		$array_items = array('bms_psnid', 'bms_psnfullName', 'bms_psnusrname', 'bms_isAdmin', 'bms_csrftoken');
+		//$array_items = array('bms_psnid', 'bms_psnfullName', 'bms_psnusrname', 'bms_isAdmin', 'bms_csrftoken');
 
-		$this->session->unset_userdata($array_items);
+		$this->session->unset_userdata("session_user");
 
 		redirect('login', 'refresh');
 
