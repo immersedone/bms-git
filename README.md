@@ -25,6 +25,7 @@ VERSIONS
 ==================
 
 V1.0 (December 2016): first release; capstone project final outcome. 
+
 V0.1 (July 2016-December 2016): initial development version 
 
 [Version 1.0] - December 2016
