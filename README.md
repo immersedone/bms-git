@@ -34,8 +34,11 @@ This is the final product for the RMIT Capstone Project.
 It includes the following Modules:
 
 1) People: stores information about people, with distinction between volunteers and employees.
+
 2) Projects: keeps track of projects in the centre, and includes milestones.
+
 3) Finance: keeps track of some financial aspects of the centre, such as expenditures, reimbursements, and funding received. This is not however an accounting system.
+
 4) Reports: generates various types of reports from the existing modules (e.g., list of all volunteers, future milestones, or reimbursement receipts).
 
 
