@@ -120,7 +120,8 @@ class People extends MY_Controller {
 		$crud->field_type('Status', 'dropdown', $newstatArr);
 	
 		//Call Model to get the Project Names
-		$suburbs = $crud->basic_model->return_query("SELECT SuburbID, CONCAT(Postcode, ' - ', SuburbName) as FullSub FROM Suburb");
+		$suburbs = $crud->basic_model->return_query("SELECT SuburbID, CONCAT(Postcode, ' - ', SuburbName) as FullSub FROM Suburb
+		Order By SuburbName");
 		
 		//Convert Return Object into Associative Array
 		$subArr = array();

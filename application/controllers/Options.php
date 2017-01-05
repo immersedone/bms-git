@@ -29,7 +29,7 @@ class Options extends MY_Controller {
 		$crud->set_model('Extended_generic_model');
 		$crud->set_table('OptionType');
 		$crud->set_subject('Options');
-		$crud->basic_model->set_query_str("SELECT * FROM OptionType WHERE type!='Availability' AND type!='Role'");
+		$crud->basic_model->set_query_str("SELECT * FROM (SELECT * FROM OptionType WHERE type!='Availability' AND type!='Role') x");
 		$crud->columns('type', 'data');
 		$crud->set_read_fields('type', 'data');
 		$crud->edit_fields('type', 'data');
@@ -53,7 +53,8 @@ class Options extends MY_Controller {
 				"SKILLS_EXP" => "Skills & Experience",
 				"QUAL_STUD" => "Qualifications & Current Studies",
 				"EXP_TYPE" => "Expenditure Type",
-				"SPR_FND" => "Superannuation Fund"
+				"SPR_FND" => "Superannuation Fund",
+				"COMP_NAME" => "Company Name",
 			);
 
 			$crud->field_type("type", "dropdown", $optArr);

@@ -52,7 +52,7 @@ class Reimbursements extends MY_Controller {
 			$usrArr += [$usr->PerID => $usr->FullName];
 		}
 		
-		$unpaidExp = $crud->basic_model->return_query("SELECT ExpID, CONCAT(ExpName, ' - ', Reason, ' - ', Amount) as ExpData FROM Expenditure");
+		$unpaidExp = $crud->basic_model->return_query("SELECT ExpID, CONCAT(ExpName, ' - ', Concept, ' - ', Amount) as ExpData FROM Expenditure");
 		
 		$expArr = array();
 		foreach($unpaidExp as $exp) {
@@ -87,7 +87,7 @@ class Reimbursements extends MY_Controller {
 
 		if ($state === "add" or $state === "edit") {
 			$crud->field_type("PerID", "readonly");
-			$unpaidExp = $crud->basic_model->return_query("SELECT ExpID, CONCAT(ExpName, ' - ', Reason, ' - ', Amount) as ExpData FROM Expenditure WHERE IsPaid = 0");
+			$unpaidExp = $crud->basic_model->return_query("SELECT ExpID, CONCAT(ExpName, ' - ', Concept, ' - ', Amount) as ExpData FROM Expenditure WHERE IsPaid = 0");
 
 			$expArr = array();
 			foreach($unpaidExp as $exp) {
@@ -215,7 +215,7 @@ class Reimbursements extends MY_Controller {
 		$resp["ExpList"] = "";
 		for($i = 0; $i < count($expArr); $i++) {
 			$id = $expArr[$i];
-			$res = $crud->basic_model->return_query("SELECT CONCAT('$', Amount, ' - (Name) ', ExpName, '; (Reason) ', Reason) as Exp FROM Expenditure WHERE ExpID='$id' LIMIT 1");
+			$res = $crud->basic_model->return_query("SELECT CONCAT('$', Amount, ' - (Name) ', ExpName, '; (Concept) ', Concept) as Exp FROM Expenditure WHERE ExpID='$id' LIMIT 1");
 
 			$count = $i + 1;
 
