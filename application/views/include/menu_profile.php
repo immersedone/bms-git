@@ -1,5 +1,5 @@
 <!-- menu profile quick info -->
-            <div class="profile">
+            <div class="profile cfx">
               <div class="profile_pic">
                 <img src="/assets/img/img.jpg" alt="..." class="img-circle profile_img">
               </div>
