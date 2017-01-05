@@ -162,6 +162,11 @@ if($subject === "Reimbursement") { ?>
 			$page = "PROJECT_VIEW";
 		}
 
+		if(in_array("people", $fullURL) && in_array("index", $fullURL) && in_array("edit", $fullURL)) {
+
+			$page = "PEOPLE_EDIT";
+		}
+
 	?>
 	var validation_url = '<?php echo $validation_url?>';
 	var list_url = '<?php echo $list_url?>';
@@ -171,3 +176,18 @@ if($subject === "Reimbursement") { ?>
 	var message_alert_edit_form = "<?php echo $this->l('alert_edit_form')?>";
 	var message_update_error = "<?php echo $this->l('update_error')?>";
 </script>
+<?php if(isset($page) && $page == "PEOPLE_EDIT"): ?>
+<script>
+$(document).ready(function() {
+	//Custom DOB Date Range
+	var dateInput = $('input[name="DateofBirth"]');
+	dateInput.datepicker("destroy");
+	dateInput.datepicker({
+		yearRange: "-100:+0",
+		dateFormat: "yy-mm-dd",
+		changeMonth: true,
+		changeYear: true
+	});
+});
+</script>
+<?php endif; ?>

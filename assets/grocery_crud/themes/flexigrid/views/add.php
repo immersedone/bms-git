@@ -164,6 +164,10 @@
         if(strtolower($fullURL[0]) === "user" && strtolower($fullURL[1]) === "projects" && strtolower($fullURL[2]) === "index" && strtolower($fullURL[3]) === "projread") {
             $page = "PROJECT_VIEW";
         }
+
+        if(strtolower($fullURL[0]) === "user" && strtolower($fullURL[1]) === "people" && strtolower($fullURL[2]) === "index" && strtolower($fullURL[3]) === "add") {
+        	$page = "PEOPLE_ADD";
+        }
     ?>
 	
 		<?php if(isset($page) && $page !== "" && $page === "PROJECT_VIEW"): ?>
@@ -180,3 +184,20 @@
 	var message_alert_add_form = "<?php echo $this->l('alert_add_form')?>";
 	var message_insert_error = "<?php echo $this->l('insert_error')?>";
 </script>
+
+
+<?php if(isset($page) && $page == "PEOPLE_ADD"): ?>
+<script>
+$(document).ready(function() {
+	//Custom DOB Date Range
+	var dateInput = $('input[name="DateofBirth"]');
+	dateInput.datepicker("destroy");
+	dateInput.datepicker({
+		yearRange: "-100:+0",
+		dateFormat: "yy-mm-dd",
+		changeMonth: true,
+		changeYear: true
+	});
+});
+</script>
+<?php endif; ?>
