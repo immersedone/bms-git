@@ -190,7 +190,7 @@ class Genreport extends MY_Controller {
 
 			$html .= "<h4>Expenditures</h4>";
 			$html .= "<table><tbody>";
-			$html .= "<tr><th>Name</th><th>Company Name</th><th>Reason</th><th>Amount</th><th>GST</th><th>Type</th><th>Project</th></tr>";
+			$html .= "<tr><th>Name</th><th>Company Name</th><th>Reason</th><th>Total Amount</th><th>GST</th><th>Type</th><th>Project</th></tr>";
 			
 			if($reimb[0]->ExpList == "") {
 				$isEmpty = true;
@@ -211,7 +211,7 @@ class Genreport extends MY_Controller {
 					$totalGST += $expDet[0]->GST;
 					$html .= "<tr><td>" . $expDet[0]->ExpName ."</td><td>" . $expDet[0]->CompanyName ."</td><td>" . $expDet[0]->Reason ."</td><td>$" . $expDet[0]->Amount ."</td><td>$" . $expDet[0]->GST ."</td><td>" . $expDet[0]->Type ."</td><td>" . $expDet[0]->PrjName ."</td></tr>";
 				}
-				$html .= "<tr><td></td><td></td><td></td><td><b>Total Amount:</b></td><td>$" . number_format($totalAm, 2) . "</td><td></td><td></td></tr>";
+				$html .= "<tr><td></td><td></td><td></td><td><b>Grand Total:</b></td><td>$" . number_format($totalAm, 2) . "</td><td></td><td></td></tr>";
 				$html .= "<tr><td></td><td></td><td></td><td><b>Total GST:</b></td><td>$" . number_format($totalGST, 2) . "</td><td></td><td></td></tr>";
 			}
 
@@ -274,7 +274,7 @@ class Genreport extends MY_Controller {
 					$totalGST += $row->ExpGST;
 					$html .= "<tr><td>" . $row->ExpName ."</td><td>" . $row->ExpCPName ."</td><td>" . $row->ExpReason ."</td><td>$" . $row->ExpAmount ."</td><td>$" . $row->ExpGST ."</td><td>" . $row->ExpType ."</td><td>" . $row->ExpSpentBy . "</td></tr>";
 				}
-				$html .= "<tr><td></td><td></td><td></td><td><b>Total Amount:</b></td><td>$" . number_format($totalAm, 2) . "</td><td></td><td></td></tr>";
+				$html .= "<tr><td></td><td></td><td></td><td><b>Grand Total:</b></td><td>$" . number_format($totalAm, 2) . "</td><td></td><td></td></tr>";
 				$html .= "<tr><td></td><td></td><td></td><td><b>Total GST:</b></td><td>$" . number_format($totalGST, 2) . "</td><td></td><td></td></tr>";
 			}
 
@@ -379,7 +379,7 @@ class Genreport extends MY_Controller {
 				//Spit out Table Header for Project
 				$html .= "<h4>Expenditures for \"" . $projNameArr[$i] . "\"</h4>";
 				$html .= "<table><tbody>";
-				$html .= "<tr><th>Name</th><th>Company Name</th><th>Reason</th><th>Amount</th><th>GST</th><th>Type</th><th>Spent By</th></tr>";
+				$html .= "<tr><th>Name</th><th>Company Name</th><th>Reason</th><th>Total Amount</th><th>GST</th><th>Type</th><th>Spent By</th></tr>";
 
 				if($isEmpty == true) {
 					$html .= "<tr><td colspan='7' style='text-align:center;'>No Expenditures Listed</td></tr>";
@@ -391,7 +391,7 @@ class Genreport extends MY_Controller {
 						$html .= "<tr><td>" . $row->ExpName ."</td><td>" . $row->ExpCPName ."</td><td>" . $row->ExpReason ."</td><td>$" . $row->ExpAmount ."</td><td>$" . $row->ExpGST ."</td><td>" . $row->ExpType ."</td><td>" . $row->ExpSpentBy . "</td></tr>";
 					}
 
-					$html .= "<tr><td></td><td></td><td></td><td><b>Total Amount:</b></td><td>$" . number_format($totalAm, 2) . "</td><td></td><td></td></tr>";
+					$html .= "<tr><td></td><td></td><td></td><td><b>Grand Total:</b></td><td>$" . number_format($totalAm, 2) . "</td><td></td><td></td></tr>";
 					$html .= "<tr><td></td><td></td><td></td><td><b>Total GST:</b></td><td>$" . number_format($totalGST, 2) . "</td><td></td><td></td></tr>";
 				}
 
@@ -420,7 +420,7 @@ class Genreport extends MY_Controller {
 			//Content
 			$html .= "<h4>Pending Milestones</h4>";
 			$html .= "<table><tbody>";
-			$html .= "<tr><th>Project Name</th><th>Description</th><th>Due Date</th><th>Report Type</th><th>Report Is Due</th><th>Payment Mode</th><th>Status</th><th>Amount</th><th>Comment</th></tr>";
+			$html .= "<tr><th>Project Name</th><th>Description</th><th>Due Date</th><th>Report Type</th><th>Report Is Due</th><th>Payment Mode</th><th>Status</th><th>Total Amount</th><th>Comment</th></tr>";
 
 			//Loop
 			foreach($mst as $em) { 
@@ -471,7 +471,7 @@ class Genreport extends MY_Controller {
 			//Content
 			$html .= "<h4>Future Milestones</h4>";
 			$html .= "<table><tbody>";
-			$html .= "<tr><th>Project Name</th><th>Description</th><th>Due Date</th><th>Report Type</th><th>Report Is Due</th><th>Payment Mode</th><th>Status</th><th>Amount</th><th>Comment</th></tr>";
+			$html .= "<tr><th>Project Name</th><th>Description</th><th>Due Date</th><th>Report Type</th><th>Report Is Due</th><th>Payment Mode</th><th>Status</th><th>Total Amount</th><th>Comment</th></tr>";
 
 			//Loop
 			foreach($mst as $em) { 
@@ -711,7 +711,7 @@ class Genreport extends MY_Controller {
 		$data["titleLine_Two"] = date('Y');
 		$data["today_date"] = date('d F Y');
 		$data["today_year"] = date('Y');
-		$data["name"] = "Jaime de Loma-Osorio Ricon";
+		$data["name"] = $_SESSION["session_user"]["bms_psnfullName"];
 		$data["prjName"] = "N/A";		
 		$data["ReimbursementID"] = $id;
 
@@ -731,6 +731,9 @@ class Genreport extends MY_Controller {
 
 		
 
+		$title = $data["titleLine_One"] . ' ' . $data["titleLine_Two"] . ' - #' . $id;
+		$fileName = $title . '.pdf';
+
 		$this->load->library("grocery_CRUD");
 		$this->load->model("Grocery_crud_model");
 		$this->load->model("Extended_generic_model");
@@ -749,7 +752,7 @@ class Genreport extends MY_Controller {
 
 		$html .= "<h4>Expenditures</h4>";
 		$html .= "<table><tbody>";
-		$html .= "<tr><th>Name</th><th>Company Name</th><th>Reason</th><th>Amount</th><th>GST</th><th>Type</th><th>Project</th></tr>";
+		$html .= "<tr><th>Name</th><th>Company Name</th><th>Reason</th><th>Total Amount</th><th>GST</th><th>Type</th><th>Project</th></tr>";
 		
 		if($reimb[0]->ExpList == "") {
 			$isEmpty = true;
@@ -779,10 +782,17 @@ class Genreport extends MY_Controller {
 
 		$html .= $this->load->view('/include/Report_EndHTML', $data, TRUE);
 
+
+
 		//echo $html;
 		$this->pdf = $this->m_pdf->load('utf-8', 'A4');
 		$this->pdf->WriteHTML($html);
 		$this->pdf->Output(FCPATH . $pdfFilePath . $FileStorageName, "F");
+
+
+		//Save File to Database
+		$this->db->query("INSERT INTO Files(Title, Name, Directory, FileName, TempName, CreatedOn, Extension, CreatedBy, Type) VALUES ('".$title."', '".$title."', '$pdfFilePath', '".$fileName."', '$FileStorageName', now(), 'pdf', '" . $_SESSION['session_user']['bms_psnid'] ."', 'REPORT')");
+
 
 		$this->viewReport($viewPath);
 	}

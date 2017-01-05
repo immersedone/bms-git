@@ -53,10 +53,163 @@
 
         <!-- page content -->
         <div class="right_col" role="main">
-          <div class="row">
-              <div class="col-md-12 col-sm-12 col-xs-12">
-                <img style="max-width:100%;" src="/assets/img/Logo_banner.jpg" />
-              </div>
+          <div class="row first">
+              
+              <div class="col-md-12 col-sm-12 col-xs-12 bg_norm">  
+                <div class="dashboard_generate"> 
+                    <div class="row x_custom x_title">
+                        <div class="col-md-12">
+                            <h3>Welcome <?php echo $_SESSION["session_user"]["bms_psnfullName"]; ?></h3>
+                        </div>
+                    </div>
+                    <!-- Display HotLinks -->
+                    <div class="col-md-12">
+                    
+                            <div class="col-md-4 panel-hotlink">
+                                <a href="<?php echo base_url('/user'); ?>">
+                                    <h4>Update Details</h4>
+                                    <div class="content cfx">
+                                        <div class="left">
+                                            <i class="fa fa-user"></i>
+                                        </div>
+                                        <div class="right">
+                                            <span>Name</span><br/>
+                                            <?php echo $_SESSION["session_user"]["bms_psnfullName"]; ?>
+                                        </div>
+                                    </div>
+                                    <div class="viewMore">View More...</div>
+                                </a>
+                            </div>
+
+                            <div class="col-md-4 panel-hotlink">
+                                <a class="" id="" href="<?php echo base_url('/user'); ?>">
+                                    <h4>View Projects</h4>
+                                    <div class="content cfx">
+                                        <div class="left">
+                                            <i class="fa fa-desktop"></i>
+                                        </div>
+                                        <div class="right">
+                                            <span class="count"><?php echo '0'; ?></span>
+                                        </div>
+                                    </div>
+                                    <div class="viewMore">View More...</div>
+                                </a>
+                            </div>
+
+                            <div class="col-md-4 panel-hotlink">
+                                <a id="" href="<?php echo base_url('/user');?>">
+                                    <h4>Generate Report</h4>
+                                    <div class="content cfx">
+                                        <div class="left">
+                                            <i class="fa fa-table"></i>
+                                        </div>
+                                        <div class="right">
+                                            <span class="count"><?php echo '0'; ?></span>
+                                        </div>
+                                    </div>
+                                    <div class="viewMore">View More...</div>
+                                </a>
+                            </div>
+
+                            <div class="col-md-4 panel-hotlink">
+                                <a href="<?php echo base_url('/user'); ?>">
+                                    <h4>Update Details</h4>
+                                    <div class="content cfx">
+                                        <div class="left">
+                                            <i class="fa fa-user"></i>
+                                        </div>
+                                        <div class="right">
+                                            <span>Name</span><br/>
+                                            <?php echo $_SESSION["session_user"]["bms_psnfullName"]; ?>
+                                        </div>
+                                    </div>
+                                    <div class="viewMore">View More...</div>
+                                </a>
+                            </div>
+
+                            <div class="col-md-4 panel-hotlink">
+                                <a class="" id="" href="<?php echo base_url('/user'); ?>">
+                                    <h4>View Projects</h4>
+                                    <div class="content cfx">
+                                        <div class="left">
+                                            <i class="fa fa-desktop"></i>
+                                        </div>
+                                        <div class="right">
+                                            <span class="count"><?php echo '0'; ?></span>
+                                        </div>
+                                    </div>
+                                    <div class="viewMore">View More...</div>
+                                </a>
+                            </div>
+
+                            <div class="col-md-4 panel-hotlink">
+                                <a id="" href="<?php echo base_url('/user');?>">
+                                    <h4>Generate Report</h4>
+                                    <div class="content cfx">
+                                        <div class="left">
+                                            <i class="fa fa-table"></i>
+                                        </div>
+                                        <div class="right">
+                                            <span class="count"><?php echo '0'; ?></span>
+                                        </div>
+                                    </div>
+                                    <div class="viewMore">View More...</div>
+                                </a>
+                            </div>
+
+                            <div class="col-md-4 panel-hotlink">
+                                <a href="<?php echo base_url('/user'); ?>">
+                                    <h4>Update Details</h4>
+                                    <div class="content cfx">
+                                        <div class="left">
+                                            <i class="fa fa-user"></i>
+                                        </div>
+                                        <div class="right">
+                                            <span>Name</span><br/>
+                                            <?php echo $_SESSION["session_user"]["bms_psnfullName"]; ?>
+                                        </div>
+                                    </div>
+                                    <div class="viewMore">View More...</div>
+                                </a>
+                            </div>
+
+                            <div class="col-md-4 panel-hotlink">
+                                <a class="" id="" href="<?php echo base_url('/user'); ?>">
+                                    <h4>View Projects</h4>
+                                    <div class="content cfx">
+                                        <div class="left">
+                                            <i class="fa fa-desktop"></i>
+                                        </div>
+                                        <div class="right">
+                                            <span class="count"><?php echo '0'; ?></span>
+                                        </div>
+                                    </div>
+                                    <div class="viewMore">View More...</div>
+                                </a>
+                            </div>
+
+                            <div class="col-md-4 panel-hotlink">
+                                <a id="" href="<?php echo base_url('/user');?>">
+                                    <h4>Generate Report</h4>
+                                    <div class="content cfx">
+                                        <div class="left">
+                                            <i class="fa fa-table"></i>
+                                        </div>
+                                        <div class="right">
+                                            <span class="count"><?php echo '0'; ?></span>
+                                        </div>
+                                    </div>
+                                    <div class="viewMore">View More...</div>
+                                </a>
+                            </div>
+                
+                    </div>
+                    <!-- End Hot Links Panel -->
+
+                </div>
+            </div>
+
+
           </div>
         </div>
         <!-- /page content -->
