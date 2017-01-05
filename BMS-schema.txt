@@ -1,0 +1,194 @@
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Expenditure`
+--
+
+DROP TABLE IF EXISTS `Expenditure`;
+CREATE TABLE `Expenditure` (
+  `ExpID` int(255) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `ExpName` varchar(255) NOT NULL,
+  `Reason` text NOT NULL,
+  `Amount` decimal(10,2) NOT NULL,
+  `ApprovedBy` int(255) NOT NULL,
+  `SpentBy` int(255) NOT NULL,
+  `Type` int(255) NOT NULL,
+  `ProjId` int(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Files`
+--
+
+DROP TABLE IF EXISTS `Files`;
+CREATE TABLE `Files` (
+  `FileID` int(255) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `Title` varchar(255) NOT NULL,
+  `Name` varchar(255) NOT NULL,
+  `Location` varchar(255) NOT NULL,
+  `TempName` varchar(255) NOT NULL,
+  `CreatedOn` datetime NOT NULL,
+  `Extension` varchar(10) NOT NULL,
+  `CreatedBy` int(255) NOT NULL,
+  `Type` int(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Funding`
+--
+
+DROP TABLE IF EXISTS `Funding`;
+CREATE TABLE `Funding` (
+  `FundID` int(255) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `ProjID` int(255) NOT NULL,
+  `FundBodyID` int(255) NOT NULL,
+  `Amount` decimal(10,2) NOT NULL,
+  `PaymentType` enum('INCREMENTAL','FULL') NOT NULL,
+  `ApprovedBy` int(255) NOT NULL,
+  `ApprovedOn` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `FundingBody`
+--
+
+DROP TABLE IF EXISTS `FundingBody`;
+CREATE TABLE `FundingBody` (
+  `FundBodyID` int(255) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `BodyName` varchar(255) NOT NULL,
+  `Desc` varchar(2000) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Milestone`
+--
+
+DROP TABLE IF EXISTS `Milestone`;
+CREATE TABLE `Milestone` (
+  `MilestoneID` int(255) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `ProjID` int(255) NOT NULL,
+  `Title` varchar(255) NOT NULL,
+  `Desc` text NOT NULL,
+  `StartDate` datetime NOT NULL,
+  `FinishDate` datetime NOT NULL,
+  `Progress` enum('ON_TIME','DELAYED') NOT NULL,
+  `RevisedStartDate` datetime NOT NULL,
+  `RevisedFinishDate` datetime NOT NULL,
+  `Status` int(1) NOT NULL default 0,
+  `CreatedBy` int(255) NOT NULL,
+  `CreatedOn` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Person`
+--
+
+DROP TABLE IF EXISTS `Person`;
+CREATE TABLE `Person` (
+  `PerID` int(255) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `FirstName` varchar(30) NOT NULL,
+  `MiddleName` varchar(30) NOT NULL,
+  `LastName` varchar(30) NOT NULL,
+  `Address` varchar(255) NOT NULL,
+  `SuburbID` int(255) NOT NULL,
+  `WorkEmail` varchar(255) NOT NULL,
+  `PersonalEmail` varchar(255) NOT NULL,
+  `Mobile` varchar(15) NOT NULL,
+  `HomePhone` varchar(15) NOT NULL,
+  `Status` int(255) NOT NULL,
+  `DateStarted` datetime NOT NULL,
+  `DateFinished` datetime NOT NULL,
+  `ContractSigned` int(255) NOT NULL,
+  `PaperworkCompleted` enum('NO','YES') NOT NULL,
+  `WWC` int(255) NOT NULL,
+  `WWCFiled` int(255) NOT NULL,
+  `Username` varchar(30) NOT NULL,
+  `Password` varchar(400) NOT NULL,
+  `Hash` varchar(400) NOT NULL,
+  `Timeout` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `PersonProject`
+--
+
+DROP TABLE IF EXISTS `PersonProject`;
+CREATE TABLE `PersonProject` (
+  `PersonProjectID` int(255) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `PersonID` int(255) NOT NULL,
+  `ProjectID` int(255) NOT NULL,
+  `Role` enum('EMPLOYEE','VOLUNTEER') NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Project`
+--
+
+DROP TABLE IF EXISTS `Project`;
+CREATE TABLE `Project` (
+  `ProjID` int(255) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `Name` varchar(255) NOT NULL,
+  `Desc` text NOT NULL,
+  `StartDate` datetime NOT NULL,
+  `FinishDate` datetime NOT NULL,
+  `Status` int(1) NOT NULL default 0,
+  `TotalFunding` decimal(10,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Reimbursement`
+--
+
+DROP TABLE IF EXISTS `Reimbursement`;
+CREATE TABLE `Reimbursement` (
+  `ReimID` int(255) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `ExpID` int(255) NOT NULL,
+  `Reason` text NOT NULL,
+  `Date` datetime NOT NULL,
+  `Type` int(255) NOT NULL,
+  `ApprovedBy` int(255) NOT NULL,
+  `IsPaid` varchar(1) NOT NULL,
+  `PerID` int(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `OptionType`
+--
+
+DROP TABLE IF EXISTS `OptionType`;
+CREATE TABLE `OptionType` (
+	`OptID` int(255) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	`data` varchar(2000) NOT NULL,
+	`type` varchar(200)
+)
+
+
+-- --------------------------------------------------------
+
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
