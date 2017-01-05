@@ -40,17 +40,17 @@ class Expenditures extends MY_Controller {
 		$crud->display_as('ExpDate', 'Date of Expenditure');
 		$crud->display_as('FilePath', 'File Attached');
 		$crud->display_as("ProjID", "Project Name");
-		$crud->columns('Name','ExpName', 'CompanyName', 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType', 'ExpDate', 'FilePath');
-		$crud->set_read_fields('ProjID','ExpName', 'CompanyName', 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType', 'ExpDate', 'FilePath');
-		$crud->add_fields('ProjID','ExpName', 'CompanyName', 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType', 'ExpDate', 'FilePath');
-		$crud->edit_fields('ProjID','ExpName', 'CompanyName', 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType', 'ExpDate', 'FilePath');
+		$crud->columns('Name','ExpName', 'CompanyName', 'Concept', 'Amount', 'GST', 'SpentBy', 'ExpType', 'ExpDate', 'FilePath');
+		$crud->set_read_fields('ProjID','ExpName', 'CompanyName', 'Concept', 'Amount', 'GST', 'SpentBy', 'ExpType', 'ExpDate', 'FilePath');
+		$crud->add_fields('ProjID','ExpName', 'CompanyName', 'Concept', 'Amount', 'GST', 'SpentBy', 'ExpType', 'ExpDate', 'FilePath');
+		$crud->edit_fields('ProjID','ExpName', 'CompanyName', 'Concept', 'Amount', 'GST', 'SpentBy', 'ExpType', 'ExpDate', 'FilePath');
 
 		//$crud->callback_before_delete(array($this,'crud_delete_file'));
 
 		$crud->required_fields(
 		'ProjID',
 		'ExpName',
-		'Reason',
+		'Concept',
 		'Amount',
 		'GST',
 		'SpentBy',
@@ -108,10 +108,10 @@ class Expenditures extends MY_Controller {
 		LEFT OUTER JOIN `Project` Proj ON Proj.ProjID=Exp.ProjID
 		LEFT OUTER JOIN `Person` Per ON Per.PerID=Exp.SpentBy
 		LEFT OUTER JOIN OptionType Opt ON Opt.OptID = Exp.ExpType WHERE Exp.ProjID='.$id.') x');
-		$crud->columns('ExpName', 'Reason', 'Amount', 'GST', 'FullName'); 
-		$crud->add_fields('ProjID', 'ExpName', 'CompanyName', 'Reason', 'Amount', 'GST', 'SpentBy',  'ExpType', 'ExpDate', 'FilePath');
-		$crud->edit_fields('ProjID','ExpName', 'CompanyName', 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType', 'ExpDate', 'FilePath');
-		$crud->set_read_fields("ProjID", "ExpName", "CompanyName", 'Reason', 'Amount', 'GST', 'SpentBy', 'ExpType', 'ExpDate', 'FilePath');
+		$crud->columns('ExpName', 'Concept', 'Amount', 'GST', 'FullName'); 
+		$crud->add_fields('ProjID', 'ExpName', 'CompanyName', 'Concept', 'Amount', 'GST', 'SpentBy',  'ExpType', 'ExpDate', 'FilePath');
+		$crud->edit_fields('ProjID','ExpName', 'CompanyName', 'Concept', 'Amount', 'GST', 'SpentBy', 'ExpType', 'ExpDate', 'FilePath');
+		$crud->set_read_fields("ProjID", "ExpName", "CompanyName", 'Concept', 'Amount', 'GST', 'SpentBy', 'ExpType', 'ExpDate', 'FilePath');
 		$crud->display_as('ExpName', 'Expenditure Name');
 		$crud->display_as('CompanyName', 'Company Name');
 		$crud->display_as('FullName', 'Spent By');
@@ -132,7 +132,7 @@ class Expenditures extends MY_Controller {
 
 		$crud->required_fields(
 		'ExpName',
-		'Reason',
+		'Concept',
 		'Amount',
 		'GST',
 		'SpentBy',
@@ -236,7 +236,7 @@ class Expenditures extends MY_Controller {
 		//Initialise and assign variables 
 		
 		$ExpName = $_POST['ExpName'];
-		$Reason = $_POST['Reason'];
+		$Concept = $_POST['Concept'];
 		$CompanyName = $_POST['CompanyName'];
 		$amount = $_POST['Amount'];
 		$gst = $_POST['GST'];
@@ -251,7 +251,7 @@ class Expenditures extends MY_Controller {
 		
 		$crud = new grocery_CRUD();
 		$crud->set_model('Expenditure_model');
-		$resp = $crud->basic_model->insert_expenditure($ExpName, $Reason, $CompanyName, $amount, $gst, $SpentBy, $FilePath, $newDate, $ProjectID);
+		$resp = $crud->basic_model->insert_expenditure($ExpName, $Concept, $CompanyName, $amount, $gst, $SpentBy, $FilePath, $newDate, $ProjectID);
 		echo $resp;
 	}
 
