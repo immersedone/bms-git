@@ -42,6 +42,49 @@ class Options extends MY_Controller {
 
 		if($state == 'edit') {
 			$crud->field_type('type', 'readonly');
+		} else if($state === "ajax_list" || $state === "ajax_list_info") {
+
+			$identifiers = array(
+				"NHACE_CLASS" => "NHACE Classification",
+				"FA_QUAL" => "First Aid Qualification",
+				"Position" => "Position",
+				"BGCS_DEP" => "BGCS Department",
+				"SKILLS_EXP" => "Skills & Experience",
+				"QUAL_STUD" => "Qualifications & Current Studies",
+				"EXP_TYPE" => "Expenditure Type",
+				"SPR_FND" => "Superannuation Fund",
+				"COMP_NAME" => "Company Name",
+			);
+
+			if($_POST["search_text"] !== "" && $_POST["search_field"] === "type") {
+				//When searching Options, convert strings to identifiers
+
+				//Calculate similarity percentages for each identifier stored
+				//in DB against search_text
+				
+
+
+				$percentages = array();
+				foreach($identifiers as $key => $value) {
+					similar_text($_POST["search_text"], $value, $perc);
+
+					$percentages[$key] = $perc;
+				}
+
+				asort($percentages);
+
+				if(end($percentages) > 60) {
+
+					$_POST["search_text"] = array_search(end($percentages), $percentages);
+
+				}
+
+
+				
+			}
+
+			$crud->field_type("type", "dropdown", $identifiers);
+
 		} else {
 
 			//Allow only specific options
