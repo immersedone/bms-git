@@ -14,8 +14,8 @@
             $resp = array();
 			
             if($this->db->simple_query("DELETE FROM Funding WHERE FundID='$id' LIMIT 1")) {
-                $currentAmt = $this->db->query('SELECT TotalFunding FROM Project');
-                $row = $currentAmt->row($projID-1);
+                $currentAmt = $this->db->query('SELECT TotalFunding FROM Project WHERE ProjID="' . $projID . '"');
+                $row = $currentAmt->row();
                 $newAmt = $row->TotalFunding - $amt;
 				$this->db->simple_query("UPDATE Project SET TotalFunding='$newAmt' WHERE ProjID='$projID'");
                 $resp['success'] = TRUE;
@@ -36,8 +36,24 @@
 			VALUES('$projectID', '$fundbodyid', '$amount', '$PaymentType', '$Approvedby', '$ApprovedOn', '$status')")) 
 			{
 
-                $currentAmt = $this->db->query('SELECT TotalFunding FROM Project');
-                $row = $currentAmt->row($projectID-1);
+                //Get Project ID
+                /*$getProjID = $this->db->query("SELECT P.ProjID FROM `Project` P
+                    WHERE P.ProjID < 
+                    (
+                        SELECT Pr.ProjID FROM `Project` Pr
+                        WHERE Pr.ProjID <= '$projectID' ORDER BY Pr.ProjID DESC LIMIT 0,1
+                    )
+                    ORDER BY P.ProjID DESC
+                    LIMIT 0,1
+                ")->row();*/
+
+                //echo $getProjID->ProjID;
+
+                $currentAmt = $this->db->query('SELECT TotalFunding FROM Project WHERE ProjID="'. $projectID . '"');
+                $row = $currentAmt->row();
+                
+                //echo $projectID;
+
                 $newAmt = $row->TotalFunding + $amount;
 				$this->db->simple_query("UPDATE Project SET `TotalFunding`='$newAmt'
 				WHERE `ProjID` = $projectID ");
@@ -61,8 +77,8 @@
             if($this->db->simple_query("UPDATE Funding SET Amount = '$newamount', PaymentType = '$PaymentType', Status = '$status', ApprovedBy = '$Approvedby', ApprovedOn = '$ApprovedOn' WHERE FundID = '$id'"))
 			{
 				if($oldamount != $newamount){
-                $currentAmt = $this->db->query('SELECT TotalFunding FROM Project');
-                $row = $currentAmt->row($projectID-1);
+                $currentAmt = $this->db->query('SELECT TotalFunding FROM Project WHERE ProjID="' . $projectID . '"');
+                $row = $currentAmt->row();
                 $newTotal = $row->TotalFunding + $newamount - $oldamount;
 				$this->db->simple_query("UPDATE Project SET `TotalFunding`='$newTotal'
 				WHERE `ProjID` = $projectID ");

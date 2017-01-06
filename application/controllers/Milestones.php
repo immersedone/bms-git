@@ -47,8 +47,7 @@ class Milestones extends MY_Controller {
 		$crud->required_fields(
 		'ProjID',
 		'DueDate',
-		'RptType',
-		'FilePath'
+		'RptType'
 		);
 		
 		$crud->callback_column('MSComplete', array($this, 'check_complete'));
@@ -139,8 +138,7 @@ class Milestones extends MY_Controller {
 					
 		$crud->required_fields(
 		'DueDate',
-		'RptType',
-		'FilePath'
+		'RptType'
 		);	
 		
 		$projects = $crud->basic_model->return_query("SELECT Pr.ProjID, Pr.Name FROM Project Pr LEFT OUTER JOIN Milestone_new Ms ON Ms.ProjID=Pr.ProjID WHERE Ms.milestoneID=".$id);

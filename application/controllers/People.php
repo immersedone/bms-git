@@ -58,7 +58,7 @@ class People extends MY_Controller {
 		$crud->display_as('WWCExpiry', 'Working With Children Check (WWC) Expiry Date');
 		$crud->display_as('DateofBirth', 'Date of Birth');
 		$crud->display_as('FAQual', 'First Aid Qualification Level');
-		$crud->display_as('FAQualExpiry', 'First Aid Qualification Expiry');
+		$crud->display_as('FAQaulExpiry', 'First Aid Qualification Expiry');
 		$crud->display_as('LanguagesSpoken', 'Languages Spoken');
 		$crud->display_as('EmergContName', 'Emergency Contact Name');
 		$crud->display_as('EmergContMob', 'Emergency Contact Mobile');

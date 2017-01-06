@@ -244,8 +244,6 @@ class Employee extends MY_Controller {
 			$crud->field_type("PerID", "readonly");
 			$crud->required_fields(
             'EmpPosition',
-            'WorkMob',
-            'WorkEmail',
             'EmpDate',
             'HrlyRate',
             'HrsPerFrtnt',
@@ -259,8 +257,6 @@ class Employee extends MY_Controller {
 			$crud->required_fields(
             'PerID',
             'EmpPosition',
-            'WorkMob',
-            'WorkEmail',
             'EmpDate',
             'HrlyRate',
             'HrsPerFrtnt',
@@ -312,7 +308,7 @@ class Employee extends MY_Controller {
 			$crudTwo->display_as('WWCFiled', 'Working With Children Check (WWC) is Filed');
 			$crudTwo->display_as('WWCExpiry', 'Working With Children Check (WWC) Expiry Date');
 			$crudTwo->display_as('TeacherExipry', 'Valid Teacher Registration Expiry Date');
-			$crudTwo->display_as('FAQualExpiry', 'First Aid Qualification Expiry');
+			$crudTwo->display_as('FAQaulExpiry', 'First Aid Qualification Expiry');
 			$crudTwo->display_as('PoliceCheckDate', 'Date of Police Check');
 			$crudTwo->display_as('DateofBirth', 'Date of Birth');
 			$crudTwo->display_as('FAQual', 'First Aid Qualification Level');
@@ -579,6 +575,7 @@ class Employee extends MY_Controller {
 		$EmpVol = $_POST['EmpVol'];
 		$startdate = $_POST['StartDate'];
 		$finishdate = $_POST['FinishDate'];
+		
 
 		$newDateRep = preg_replace('/\//', '-',$startdate);
 		$newStart = date("Y-m-d H:i:s", strtotime($newDateRep));

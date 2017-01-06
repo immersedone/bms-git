@@ -160,7 +160,7 @@ class Volunteer extends MY_Controller {
 			$crudTwo->display_as('WWCFiled', 'Working With Children Check (WWC) is Filed');
 			$crudTwo->display_as('WWCExpiry', 'Working With Children Check (WWC) Expiry Date');
 			$crudTwo->display_as('TeacherExipry', 'Valid Teacher Registration Expiry Date');
-			$crudTwo->display_as('FAQualExpiry', 'First Aid Qualification Expiry');
+			$crudTwo->display_as('FAQaulExpiry', 'First Aid Qualification Expiry');
 			$crudTwo->display_as('PoliceCheckDate', 'Date of Police Check');
 			$crudTwo->display_as('DateofBirth', 'Date of Birth');
 			$crudTwo->display_as('FAQual', 'First Aid Qualification Level');

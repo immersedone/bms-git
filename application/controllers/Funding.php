@@ -184,6 +184,7 @@ class Funding extends MY_Controller {
 			});
 			$crud->field_type("ApprovedBy", "hidden", $_SESSION['session_user']['bms_psnid']);
 			$crud->field_type("FBName", "dropdown", $FBArr);
+			$crud->field_type("FundBodyID", "dropdown", $FBArr);
 		} else {
 			$crud->field_type("ProjID", "dropdown", $prjArr);
 			$crud->field_type("FBName", "dropdown", $FBArr);
