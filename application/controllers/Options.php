@@ -56,7 +56,7 @@ class Options extends MY_Controller {
 				"COMP_NAME" => "Company Name",
 			);
 
-			if($_POST["search_text"] !== "" && $_POST["search_field"] === "type") {
+			if($_POST["search_text"] !== "" && ($_POST["search_field"] === "type" || $_POST["search_field"] === "" ) ) {
 				//When searching Options, convert strings to identifiers
 
 				//Calculate similarity percentages for each identifier stored
