@@ -8,6 +8,35 @@
 	$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/jquery.noty.js');
 	$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/config/jquery.noty.config.js');
 ?>
+
+<?php
+	//Check to see if it is coming from project View
+	$fullURL = explode('/', $_SERVER['REQUEST_URI']);
+	if(end($fullURL) === "") {
+    	array_pop($fullURL);
+	} 
+
+	$fullURL = array_map('strtolower', $fullURL);
+
+	if(in_array("mileproj", $fullURL) || in_array("expendproj", $fullURL) || in_array("fundproj", $fullURL) || in_array("empproj", $fullURL)
+		|| in_array("volproj", $fullURL)) {
+		$list_url = base_url() . 'user/projects/index/projread/list';
+		echo 'var success_list_url = "'.base_url().'user/projects/index/projread/list";';
+		$page = "PROJECT_VIEW";
+	}
+
+	if(in_array("people", $fullURL) && in_array("index", $fullURL) && in_array("edit", $fullURL)) {
+
+		$page = "PEOPLE_EDIT";
+	}
+
+	if(in_array("reimbursements", $fullURL) && in_array("index", $fullURL) && in_array("edit", $fullURL)) {
+
+		$page = "REIMB_EDIT";
+	}
+
+?>
+
 <div class="flexigrid crud-form" style='width: 100%;' data-unique-hash="<?php echo $unique_hash; ?>">
 	<div class="mDiv">
 		<div class="ftitle">
@@ -120,6 +149,14 @@
 		<div class='form-button-box'>
 			<input type='button' value='<?php echo $this->l('form_update_and_go_back'); ?>' id="save-and-go-back-button" class="btn btn-large"/>
 		</div>
+		<?php if($page === "REIMB_EDIT"): ?>
+		<div class='form-button-box'>
+			<input type='button' value='<?php echo $this->l('form_update_and_print'); ?>' id="save-and-print-button"  class="btn btn-large"/>
+		</div>
+		<div class='form-button-box'>
+			<input type='button' value='<?php echo $this->l('form_update_and_print_no'); ?>' id="save-and-print-no-button"  class="btn btn-large"/>
+		</div>
+		<?php endif; ?>
 		<div class='form-button-box'>
 			<input type='button' value='<?php echo $this->l('form_cancel'); ?>' class="btn btn-large" id="cancel-button" />
 		</div>
@@ -146,28 +183,7 @@ if($subject === "Reimbursement") { ?>
 <?php } ?>
 <script>
 
-	<?php
-		//Check to see if it is coming from project View
-		$fullURL = explode('/', $_SERVER['REQUEST_URI']);
-		if(end($fullURL) === "") {
-	    	array_pop($fullURL);
-		} 
 
-		$fullURL = array_map('strtolower', $fullURL);
-
-		if(in_array("mileproj", $fullURL) || in_array("expendproj", $fullURL) || in_array("fundproj", $fullURL) || in_array("empproj", $fullURL)
-			|| in_array("volproj", $fullURL)) {
-			$list_url = base_url() . 'user/projects/index/projread/list';
-			echo 'var success_list_url = "'.base_url().'user/projects/index/projread/list";';
-			$page = "PROJECT_VIEW";
-		}
-
-		if(in_array("people", $fullURL) && in_array("index", $fullURL) && in_array("edit", $fullURL)) {
-
-			$page = "PEOPLE_EDIT";
-		}
-
-	?>
 	var validation_url = '<?php echo $validation_url?>';
 	var list_url = '<?php echo $list_url?>';
 

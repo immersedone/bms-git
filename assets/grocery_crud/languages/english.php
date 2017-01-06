@@ -89,3 +89,9 @@
 	/* Added in version 1.5.2 */
 	$lang['list_more'] = 'More';
 
+
+	/* Custom Save and Print Definitions */
+	$lang["form_save_and_print"] = "Save and Print (Cover Page)";
+	$lang["form_save_and_print_no"] = "Save and Print (No Cover Page)";
+	$lang["form_update_and_print"] = "Update and Print (Cover Page)";
+	$lang["form_update_and_print_no"] = "Update and Print (No Cover Page)";

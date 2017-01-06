@@ -34,6 +34,28 @@
 		}
 	}
 ?>
+
+<?php 
+    $fullURL = explode('/', $_SERVER['REQUEST_URI']);
+        if(end($fullURL) === "") {
+            array_pop($fullURL);
+        } 
+
+        if($fullURL[0] === "") {
+            array_shift($fullURL);
+        }
+        if(strtolower($fullURL[0]) === "user" && strtolower($fullURL[1]) === "projects" && strtolower($fullURL[2]) === "index" && strtolower($fullURL[3]) === "projread") {
+            $page = "PROJECT_VIEW";
+        }
+
+        if(strtolower($fullURL[0]) === "user" && strtolower($fullURL[1]) === "people" && strtolower($fullURL[2]) === "index" && strtolower($fullURL[3]) === "add") {
+        	$page = "PEOPLE_ADD";
+        }
+
+        if(strtolower($fullURL[0]) === "user" && strtolower($fullURL[1]) === "reimbursements" && strtolower($fullURL[2]) === "index" && strtolower($fullURL[3]) === "add") {
+        	$page = "REIMB_ADD";
+        }
+    ?>
 <div class="flexigrid crud-form" style='width: 100%;' data-unique-hash="<?php echo $unique_hash; ?>">
 	<div class="mDiv">
 		<div class="ftitle">
@@ -139,6 +161,14 @@
 			<div class='form-button-box'>
 				<input type='button' value='<?php echo $this->l('form_save_and_go_back'); ?>' id="save-and-go-back-button"  class="btn btn-large"/>
 			</div>
+			<?php if($page === "REIMB_ADD"): ?>
+			<div class='form-button-box'>
+				<input type='button' value='<?php echo $this->l('form_save_and_print'); ?>' id="save-and-print-button"  class="btn btn-large"/>
+			</div>
+			<div class='form-button-box'>
+				<input type='button' value='<?php echo $this->l('form_save_and_print_no'); ?>' id="save-and-print-no-button"  class="btn btn-large"/>
+			</div>
+			<?php endif; ?>
 			<div class='form-button-box'>
 				<input type='button' value='<?php echo $this->l('form_cancel'); ?>' class="btn btn-large" id="cancel-button" />
 			</div>
@@ -152,23 +182,7 @@
 </div>
 </div>
 <script>
-	<?php 
-    $fullURL = explode('/', $_SERVER['REQUEST_URI']);
-        if(end($fullURL) === "") {
-            array_pop($fullURL);
-        } 
-
-        if($fullURL[0] === "") {
-            array_shift($fullURL);
-        }
-        if(strtolower($fullURL[0]) === "user" && strtolower($fullURL[1]) === "projects" && strtolower($fullURL[2]) === "index" && strtolower($fullURL[3]) === "projread") {
-            $page = "PROJECT_VIEW";
-        }
-
-        if(strtolower($fullURL[0]) === "user" && strtolower($fullURL[1]) === "people" && strtolower($fullURL[2]) === "index" && strtolower($fullURL[3]) === "add") {
-        	$page = "PEOPLE_ADD";
-        }
-    ?>
+	
 	
 		<?php if(isset($page) && $page !== "" && $page === "PROJECT_VIEW"): ?>
 			var list_url = '<?php echo base_url(). 'user/projects/index/projread/list';?>';
