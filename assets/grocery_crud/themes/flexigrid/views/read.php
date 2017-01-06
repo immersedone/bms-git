@@ -758,6 +758,9 @@
 				case "INDE_CONT":
 					$data = "Independant Contractor";
 					break;
+				default:
+					$data = "";
+					break;
 			}
 			$ajaxHTML = '<script type="text/javascript">
 			$(function() {
@@ -781,6 +784,9 @@
 					break;
 				case "FIXED_TERM":
 					$data = "Fixed Term";
+					break;
+				default:
+					$data = "";
 					break;
 			}
 			$ajaxHTML = '<script type="text/javascript">
