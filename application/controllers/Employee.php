@@ -242,6 +242,7 @@ class Employee extends MY_Controller {
 		$crud->set_rules("DaysWork", "Days Available", "trim|numeric|callback_multi_LS");
         //$crud->set_rules("DaysWork", "Days Available", "required");
         
+		$crud->callback_before_insert(array($this,'work_details_check'));
 
 
 		
@@ -594,12 +595,19 @@ class Employee extends MY_Controller {
 		$resp = $crud->basic_model->insert_pp($personID, $projectID, $role, $EmpVol, $isActive, $newStart, $newFinish);
 		echo $resp;
 	}
+	
 	public function work_details_check($post_array){
 	
-	//if ($post_array['workmob'] == ''){
-		$post_array['WorkMob'] = "0411222333";
-	//	}
+	if ($post_array['WorkMob'] == ''){
+		$workMob = $this->db->query("SELECT Mobile FROM Person WHERE PerID='".$post_array['PerID']."' LIMIT 1")->row();
+		$post_array['WorkMob'] = $workMob->Mobile;
+	}	
+	if ($post_array['WorkEmail'] == ''){
+		$workEmail = $this->db->query("SELECT Email FROM Person WHERE PerID='".$post_array['PerID']."' LIMIT 1")->row();
+		$post_array['WorkEmail'] = $workEmail->Mobile;
+	}
 	
 	return $post_array;
 	}
+		
 }
