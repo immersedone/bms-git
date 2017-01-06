@@ -190,7 +190,7 @@ class Genreport extends MY_Controller {
 
 			$html .= "<h4>Expenditures</h4>";
 			$html .= "<table><tbody>";
-			$html .= "<tr><th>Name</th><th>Company Name</th><th>Reason</th><th>Total Amount</th><th>GST</th><th>Type</th><th>Project</th></tr>";
+			$html .= "<tr><th>Name</th><th>Company Name</th><th>Concept</th><th>Total Amount</th><th>GST</th><th>Type</th><th>Project</th></tr>";
 			
 			if($reimb[0]->ExpList == "") {
 				$isEmpty = true;
@@ -206,10 +206,10 @@ class Genreport extends MY_Controller {
 				$html .= "<tr><td colspan='7' style='text-align:center;'>No Expenditures Listed</td></tr>";
 			} else {
 				foreach($exp as $row) {
-					$expDet = $this->Extended_generic_model->return_query("SELECT Ex.ExpName, Ex.CompanyName, Ex.Reason, Ex.Amount, Ex.GST, Opt.Data as Type, Prj.Name as PrjName FROM Expenditure Ex LEFT OUTER JOIN OptionType Opt ON Ex.ExpType=Opt.OptID LEFT OUTER JOIN Project Prj ON Ex.ProjID=Prj.ProjID WHERE Ex.ExpID='" . $row ."'");
+					$expDet = $this->Extended_generic_model->return_query("SELECT Ex.ExpName, Ex.CompanyName, Ex.Concept, Ex.Amount, Ex.GST, Opt.Data as Type, Prj.Name as PrjName FROM Expenditure Ex LEFT OUTER JOIN OptionType Opt ON Ex.ExpType=Opt.OptID LEFT OUTER JOIN Project Prj ON Ex.ProjID=Prj.ProjID WHERE Ex.ExpID='" . $row ."'");
 					$totalAm += $expDet[0]->Amount;
 					$totalGST += $expDet[0]->GST;
-					$html .= "<tr><td>" . $expDet[0]->ExpName ."</td><td>" . $expDet[0]->CompanyName ."</td><td>" . $expDet[0]->Reason ."</td><td>$" . $expDet[0]->Amount ."</td><td>$" . $expDet[0]->GST ."</td><td>" . $expDet[0]->Type ."</td><td>" . $expDet[0]->PrjName ."</td></tr>";
+					$html .= "<tr><td>" . $expDet[0]->ExpName ."</td><td>" . $expDet[0]->CompanyName ."</td><td>" . $expDet[0]->Concept ."</td><td>$" . $expDet[0]->Amount ."</td><td>$" . $expDet[0]->GST ."</td><td>" . $expDet[0]->Type ."</td><td>" . $expDet[0]->PrjName ."</td></tr>";
 				}
 				$html .= "<tr><td></td><td></td><td></td><td><b>Grand Total:</b></td><td>$" . number_format($totalAm, 2) . "</td><td></td><td></td></tr>";
 				$html .= "<tr><td></td><td></td><td></td><td><b>Total GST:</b></td><td>$" . number_format($totalGST, 2) . "</td><td></td><td></td></tr>";
@@ -224,7 +224,7 @@ class Genreport extends MY_Controller {
 				Exp.ExpID as ExpID,
 				Exp.ExpName as ExpName,
 				Exp.CompanyName as ExpCPName,
-				Exp.Reason as ExpReason,
+				Exp.Concept as ExpConcept,
 				Exp.Amount as ExpAmount,
 				Exp.GST as ExpGST,
 				Opt.data as ExpType,
@@ -252,7 +252,7 @@ class Genreport extends MY_Controller {
 
 			$html .= "<h4>Expenditures</h4>";
 			$html .= "<table><tbody>";
-			$html .= "<tr><th>Name</th><th>Company Name</th><th>Reason</th><th>Amount</th><th>GST</th><th>Type</th><th>Spent By</th></tr>";
+			$html .= "<tr><th>Name</th><th>Company Name</th><th>Concept</th><th>Amount</th><th>GST</th><th>Type</th><th>Spent By</th></tr>";
 
 			//Check to see if List is empty
 			if(empty($exp)) {
@@ -272,7 +272,7 @@ class Genreport extends MY_Controller {
 				foreach($exp as $row) {
 					$totalAm += $row->ExpAmount;
 					$totalGST += $row->ExpGST;
-					$html .= "<tr><td>" . $row->ExpName ."</td><td>" . $row->ExpCPName ."</td><td>" . $row->ExpReason ."</td><td>$" . $row->ExpAmount ."</td><td>$" . $row->ExpGST ."</td><td>" . $row->ExpType ."</td><td>" . $row->ExpSpentBy . "</td></tr>";
+					$html .= "<tr><td>" . $row->ExpName ."</td><td>" . $row->ExpCPName ."</td><td>" . $row->ExpConcept ."</td><td>$" . $row->ExpAmount ."</td><td>$" . $row->ExpGST ."</td><td>" . $row->ExpType ."</td><td>" . $row->ExpSpentBy . "</td></tr>";
 				}
 				$html .= "<tr><td></td><td></td><td></td><td><b>Grand Total:</b></td><td>$" . number_format($totalAm, 2) . "</td><td></td><td></td></tr>";
 				$html .= "<tr><td></td><td></td><td></td><td><b>Total GST:</b></td><td>$" . number_format($totalGST, 2) . "</td><td></td><td></td></tr>";
@@ -347,7 +347,7 @@ class Genreport extends MY_Controller {
 				Exp.ExpID as ExpID,
 				Exp.ExpName as ExpName,
 				Exp.CompanyName as ExpCPName,
-				Exp.Reason as ExpReason,
+				Exp.Concept as ExpConcept,
 				Exp.Amount as ExpAmount,
 				Exp.GST as ExpGST,
 				Opt.data as ExpType,
@@ -379,7 +379,7 @@ class Genreport extends MY_Controller {
 				//Spit out Table Header for Project
 				$html .= "<h4>Expenditures for \"" . $projNameArr[$i] . "\"</h4>";
 				$html .= "<table><tbody>";
-				$html .= "<tr><th>Name</th><th>Company Name</th><th>Reason</th><th>Total Amount</th><th>GST</th><th>Type</th><th>Spent By</th></tr>";
+				$html .= "<tr><th>Name</th><th>Company Name</th><th>Concept</th><th>Total Amount</th><th>GST</th><th>Type</th><th>Spent By</th></tr>";
 
 				if($isEmpty == true) {
 					$html .= "<tr><td colspan='7' style='text-align:center;'>No Expenditures Listed</td></tr>";
@@ -388,7 +388,7 @@ class Genreport extends MY_Controller {
 					foreach($spv as $row) {
 						$totalAm += $row->ExpAmount;
 						$totalGST += $row->ExpGST;
-						$html .= "<tr><td>" . $row->ExpName ."</td><td>" . $row->ExpCPName ."</td><td>" . $row->ExpReason ."</td><td>$" . $row->ExpAmount ."</td><td>$" . $row->ExpGST ."</td><td>" . $row->ExpType ."</td><td>" . $row->ExpSpentBy . "</td></tr>";
+						$html .= "<tr><td>" . $row->ExpName ."</td><td>" . $row->ExpCPName ."</td><td>" . $row->ExpConcept ."</td><td>$" . $row->ExpAmount ."</td><td>$" . $row->ExpGST ."</td><td>" . $row->ExpType ."</td><td>" . $row->ExpSpentBy . "</td></tr>";
 					}
 
 					$html .= "<tr><td></td><td></td><td></td><td><b>Grand Total:</b></td><td>$" . number_format($totalAm, 2) . "</td><td></td><td></td></tr>";
@@ -752,7 +752,7 @@ class Genreport extends MY_Controller {
 
 		$html .= "<h4>Expenditures</h4>";
 		$html .= "<table><tbody>";
-		$html .= "<tr><th>Name</th><th>Company Name</th><th>Reason</th><th>Total Amount</th><th>GST</th><th>Type</th><th>Project</th></tr>";
+		$html .= "<tr><th>Name</th><th>Company Name</th><th>Concept</th><th>Total Amount</th><th>GST</th><th>Type</th><th>Project</th></tr>";
 		
 		if($reimb[0]->ExpList == "") {
 			$isEmpty = true;
@@ -768,10 +768,10 @@ class Genreport extends MY_Controller {
 			$html .= "<tr><td colspan='7' style='text-align:center;'>No Expenditures Listed</td></tr>";
 		} else {
 			foreach($exp as $row) {
-				$expDet = $this->Extended_generic_model->return_query("SELECT Ex.ExpName, Ex.CompanyName, Ex.Reason, Ex.Amount, Ex.GST, Opt.Data as Type, Prj.Name as PrjName FROM Expenditure Ex LEFT OUTER JOIN OptionType Opt ON Ex.ExpType=Opt.OptID LEFT OUTER JOIN Project Prj ON Ex.ProjID=Prj.ProjID WHERE Ex.ExpID='" . $row ."'");
+				$expDet = $this->Extended_generic_model->return_query("SELECT Ex.ExpName, Ex.CompanyName, Ex.Concept, Ex.Amount, Ex.GST, Opt.Data as Type, Prj.Name as PrjName FROM Expenditure Ex LEFT OUTER JOIN OptionType Opt ON Ex.ExpType=Opt.OptID LEFT OUTER JOIN Project Prj ON Ex.ProjID=Prj.ProjID WHERE Ex.ExpID='" . $row ."'");
 				$totalAm += $expDet[0]->Amount;
 				$totalGST += $expDet[0]->GST;
-				$html .= "<tr><td>" . $expDet[0]->ExpName ."</td><td>" . $expDet[0]->CompanyName ."</td><td>" . $expDet[0]->Reason ."</td><td>" . $expDet[0]->Amount ."</td><td>" . $expDet[0]->GST ."</td><td>" . $expDet[0]->Type ."</td><td>" . $expDet[0]->PrjName ."</td></tr>";
+				$html .= "<tr><td>" . $expDet[0]->ExpName ."</td><td>" . $expDet[0]->CompanyName ."</td><td>" . $expDet[0]->Concept ."</td><td>" . $expDet[0]->Amount ."</td><td>" . $expDet[0]->GST ."</td><td>" . $expDet[0]->Type ."</td><td>" . $expDet[0]->PrjName ."</td></tr>";
 			}
 			$html .= "<tr><td></td><td></td><td></td><td><b>Total Amount:</b></td><td>$" . $totalAm . "</td><td></td><td></td></tr>";
 			$html .= "<tr><td></td><td></td><td></td><td><b>Total GST:</b></td><td>$" . $totalGST . "</td><td></td><td></td></tr>";

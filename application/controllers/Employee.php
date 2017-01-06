@@ -182,12 +182,17 @@ class Employee extends MY_Controller {
 		$crud->field_type("DaysWork", "multiselect", $daysArr);
 
         //Supervisors
-        $supervisors = $crud->basic_model->return_query("SELECT PerID, CONCAT(FirstName, ' ', MiddleName, ' ', LastName) as FullName FROM Person");
+        $supervisors = $crud->basic_model->return_query("SELECT PerID, CONCAT(FirstName, ' ', MiddleName, ' ', LastName) as FullName FROM Person WHERE Is_Sup = 1");
         $visorArr = array();
-        foreach($supervisors as $spv){
-            $visorArr += [$spv->PerID => $spv->FullName];
-        }
-        $crud->field_type("Supervisor", "dropdown", $visorArr);
+        if (empty($supervisors) == false){
+			foreach($supervisors as $spv){
+				$visorArr += [$spv->PerID => $spv->FullName];
+			}
+			$crud->field_type("Supervisor", "dropdown", $visorArr);
+		}
+		else{
+			$crud->field_type("Supervisor", 'hidden');
+		}
 
         //Superannuation Funds
         $funds = $crud->basic_model->return_query("SELECT OptID, data FROM OptionType WHERE type='SPR_FND'");
@@ -379,6 +384,7 @@ class Employee extends MY_Controller {
 		}
 		$output["employee"] = $employeeOP;
 
+		
 		$this->render($output);
 	}
 
@@ -587,5 +593,13 @@ class Employee extends MY_Controller {
 		$crud->set_model('Employee_GC');
 		$resp = $crud->basic_model->insert_pp($personID, $projectID, $role, $EmpVol, $isActive, $newStart, $newFinish);
 		echo $resp;
+	}
+	public function work_details_check($post_array){
+	
+	//if ($post_array['workmob'] == ''){
+		$post_array['WorkMob'] = "0411222333";
+	//	}
+	
+	return $post_array;
 	}
 }
