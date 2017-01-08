@@ -91,7 +91,7 @@
 						
 					});
 				</script>
-			<?php } elseif($field->field_name === "PerID") {
+			<?php } elseif($field->field_name === "PerID" && ((isset($page) && $page !== "REIMB_EDIT") || !isset($page))) {
 			//Get Project ID to convert to a name
 			$perID = $input_fields["PerID"]->input;
 			$perID = str_replace("</div>", "", $perID);

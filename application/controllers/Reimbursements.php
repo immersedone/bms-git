@@ -32,7 +32,7 @@ class Reimbursements extends MY_Controller {
 		$crud->set_read_fields("ReimID", "ReimbDate", "ApprovedBy", "PerID", "ExpList", "IsPaid", "ReimbStatus", "Comments");
 		$crud->columns('ReimID', 'FullName','ReimbDate', 'ApprovedBy', "ExpList",  'IsPaid', "ReimbStatus"); //'Type', removed due to lack of implementation
 		$crud->add_fields('FullName', 'ReimbDate',  'ApprovedBy', "ExpList",  'IsPaid', "ReimbStatus", "Comments");
-		$crud->edit_fields('PerID', 'ReimbDate', 'ApprovedBy', "ExpList", 'IsPaid', "ReimbStatus", "Comments");
+		$crud->edit_fields('ReimID', 'PerID', 'ReimbDate', 'ApprovedBy', "ExpList", 'IsPaid', "ReimbStatus", "Comments");
 		$crud->display_as('ReimbDate', 'Date');
 		$crud->display_as('ExpList', 'Expenditures');
 		$crud->display_as('ApprovedBy', 'Approved By');
@@ -67,10 +67,15 @@ class Reimbursements extends MY_Controller {
 		//to add to the relational table
 		if($state == "add" || $state == "insert") {
 			$crud->field_type("ApprovedBy", "hidden", $_SESSION["session_user"]["bms_psnid"]);
+			//$crud->callback_after_insert(array($this, 'save_print'));
 		} elseif ($state == "edit" || $state == "update") {
 			$crud->callback_edit_field("ApprovedBy", array($this, 'callback_AppBy_edit'));
+			$crud->callback_edit_field("PerID", array($this, 'callback_ReFor_edit'));
+			$crud->field_type("ReimID", "hidden");
+			$crud->field_type("PerID", "readonly");
 		} else {
 			$crud->field_type("ApprovedBy", "dropdown", $usrArr);
+
 		}
 
 		
@@ -78,14 +83,15 @@ class Reimbursements extends MY_Controller {
 		$crud->field_type("PerID", "dropdown", $usrArr);
 		
 		$crud->callback_before_insert(array($this,'reimbursement_add'));
+		$crud->callback_before_update(array($this, 'update_expenditures'));
+		
 
 		$crud->add_action('Print w/ Cover Page', base_url().'/assets/grocery_crud/themes/flexigrid/css/images/print.png', '', '', array($this, 'print_reimb'));
 
 		$crud->add_action('Print w/o Cover Page', base_url().'/assets/grocery_crud/themes/flexigrid/css/images/printno.png', '', '', array($this, 'print_reimb_ncp'));
 		
-		$state = $crud->getState();
 
-		if ($state === "add" or $state === "edit") {
+		if ($state === "add") {
 			$crud->field_type("PerID", "readonly");
 			$unpaidExp = $crud->basic_model->return_query("SELECT ExpID, CONCAT(ExpName, ' - ', Concept, ' - ', Amount) as ExpData FROM Expenditure WHERE IsPaid = 0");
 
@@ -94,6 +100,48 @@ class Reimbursements extends MY_Controller {
 				$expArr += [$exp->ExpID => $exp->ExpData];
 			}
 			$crud->field_type("ExpList", "multiselect", $expArr);
+		} elseif ($state === "edit" || $state == "update") {
+			//$crud->field_type("PerID", "readonly");
+			//Get Primary Key (Row) that is being edited and retrieve the Expenditures List
+			$reimbID = $crud->getStateInfo()->primary_key;
+			$reimbExp = $crud->basic_model->return_query("SELECT ExpList FROM Reimbursement WHERE ReimID='$reimbID' LIMIT 1");
+
+			//Convert List to an array
+			$expArr = explode(',', $reimbExp[0]->ExpList); 
+
+			//Declare Array for Storage
+			$expListArr = array();
+
+			//Different Methods of Retrieving Expenditures based on count
+			if(count($expArr) == 1) {
+
+				//If only one in Expenditure List
+
+				//Retrieve Expenditure
+				$editExp = $crud->basic_model->return_query("SELECT ExpID, CONCAT(ExpName, ' - ', Concept, ' - ', Amount) as ExpData FROM Expenditure WHERE ExpID='$expArr[0]'");	
+
+				//Add to Storage Array
+				$expListArr += [$editExp[0]->ExpID => $editExp[0]->ExpData];
+
+			} else {
+
+				//If more than one Expenditure in list then loop
+
+				foreach($expArr as $exp) {
+
+					//Retrieve Expenditure
+					$editExp = $crud->basic_model->return_query("SELECT ExpID, CONCAT(ExpName, ' - ', Concept, ' - ', Amount) as ExpData FROM Expenditure WHERE ExpID='$exp' LIMIT 1");
+
+					//Add to Storage Array
+					$expListArr += [$editExp[0]->ExpID => $editExp[0]->ExpData];
+
+				}
+
+			}
+
+			//Declare Field type for Expenditure List
+			$crud->field_type("ExpList", "multiselect", $expListArr);
+
 		}
 		
 		$crud->set_rules("ExpList", "Expenditures", "trim|numeric|callback_multi_LS");
@@ -107,7 +155,7 @@ class Reimbursements extends MY_Controller {
 		);
 		
 
-		$crud->callback_before_update(array($this, 'update_expenditures'));
+		
 		$crud->unset_print();
 		$crud->unset_export();
 
@@ -121,6 +169,14 @@ class Reimbursements extends MY_Controller {
 
 		$readOnly = '<div id="field-ApprovedBy" class="readonly_label">' . $q->FullName .'</div>';
 		return $readOnly . '<input id="field-ApprovedBy" name="ApprovedBy" type="text" value="' . $value . '" class="numeric form-control" maxlength="255" style="display:none;">';
+
+	}
+
+	public function callback_ReFor_edit($value, $primary_key) {
+		$q = $this->db->query('SELECT CONCAT( FirstName, " ", MiddleName, " ", LastName) as FullName FROM Person WHERE PerID="'.$value.'" LIMIT 1')->row();
+
+		$readOnly = '<div id="field-PerID" class="readonly_label">' . $q->FullName .'</div>';
+		return $readOnly . '<input id="field-PerID" name="PerID" type="text" value="' . $value . '" class="numeric form-control" maxlength="255" style="display:none;">';
 
 	}
 
@@ -153,8 +209,8 @@ class Reimbursements extends MY_Controller {
 	
 	
 
-	function update_expenditures($post_array, $primary_key) {
-		if(!empty($post_array['ExpList'])) {
+	function update_expenditures($post_array) {
+		/*if(!empty($post_array['ExpList'])) {
 			$exp = $post_array['ExpList'];
 			$ispaid = $post_array['IsPaid'];
 
@@ -165,9 +221,51 @@ class Reimbursements extends MY_Controller {
 					$this->db->update('Expenditure', array('IsPaid'=>1));
 				}
 			}
+		}*/
+
+		//Redundant - Use Custom Update Model
+		//For Update & Print functionality
+		//return $post_array;
+		print_r($post_array);
+		$this->reimb_update($post_array);
+		//return $post_array;
+	}
+
+	public function reimb_update() {
+		
+		$perid = $_POST['PerID'];
+		$date = $_POST['ReimbDate'];
+		$ispaid = $_POST['IsPaid'];
+		$exp = $_POST['ExpList'];
+		$Approvedby = $_POST['ApprovedBy'];
+		$Comments = $_POST['Comments'];
+		$ReID = $_POST["ReimID"];
+
+		$expStr = "";
+
+		for($i = 0; $i < count($exp); $i++) {
+			if($i === count($exp) - 1) {
+				$expStr .= $exp[$i];
+			} else {
+				$expStr .= $exp[$i] .',';
+			}
+
+			if($ispaid === "YES") {
+				$this->db->where('ExpID', $exp[$i]);
+				$this->db->update('Expenditure', array('IsPaid'=>1));
+			} else {
+				$this->db->where('ExpID', $exp[$i]);
+				$this->db->update('Expenditure', array('IsPaid'=>0));
+			}
 		}
 
-		return $post_array;
+		$newDateRep = preg_replace('/\//', '-',$date);
+		$newDate = date("Y-m-d H:i:s", strtotime($newDateRep));
+		$crud = new grocery_CRUD();
+		$crud->set_model('Reimbursement_GC');
+		$resp = $crud->basic_model->update_reimb($ReID, $newDate, $expStr, $Approvedby, $ispaid, $perid, $Comments);
+		echo $resp;
+
 	}
 
 	public function reimb_insert() {
@@ -193,6 +291,9 @@ class Reimbursements extends MY_Controller {
 			if($ispaid === "YES") {
 				$this->db->where('ExpID', $exp[$i]);
 				$this->db->update('Expenditure', array('IsPaid'=>1));
+			} else {
+				$this->db->where('ExpID', $exp[$i]);
+				$this->db->update('Expenditure', array('IsPaid'=>0));
 			}
 		}
 
