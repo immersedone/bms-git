@@ -34,9 +34,9 @@ class People extends MY_Controller {
 		$crud->basic_model->set_query_str('SELECT * FROM (SELECT Sub.SuburbName as SubName, Sub.Postcode as Postcode, Per.* from `Person` Per
 		LEFT OUTER JOIN `Suburb` Sub ON Per.SuburbID=Sub.SuburbID) x');
 		$crud->columns('FirstName', 'LastName', 'Address', 'Postcode', 'SubName', 'PersonalEmail', 'Mobile', 'HomePhone');
-		$crud->add_fields('FirstName', 'MiddleName', 'LastName', 'Address', 'DateofBirth', 'SuburbID', 'PersonalEmail', 'Mobile', 'HomePhone', 'Status', 'DateStarted', 'WWC', 'WWCFiled', 'WWCExpiry', 'PoliceCheck', 'PoliceCheckDate', 'TeacherRegCheck', 'TeacherExipry', 'FAQual', 'FAQaulExpiry', 'LanguagesSpoken', 'EmergContName', 'EmergContMob', 'EmergContHPhone', 'EmergContWPhone', 'EmergContRelToPer', 'Username', 'Password', 'Is_Sup');
-		$crud->edit_fields('FirstName', 'MiddleName', 'LastName','Address', 'DateofBirth', 'SuburbID', 'PersonalEmail', 'Mobile', 'HomePhone', 'Status', 'DateStarted', 'DateFinished', 'ContractSigned', 'PaperworkCompleted', 'WWC', 'WWCFiled', 'WWCExpiry', 'PoliceCheck', 'PoliceCheckDate', 'TeacherRegCheck', 'TeacherExipry', 'FAQual', 'FAQaulExpiry', 'LanguagesSpoken', 'EmergContName', 'EmergContMob', 'EmergContHPhone', 'EmergContWPhone', 'EmergContRelToPer', 'Is_Sup');	
-		$crud->set_read_fields('Username', 'FirstName', 'MiddleName', 'LastName','Address', 'DateofBirth', 'SuburbID', 'PersonalEmail', 'Mobile', 'HomePhone', 'Status', 'DateStarted', 'DateFinished', 'ContractSigned', 'PaperworkCompleted', 'WWC', 'WWCFiled', 'WWCExpiry', 'PoliceCheck', 'PoliceCheckDate', 'TeacherRegCheck', 'TeacherExipry', 'FAQual', 'FAQaulExpiry', 'LanguagesSpoken', 'EmergContName', 'EmergContMob', 'EmergContHPhone', 'EmergContWPhone', 'EmergContRelToPer', 'Is_Sup');	
+		$crud->add_fields('FirstName', 'MiddleName', 'LastName', 'Address', 'DateofBirth', 'SuburbID', 'PersonalEmail', 'Mobile', 'HomePhone', 'Status', 'DateStarted', 'WWC', 'WWCFiled', 'WWCExpiry', 'PoliceCheck', 'PoliceCheckDate', 'TeacherRegCheck', 'TeacherExipry', 'FAQual', 'FAQLev', 'FAQaulExpiry', 'LanguagesSpoken', 'EmergContName', 'EmergContMob', 'EmergContHPhone', 'EmergContWPhone', 'EmergContRelToPer', 'Username', 'Password', 'Is_Sup');
+		$crud->edit_fields('FirstName', 'MiddleName', 'LastName','Address', 'DateofBirth', 'SuburbID', 'PersonalEmail', 'Mobile', 'HomePhone', 'Status', 'DateStarted', 'DateFinished', 'ContractSigned', 'PaperworkCompleted', 'WWC', 'WWCFiled', 'WWCExpiry', 'PoliceCheck', 'PoliceCheckDate', 'TeacherRegCheck', 'TeacherExipry', 'FAQual', 'FAQLev', 'FAQaulExpiry', 'LanguagesSpoken', 'EmergContName', 'EmergContMob', 'EmergContHPhone', 'EmergContWPhone', 'EmergContRelToPer', 'Is_Sup');	
+		$crud->set_read_fields('Username', 'FirstName', 'MiddleName', 'LastName','Address', 'DateofBirth', 'SuburbID', 'PersonalEmail', 'Mobile', 'HomePhone', 'Status', 'DateStarted', 'DateFinished', 'ContractSigned', 'PaperworkCompleted', 'WWC', 'WWCFiled', 'WWCExpiry', 'PoliceCheck', 'PoliceCheckDate', 'TeacherRegCheck', 'TeacherExipry', 'FAQual', 'FAQLev', 'FAQaulExpiry', 'LanguagesSpoken', 'EmergContName', 'EmergContMob', 'EmergContHPhone', 'EmergContWPhone', 'EmergContRelToPer', 'Is_Sup');	
 		$crud->display_as('FirstName', 'First Name');
 		$crud->display_as('MiddleName', 'Middle Name');
 		$crud->display_as('LastName', 'Last Name');
@@ -58,6 +58,7 @@ class People extends MY_Controller {
 		$crud->display_as('WWCExpiry', 'Working With Children Check (WWC) Expiry Date');
 		$crud->display_as('DateofBirth', 'Date of Birth');
 		$crud->display_as('FAQual', 'First Aid Qualification');
+		$crud->display_as('FAQLev', 'First Aid Qualification Level');
 		$crud->display_as('FAQaulExpiry', 'First Aid Qualification Expiry');
 		$crud->display_as('LanguagesSpoken', 'Languages Spoken');
 		$crud->display_as('EmergContName', 'Emergency Contact Name');
@@ -95,6 +96,14 @@ class People extends MY_Controller {
 		foreach($languages as $lang) {
 			$langArr += [$lang->LangID => '(' . $lang->LangISO_639_1 . ') - ' . $lang->LangName];
 		}
+
+		//FAQ Levels
+		$faql = $crud->basic_model->return_query("SELECT OptID, data FROM OptionType WHERE type='FAQ_LEV'");
+		$faqlArr = array();
+		foreach($faql as $fl) {
+			$faqlArr += [$fl->OptID => $fl->data];
+		}
+		$crud->field_type("FAQLev", "dropdown", $faqlArr);
 
 
 		$crud->field_type('LanguagesSpoken', 'multiselect', $langArr);
@@ -213,6 +222,17 @@ class People extends MY_Controller {
 		echo json_encode($resp);
 	}
 
+	public function getFAQLev($id) {
+
+		$crud = new grocery_CRUD();
+		$crud->set_model('Project_GC');
+		$res = $crud->basic_model->return_query("SELECT data FROM OptionType WHERE OptID='$id' AND type='FAQ_LEV' LIMIT 1");
+
+
+		$resp = array();
+		$resp["FAQLev"] = $res[0]->data;
+		echo json_encode($resp);
+	}
 	public function getLangName() {
 		$langArr = explode(',', $_POST['languages']);
 

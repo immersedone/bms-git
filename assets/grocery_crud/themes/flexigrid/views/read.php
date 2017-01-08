@@ -386,6 +386,31 @@
 
 			echo $ajaxHTML;
 
+		}   elseif($field->field_name === "FAQLev") {
+			//Get Project ID to convert to a name
+			$fbID = $input_fields["FAQLev"]->input;
+			$fbID = str_replace("</div>", "", $fbID);
+			$fbID = str_replace('<div id="field-FAQLev" class="readonly_label">', "", $fbID);
+			//Echo out HTML AJAX for name conversion
+
+			$ajaxHTML = '<script type="text/javascript">
+			$(function() {
+				var csrf_token = Cookies.get("csrf_cookie");
+				$.ajax({
+					url: "'. base_url() .'user/people/index/getFAQLev/' . $fbID .'",
+					type: "POST",
+					data: { "csrf_token": csrf_token },
+					dataType: "json",
+					success: function(data) {
+						$("div#field-FAQLev.readonly_label").text(data.FAQLev);
+					}
+
+				});
+			});
+			</script>';
+
+			echo $ajaxHTML;
+
 		}    elseif($field->field_name === "ExpList") {
 			//Get Project ID to convert to a name
 			$fbID = $input_fields["ExpList"]->input;

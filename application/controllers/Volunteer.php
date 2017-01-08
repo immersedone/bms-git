@@ -99,9 +99,23 @@ class Volunteer extends MY_Controller {
 		//to add to the relational table
 		$crud->field_type("FullName", "dropdown", $usrArr);
 		$crud->field_type("PerID", "dropdown", $usrArr);
-		$crud->field_type("Supervisor", "dropdown", $usrArr);
 		$crud->set_rules("DaysAvailable", "Days Available", "trim|numeric|callback_multi_LS");
-
+        
+		$supervisors = $crud->basic_model->return_query("SELECT PerID, CONCAT(FirstName, ' ', MiddleName, ' ', LastName) as FullName FROM Person WHERE Is_Sup = 1");
+        $visorArr = array();
+        if (empty($supervisors) == false){
+			foreach($supervisors as $spv){
+				$visorArr += [$spv->PerID => $spv->FullName];
+			}
+			$crud->field_type("Supervisor", "dropdown", $visorArr);
+		}
+		else{
+			$crud->field_type("Supervisor", 'hidden');
+		}
+		
+		
+		
+		
 		$state = $crud->getState();
 		$stateInfo = $crud->getStateInfo();
 		

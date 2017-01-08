@@ -46,7 +46,6 @@ class Options extends MY_Controller {
 
 			$identifiers = array(
 				"NHACE_CLASS" => "NHACE Classification",
-				"FA_QUAL" => "First Aid Qualification",
 				"Position" => "Position",
 				"BGCS_DEP" => "BGCS Department",
 				"SKILLS_EXP" => "Skills & Experience",
@@ -54,6 +53,7 @@ class Options extends MY_Controller {
 				"EXP_TYPE" => "Expenditure Type",
 				"SPR_FND" => "Superannuation Fund",
 				"COMP_NAME" => "Company Name",
+				"FAQ_LEV" => "First Aid Qualification Level"
 			);
 
 			if($_POST["search_text"] !== "" && ($_POST["search_field"] === "type" || $_POST["search_field"] === "" ) ) {
@@ -90,7 +90,7 @@ class Options extends MY_Controller {
 			//Allow only specific options
 			$optArr = array(
 				"NHACE_CLASS" => "NHACE Classification",
-				"FA_QUAL" => "First Aid Qualification",
+				"FAQ_LEV" => "First Aid Qualification Level",
 				"Position" => "Position",
 				"BGCS_DEP" => "BGCS Department",
 				"SKILLS_EXP" => "Skills & Experience",

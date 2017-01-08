@@ -85,6 +85,7 @@ $route['user/people/index/getLangName'] = 'people/getLangName';
 $route['user/people/index/getDays'] = 'people/getDays';
 $route['user/people/index/getNHACE'] = 'people/getNHACE';
 $route['user/people/index/getBGCS'] = 'people/getBGCS';
+$route['user/people/index/getFAQLev/(:num)'] = 'people/getFAQLev/$1';
 
 //Routes for Volunteer Page
 $route['user/volunteer'] = 'volunteer';
