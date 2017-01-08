@@ -44,7 +44,8 @@ class MY_Controller extends CI_Controller {
 			"bms_psnfullName" => $_SESSION["session_user"]["bms_psnfullName"],
 			"bms_psnusrname" => $_SESSION["session_user"]["bms_psnusrname"],
 			"bms_isAdmin" => $_SESSION["session_user"]["bms_isAdmin"],
-			"bms_dialog" => $newSetting
+			"bms_dialog" => $newSetting,
+			"bms_sUsrPriv" => $_SESSION["session_user"]["bms_sUsrPriv"]
 		));
 
 		$this->session->set_userdata($sessArr);

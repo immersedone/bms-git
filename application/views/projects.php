@@ -91,6 +91,7 @@
             <?php
               }
             }?>
+              <?php echo '<h4 class="projTitle">Projects</h4>';?>
               <?php echo $output; ?>
             </div>
           </div>

@@ -64,7 +64,8 @@ class Login extends CI_Controller {
 					"bms_psnfullName" => $row->FirstName . ' ' . $row->MiddleName .  ' ' . $row->LastName,
 					"bms_psnusrname" => $row->Username,
 					"bms_isAdmin" => $row->isAdmin,
-					"bms_dialog" => $row->DialogForms
+					"bms_dialog" => $row->DialogForms,
+					"bms_sUsrPriv" => $row->AccessLevel
 				));
 
 				$this->session->set_userdata($sessArr);

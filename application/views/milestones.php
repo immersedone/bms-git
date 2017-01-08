@@ -61,7 +61,8 @@
         <!-- page content -->
         <div class="right_col" role="main">
           <div class="row">
-            <div class="col-md-12 col-sm-12 col-xs-12">  
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <?php echo '<h4 class="projTitle">Milestones</h4>';?>  
               <?php echo $output; ?>
             </div>
           </div>

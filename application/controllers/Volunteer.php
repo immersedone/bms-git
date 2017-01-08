@@ -252,6 +252,30 @@ class Volunteer extends MY_Controller {
 		$output["volunteer"] = $volunteerOP;
 
 
+		if($_SESSION["session_user"]["bms_sUsrPriv"] !== "FullAdmin") {
+
+			$htmlOutput = '<div class="col-md-12 col-sm-12 col-xs-12 bg_norm">  
+                <div class="dashboard_generate"> 
+                    <div class="row x_custom x_title">
+                        <div class="col-md-12">
+                            <h3>Error - Access Is Denied</h3>
+                        </div>
+                    </div>
+                    <div class="row x_custom">
+                        <div class="col-md-12">
+                            <p style="margin:5px; font-size: 14px;">You do not have the permissions to view this page. Please contact your Manager/Supervisor.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>';
+			$htmlOutput .= "<script> var dialog_forms='". $_SESSION["session_user"]["bms_dialog"] . "';
+			var js_date_format='dd/mm/yyyy';</script>";
+			$output["volunteer"]->output = $htmlOutput;
+			
+		}
+
+
 		$this->render($output);
 	}
 

@@ -62,9 +62,11 @@
         <div class="right_col" role="main">
           <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12" id="data">  
-              <?php echo '<h4 class="projTitle">Volunteer Details</h4>';
-                    echo $volunteer->output; ?>
-              <?php if($multiView === "YES") {
+              <?php if(isset($_SESSION["session_user"]["bms_sUsrPriv"]) && $_SESSION["session_user"]["bms_sUsrPriv"] === "FullAdmin"):
+                    echo '<h4 class="projTitle">Volunteer Details</h4>';
+                    endif; ?>
+              <?php echo $volunteer->output; ?>
+              <?php if($multiView === "YES" && (isset($_SESSION["session_user"]["bms_sUsrPriv"]) && $_SESSION["session_user"]["bms_sUsrPriv"] === "FullAdmin")) {
                     echo '<h4 class="projTitle">Person Details</h4>';
                     echo $fullDetails->output;
                     echo '<h4 class="projTitle">Current Projects</h4>';
