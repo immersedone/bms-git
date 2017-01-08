@@ -21,7 +21,7 @@
 	if(in_array("mileproj", $fullURL) || in_array("expendproj", $fullURL) || in_array("fundproj", $fullURL) || in_array("empproj", $fullURL)
 		|| in_array("volproj", $fullURL)) {
 		$list_url = base_url() . 'user/projects/index/projread/list';
-		echo 'var success_list_url = "'.base_url().'user/projects/index/projread/list";';
+		$success_list_url = 'var success_list_url = "'.base_url().'user/projects/index/projread/list";';
 		$page = "PROJECT_VIEW";
 	}
 
@@ -149,7 +149,7 @@
 		<div class='form-button-box'>
 			<input type='button' value='<?php echo $this->l('form_update_and_go_back'); ?>' id="save-and-go-back-button" class="btn btn-large"/>
 		</div>
-		<?php if($page === "REIMB_EDIT"): ?>
+		<?php if(isset($page) && $page === "REIMB_EDIT"): ?>
 		<div class='form-button-box'>
 			<input type='button' value='<?php echo $this->l('form_update_and_print'); ?>' id="save-and-print-button"  class="btn btn-large"/>
 		</div>
@@ -186,6 +186,9 @@ if($subject === "Reimbursement") { ?>
 
 	var validation_url = '<?php echo $validation_url?>';
 	var list_url = '<?php echo $list_url?>';
+	<?php if(isset($page) && $page === "PROJECT_VIEW"): ?>
+	var success_list_url = '<?php echo $success_list_url; ?>';
+	<?php endif; ?>
 
 	var isProjectView = <?php if (isset($page) && $page === "PROJECT_VIEW") { echo "true";} else { echo "false"; } ?>;
 

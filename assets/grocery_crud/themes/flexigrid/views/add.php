@@ -161,7 +161,7 @@
 			<div class='form-button-box'>
 				<input type='button' value='<?php echo $this->l('form_save_and_go_back'); ?>' id="save-and-go-back-button"  class="btn btn-large"/>
 			</div>
-			<?php if($page === "REIMB_ADD"): ?>
+			<?php if(isset($page) && $page === "REIMB_ADD"): ?>
 			<div class='form-button-box'>
 				<input type='button' value='<?php echo $this->l('form_save_and_print'); ?>' id="save-and-print-button"  class="btn btn-large"/>
 			</div>
