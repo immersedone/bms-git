@@ -1,6 +1,5 @@
 $(function(){
 
-	var save_and_close = false;
 
 	$('.ptogtitle').click(function(){
 		if($(this).hasClass('vsble'))
@@ -15,8 +14,27 @@ $(function(){
 		}
 	});
 
+
+	var save_and_close = false;
+	var save_and_print = false;
+	var save_and_print_no = false;
+
 	$('#save-and-go-back-button').click(function(){
 		save_and_close = true;
+
+		$('#crudForm').trigger('submit');
+	});
+
+	$('#save-and-print-button').click(function(){
+		save_and_close = true;
+		save_and_print = true;
+
+		$('#crudForm').trigger('submit');
+	});
+
+	$('#save-and-print-no-button').click(function(){
+		save_and_close = true;
+		save_and_print_no = true;
 
 		$('#crudForm').trigger('submit');
 	});
@@ -58,11 +76,17 @@ $(function(){
 											
 										//Check to see if it is in Project View
 										//and redirect to different URL if it is
-										if (isProjectView !== false) {
+										if (isProjectView !== false && save_and_print === false && save_and_print_no === false){
 											window.location = success_list_url;
+										} else if((isProjectView === false || isProjectView === true) && save_and_print === true && save_and_print_no === false) {
+											window.location = data.success_url_reimb;
+										} else if((isProjectView === false || isProjectView === true) && save_and_print === false && save_and_print_no === true) {
+											window.location = data.success_url_reimb_no;
 										} else {
 											window.location = data.success_list_url;
 										}
+										//alert(data.success);
+										
 									} else {
 										$(".ui-dialog-content").dialog("close");
 										success_message(data.success_message);

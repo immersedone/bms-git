@@ -36,6 +36,33 @@
 			{
 				//$this->db->simple_query("UPDATE Reimbursement SET `Amount`=`Amount`+$amount WHERE `PerID` = $perid ");
                 $resp['success'] = TRUE;
+                $resp['success_url_reimb'] = base_url() . "user/genreport/printreimb/" . $this->db->insert_id() . "/1";
+                $resp['success_url_reimb_no'] = base_url() . "user/genreport/printreimb/" . $this->db->insert_id() . "/0";
+                $resp['success_list_url'] = base_url() . "user/reimbursements";
+                $resp['success_message'] = "Successfully added Reimbursement to Person";
+            } else {
+                $resp['success'] = FALSE;
+                $resp['error_message'] = "Failed to added Reimbursement to Person";
+                $resp['error_fields'] = $date;
+            }
+
+            echo json_encode($resp);
+
+        }
+
+        function update_reimb($ReID, $newDate, $expStr, $Approvedby, $ispaid, $perid, $Comments)  //Removed type/ReimbID Temporarily
+        {
+
+            $resp = array();
+            //$newDate = strtotime($date);
+            
+
+            if($this->db->simple_query("UPDATE Reimbursement SET ReimbDate='$newDate', ExpList='$expStr', ApprovedBy='$Approvedby', IsPaid='$ispaid', PerID='$perid', Comments='$Comments' WHERE ReimID='$ReID'")) 
+            {
+                //$this->db->simple_query("UPDATE Reimbursement SET `Amount`=`Amount`+$amount WHERE `PerID` = $perid ");
+                $resp['success'] = TRUE;
+                $resp['success_url_reimb'] = base_url() . "user/genreport/printreimb/" . $ReID . "/1";
+                $resp['success_url_reimb_no'] = base_url() . "user/genreport/printreimb/" . $ReID . "/0";
                 $resp['success_list_url'] = base_url() . "user/reimbursements";
                 $resp['success_message'] = "Successfully added Reimbursement to Person";
             } else {
