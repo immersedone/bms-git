@@ -90,7 +90,7 @@
                                             <i class="fa fa-desktop"></i>
                                         </div>
                                         <div class="right">
-                                            <span>Number of Active Projects</span><br/>
+                                            <span>Active Projects</span><br/>
                                             <span class="count"><?php echo $ProjCount?>
 											</span>
                                         </div>
