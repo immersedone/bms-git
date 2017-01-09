@@ -276,7 +276,7 @@ class Peremp extends MY_Controller {
 		$this->insert_per_emp($post_array);
 	}
 	
-	public function insert_per_emp($post_array){
+	public function insert_per_emp(){
 			
 		//Build Person Insert
 		$FirstName = $_POST['FirstName'];
@@ -302,7 +302,7 @@ class Peremp extends MY_Controller {
 		$FAQual = $_POST['FAQual'];
 		$FAQLev = $_POST['FAQLev'];
 		$FAQaulExpiry = $_POST['FAQaulExpiry'];
-		$LanguagesSpoken = $_POST['LanguagesSpoken'];
+		$LanguagesSpoken = "";		//$_POST['LanguagesSpoken'];
 		$EmergContName = $_POST['EmergContName'];
 		$EmergContMob = $_POST['EmergContMob'];
 		$EmergContHPhone = $_POST['EmergContHPhone'];
@@ -310,50 +310,50 @@ class Peremp extends MY_Controller {
 		$EmergContRelToPer = $_POST['EmergContRelToPer'];
 		$Is_Sup = $_POST['Is_Sup'];
 		$Password = $_POST['Password'];
-		$Username = create_user($Firstname, $Middlename, $Surname);
+		$Username = "";
+		//create_user($post_array);
 	
 		$crud = new grocery_CRUD();
 		$crud->set_model('PerEmp_GC');
-		$resp = $crud->basic_model->insert_per($FirstName, $MiddleName, $LastName, $DateofBirth, $Address, $SuburbID, $PersonalEmail, $Mobile, $HomePhone, $Status, $DateStarted, $ContractSigned, $PaperworkCompleted, $WWC, $WWCFiled, $WWCExpiry, $PoliceCheck, $PoliceCheckDate, $TeacherRegCheck, $TeacherExipry, $FAQual, $FAQLev, $FAQaulExpiry, $Username, $Password, $LanguagesSpoken, $EmergContName, $EmergContMob, $EmergContHPhone, $EmergContWPhone, $EmergContRelToPer, $Is_Sup);
+		$PerID = $crud->basic_model->insert_per($FirstName, $MiddleName, $LastName, $DateofBirth, $Address, $SuburbID, $PersonalEmail, $Mobile, $HomePhone, $Status, $DateStarted, $ContractSigned, $PaperworkCompleted, $WWC, $WWCFiled, $WWCExpiry, $PoliceCheck, $PoliceCheckDate, $TeacherRegCheck, $TeacherExipry, $FAQual, $FAQLev, $FAQaulExpiry, $Username, $Password, $LanguagesSpoken, $EmergContName, $EmergContMob, $EmergContHPhone, $EmergContWPhone, $EmergContRelToPer, $Is_Sup);
 	
 		//Employee Add
-		if ($resp['success'] == true) {
-			$PerID = $resp['ID'];
-			$EmpPosition = $_POST['EmpPosition'];
-			$EmpSecPosition = $_POST['EmpSecPosition'];
-			$BGCSDepartment = $_POST['BGCSDepartment'];
-			$Supervisor = $_POST['Supervisor'];
-			$WorkMob = $_POST['WorkMob'];
-			$WorkEmail = $_POST['WorkEmail'];
-			$EmpDate = $_POST['EmpDate'];
-			$Contract = $_POST['Contract'];
-			$ContStatus = $_POST['ContStatus'];
-			$ContStartDate = $_POST['ContStartDate'];
-			$ContEndDate = $_POST['ContEndDate'];
-			$HrlyRate = $_POST['HrlyRate'];
-			$SecHrlyRate = $_POST['SecHrlyRate'];
-			$HrsPerFrtnt = $_POST['HrsPerFrtnt'];
-			$DaysWork = $_POST['DaysWork'];
-			$NHACEClass = $_POST['NHACEClass'];
-			$NHACEDate = $_POST['NHACEDate'];
-			$AnnualLeave = $_POST['AnnualLeave'];
-			$PersonalLeave = $_POST['PersonalLeave'];
-			$FundUSI = $_POST['FundUSI'];
-			$MmbershpNo = $_POST['MmbershpNo'];
-			$SuperFund = $_POST['SuperFund'];
-			$TerminationDate = $_POST['TerminationDate'];
-			$resp = $crud->basic_model->insert_emp($PerID, $EmpPosition, $EmpSecPosition, $BGCSDepartment, $Supervisor, $WorkMob, $WorkEmail, $EmpDate, $Contract, $ContStatus, $ContStartDate, $ContEndDate, $HrlyRate, $SecHrlyRate, $HrsPerFrtnt, $DaysWork, $NHACEClass, $NHACEDate, $AnnualLeave, $PersonalLeave, $SuperFund, $FundUSI, $MmbershpNo, $TerminationDate);
-		}
+		
+		$EmpPosition = $_POST['EmpPosition'];
+		$EmpSecPosition = $_POST['EmpSecPosition'];
+		$BGCSDepartment = $_POST['BGCSDepartment'];
+		$Supervisor = $_POST['Supervisor'];
+		$WorkMob = $_POST['WorkMob'];
+		$WorkEmail = $_POST['WorkEmail'];
+		$EmpDate = $_POST['EmpDate'];
+		$Contract = $_POST['Contract'];
+		$ContStatus = $_POST['ContStatus'];
+		$ContStartDate = $_POST['ContStartDate'];
+		$ContEndDate = $_POST['ContEndDate'];
+		$HrlyRate = $_POST['HrlyRate'];
+		$SecHrlyRate = $_POST['SecHrlyRate'];
+		$HrsPerFrtnt = $_POST['HrsPerFrtnt'];
+		$DaysWork = ""; //$_POST['DaysWork'];
+		$NHACEClass = $_POST['NHACEClass'];
+		$NHACEDate = $_POST['NHACEDate'];
+		$AnnualLeave = $_POST['AnnualLeave'];
+		$PersonalLeave = $_POST['PersonalLeave'];
+		$FundUSI = $_POST['FundUSI'];
+		$MmbershpNo = $_POST['MmbershpNo'];
+		$SuperFund = $_POST['SuperFund'];
+		$TerminationDate = $_POST['TerminationDate'];
+		$resp = $crud->basic_model->insert_emp($PerID, $EmpPosition, $EmpSecPosition, $BGCSDepartment, $Supervisor, $WorkMob, $WorkEmail, $EmpDate, $Contract, $ContStatus, $ContStartDate, $ContEndDate, $HrlyRate, $SecHrlyRate, $HrsPerFrtnt, $DaysWork, $NHACEClass, $NHACEDate, $AnnualLeave,$PersonalLeave, $SuperFund, $FundUSI, $MmbershpNo, $TerminationDate);
+		
 		
 		echo $resp;
 	}
 	
 	
-		public function create_user($FirstName, $MiddleName, $LastName) {
+		public function create_user($post_array) {
 
-		$FName = strtolower($FirstName);
-		$MName = strtolower($MiddleName);
-		$LName = strtolower($LastName);
+		$FName = strtolower($post_array["FirstName"]);
+		$MName = strtolower($post_array["MiddleName"]);
+		$LName = strtolower($post_array["LastName"]);
 
 		$newUN = $FName . '.' . substr($MName, 0, 1) . $LName;
 
