@@ -1,5 +1,28 @@
 <?
-public function person_employee() {
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class peremp extends MY_Controller {
+
+	public function __construct()
+	{
+		parent::__construct();
+
+
+		$this->load->library('grocery_CRUD');
+		$this->load->library('bcrypt');
+	}
+
+	public function index()
+	{
+		//$this->render((object)array('output' => '' , 'js_files' => array() , 'css_files' => array()));
+		$this->person_employee();
+	}
+
+	public function render($output = null) {
+		$this->load->view('employee', $output);
+	}
+
+	public function person_employee() {
 
 		$tempPass = "d3F!_P4s$)";
 		$tempHash = $this->bcrypt->hash_password($tempPass);
@@ -242,8 +265,8 @@ public function person_employee() {
 		$crud->field_type("EmpSecPosition", "dropdown", $posArr);		
 		
 		$output = $crud->render();
-
-		return $output->output;
+		
+		$this->render($output);
 	}
 	
 	public function per_emp_insert($post_array){
