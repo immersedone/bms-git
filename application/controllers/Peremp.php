@@ -1,7 +1,7 @@
-<?
+<?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class peremp extends MY_Controller {
+class Peremp extends MY_Controller {
 
 	public function __construct()
 	{
@@ -19,7 +19,7 @@ class peremp extends MY_Controller {
 	}
 
 	public function render($output = null) {
-		$this->load->view('employee', $output);
+		$this->load->view('basetemplate', $output);
 	}
 
 	public function person_employee() {
@@ -265,8 +265,11 @@ class peremp extends MY_Controller {
 		$crud->field_type("EmpSecPosition", "dropdown", $posArr);		
 		
 		$output = $crud->render();
+
 		
 		$this->render($output);
+
+		//print_r($output);
 	}
 	
 	public function per_emp_insert($post_array){
@@ -314,7 +317,7 @@ class peremp extends MY_Controller {
 		$resp = $crud->basic_model->insert_per($FirstName, $MiddleName, $LastName, $DateofBirth, $Address, $SuburbID, $PersonalEmail, $Mobile, $HomePhone, $Status, $DateStarted, $ContractSigned, $PaperworkCompleted, $WWC, $WWCFiled, $WWCExpiry, $PoliceCheck, $PoliceCheckDate, $TeacherRegCheck, $TeacherExipry, $FAQual, $FAQLev, $FAQaulExpiry, $Username, $Password, $LanguagesSpoken, $EmergContName, $EmergContMob, $EmergContHPhone, $EmergContWPhone, $EmergContRelToPer, $Is_Sup);
 	
 		//Employee Add
-		if $resp['success'] == True{
+		if ($resp['success'] == true) {
 			$PerID = $resp['ID'];
 			$EmpPosition = $_POST['EmpPosition'];
 			$EmpSecPosition = $_POST['EmpSecPosition'];
@@ -372,4 +375,4 @@ class peremp extends MY_Controller {
 	}
 	
 	
-	
+}

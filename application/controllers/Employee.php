@@ -407,7 +407,16 @@ class Employee extends MY_Controller {
 			$output["employee"]->output = $htmlOutput;
 			
 		}
+
+		$extraScript = '<script type="text/javascript">
+		$(document).ready(function(){
+		  $(".tDiv2").append("<a href=\'' . base_url('/user/') . 'peremp/index/add\' title=\'Add Person (Employee)\' class=\'add-anchor add_button\'><div class=\'fbutton\'><div><span class=\'add\'>Add Person (Employee)</span></div></div></a>");
+		});
+		</script>';
+
+		$output["employee"]->output .= $extraScript;
 		
+		//print_r($output);
 		$this->render($output);
 	}
 

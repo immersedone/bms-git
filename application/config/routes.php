@@ -87,6 +87,24 @@ $route['user/people/index/getNHACE'] = 'people/getNHACE';
 $route['user/people/index/getBGCS'] = 'people/getBGCS';
 $route['user/people/index/getFAQLev/(:num)'] = 'people/getFAQLev/$1';
 
+//Route for Person Emp
+//Routes for peremp Page
+$route['user/peremp'] = 'peremp';
+$route['user/peremp/index'] = 'peremp';
+$route['user/peremp/index/add'] = 'peremp/person_employee';
+$route['user/peremp/index/insert'] = 'peremp/person_employee';
+$route['user/peremp/index/insert_validation'] = 'peremp/person_employee';
+$route['user/peremp/index/edit/(:num)'] = 'peremp/person_employee/$1';
+$route['user/peremp/index/update/(:num)'] = 'peremp/person_employee/$1';
+$route['user/peremp/index/update_validation/(:num)'] = 'peremp/person_employee/$1';
+$route['user/peremp/index/success/(:num)'] = 'peremp/person_employee/$1';
+$route['user/peremp/index/read/(:num)'] = 'peremp/person_employee/$1';
+$route['user/peremp/index/delete/(:num)'] = 'peremp/person_employee/$1';
+$route['user/peremp/index/print'] = 'peremp/person_employee';
+$route['user/peremp/index/ajax_list'] = 'peremp/person_employee';
+$route['user/peremp/index/ajax_list_info'] = 'peremp/person_employee';
+$route['user/peremp/index/export'] = 'peremp/person_employee';
+
 //Routes for Volunteer Page
 $route['user/volunteer'] = 'volunteer';
 $route['user/volunteer/index'] = 'volunteer';
