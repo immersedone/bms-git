@@ -36,7 +36,7 @@ class People extends MY_Controller {
 		$crud->basic_model->set_query_str('SELECT * FROM (SELECT Sub.SuburbName as SubName, Sub.Postcode as Postcode, Per.* from `Person` Per
 		LEFT OUTER JOIN `Suburb` Sub ON Per.SuburbID=Sub.SuburbID) x');
 		$crud->columns('FirstName', 'LastName', 'Address', 'Postcode', 'SubName', 'PersonalEmail', 'Mobile', 'HomePhone');
-		$crud->add_fields('FirstName', 'MiddleName', 'LastName', 'Address', 'DateofBirth', 'SuburbID', 'PersonalEmail', 'Mobile', 'HomePhone', 'Status', 'DateStarted', 'WWC', 'WWCFiled', 'WWCExpiry', 'PoliceCheck', 'PoliceCheckDate', 'TeacherRegCheck', 'TeacherExipry', 'FAQual', 'FAQLev', 'FAQaulExpiry', 'LanguagesSpoken', 'EmergContName', 'EmergContMob', 'EmergContHPhone', 'EmergContWPhone', 'EmergContRelToPer', 'Username', 'Password', 'Is_Sup');
+		$crud->add_fields('FirstName', 'MiddleName', 'LastName', 'Address', 'DateofBirth', 'SuburbID', 'PersonalEmail', 'Mobile', 'HomePhone', 'Status', 'DateStarted', 'ContractSigned', 'PaperworkCompleted', 'WWC', 'WWCFiled', 'WWCExpiry', 'PoliceCheck', 'PoliceCheckDate', 'TeacherRegCheck', 'TeacherExipry', 'FAQual', 'FAQLev', 'FAQaulExpiry', 'LanguagesSpoken', 'EmergContName', 'EmergContMob', 'EmergContHPhone', 'EmergContWPhone', 'EmergContRelToPer', 'Username', 'Password', 'Is_Sup');
 		$crud->edit_fields('FirstName', 'MiddleName', 'LastName','Address', 'DateofBirth', 'SuburbID', 'PersonalEmail', 'Mobile', 'HomePhone', 'Status', 'DateStarted', 'DateFinished', 'ContractSigned', 'PaperworkCompleted', 'WWC', 'WWCFiled', 'WWCExpiry', 'PoliceCheck', 'PoliceCheckDate', 'TeacherRegCheck', 'TeacherExipry', 'FAQual', 'FAQLev', 'FAQaulExpiry', 'LanguagesSpoken', 'EmergContName', 'EmergContMob', 'EmergContHPhone', 'EmergContWPhone', 'EmergContRelToPer', 'Is_Sup');	
 		$crud->set_read_fields('Username', 'FirstName', 'MiddleName', 'LastName','Address', 'DateofBirth', 'SuburbID', 'PersonalEmail', 'Mobile', 'HomePhone', 'Status', 'DateStarted', 'DateFinished', 'ContractSigned', 'PaperworkCompleted', 'WWC', 'WWCFiled', 'WWCExpiry', 'PoliceCheck', 'PoliceCheckDate', 'TeacherRegCheck', 'TeacherExipry', 'FAQual', 'FAQLev', 'FAQaulExpiry', 'LanguagesSpoken', 'EmergContName', 'EmergContMob', 'EmergContHPhone', 'EmergContWPhone', 'EmergContRelToPer', 'Is_Sup');	
 		$crud->display_as('FirstName', 'First Name');
@@ -445,5 +445,5 @@ class People extends MY_Controller {
 
 		return $output->output;
 	}
-
+		
 }

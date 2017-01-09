@@ -317,6 +317,9 @@ public function person_employee() {
 			$SuperFund = $_POST['SuperFund'];
 			$TerminationDate = $_POST['TerminationDate'];
 			$resp = $crud->basic_model->insert_emp($PerID, $EmpPosition, $EmpSecPosition, $BGCSDepartment, $Supervisor, $WorkMob, $WorkEmail, $EmpDate, $Contract, $ContStatus, $ContStartDate, $ContEndDate, $HrlyRate, $SecHrlyRate, $HrsPerFrtnt, $DaysWork, $NHACEClass, $NHACEDate, $AnnualLeave, $PersonalLeave, $SuperFund, $FundUSI, $MmbershpNo, $TerminationDate);
+		}
+		
+		echo $resp;
 	}
 	
 	
