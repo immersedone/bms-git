@@ -126,7 +126,7 @@ class Genreport extends MY_Controller {
 			$coverPage = $this->load->view('/include/Report_CoverPage', $data, TRUE);
 		}
 
-		$html = "";
+		$html = $this->load->view('/include/Report_Head', $data, TRUE);
 		$title = $data["titleLine_One"] . ' ' . $data["titleLine_Two"];
 		$fileName = $title . '.pdf';
 
@@ -715,6 +715,7 @@ class Genreport extends MY_Controller {
 		$data["prjName"] = "N/A";		
 		$data["ReimbursementID"] = $id;
 
+
 		$cp = $this->uri->segment(5);
 
 
@@ -724,34 +725,32 @@ class Genreport extends MY_Controller {
 
 
 		if($cp == 0) {
-			$html = "";
+			$coverPage = "";
 		} else {
-			$html = $this->load->view('/include/Report_CoverPage', $data, TRUE);	
+			$coverPage = $this->load->view('/include/Report_CoverPage', $data, TRUE);
+			$coverPage .= $this->load->view('/include/Report_EndHTML', $data, TRUE);
 		}
-
-		
-
-		$title = $data["titleLine_One"] . ' ' . $data["titleLine_Two"] . ' - #' . $id;
-		$fileName = $title . '.pdf';
 
 		$this->load->library("grocery_CRUD");
 		$this->load->model("Grocery_crud_model");
 		$this->load->model("Extended_generic_model");
-
-		
-
 		$reimb = $this->Extended_generic_model->return_query('SELECT Re.*, CONCAT(Per.FirstName, " ", Per.MiddleName, " ", Per.LastName) as ApprovedBy, CONCAT(Pe.FirstName, " ", Pe.MiddleName, " ", Pe.LastName) as ApprovedFor FROM Reimbursement Re LEFT OUTER JOIN Person Per ON Re.ApprovedBy=Per.PerID LEFT OUTER JOIN Person Pe ON Re.PerID=Pe.PerID WHERE Re.ReimID='.$id);
+
+
+		$data["detailsHTML"] = "<table class='details'><tr><td class='first'>Reimbursement #: </td><td>" .$id . "</td></tr>";
+		$data["detailsHTML"] .= "<tr><td class='first'>Date of Reimbursement: </td><td>" . date('d/m/Y', strtotime($reimb[0]->ReimbDate)) . "</td></tr>";
+		$data["detailsHTML"] .= "<tr><td class='first'>Approved By: </td><td>" . $reimb[0]->ApprovedBy . "</td></tr>";
+		$data["detailsHTML"] .= "<tr><td class='first'>Reimbursement For: </td><td>" . $reimb[0]->ApprovedFor . "</td></tr>";
+		$data["detailsHTML"] .= "<tr><td class='first'>Reimbursement Is Paid: </td><td>" . $reimb[0]->IsPaid . "</td></tr>";
+		$data["detailsHTML"] .= "<tr><td class='first'>Reimbursement Status: </td><td>" . $reimb[0]->ReimbStatus . "</td></tr></table>";
+		
+		$html = $this->load->view('/include/Report_Head', $data, TRUE);
+		$title = $data["titleLine_One"] . ' ' . $data["titleLine_Two"] . ' - #' . $id;
+		$fileName = $title . '.pdf';
 		
 
-		$html .= "Reimbursement #: " .$id;
-		$html .= "<br/>Date of Reimbursement: " . $reimb[0]->ReimbDate;
-		$html .= "<br/>Approved By: " . $reimb[0]->ApprovedBy;
-		$html .= "<br/>Reimbursement For: " . $reimb[0]->ApprovedFor;
-		$html .= "<br/>Reimbursement Is Paid: " . $reimb[0]->IsPaid;
-		$html .= "<br/>Reimbursement Status: " . $reimb[0]->ReimbStatus;
-
-		$html .= "<h4>Expenditures</h4>";
-		$html .= "<table><tbody>";
+		$html .= "<h4 class='mTitle'>List of Expenditures</h4>";
+		$html .= "<table class='main'><tbody>";
 		$html .= "<tr><th>Name</th><th>Company Name</th><th>Concept</th><th>Total Amount</th><th>GST</th><th>Type</th><th>Project</th></tr>";
 		
 		if($reimb[0]->ExpList == "") {
@@ -771,10 +770,14 @@ class Genreport extends MY_Controller {
 				$expDet = $this->Extended_generic_model->return_query("SELECT Ex.ExpName, Ex.CompanyName, Ex.Concept, Ex.Amount, Ex.GST, Opt.Data as Type, Prj.Name as PrjName FROM Expenditure Ex LEFT OUTER JOIN OptionType Opt ON Ex.ExpType=Opt.OptID LEFT OUTER JOIN Project Prj ON Ex.ProjID=Prj.ProjID WHERE Ex.ExpID='" . $row ."'");
 				$totalAm += $expDet[0]->Amount;
 				$totalGST += $expDet[0]->GST;
-				$html .= "<tr><td>" . $expDet[0]->ExpName ."</td><td>" . $expDet[0]->CompanyName ."</td><td>" . $expDet[0]->Concept ."</td><td>" . $expDet[0]->Amount ."</td><td>" . $expDet[0]->GST ."</td><td>" . $expDet[0]->Type ."</td><td>" . $expDet[0]->PrjName ."</td></tr>";
+
+				//Testing Multiple pages loop
+				for($i = 0; $i < 20; $i++) {
+				$html .= "<tr><td>" . $expDet[0]->ExpName ."</td><td>" . $expDet[0]->CompanyName ."</td><td>" . $expDet[0]->Concept ."</td><td>$" . $expDet[0]->Amount ."</td><td>$" . $expDet[0]->GST ."</td><td>" . $expDet[0]->Type ."</td><td>" . $expDet[0]->PrjName ."</td></tr>";
+				}
 			}
-			$html .= "<tr><td></td><td></td><td></td><td><b>Total Amount:</b></td><td>$" . $totalAm . "</td><td></td><td></td></tr>";
-			$html .= "<tr><td></td><td></td><td></td><td><b>Total GST:</b></td><td>$" . $totalGST . "</td><td></td><td></td></tr>";
+			$html .= "<tr><td></td><td></td><td></td><td><b>Total Amount:</b></td><td><b>$" . number_format($totalAm, 2) . "</b></td><td></td><td></td></tr>";
+			$html .= "<tr><td></td><td></td><td></td><td><b>Total GST:</b></td><td><b>$" . number_format($totalGST, 2) . "</b></td><td></td><td></td></tr>";
 		}
 
 		$html .= "</tbody></table>";
@@ -783,11 +786,48 @@ class Genreport extends MY_Controller {
 		$html .= $this->load->view('/include/Report_EndHTML', $data, TRUE);
 
 
+		$this->pdf = $this->m_pdf->load("'utf-8', 'A4-L', '', '',10,10,10,10,6,3");
+		
+		if(isset($cp) && $cp == 1) {
+			$this->pdf->AddPage('P', // L - landscape, P - portrait
+	        '', '', '', '',
+	        0, // margin_left
+	        0, // margin right
+	        0, // margin top
+	        0, // margin bottom
+	        6, // margin header
+	        3); // margin footer
+			$this->pdf->WriteHTML($coverPage);
+			$this->pdf->setFooter('<hr/><br/>
+<table width="100%" style="vertical-align: bottom; font-size: 9pt; color: #000000; font-weight: bold;"><tr>
+<td width="33%" style="border:0"><span style="font-weight: bold; ">Banksia Gardens Community Servives</span></td>
+<td width="33%" align="center" style="font-weight: bold; border: 0;">{DATE l jS F Y}</td>
+<td width="33%" style="text-align: right; border: 0; ">Page&nbsp;&nbsp;{PAGENO}&nbsp;&nbsp;of&nbsp;&nbsp;{nbpg}&nbsp;&nbsp;&nbsp;</td>
+</tr></table>');
+		} else {
+			$this->pdf->setHTMLFooter('<hr/><br/>
+<table width="100%" style="vertical-align: bottom; font-size: 9pt; color: #000000; font-weight: bold;"><tr>
+<td width="33%" style="border:0"><span style="font-weight: bold; ">Banksia Gardens Community Servives</span></td>
+<td width="33%" align="center" style="font-weight: bold; border: 0;">{DATE l jS F Y}</td>
+<td width="33%" style="text-align: right; border: 0; ">Page&nbsp;&nbsp;{PAGENO}&nbsp;&nbsp;of&nbsp;&nbsp;{nbpg}&nbsp;&nbsp;&nbsp;</td>
+</tr></table>');
+		}
 
-		//echo $html;
-		$this->pdf = $this->m_pdf->load('utf-8', 'A4');
+		$this->pdf->AddPage('L', // L - landscape, P - portrait
+        '', '', '', '',
+        15, // margin_left
+        15, // margin right
+        15, // margin top
+        15, // margin bottom
+        6, // margin header
+        6); // margin footer
 		$this->pdf->WriteHTML($html);
 		$this->pdf->Output(FCPATH . $pdfFilePath . $FileStorageName, "F");
+
+		//echo $html;
+		/*$this->pdf = $this->m_pdf->load('utf-8', 'A4');
+		$this->pdf->WriteHTML($html);
+		$this->pdf->Output(FCPATH . $pdfFilePath . $FileStorageName, "F");*/
 
 
 		//Save File to Database
