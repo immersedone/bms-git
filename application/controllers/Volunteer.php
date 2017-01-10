@@ -98,10 +98,7 @@ class Volunteer extends MY_Controller {
 		}
 		else{
 			$crud->field_type("Supervisor", 'hidden');
-		}
-		
-		
-		
+		}		
 		
 		$state = $crud->getState();
 		$stateInfo = $crud->getStateInfo();
@@ -262,6 +259,14 @@ class Volunteer extends MY_Controller {
 			
 		}
 
+		
+		$extraScript = '<script type="text/javascript">
+		$(document).ready(function(){
+		  $(".tDiv2").append("<a href=\'' . base_url('/user/') . 'pervol/index/add\' title=\'Add Person (Volunteer)\' class=\'add-anchor add_button\'><div class=\'fbutton\'><div><span class=\'add\'>Add Person (Volunteer)</span></div></div></a>");
+		});
+		</script>';
+
+		$output["volunteer"]->output .= $extraScript;
 
 		$this->render($output);
 	}
