@@ -124,9 +124,10 @@ class Genreport extends MY_Controller {
 		} else {
 
 			$coverPage = $this->load->view('/include/Report_CoverPage', $data, TRUE);
+			$coverPage .= $this->load->view('/include/Report_EndHTML', $data, TRUE);
 		}
 
-		$html = $this->load->view('/include/Report_Head', $data, TRUE);
+		
 		$title = $data["titleLine_One"] . ' ' . $data["titleLine_Two"];
 		$fileName = $title . '.pdf';
 
@@ -145,6 +146,8 @@ class Genreport extends MY_Controller {
 			LEFT OUTER JOIN Suburb Sub on Per.SuburbID = Sub.SuburbID
 			LEFT OUTER JOIN Employee Emp on Per.PerID = Emp.PerID
 			WHERE PP.ProjID=".$projectID." AND PP.EmpVol='Emp'");
+
+			$html = $this->load->view('/include/Report_Head', $data, TRUE);
 			
 			$html .= "<table><tbody>";
 			$html .= "<tr><th>Full Name</th><th>Address</th><th>Postcode</th><th>Suburb</th><th>Work Email</th><th>Personal Email</th><th>Mobile</th><th>Home Phone</th></tr>";
@@ -165,6 +168,8 @@ class Genreport extends MY_Controller {
 			LEFT OUTER JOIN Suburb Sub on Per.SuburbID = Sub.SuburbID
 			LEFT OUTER JOIN Employee Emp on Per.PerID = Emp.PerID
 			WHERE PP.ProjID=".$projectID." AND PP.EmpVol='Vol'");
+
+			$html = $this->load->view('/include/Report_Head', $data, TRUE);
 			
 			$html .= "<table><tbody>";
 			$html .= "<tr><th>Full Name</th><th>Address</th><th>Postcode</th><th>Suburb</th><th>Work Email</th><th>Personal Email</th><th>Mobile</th><th>Home Phone</th></tr>";
@@ -179,17 +184,19 @@ class Genreport extends MY_Controller {
 		elseif ($reportType === "reimb") {
 
 			$reimb = $this->Extended_generic_model->return_query('SELECT Re.*, CONCAT(Per.FirstName, " ", Per.MiddleName, " ", Per.LastName) as ApprovedBy, CONCAT(Pe.FirstName, " ", Pe.MiddleName, " ", Pe.LastName) as ApprovedFor FROM Reimbursement Re LEFT OUTER JOIN Person Per ON Re.ApprovedBy=Per.PerID LEFT OUTER JOIN Person Pe ON Re.PerID=Pe.PerID WHERE Re.ReimID='.$postReimb);
+
+			$data["detailsHTML"] = "<table class='details'><tr><td class='first'>Reimbursement #: </td><td>" .$reimb[0]->ReimID . "</td></tr>";
+			$data["detailsHTML"] .= "<tr><td class='first'>Date of Reimbursement: </td><td>" . date('d/m/Y', strtotime($reimb[0]->ReimbDate)) . "</td></tr>";
+			$data["detailsHTML"] .= "<tr><td class='first'>Approved By: </td><td>" . $reimb[0]->ApprovedBy . "</td></tr>";
+			$data["detailsHTML"] .= "<tr><td class='first'>Reimbursement For: </td><td>" . $reimb[0]->ApprovedFor . "</td></tr>";
+			$data["detailsHTML"] .= "<tr><td class='first'>Reimbursement Is Paid: </td><td>" . $reimb[0]->IsPaid . "</td></tr>";
+			$data["detailsHTML"] .= "<tr><td class='first'>Reimbursement Status: </td><td>" . $reimb[0]->ReimbStatus . "</td></tr></table>";
+
+			$html = $this->load->view('/include/Report_Head', $data, TRUE);
 			
 
-			$html .= "Reimbursement #: " .$postReimb;
-			$html .= "<br/>Date of Reimbursement: " . $reimb[0]->ReimbDate;
-			$html .= "<br/>Approved By: " . $reimb[0]->ApprovedBy;
-			$html .= "<br/>Reimbursement For: " . $reimb[0]->ApprovedFor;
-			$html .= "<br/>Reimbursement Is Paid: " . $reimb[0]->IsPaid;
-			$html .= "<br/>Reimbursement Status: " . $reimb[0]->ReimbStatus;
-
-			$html .= "<h4>Expenditures</h4>";
-			$html .= "<table><tbody>";
+			$html .= "<h4 class='mTitle'>List of Expenditures</h4>";
+			$html .= "<table class='main'><tbody>";
 			$html .= "<tr><th>Name</th><th>Company Name</th><th>Concept</th><th>Total Amount</th><th>GST</th><th>Type</th><th>Project</th></tr>";
 			
 			if($reimb[0]->ExpList == "") {
@@ -241,6 +248,8 @@ class Genreport extends MY_Controller {
 				AND Exp.ExpDate >= '" . $fromDate . "'
 				AND Exp.ExpDate <= '" . $toDate . "'
 			");
+
+			$html = $this->load->view('/include/Report_Head', $data, TRUE);
 
 
 			//Get Project Name
@@ -323,6 +332,8 @@ class Genreport extends MY_Controller {
 				ORDER BY Prj.ProjID
 			");
 
+			$html = $this->load->view('/include/Report_Head', $data, TRUE);
+
 			//Bind Variables
 			$spvName = $supName[0]->FullName;
 			$projCount = $countProj[0]->Count;
@@ -364,6 +375,8 @@ class Genreport extends MY_Controller {
 				AND Exp.ExpDate >= '" . $fromDate . "'
 				AND Exp.ExpDate <= '" . $toDate . "'
 				");
+
+
 
 				//Check to see if List is empty
 				if(empty($spv)) {
@@ -413,6 +426,8 @@ class Genreport extends MY_Controller {
 				AND M.DueDate <= "' . $toDate . '"
 				ORDER BY M.DueDate ASC
 			');
+
+			$html = $this->load->view('/include/Report_Head', $data, TRUE);
 
 			//Header 
 			$html .= "Report Created: " . date('d F Y');
@@ -464,6 +479,8 @@ class Genreport extends MY_Controller {
 				AND M.DueDate >= now()
 				ORDER BY M.DueDate ASC
 			');
+
+			$html = $this->load->view('/include/Report_Head', $data, TRUE);
 
 			//Header 
 			$html .= "Report Created: " . date('d F Y');
@@ -523,6 +540,8 @@ class Genreport extends MY_Controller {
 				ORDER BY Per.FirstName ASC
 			");
 
+			$html = $this->load->view('/include/Report_Head', $data, TRUE);
+
 			//Header 
 			$html .= "Report Created: " . date('d F Y');
 
@@ -558,6 +577,8 @@ class Genreport extends MY_Controller {
 				ORDER BY Per.FirstName ASC
 			");
 
+			$html = $this->load->view('/include/Report_Head', $data, TRUE);
+
 			//Header 
 			$html .= "Report Created: " . date('d F Y');
 
@@ -587,6 +608,8 @@ class Genreport extends MY_Controller {
 				FROM Person
 				ORDER BY FirstName ASC
 			");
+
+			$html = $this->load->view('/include/Report_Head', $data, TRUE);
 
 
 			//Header 
@@ -671,6 +694,8 @@ class Genreport extends MY_Controller {
 			$html .= "</tbody></table>";
 		}
 
+
+
 		$html .= $this->load->view('/include/Report_EndHTML', $data, TRUE);
 
 		//echo $html;
@@ -695,6 +720,12 @@ class Genreport extends MY_Controller {
         6, // margin header
         3); // margin footer
 		$this->pdf->WriteHTML($html);
+		$this->pdf->setHTMLFooter('<hr/><br/>
+<table width="100%" style="vertical-align: bottom; font-size: 9pt; color: #000000; font-weight: bold;"><tr>
+<td width="33%" style="border:0"><span style="font-weight: bold; ">Banksia Gardens Community Servives</span></td>
+<td width="33%" align="center" style="font-weight: bold; border: 0;">{DATE l jS F Y}</td>
+<td width="33%" style="text-align: right; border: 0; ">Page&nbsp;&nbsp;{PAGENO}&nbsp;&nbsp;of&nbsp;&nbsp;{nbpg}&nbsp;&nbsp;&nbsp;</td>
+</tr></table>');
 		$this->pdf->Output(FCPATH . $pdfFilePath . $FileStorageName, "F");
 
 
