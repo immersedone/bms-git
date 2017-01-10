@@ -19,7 +19,7 @@ class Peremp extends MY_Controller {
 	}
 
 	public function render($output = null) {
-		$this->load->view('basetemplate', $output);
+		$this->load->view('peremp', $output);
 	}
 
 	public function person_employee() {
@@ -91,7 +91,15 @@ class Peremp extends MY_Controller {
 		$crud->field_type('Username', 'hidden');
 		$crud->field_type('Password', 'hidden', $tempHash);
 		
-		$crud->callback_before_insert(array($this, 'create_user'));
+		$crud->required_fields('FirstName', 
+			'LastName',
+			'Address',
+			'DateofBirth',
+			'Mobile',
+			'SuburbID',
+			'Status');
+		
+		//$crud->callback_before_insert(array($this, 'create_user'));
 		
 		$languages = $crud->basic_model->return_query("SELECT `LangID`, `LangName`, `LangISO_639_1` FROM Language");
 		$langArr = array();
@@ -302,7 +310,7 @@ class Peremp extends MY_Controller {
 		$FAQual = $_POST['FAQual'];
 		$FAQLev = $_POST['FAQLev'];
 		$FAQaulExpiry = $_POST['FAQaulExpiry'];
-		$LanguagesSpoken = "";		//$_POST['LanguagesSpoken'];
+		$LanguagesSpoken = $_POST['LanguagesSpoken'];
 		$EmergContName = $_POST['EmergContName'];
 		$EmergContMob = $_POST['EmergContMob'];
 		$EmergContHPhone = $_POST['EmergContHPhone'];
@@ -310,12 +318,21 @@ class Peremp extends MY_Controller {
 		$EmergContRelToPer = $_POST['EmergContRelToPer'];
 		$Is_Sup = $_POST['Is_Sup'];
 		$Password = $_POST['Password'];
-		$Username = "";
+		
+		$LSList = "";	
+		for($i = 0; $i < count($LanguagesSpoken); $i++) {
+			if($i === count($LanguagesSpoken) - 1) {
+				$LSList .= $LanguagesSpoken[$i];
+			} else {
+				$LSList .= $LanguagesSpoken[$i] .',';
+			}
+		}
 		//create_user($post_array);
 	
 		$crud = new grocery_CRUD();
 		$crud->set_model('PerEmp_GC');
-		$PerID = $crud->basic_model->insert_per($FirstName, $MiddleName, $LastName, $DateofBirth, $Address, $SuburbID, $PersonalEmail, $Mobile, $HomePhone, $Status, $DateStarted, $ContractSigned, $PaperworkCompleted, $WWC, $WWCFiled, $WWCExpiry, $PoliceCheck, $PoliceCheckDate, $TeacherRegCheck, $TeacherExipry, $FAQual, $FAQLev, $FAQaulExpiry, $Username, $Password, $LanguagesSpoken, $EmergContName, $EmergContMob, $EmergContHPhone, $EmergContWPhone, $EmergContRelToPer, $Is_Sup);
+		$Username = $this->PerEmp_GC->create_user($FirstName, $MiddleName, $LastName);
+		$PerID = $crud->basic_model->insert_per($FirstName, $MiddleName, $LastName, $DateofBirth, $Address, $SuburbID, $PersonalEmail, $Mobile, $HomePhone, $Status, $DateStarted, $ContractSigned, $PaperworkCompleted, $WWC, $WWCFiled, $WWCExpiry, $PoliceCheck, $PoliceCheckDate, $TeacherRegCheck, $TeacherExipry, $FAQual, $FAQLev, $FAQaulExpiry, $Username, $Password, $LSList, $EmergContName, $EmergContMob, $EmergContHPhone, $EmergContWPhone, $EmergContRelToPer, $Is_Sup);
 	
 		//Employee Add
 		
@@ -333,7 +350,7 @@ class Peremp extends MY_Controller {
 		$HrlyRate = $_POST['HrlyRate'];
 		$SecHrlyRate = $_POST['SecHrlyRate'];
 		$HrsPerFrtnt = $_POST['HrsPerFrtnt'];
-		$DaysWork = ""; //$_POST['DaysWork'];
+		$DaysWork = $_POST['DaysWork'];
 		$NHACEClass = $_POST['NHACEClass'];
 		$NHACEDate = $_POST['NHACEDate'];
 		$AnnualLeave = $_POST['AnnualLeave'];
@@ -342,37 +359,20 @@ class Peremp extends MY_Controller {
 		$MmbershpNo = $_POST['MmbershpNo'];
 		$SuperFund = $_POST['SuperFund'];
 		$TerminationDate = $_POST['TerminationDate'];
-		$resp = $crud->basic_model->insert_emp($PerID, $EmpPosition, $EmpSecPosition, $BGCSDepartment, $Supervisor, $WorkMob, $WorkEmail, $EmpDate, $Contract, $ContStatus, $ContStartDate, $ContEndDate, $HrlyRate, $SecHrlyRate, $HrsPerFrtnt, $DaysWork, $NHACEClass, $NHACEDate, $AnnualLeave,$PersonalLeave, $SuperFund, $FundUSI, $MmbershpNo, $TerminationDate);
+		
+		$daysList = "";	
+		for($i = 0; $i < count($DaysWork); $i++) {
+			if($i === count($DaysWork) - 1) {
+				$daysList .= $DaysWork[$i];
+			} else {
+				$daysList .= $DaysWork[$i] .',';
+			}
+		}
+		$resp = $crud->basic_model->insert_emp($PerID, $EmpPosition, $EmpSecPosition, $BGCSDepartment, $Supervisor, $WorkMob, $WorkEmail, $EmpDate, $Contract, $ContStatus, $ContStartDate, $ContEndDate, $HrlyRate, $SecHrlyRate, $HrsPerFrtnt, $daysList, $NHACEClass, $NHACEDate, $AnnualLeave,$PersonalLeave, $SuperFund, $FundUSI, $MmbershpNo, $TerminationDate);
 		
 		
 		echo $resp;
 	}
-	
-	
-		public function create_user($post_array) {
 
-		$FName = strtolower($post_array["FirstName"]);
-		$MName = strtolower($post_array["MiddleName"]);
-		$LName = strtolower($post_array["LastName"]);
-
-		$newUN = $FName . '.' . substr($MName, 0, 1) . $LName;
-
-		$check = $this->db->query("SELECT * FROM Person WHERE Username='$newUN'");
-
-		$findUN = "";
-		$x = 1;
-
-		while($check->result_id->num_rows > 0) {
-			$findUN = $newUN . $x;
-			$check = $this->db->query("SELECT * FROM Person WHERE Username='$findUN'");
-			$x++;
-		}
-
-		if($findUN === "") {
-			$findUN = $newUN;
-		}
-		return $findUN;
-	}
-	
 	
 }

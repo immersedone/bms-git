@@ -36,39 +36,26 @@ class Volunteer extends MY_Controller {
 		$crud->set_subject('Volunteer');
 		$crud->basic_model->set_query_str('SELECT * FROM (SELECT CONCAT(Per.FirstName, " ", Per.MiddleName, " ", Per.LastName) as FullName, Vol.* FROM `Volunteer` Vol 
 		LEFT OUTER JOIN Person Per on Per.PerID = Vol.PerID) x');
-		$crud->columns("FullName",  "isActive", "DateStarted", "DateFinished", "RefFullName", "RefMobile", "RefHPhone", "RefRelToVol", "DaysAvailable", "ContSkills", "ContQual");
+		$crud->columns("FullName",  "isActive", "DateStarted", "DateFinished", "RefFullName", "RefMobile", "RefHPhone", "RefRelToVol", "DaysWork", "ContSkills", "ContQual");
 		$crud->display_as("BGCSDepartment", "Department Assigned To");
 		$crud->display_as("RefFullName", "Referee Full Name");
 		$crud->display_as("RefMobile", "Referee Mobile");
 		$crud->display_as("RefRelToVol", "Referee Relation to Volunteer");
 		$crud->display_as("RefHPhone", "Referee Home Phone");
-		$crud->display_as("DaysAvailable", "Days Available");
+		$crud->display_as("DaysWork", "Days Available");
 		$crud->display_as("ContSkills", "Skills and Experience");
 		$crud->display_as("ContQual", "Qualifications and Current Studies");
 		$crud->display_as("FullName", "Full Name");
 		$crud->display_as("PerID", "Full Name");
-		$crud->display_as("ProjID", "Project");
 		$crud->display_as("Supervisor", "Supervisor");
 		$crud->display_as("BGCSDepartment", "BGCS Department");
 		$crud->display_as("DateStarted", "Date Started as Volunteer");
 		$crud->display_as("DateFinished", "Date Finished as Volunteer");
 		$crud->display_as("isActive", "Is Active");
 
-		$crud->add_fields("PerID", "isActive", "Supervisor", "BGCSDepartment", "DateStarted", "DateFinished", "RefFullName", "RefMobile", "RefHPhone", "RefRelToVol", "DaysAvailable", "ContSkills", "ContQual");
-		$crud->edit_fields("PerID", "isActive",  "Supervisor", "BGCSDepartment", "DateStarted", "DateFinished", "RefFullName", "RefMobile", "RefHPhone", "RefRelToVol", "DaysAvailable", "ContSkills", "ContQual");
-		$crud->set_read_fields("PerID", "isActive",  "Supervisor", "BGCSDepartment", "DateStarted", "DateFinished", "RefFullName", "RefMobile", "RefHPhone", "RefRelToVol", "DaysAvailable", "ContSkills", "ContQual");
-
-
-		//List of Projects
-		$projects = $crud->basic_model->return_query("SELECT ProjID, Name FROM Project");
-		$projArr = array();
-
-		foreach($projects as $proj) {
-			$projArr += [$proj->ProjID => $proj->Name];
-		}
-
-		$crud->field_type("ProjID", "dropdown", $projArr);
-
+		$crud->add_fields("PerID", "isActive", "Supervisor", "BGCSDepartment", "DateStarted", "DateFinished", "RefFullName", "RefMobile", "RefHPhone", "RefRelToVol", "DaysWork", "ContSkills", "ContQual");
+		$crud->edit_fields("PerID", "isActive",  "Supervisor", "BGCSDepartment", "DateStarted", "DateFinished", "RefFullName", "RefMobile", "RefHPhone", "RefRelToVol", "DaysWork", "ContSkills", "ContQual");
+		$crud->set_read_fields("PerID", "isActive",  "Supervisor", "BGCSDepartment", "DateStarted", "DateFinished", "RefFullName", "RefMobile", "RefHPhone", "RefRelToVol", "DaysWork", "ContSkills", "ContQual");
 
 		//BCGS Departments
 		$bcgs = $crud->basic_model->return_query("SELECT OptID, data FROM OptionType WHERE type='BGCS_DEP'");
@@ -85,7 +72,7 @@ class Volunteer extends MY_Controller {
 		foreach($availability as $av) {
 			$daysArr += [$av->OptID => $av->data];
 		}
-		$crud->field_type("DaysAvailable", "multiselect", $daysArr);
+		$crud->field_type("DaysWork", "multiselect", $daysArr);
 		
 		
 		//Call Model to get the User's Full Names
@@ -99,7 +86,7 @@ class Volunteer extends MY_Controller {
 		//to add to the relational table
 		$crud->field_type("FullName", "dropdown", $usrArr);
 		$crud->field_type("PerID", "dropdown", $usrArr);
-		$crud->set_rules("DaysAvailable", "Days Available", "trim|numeric|callback_multi_LS");
+		$crud->set_rules("DaysWork", "Days Available", "trim|numeric|callback_multi_LS");
         
 		$supervisors = $crud->basic_model->return_query("SELECT PerID, CONCAT(FirstName, ' ', MiddleName, ' ', LastName) as FullName FROM Person WHERE Is_Sup = 1");
         $visorArr = array();
@@ -124,7 +111,7 @@ class Volunteer extends MY_Controller {
 			$crud->required_fields(
             'RefFullName',
 			'DateStarted',
-            'DaysAvailable',
+            'DaysWork',
             'ContSkills',
             'ContQual');
             //$crud->set_rules("PerID", "Employee Name", "required");
@@ -133,7 +120,7 @@ class Volunteer extends MY_Controller {
 			'PerID',
             'RefFullName',
 			'DateStarted',
-            'DaysAvailable',
+            'DaysWork',
             'ContSkills',
             'ContQual');
 			//$crud->set_rules("PerID", "Employee Name", "in_list[" . $usrArrIDOnly . "]|required");
@@ -381,7 +368,7 @@ class Volunteer extends MY_Controller {
 	
 	public function multi_LS() {
 		
-		$dayArr = $this->input->post('DaysAvailable[]');
+		$dayArr = $this->input->post('DaysWork[]');
 		if(empty($dayArr)) {
 			$this->form_validation->set_message('multi_LS', 'Days Available is required and must not be empty.');
 

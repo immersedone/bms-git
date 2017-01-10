@@ -86,10 +86,10 @@ class People extends MY_Controller {
 		$crud->required_fields('FirstName', 
 			'LastName',
 			'Address',
-			'PersonalEmail',
+			'DateofBirth',
 			'Mobile',
 			'SuburbID',
-			'LanguagesSpoken');
+			'Status');
 
 		$crud->set_rules("LanguagesSpoken", "Languages Spoken", "trim|numeric|callback_multi_LS");
 		//Call model to get languages

@@ -105,6 +105,23 @@ $route['user/peremp/index/ajax_list'] = 'peremp/person_employee';
 $route['user/peremp/index/ajax_list_info'] = 'peremp/person_employee';
 $route['user/peremp/index/export'] = 'peremp/person_employee';
 
+//Routes for pervol Page
+$route['user/pervol'] = 'pervol';
+$route['user/pervol/index'] = 'pervol';
+$route['user/pervol/index/add'] = 'pervol/person_volunteer';
+$route['user/pervol/index/insert'] = 'pervol/insert_per_vol';
+$route['user/pervol/index/insert_validation'] = 'pervol/person_volunteer';
+$route['user/pervol/index/edit/(:num)'] = 'pervol/person_volunteer/$1';
+$route['user/pervol/index/update/(:num)'] = 'pervol/person_volunteer/$1';
+$route['user/pervol/index/update_validation/(:num)'] = 'pervol/person_volunteer/$1';
+$route['user/pervol/index/success/(:num)'] = 'pervol/person_volunteer/$1';
+$route['user/pervol/index/read/(:num)'] = 'pervol/person_volunteer/$1';
+$route['user/pervol/index/delete/(:num)'] = 'pervol/person_volunteer/$1';
+$route['user/pervol/index/print'] = 'pervol/person_volunteer';
+$route['user/pervol/index/ajax_list'] = 'pervol/person_volunteer';
+$route['user/pervol/index/ajax_list_info'] = 'pervol/person_volunteer';
+$route['user/pervol/index/export'] = 'pervol/person_volunteer';
+
 //Routes for Volunteer Page
 $route['user/volunteer'] = 'volunteer';
 $route['user/volunteer/index'] = 'volunteer';
