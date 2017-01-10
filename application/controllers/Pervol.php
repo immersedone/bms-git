@@ -81,7 +81,9 @@ class Pervol extends MY_Controller {
 		$crud->display_as("isActive", "Is Active");
 		$crud->field_type('Username', 'hidden');
 		$crud->field_type('Password', 'hidden', $tempHash);
-		
+		//$crud->field_type('isActive', 'true_false');
+		$crud->field_type('ContSkills', 'text');
+		$crud->field_type('ContQual', 'text');
 		$crud->required_fields('FirstName', 
 			'LastName',
 			'Address',

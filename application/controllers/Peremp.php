@@ -90,6 +90,10 @@ class Peremp extends MY_Controller {
 		$crud->display_as("WEmail", "Work Email");
 		$crud->field_type('Username', 'hidden');
 		$crud->field_type('Password', 'hidden', $tempHash);
+		$crud->field_type('EmpDate', 'date');
+		$crud->field_type('ContStartDate', 'date');
+		$crud->field_type('ContEndDate', 'date');
+		$crud->field_type('NHACEDate', 'date');
 		
 		$crud->required_fields('FirstName', 
 			'LastName',
