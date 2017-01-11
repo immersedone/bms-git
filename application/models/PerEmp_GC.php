@@ -29,6 +29,7 @@
 			$resp = array();
             if($this->db->simple_query("INSERT INTO Employee(PerID, EmpPosition, EmpSecPosition, BGCSDepartment, Supervisor, WorkMob, WorkEmail, EmpDate, Contract, ContStatus, ContStartDate, ContEndDate, HrlyRate, SecHrlyRate, HrsPerFrtnt, DaysWork, NHACEClass, NHACEDate, AnnualLeave, PersonalLeave, SuperFund, FundUSI, MmbershpNo, TerminationDate) VALUES('$PerID', '$EmpPosition', '$EmpSecPosition', '$BGCSDepartment', '$Supervisor', '$WorkMob', '$WorkEmail', '$EmpDate', '$Contract', '$ContStatus', '$ContStartDate', '$ContEndDate', '$HrlyRate', '$SecHrlyRate', '$HrsPerFrtnt', '$DaysWork', '$NHACEClass', '$NHACEDate', '$AnnualLeave', '$PersonalLeave', '$SuperFund', '$FundUSI', '$MmbershpNo', '$TerminationDate')")) {
                 $resp['success'] = TRUE;
+                $resp['success_list_url'] = base_url() .'/user/employee';
                 $resp['success_message'] = "Successfully added Employee.";
             } else {
                 $resp['success'] = FALSE;
@@ -44,6 +45,7 @@
 			Employee(PerID, Supervisor, BGCSDepartment, DateStarted, DateFinished, isActive, RefFullName, RefMobile, RefHPhone, RefRelToVol, DaysWork, ContSkills, ContQual) 
 			VALUES('$PerID', '$Supervisor', '$BGCSDepartment', '$DateStarted', '$DateFinished', '$isActive', '$RefFullName', '$RefMobile', '$RefHPhone', '$RefRelToVol', '$DaysWork', '$ContSkills', '$ContQual')")) {
                 $resp['success'] = TRUE;
+            	$resp['success_list_url'] = base_url() .'/user/volunteer';
                 $resp['success_message'] = "Successfully added Volunteer.";
             } else {
                 $resp['success'] = FALSE;

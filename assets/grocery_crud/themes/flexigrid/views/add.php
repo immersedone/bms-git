@@ -55,6 +55,14 @@
         if(strtolower($fullURL[0]) === "user" && strtolower($fullURL[1]) === "reimbursements" && strtolower($fullURL[2]) === "index" && strtolower($fullURL[3]) === "add") {
         	$page = "REIMB_ADD";
         }
+
+        if(strtolower($fullURL[0]) === "user" && strtolower($fullURL[1]) === "peremp" && strtolower($fullURL[2]) === "index" && strtolower($fullURL[3]) === "add") {
+        	$page = "PEREMP_ADD";
+        }
+
+        if(strtolower($fullURL[0]) === "user" && strtolower($fullURL[1]) === "pervol" && strtolower($fullURL[2]) === "index" && strtolower($fullURL[3]) === "add") {
+        	$page = "PERVOL_ADD";
+        }
     ?>
 <div class="flexigrid crud-form" style='width: 100%;' data-unique-hash="<?php echo $unique_hash; ?>">
 	<div class="mDiv">
@@ -188,6 +196,12 @@
 			var list_url = '<?php echo base_url(). 'user/projects/index/projread/list';?>';
 			var success_list_url = "<?php echo base_url().'user/projects/index/projread/list' ?>";
 			var validation_url = '<?php echo base_url() . "/user/projects/index/projread/" . $gridNo . "/" . $_COOKIE['projID'] . "/insert_validation";?>';
+		<?php elseif(isset($page) && $page !== "" && $page === "PEREMP_ADD"): ?>
+			var list_url = '<?php echo base_url(). '/user/employee'; ?>';
+			var validation_url = '<?php echo $validation_url?>';
+		<?php elseif(isset($page) && $page !== "" && $page === "PERVOL_ADD"): ?>
+			var list_url = '<?php echo base_url(). '/user/volunteer'; ?>';
+			var validation_url = '<?php echo $validation_url?>';
 		<?php else: ?>
 			var list_url = '<?php echo $list_url; ?>';
 			var validation_url = '<?php echo $validation_url?>';

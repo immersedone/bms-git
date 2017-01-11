@@ -101,7 +101,8 @@ class Peremp extends MY_Controller {
 			'DateofBirth',
 			'Mobile',
 			'SuburbID',
-			'Status');
+			'Status',
+			'DaysWork');
 		
 		//$crud->callback_before_insert(array($this, 'create_user'));
 		
