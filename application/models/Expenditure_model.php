@@ -9,12 +9,12 @@
             parent::__construct();
         }
 
-        function insert_expenditure($ExpName, $Reason, $CompanyName, $amount, $gst, $SpentBy, $FilePath, $newDate, $ProjectID)  
+        function insert_expenditure($ExpName, $Concept, $CompanyName, $amount, $gst, $SpentBy, $FilePath, $newDate, $ProjectID)  
 		{
 
             $resp = array();
 
-            if($this->db->simple_query("INSERT INTO Expenditure (ExpName, CompanyName, Reason, Amount, GST, SpentBy, ExpDate, FilePath, ProjID) VALUES('$ExpName', '$CompanyName', '$Reason', '$amount', '$gst', '$SpentBy', '$newDate', '$FilePath', '$ProjectID')")) 
+            if($this->db->simple_query("INSERT INTO Expenditure (ExpName, CompanyName, Concept, Amount, GST, SpentBy, ExpDate, FilePath, ProjID) VALUES('$ExpName', '$CompanyName', '$Concept', '$amount', '$gst', '$SpentBy', '$newDate', '$FilePath', '$ProjectID')")) 
 			{
                 $resp['success'] = TRUE;
                 $resp['success_list_url'] = base_url() . "user/expenditures";
