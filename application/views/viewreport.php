@@ -70,7 +70,7 @@
                     </div>
                     <div class="row x_custom">
                         <div class="col-md-12">
-                            <p>To open the Report in a new tab, click <a href="<?php echo $url; ?>" target="_blank">here.</a></p>
+                            <p>To open the Report in a new tab, click <b><a href="<?php echo $url; ?>" target="_blank">here</a></b>. Otherwise to create a new report, click <b><a href="<?php echo base_url('/user/genreport'); ?>">here</a></b></p>
                             <!-- Insert Report -->
                             <iframe class="viewReport" type="application/pdf" src="<?php echo $url;?>"> </iframe>
                         </div>

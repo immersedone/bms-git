@@ -79,11 +79,12 @@
 <body>
 	<table class="head">
 		<tr>
-		<td class="details" width="33%">
+		<td class="details" width="<?php echo ($sigReq === "Y") ? "33%" : "66%"; ?>">
 			<h4 class="title"><b><?php echo $titleLine_One; ?></b></h4>
 			<br/>
 			<?php echo $detailsHTML; ?>
 		</td>
+		<?php if($sigReq === "Y"): ?>
 		<td class="signedBy"  width="33%">
 			<table class="foot">
 				<tr><td width="30%" style="text-align: right;">Signed By:</td><td width="70%" style="text-align: left;">_______________________________________________</td></tr>
@@ -91,6 +92,7 @@
 				<tr><td width="30%" style="text-align: right;">Signature:</td><td width="70%" style="text-align: left;">_______________________________________________</td></tr>
 			</table>
 		</td>
+		<?php endif; ?>
 		<td class="logo" width="33%">
 			<img src="<?php echo base_url('/assets/img/Logo_banner.jpg'); ?>" width="305" height="85" />
 		</td>

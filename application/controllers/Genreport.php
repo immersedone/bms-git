@@ -107,7 +107,7 @@ class Genreport extends MY_Controller {
 				"future_mst" => "Future Milestones",
 				"cdet_emp" => "Contact Details - Employees",
 				"cdet_vol" => "Contact Details - Volunteers",
-				"cont_srv" => "Contract & WWC"
+				"cont_srv" => "Contract & WWC - Status Check"
 			);
 
 			$data["titleLine_One"] = $lineOneArr[$reportType];
@@ -147,9 +147,15 @@ class Genreport extends MY_Controller {
 			LEFT OUTER JOIN Employee Emp on Per.PerID = Emp.PerID
 			WHERE PP.ProjID=".$projectID." AND PP.EmpVol='Emp'");
 
+			$data["detailsHTML"] = "<table class='details'>";
+			$data["detailsHTML"] .= "<tr><td class='first'>Date of Listing: </td><td>" . date('d/m/Y') . "</td></tr>";
+			$data["detailsHTML"] .= "<tr><td class='first'>Printed By: </td><td>" . $_SESSION['session_user']['bms_psnfullName'] . "</td></tr>";
+			$data["detailsHTML"] .= "</table>";
+			$data["sigReq"] = "N";
+
 			$html = $this->load->view('/include/Report_Head', $data, TRUE);
 			
-			$html .= "<table><tbody>";
+			$html .= "<table class='main'><tbody>";
 			$html .= "<tr><th>Full Name</th><th>Address</th><th>Postcode</th><th>Suburb</th><th>Work Email</th><th>Personal Email</th><th>Mobile</th><th>Home Phone</th></tr>";
 			foreach($people as $ppl) {
 				$html .= "<tr><td> " . $ppl->FullName . "</td><td> " . $ppl->Address . "</td><td> " . $ppl->Postcode . "</td><td> " . $ppl->SubName . "</td><td> " . $ppl->WorkEmail . "</td><td> " . $ppl->PersonalEmail . "</td><td> " . $ppl->Mobile . "</td><td> " . $ppl->HomePhone . "</td></tr>";
@@ -169,9 +175,15 @@ class Genreport extends MY_Controller {
 			LEFT OUTER JOIN Employee Emp on Per.PerID = Emp.PerID
 			WHERE PP.ProjID=".$projectID." AND PP.EmpVol='Vol'");
 
+			$data["detailsHTML"] = "<table class='details'>";
+			$data["detailsHTML"] .= "<tr><td class='first'>Date of Listing: </td><td>" . date('d/m/Y') . "</td></tr>";
+			$data["detailsHTML"] .= "<tr><td class='first'>Printed By: </td><td>" . $_SESSION['session_user']['bms_psnfullName'] . "</td></tr>";
+			$data["detailsHTML"] .= "</table>";
+			$data["sigReq"] = "N";
+
 			$html = $this->load->view('/include/Report_Head', $data, TRUE);
 			
-			$html .= "<table><tbody>";
+			$html .= "<table class='main'><tbody>";
 			$html .= "<tr><th>Full Name</th><th>Address</th><th>Postcode</th><th>Suburb</th><th>Work Email</th><th>Personal Email</th><th>Mobile</th><th>Home Phone</th></tr>";
 			foreach($people as $ppl) {
 				$html .= "<tr><td> " . $ppl->FullName . "</td><td> " . $ppl->Address . "</td><td> " . $ppl->Postcode . "</td><td> " . $ppl->SubName . "</td><td> " . $ppl->WorkEmail . "</td><td> " . $ppl->PersonalEmail . "</td><td> " . $ppl->Mobile . "</td><td> " . $ppl->HomePhone . "</td></tr>";
@@ -191,13 +203,14 @@ class Genreport extends MY_Controller {
 			$data["detailsHTML"] .= "<tr><td class='first'>Reimbursement For: </td><td>" . $reimb[0]->ApprovedFor . "</td></tr>";
 			$data["detailsHTML"] .= "<tr><td class='first'>Reimbursement Is Paid: </td><td>" . $reimb[0]->IsPaid . "</td></tr>";
 			$data["detailsHTML"] .= "<tr><td class='first'>Reimbursement Status: </td><td>" . $reimb[0]->ReimbStatus . "</td></tr></table>";
+			$data["sigReq"] = "Y";
 
 			$html = $this->load->view('/include/Report_Head', $data, TRUE);
 			
 
 			$html .= "<h4 class='mTitle'>List of Expenditures</h4>";
 			$html .= "<table class='main'><tbody>";
-			$html .= "<tr><th>Name</th><th>Company Name</th><th>Concept</th><th>Total Amount</th><th>GST</th><th>Type</th><th>Project</th></tr>";
+			$html .= "<tr><th>Date</th><th>Company Name</th><th>Concept</th><th>Total Amount</th><th>GST</th><th>Type</th><th>Project</th></tr>";
 			
 			if($reimb[0]->ExpList == "") {
 				$isEmpty = true;
@@ -213,10 +226,10 @@ class Genreport extends MY_Controller {
 				$html .= "<tr><td colspan='7' style='text-align:center;'>No Expenditures Listed</td></tr>";
 			} else {
 				foreach($exp as $row) {
-					$expDet = $this->Extended_generic_model->return_query("SELECT Ex.ExpName, Ex.CompanyName, Ex.Concept, Ex.Amount, Ex.GST, Opt.Data as Type, Prj.Name as PrjName FROM Expenditure Ex LEFT OUTER JOIN OptionType Opt ON Ex.ExpType=Opt.OptID LEFT OUTER JOIN Project Prj ON Ex.ProjID=Prj.ProjID WHERE Ex.ExpID='" . $row ."'");
+					$expDet = $this->Extended_generic_model->return_query("SELECT Ex.ExpName, Ex.ExpDate, Ex.CompanyName, Ex.Concept, Ex.Amount, Ex.GST, Opt.Data as Type, Prj.Name as PrjName FROM Expenditure Ex LEFT OUTER JOIN OptionType Opt ON Ex.ExpType=Opt.OptID LEFT OUTER JOIN Project Prj ON Ex.ProjID=Prj.ProjID WHERE Ex.ExpID='" . $row ."'");
 					$totalAm += $expDet[0]->Amount;
 					$totalGST += $expDet[0]->GST;
-					$html .= "<tr><td>" . $expDet[0]->ExpName ."</td><td>" . $expDet[0]->CompanyName ."</td><td>" . $expDet[0]->Concept ."</td><td>$" . $expDet[0]->Amount ."</td><td>$" . $expDet[0]->GST ."</td><td>" . $expDet[0]->Type ."</td><td>" . $expDet[0]->PrjName ."</td></tr>";
+					$html .= "<tr><td>" . date('d/m/Y', strtotime($expDet[0]->ExpDate)) ."</td><td>" . $expDet[0]->CompanyName ."</td><td>" . $expDet[0]->Concept ."</td><td>$" . $expDet[0]->Amount ."</td><td>$" . $expDet[0]->GST ."</td><td>" . $expDet[0]->Type ."</td><td>" . $expDet[0]->PrjName ."</td></tr>";
 				}
 				$html .= "<tr><td></td><td></td><td></td><td><b>Grand Total:</b></td><td>$" . number_format($totalAm, 2) . "</td><td></td><td></td></tr>";
 				$html .= "<tr><td></td><td></td><td></td><td><b>Total GST:</b></td><td>$" . number_format($totalGST, 2) . "</td><td></td><td></td></tr>";
@@ -249,19 +262,24 @@ class Genreport extends MY_Controller {
 				AND Exp.ExpDate <= '" . $toDate . "'
 			");
 
-			$html = $this->load->view('/include/Report_Head', $data, TRUE);
-
-
 			//Get Project Name
 			$projName = $this->Extended_generic_model->return_query("SELECT Name FROM Project WHERE ProjID='" . $projectID. "' LIMIT 1");
 
-			$html .= "Project Name: " . $projName[0]->Name;
-			
-			$html .= "<br/>Date Range: " . date('d F Y', strtotime($fromDate)) . ' - ' . date('d F Y', strtotime($toDate));
+			$data["detailsHTML"] = "<table class='details' style='margin-bottom: 20px'><tr><td class='first'>Project Name: </td><td>" .$projName[0]->Name . "</td></tr>";
+			$data["detailsHTML"] .= "<tr><td class='first'>Date Range: </td><td>" . date('d/m/Y', strtotime($fromDate)) . ' (From)<br/>' . date('d/m/Y', strtotime($toDate)) . " (To)</td></tr>";
+			$data["detailsHTML"] .= "<tr><td class='first'>Printed By: </td><td>" . $_SESSION['session_user']['bms_psnfullName'] . "</td></tr>";
+			$data["detailsHTML"] .= "</table>";
+			$data["sigReq"] = "Y";
 
-			$html .= "<h4>Expenditures</h4>";
-			$html .= "<table><tbody>";
-			$html .= "<tr><th>Name</th><th>Company Name</th><th>Concept</th><th>Amount</th><th>GST</th><th>Type</th><th>Spent By</th></tr>";
+			$html = $this->load->view('/include/Report_Head', $data, TRUE);
+
+
+			
+
+
+			$html .= "<h4 class='mTitle'>List of Expenditures</h4>";
+			$html .= "<table class='main'><tbody>";
+			$html .= "<tr><th>Date</th><th>Company Name</th><th>Concept</th><th>Amount</th><th>GST</th><th>Type</th><th>Spent By</th></tr>";
 
 			//Check to see if List is empty
 			if(empty($exp)) {
@@ -281,7 +299,7 @@ class Genreport extends MY_Controller {
 				foreach($exp as $row) {
 					$totalAm += $row->ExpAmount;
 					$totalGST += $row->ExpGST;
-					$html .= "<tr><td>" . $row->ExpName ."</td><td>" . $row->ExpCPName ."</td><td>" . $row->ExpConcept ."</td><td>$" . $row->ExpAmount ."</td><td>$" . $row->ExpGST ."</td><td>" . $row->ExpType ."</td><td>" . $row->ExpSpentBy . "</td></tr>";
+					$html .= "<tr><td>" . date('d/m/Y', strtotime($row->ExpDate)) ."</td><td>" . $row->ExpCPName ."</td><td>" . $row->ExpConcept ."</td><td>$" . $row->ExpAmount ."</td><td>$" . $row->ExpGST ."</td><td>" . $row->ExpType ."</td><td>" . $row->ExpSpentBy . "</td></tr>";
 				}
 				$html .= "<tr><td></td><td></td><td></td><td><b>Grand Total:</b></td><td>$" . number_format($totalAm, 2) . "</td><td></td><td></td></tr>";
 				$html .= "<tr><td></td><td></td><td></td><td><b>Total GST:</b></td><td>$" . number_format($totalGST, 2) . "</td><td></td><td></td></tr>";
@@ -316,6 +334,13 @@ class Genreport extends MY_Controller {
 				AND PP.PerID='" . $supervisor . "'
 			");
 
+			$data["detailsHTML"] = "<table class='details' style='margin-bottom: 20px'><tr><td class='first'>Supervisor Name: </td><td>" .$supName[0]->FullName . "</td></tr>";
+			$data["detailsHTML"] .= "<tr><td class='first'>Date Range: </td><td>" . date('d/m/Y', strtotime($fromDate)) . ' (From)<br/>' . date('d/m/Y', strtotime($toDate)) . " (To)</td></tr>";
+			$data["detailsHTML"] .= "<tr><td class='first'>Number of Projects: </td><td>" . $countProj[0]->Count . "</td></tr>";
+			$data["detailsHTML"] .= "<tr><td class='first'>Printed By: </td><td>" . $_SESSION['session_user']['bms_psnfullName'] . "</td></tr>";
+			$data["detailsHTML"] .= "</table>";
+			$data["sigReq"] = "Y";
+
 			//Get Array of Project ID's (used for Loop)
 			$getProjID = $this->Extended_generic_model->return_query("SELECT
 				Prj.ProjID as ProjID,
@@ -338,9 +363,6 @@ class Genreport extends MY_Controller {
 			$spvName = $supName[0]->FullName;
 			$projCount = $countProj[0]->Count;
 
-			$html .= "Supervisor Name: " . $spvName . "<br/>";
-			$html .= "Number of Projects: " . $projCount;
-
 			$projIDArr = array();
 			$projNameArr = array();
 
@@ -350,6 +372,7 @@ class Genreport extends MY_Controller {
 				array_push($projNameArr, $gPr->ProjName);
 			}
 
+			$projArr = array();
 
 			for($i = 0; $i < $projCount; $i++) {
 
@@ -390,8 +413,8 @@ class Genreport extends MY_Controller {
 				$totalGST = 0;
 
 				//Spit out Table Header for Project
-				$html .= "<h4>Expenditures for \"" . $projNameArr[$i] . "\"</h4>";
-				$html .= "<table><tbody>";
+				$html .= "<h4 class='mTitle'>List of Expenditures - \"" . $projNameArr[$i] . "\"</h4>";
+				$html .= "<table class='main'><tbody>";
 				$html .= "<tr><th>Name</th><th>Company Name</th><th>Concept</th><th>Total Amount</th><th>GST</th><th>Type</th><th>Spent By</th></tr>";
 
 				if($isEmpty == true) {
@@ -408,10 +431,31 @@ class Genreport extends MY_Controller {
 					$html .= "<tr><td></td><td></td><td></td><td><b>Total GST:</b></td><td>$" . number_format($totalGST, 2) . "</td><td></td><td></td></tr>";
 				}
 
-				//Spit out Table Footer for Project
 
+				//Push to array for absolute totals
+				array_push($projArr, array('ProjName' => $projNameArr[$i], 'GST' => $totalGST, 'Total' => $totalAm));
+
+				//Spit out Table Footer for Project
 				$html .= "</tbody></table>";
+			} 
+
+			//Calculate Absolute Totals across all projects
+			$absTotal = 0;
+			$absGST = 0;
+			
+
+			$html .= "<br/><h4 class='mTitle'>Totals - All Projects</h4>";
+			$html .= "<table class='main'><tbody>";
+			$html .= "<tr><th>Project Name</th><th>Project Total Amount</th><th>Project Total GST</th></tr>";
+
+			foreach($projArr as $pr) {
+				$absTotal += $pr["Total"];
+				$absGST += $pr["GST"];
+				$html .= "<tr><td>".$pr["ProjName"] . "</td><td>$" . number_format($pr["Total"],2)  . "</td><td>$" . number_format($pr["GST"], 2) . "</td></tr>";
 			}
+
+			$html .= "<tr><td colspan='2' style='font-weight: bold; text-align:right;'>Grand Total</td><td>$" . number_format($absTotal, 2) . "</td></tr>";
+			$html .= "<tr><td colspan='2' style='font-weight: bold; text-align:right;'>Total GST</td><td>$" . number_format($absGST, 2) . "</td></tr></table>";
 
 		}
 		//Report for Pending Milestones
@@ -427,14 +471,18 @@ class Genreport extends MY_Controller {
 				ORDER BY M.DueDate ASC
 			');
 
+
+			$data["detailsHTML"] = "<table class='details' style='margin-bottom: 20px'>";
+			$data["detailsHTML"] .= "<tr><td class='first'>Printed By: </td><td>" . $_SESSION['session_user']['bms_psnfullName'] . "</td></tr>";
+			$data["detailsHTML"] .= "</table>";
+			$data["sigReq"] = "N";
+
 			$html = $this->load->view('/include/Report_Head', $data, TRUE);
 
-			//Header 
-			$html .= "Report Created: " . date('d F Y');
 
 			//Content
-			$html .= "<h4>Pending Milestones</h4>";
-			$html .= "<table><tbody>";
+			$html .= "<h4 class='mTitle'>List of Milestones</h4>";
+			$html .= "<table class='main'><tbody>";
 			$html .= "<tr><th>Project Name</th><th>Description</th><th>Due Date</th><th>Report Type</th><th>Report Is Due</th><th>Payment Mode</th><th>Status</th><th>Total Amount</th><th>Comment</th></tr>";
 
 			//Loop
@@ -480,40 +528,48 @@ class Genreport extends MY_Controller {
 				ORDER BY M.DueDate ASC
 			');
 
+
+			$data["detailsHTML"] = "<table class='details' style='margin-bottom: 20px'>";
+			$data["detailsHTML"] .= "<tr><td class='first'>Printed By: </td><td>" . $_SESSION['session_user']['bms_psnfullName'] . "</td></tr>";
+			$data["detailsHTML"] .= "</table>";
+			$data["sigReq"] = "N";
+
 			$html = $this->load->view('/include/Report_Head', $data, TRUE);
 
-			//Header 
-			$html .= "Report Created: " . date('d F Y');
 
 			//Content
-			$html .= "<h4>Future Milestones</h4>";
-			$html .= "<table><tbody>";
+			$html .= "<h4 class='mTitle'>List of Future Milestones</h4>";
+			$html .= "<table class='main'><tbody>";
 			$html .= "<tr><th>Project Name</th><th>Description</th><th>Due Date</th><th>Report Type</th><th>Report Is Due</th><th>Payment Mode</th><th>Status</th><th>Total Amount</th><th>Comment</th></tr>";
 
 			//Loop
-			foreach($mst as $em) { 
+			if(!empty($mst)) {
+				foreach($mst as $em) { 
 
 
-				//Prettify Fields
+					//Prettify Fields
 
-				if($em->ReportIsDue == 0) {
-					$RptID = "No";
-				} else {
-					$RptID = "Yes";
+					if($em->ReportIsDue == 0) {
+						$RptID = "No";
+					} else {
+						$RptID = "Yes";
+					}
+
+					if($em->RptType === "REPORT") {
+						$RptType = "Report";
+					} elseif($em->RptType === "PAYMENT") {
+						$RptType = "Payment";
+					} elseif($em->RptType === "REP_PAY") {
+						$RptType = "Report &amp; Payment";
+					} elseif($em->RptType === "FINAL_REP") {
+						$RptType = "Final Report";
+					}
+
+
+					$html .= "<tr><td>" . $em->ProjName . "</td><td>" . $em->ShortDesc . "</td><td>" . date('d F Y', strtotime($em->DueDate)) . "</td><td>" . $RptType . "</td><td>" . $RptID . "</td><td>" . $em->PaymentMode . "</td><td>" . $em->Status . "</td><td>$" . number_format($em->Amount, 2) . "</td><td>" . $em->Comment . "</td></tr>";
 				}
-
-				if($em->RptType === "REPORT") {
-					$RptType = "Report";
-				} elseif($em->RptType === "PAYMENT") {
-					$RptType = "Payment";
-				} elseif($em->RptType === "REP_PAY") {
-					$RptType = "Report &amp; Payment";
-				} elseif($em->RptType === "FINAL_REP") {
-					$RptType = "Final Report";
-				}
-
-
-				$html .= "<tr><td>" . $em->ProjName . "</td><td>" . $em->ShortDesc . "</td><td>" . date('d F Y', strtotime($em->DueDate)) . "</td><td>" . $RptType . "</td><td>" . $RptID . "</td><td>" . $em->PaymentMode . "</td><td>" . $em->Status . "</td><td>$" . number_format($em->Amount, 2) . "</td><td>" . $em->Comment . "</td></tr>";
+			} else {
+				$html .= "<tr><td colspan='10'>There are no Future Milestones.</td></tr>";
 			}
 
 			$html .= "</tbody></table>";
@@ -540,23 +596,25 @@ class Genreport extends MY_Controller {
 				ORDER BY Per.FirstName ASC
 			");
 
+			$data["detailsHTML"] = "<table class='details' style='margin-bottom: 20px'>";
+			$data["detailsHTML"] .= "<tr><td class='first'>Printed By: </td><td>" . $_SESSION['session_user']['bms_psnfullName'] . "</td></tr>";
+			$data["detailsHTML"] .= "</table>";
+			$data["sigReq"] = "N";
+
 			$html = $this->load->view('/include/Report_Head', $data, TRUE);
 
-			//Header 
-			$html .= "Report Created: " . date('d F Y');
-
 			//Content
-			$html .= "<h4>Employee Contact Details</h4>";
-			$html .= "<table><tbody>";
+			$html .= "<h4 class='mTitle'>List of Employee Contact Details</h4>";
+			$html .= "<table class='main'><tbody>";
 			$html .= "<tr><th>Employee Name</th><th>Telephone</th><th>Mobile</th><th>Work Mob.</th><th>Email</th><th>Work Email</th><th>Emergency Contact</th><th>EC - Mobile</th><th>EC - Telephone</th><th>EC - Work Phone</th><th>EC - Relationship</th></tr>";
 
 			
-			for($i = 0; $i < 25; $i++){
+			//for($i = 0; $i < 25; $i++){
 			//Loop
 			foreach($emp as $em) { 
 				$html .= "<tr><td>" . $em->FullName . "</td><td>" . $em->HomePhone . "</td><td>" . $em->Mobile . "</td><td>" . $em->WorkMob . "</td><td>" . $em->PersonalEmail . "</td><td>" . $em->WorkEmail . "</td><td>" . $em->EmergContName . "</td><td>" . $em->EmergContMob . "</td><td>" . $em->EmergContHPhone . "</td><td>" . $em->EmergContWPhone . "</td><td>" . $em->EmergContRelToPer . "</td></tr>";
 			}
-			}
+			//}
 			$html .= "</tbody></table>";
 			
 		}
@@ -577,14 +635,17 @@ class Genreport extends MY_Controller {
 				ORDER BY Per.FirstName ASC
 			");
 
+			$data["detailsHTML"] = "<table class='details' style='margin-bottom: 20px'>";
+			$data["detailsHTML"] .= "<tr><td class='first'>Printed By: </td><td>" . $_SESSION['session_user']['bms_psnfullName'] . "</td></tr>";
+			$data["detailsHTML"] .= "</table>";
+			$data["sigReq"] = "N";
+
 			$html = $this->load->view('/include/Report_Head', $data, TRUE);
 
-			//Header 
-			$html .= "Report Created: " . date('d F Y');
 
 			//Content
-			$html .= "<h4>Volunteer Contact Details</h4>";
-			$html .= "<table><tbody>";
+			$html .= "<h4 class='mTitle'>List of Volunteer Contact Details</h4>";
+			$html .= "<table class='main'><tbody>";
 			$html .= "<tr><th>Volunteer Name</th><th>Telephone</th><th>Mobile</th><th>Email</th><th>Emergency Contact</th><th>EC - Mobile</th><th>EC - Telephone</th><th>EC - Work Phone</th><th>EC - Relationship</th></tr>";
 
 			//Loop
@@ -600,6 +661,9 @@ class Genreport extends MY_Controller {
 				CONCAT(FirstName, ' ', MiddleName, ' ', LastName) AS FullName,
 				ContractSigned,
 				PaperworkCompleted,
+				WWCReq,
+				PCReq,
+				TRCReq,
 				WWC,
 				WWCFiled,
 				PoliceCheck,
@@ -609,17 +673,19 @@ class Genreport extends MY_Controller {
 				ORDER BY FirstName ASC
 			");
 
+			$data["detailsHTML"] = "<table class='details' style='margin-bottom: 20px'>";
+			$data["detailsHTML"] .= "<tr><td class='first'>Printed By: </td><td>" . $_SESSION['session_user']['bms_psnfullName'] . "</td></tr>";
+			$data["detailsHTML"] .= "</table>";
+			$data["sigReq"] = "N";
+
 			$html = $this->load->view('/include/Report_Head', $data, TRUE);
 
-
-			//Header 
-			$html .= "Report Created: " . date('d F Y');
-
 			//Content
-			$html .= "<h4>Contract & WWC - Status Review</h4>";
-			$html .= "<table><tbody>";
+			$html .= "<h4 class='mTitle'>List of People</h4>";
+			$html .= "<table class='main'><tbody>";
 			$html .= "<tr><th>Full Name</th><th>Employee/Volunteer</th><th>Contract Signed</th><th>Paperwork Completed</th><th>WWC</th><th>WWC Filed</th><th>Police Check</th><th>Teacher Registration Check</th></tr>";
 
+			$count = 0;
 			//Loop
 			foreach($ppl as $pp) { 
 
@@ -688,7 +754,54 @@ class Genreport extends MY_Controller {
 				}	
 
 
-				$html .= "<tr><td>" . $pp->FullName . "</td><td>" . $empVol . "</td><td>" . $cs . "</td><td>" .  $pc . "</td><td>" .  $wwc . "</td><td>" .  $wwcf . "</td><td>" .  $polc . "</td><td>" .  $trc . "</td></tr>";
+
+				//Green & Red Text upon entry needing attention
+				$pstyle = 'color:white; font-weight: bold;';
+
+				if($count % 2 == 0) {
+					$trstyle = "background-color: lightgrey; color: white;";
+				} else {
+					$trstyle = "background-color: #F7F7F7; color: white;";
+				}
+
+
+
+				if($pp->WWCReq == 1 && $pp->WWC == 0 ) {
+					$WWCTxt = "<p style='" . $pstyle . "'>" . $wwc . "</p>"; 
+					$WWCStyle = ' background-color:red;';
+				} else {
+					$WWCTxt = "<p style='" . $pstyle . "'>" . $wwc . "</p>"; 
+					$WWCStyle = ' background-color:green;';
+				}
+
+				if($pp->WWCReq == 1 && $pp->WWCFiled == 0) {
+					$WWCFiled = "<p style='" . $pstyle . "'>" . $wwcf . "</p>"; 
+					$WWCFStyle = ' background-color:red;';
+				} else {
+					$WWCFiled = "<p style='" . $pstyle . "'>" . $wwcf . "</p>";
+					$WWCFStyle = ' background-color:green;'; 
+				}
+
+				if($pp->PCReq == 1 && $pp->PoliceCheck == 0) {
+					$PCTxt = "<p style='" . $pstyle . "'><b>" . $polc . "</p>"; 
+					$PCStyle = ' background-color:red;';
+				} else {
+					$PCTxt = "<p style='" . $pstyle . "'>" . $polc . "</p>"; 
+					$PCStyle = ' background-color:green;';
+				}
+
+				if($pp->TRCReq == 1 && $pp->TeacherRegCheck == 0) {
+					$TRCTxt = "<p style='" . $pstyle . "'>" . $trc . "</p>"; 
+					$TRCStyle = ' background-color:red;';
+				} else {
+					$TRCTxt = "<p style='" . $pstyle . "'>" . $trc . "</p>"; 
+					$TRCStyle = ' background-color:green;';
+				}
+
+
+				$html .= "<tr style='" . $trstyle . "'><td><b>" . $pp->FullName . "</b></td><td>" . $empVol . "</td><td style='text-align: center;'>" . $cs . "</td><td style='text-align: center;'>" .  $pc . "</td><td style='text-align: center;" . $WWCStyle . "'>" .  $WWCTxt . "</td><td style='text-align: center;" . $WWCFStyle . "'>" .  $WWCFiled . "</td><td style='text-align: center;" . $PCStyle . "'>" .  $PCTxt . "</td><td style='text-align: center;" . $TRCStyle . "'>" .  $TRCTxt . "</td></tr>";
+
+				$count++;
 			}
 
 			$html .= "</tbody></table>";
@@ -710,22 +823,49 @@ class Genreport extends MY_Controller {
 	        6, // margin header
 	        3); // margin footer
 			$this->pdf->WriteHTML($coverPage);
+		}if(isset($optCP) && $optCP == "YES") {
+			$this->pdf->setHTMLFooter('<hr/><br/>
+				<table width="100%" style="vertical-align: bottom; font-size: 9pt; color: #000000; font-weight: bold;"><tr>
+				<td width="33%" style="border:0"><span style="font-weight: bold; ">Banksia Gardens Community Servives</span></td>
+				<td width="33%" align="center" style="font-weight: bold; border: 0;">{DATE l jS F Y}</td>
+				<td width="33%" style="text-align: right; border: 0; ">Page&nbsp;&nbsp;{PAGENO}&nbsp;&nbsp;of&nbsp;&nbsp;{nbpg}&nbsp;&nbsp;&nbsp;</td>
+				</tr></table>
+			');
 		}
-		$this->pdf->AddPage('L', // L - landscape, P - portrait
-        '', '', '', '',
-        15, // margin_left
-        15, // margin right
-        15, // margin top
-        15, // margin bottom
-        6, // margin header
-        3); // margin footer
+		
+
+		if(isset($optCP) && $optCP == "NO") {
+			$this->pdf->AddPage('L', // L - landscape, P - portrait
+	        '', '1', '', '',
+	        15, // margin_left
+	        15, // margin right
+	        15, // margin top
+	        15, // margin bottom
+	        6, // margin header
+	        6); // margin footer
+		} else {
+			$this->pdf->AddPage('L', // L - landscape, P - portrait
+	        '', '', '', '',
+	        15, // margin_left
+	        15, // margin right
+	        15, // margin top
+	        15, // margin bottom
+	        6, // margin header
+	        6); // margin footer
+		}
+
+
+        if(isset($optCP) && $optCP == "NO") {
+			$this->pdf->setHTMLFooter('<hr/><br/>
+				<table width="100%" style="vertical-align: bottom; font-size: 9pt; color: #000000; font-weight: bold;"><tr>
+				<td width="33%" style="border:0"><span style="font-weight: bold; ">Banksia Gardens Community Servives</span></td>
+				<td width="33%" align="center" style="font-weight: bold; border: 0;">{DATE l jS F Y}</td>
+				<td width="33%" style="text-align: right; border: 0; ">Page&nbsp;&nbsp;{PAGENO}&nbsp;&nbsp;of&nbsp;&nbsp;{nbpg}&nbsp;&nbsp;&nbsp;</td>
+				</tr></table>
+			');
+		}
 		$this->pdf->WriteHTML($html);
-		$this->pdf->setHTMLFooter('<hr/><br/>
-<table width="100%" style="vertical-align: bottom; font-size: 9pt; color: #000000; font-weight: bold;"><tr>
-<td width="33%" style="border:0"><span style="font-weight: bold; ">Banksia Gardens Community Servives</span></td>
-<td width="33%" align="center" style="font-weight: bold; border: 0;">{DATE l jS F Y}</td>
-<td width="33%" style="text-align: right; border: 0; ">Page&nbsp;&nbsp;{PAGENO}&nbsp;&nbsp;of&nbsp;&nbsp;{nbpg}&nbsp;&nbsp;&nbsp;</td>
-</tr></table>');
+		
 		$this->pdf->Output(FCPATH . $pdfFilePath . $FileStorageName, "F");
 
 
@@ -774,6 +914,7 @@ class Genreport extends MY_Controller {
 		$data["detailsHTML"] .= "<tr><td class='first'>Reimbursement For: </td><td>" . $reimb[0]->ApprovedFor . "</td></tr>";
 		$data["detailsHTML"] .= "<tr><td class='first'>Reimbursement Is Paid: </td><td>" . $reimb[0]->IsPaid . "</td></tr>";
 		$data["detailsHTML"] .= "<tr><td class='first'>Reimbursement Status: </td><td>" . $reimb[0]->ReimbStatus . "</td></tr></table>";
+		$data["sigReq"] = "Y";
 		
 		$html = $this->load->view('/include/Report_Head', $data, TRUE);
 		$title = $data["titleLine_One"] . ' ' . $data["titleLine_Two"] . ' - #' . $id;
@@ -782,7 +923,7 @@ class Genreport extends MY_Controller {
 
 		$html .= "<h4 class='mTitle'>List of Expenditures</h4>";
 		$html .= "<table class='main'><tbody>";
-		$html .= "<tr><th>Name</th><th>Company Name</th><th>Concept</th><th>Total Amount</th><th>GST</th><th>Type</th><th>Project</th></tr>";
+		$html .= "<tr><th>Date</th><th>Company Name</th><th>Concept</th><th>Total Amount</th><th>GST</th><th>Type</th><th>Project</th></tr>";
 		
 		if($reimb[0]->ExpList == "") {
 			$isEmpty = true;
@@ -798,14 +939,14 @@ class Genreport extends MY_Controller {
 			$html .= "<tr><td colspan='7' style='text-align:center;'>No Expenditures Listed</td></tr>";
 		} else {
 			foreach($exp as $row) {
-				$expDet = $this->Extended_generic_model->return_query("SELECT Ex.ExpName, Ex.CompanyName, Ex.Concept, Ex.Amount, Ex.GST, Opt.Data as Type, Prj.Name as PrjName FROM Expenditure Ex LEFT OUTER JOIN OptionType Opt ON Ex.ExpType=Opt.OptID LEFT OUTER JOIN Project Prj ON Ex.ProjID=Prj.ProjID WHERE Ex.ExpID='" . $row ."'");
+				$expDet = $this->Extended_generic_model->return_query("SELECT Ex.ExpName, Ex.ExpDate, Ex.CompanyName, Ex.Concept, Ex.Amount, Ex.GST, Opt.Data as Type, Prj.Name as PrjName FROM Expenditure Ex LEFT OUTER JOIN OptionType Opt ON Ex.ExpType=Opt.OptID LEFT OUTER JOIN Project Prj ON Ex.ProjID=Prj.ProjID WHERE Ex.ExpID='" . $row ."'");
 				$totalAm += $expDet[0]->Amount;
 				$totalGST += $expDet[0]->GST;
 
 				//Testing Multiple pages loop
-				for($i = 0; $i < 20; $i++) {
-				$html .= "<tr><td>" . $expDet[0]->ExpName ."</td><td>" . $expDet[0]->CompanyName ."</td><td>" . $expDet[0]->Concept ."</td><td>$" . $expDet[0]->Amount ."</td><td>$" . $expDet[0]->GST ."</td><td>" . $expDet[0]->Type ."</td><td>" . $expDet[0]->PrjName ."</td></tr>";
-				}
+				//for($i = 0; $i < 20; $i++) {
+				$html .= "<tr><td>" . date('d/m/Y', strtotime($expDet[0]->ExpDate)) ."</td><td>" . $expDet[0]->CompanyName ."</td><td>" . $expDet[0]->Concept ."</td><td>$" . $expDet[0]->Amount ."</td><td>$" . $expDet[0]->GST ."</td><td>" . $expDet[0]->Type ."</td><td>" . $expDet[0]->PrjName ."</td></tr>";
+				//}
 			}
 			$html .= "<tr><td></td><td></td><td></td><td><b>Total Amount:</b></td><td><b>$" . number_format($totalAm, 2) . "</b></td><td></td><td></td></tr>";
 			$html .= "<tr><td></td><td></td><td></td><td><b>Total GST:</b></td><td><b>$" . number_format($totalGST, 2) . "</b></td><td></td><td></td></tr>";
@@ -819,7 +960,7 @@ class Genreport extends MY_Controller {
 
 		$this->pdf = $this->m_pdf->load("'utf-8', 'A4-L', '', '',10,10,10,10,6,3");
 		
-		if(isset($cp) && $cp == 1) {
+		if(isset($coverPage) && $coverPage !== "") {
 			$this->pdf->AddPage('P', // L - landscape, P - portrait
 	        '', '', '', '',
 	        0, // margin_left
@@ -829,30 +970,53 @@ class Genreport extends MY_Controller {
 	        6, // margin header
 	        3); // margin footer
 			$this->pdf->WriteHTML($coverPage);
-			$this->pdf->setFooter('<hr/><br/>
-<table width="100%" style="vertical-align: bottom; font-size: 9pt; color: #000000; font-weight: bold;"><tr>
-<td width="33%" style="border:0"><span style="font-weight: bold; ">Banksia Gardens Community Servives</span></td>
-<td width="33%" align="center" style="font-weight: bold; border: 0;">{DATE l jS F Y}</td>
-<td width="33%" style="text-align: right; border: 0; ">Page&nbsp;&nbsp;{PAGENO}&nbsp;&nbsp;of&nbsp;&nbsp;{nbpg}&nbsp;&nbsp;&nbsp;</td>
-</tr></table>');
-		} else {
-			$this->pdf->setHTMLFooter('<hr/><br/>
-<table width="100%" style="vertical-align: bottom; font-size: 9pt; color: #000000; font-weight: bold;"><tr>
-<td width="33%" style="border:0"><span style="font-weight: bold; ">Banksia Gardens Community Servives</span></td>
-<td width="33%" align="center" style="font-weight: bold; border: 0;">{DATE l jS F Y}</td>
-<td width="33%" style="text-align: right; border: 0; ">Page&nbsp;&nbsp;{PAGENO}&nbsp;&nbsp;of&nbsp;&nbsp;{nbpg}&nbsp;&nbsp;&nbsp;</td>
-</tr></table>');
+
 		}
 
-		$this->pdf->AddPage('L', // L - landscape, P - portrait
-        '', '', '', '',
-        15, // margin_left
-        15, // margin right
-        15, // margin top
-        15, // margin bottom
-        6, // margin header
-        6); // margin footer
+		if(isset($cp) && $cp == 0) {
+			$this->pdf->setHTMLFooter('<hr/><br/>
+				<table width="100%" style="vertical-align: bottom; font-size: 9pt; color: #000000; font-weight: bold;"><tr>
+				<td width="33%" style="border:0"><span style="font-weight: bold; ">Banksia Gardens Community Servives</span></td>
+				<td width="33%" align="center" style="font-weight: bold; border: 0;">{DATE l jS F Y}</td>
+				<td width="33%" style="text-align: right; border: 0; ">Page&nbsp;&nbsp;{PAGENO}&nbsp;&nbsp;of&nbsp;&nbsp;{nbpg}&nbsp;&nbsp;&nbsp;</td>
+				</tr></table>
+			');
+		}
+
+		if(isset($cp) && $cp == 1) {
+			$this->pdf->AddPage('L', // L - landscape, P - portrait
+	        '', '1', '', '',
+	        15, // margin_left
+	        15, // margin right
+	        15, // margin top
+	        15, // margin bottom
+	        6, // margin header
+	        6); // margin footer
+		} else {
+			$this->pdf->AddPage('L', // L - landscape, P - portrait
+	        '', '', '', '',
+	        15, // margin_left
+	        15, // margin right
+	        15, // margin top
+	        15, // margin bottom
+	        6, // margin header
+	        6); // margin footer
+		}
+		
+		if(isset($cp) && $cp == 1) {
+
+			$this->pdf->setHTMLFooter('<hr/><br/>
+				<table width="100%" style="vertical-align: bottom; font-size: 9pt; color: #000000; font-weight: bold;"><tr>
+				<td width="33%" style="border:0"><span style="font-weight: bold; ">Banksia Gardens Community Servives</span></td>
+				<td width="33%" align="center" style="font-weight: bold; border: 0;">{DATE l jS F Y}</td>
+				<td width="33%" style="text-align: right; border: 0; ">Page&nbsp;&nbsp;{PAGENO}&nbsp;&nbsp;of&nbsp;&nbsp;{nbpg}&nbsp;&nbsp;&nbsp;</td>
+				</tr></table>
+			');
+			//$this->pdf->PageNumSubstitutions[] = ['from' => 1, 'reset' => 1, 'type' => 'I', 'suppress' => 'on'];
+		}
+
 		$this->pdf->WriteHTML($html);
+
 		$this->pdf->Output(FCPATH . $pdfFilePath . $FileStorageName, "F");
 
 		//echo $html;
