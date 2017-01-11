@@ -179,6 +179,20 @@ class Pervol extends MY_Controller {
 		//print_r($output);
 	}
 	
+	
+	public function multi_LS() {
+		
+		$langArr = $this->input->post('LanguagesSpoken[]');
+		if(empty($langArr)) {
+			$this->form_validation->set_message('multi_LS', 'Languages Spoken is required and must not be empty.');
+
+			return false;
+		} else {
+			return true;
+		}
+
+	}
+	
 	public function per_vol_insert($post_array){
 		$this->insert_per_vol($post_array);
 	}
