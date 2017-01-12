@@ -92,17 +92,27 @@ class Funding extends MY_Controller {
 
 		//Change the field type to a dropdown with values
 		//to add to the relational table
-		if($state == "add" || $state == "insert") {
-			$crud->field_type("ApprovedBy", "hidden", $_SESSION['session_user']['bms_psnid']);
-		} elseif($state == "edit" || $state == "update") {
+		if($state == "edit" || $state == "update") {
 			$crud->callback_edit_field("ApprovedBy", array($this, 'callback_AppBy_edit'));
 			$crud->callback_edit_field("ProjID", array($this, 'callback_projID_edit'));
 			$crud->callback_edit_field("FundBodyID", array($this, 'callback_FBID_edit'));
-		} else {
-
-			$crud->field_type("ApprovedBy", "dropdown", $usrArr);
+		} 
+				//Get Financial Controller users for ApprovedBy
+		$fcusers = $crud->basic_model->return_query("SELECT PerID, CONCAT(FirstName, ' ', MiddleName, ' ', LastName) as FullName FROM Person
+		WHERE Is_FinanceController = 1");
+		$fcArr = array();
+		if (empty($fcusers) == false){
+			foreach($fcusers as $fc){
+				$fcArr += [$fc->PerID => $fc->FullName];
+			}
+			$crud->field_type("ApprovedBy", "dropdown", $fcArr);
 		}
-
+		else{
+			$crud->field_type("ApprovedBy", 'hidden');
+		}
+		
+		
+		
 		//Change the default method to fire when organizing funding for a project
 		$crud->callback_before_insert(array($this,'funding_add'));
 		//$crud->callback_before_update(array($this,'update_fund'));
@@ -171,7 +181,6 @@ class Funding extends MY_Controller {
 		//$crud->field_type("ProjName", "dropdown", $prjArr);
 
 		if($state === "edit" || $state === "update") {
-			$crud->callback_edit_field("ApprovedBy", array($this, 'callback_AppBy_edit'));
 			$crud->callback_edit_field("ProjID", array($this, 'callback_projID_edit'));
 			$crud->callback_edit_field("FundBodyID", array($this, 'callback_FBID_edit'));
 		} else if ($state === "add" || $state === "insert") {
@@ -182,7 +191,6 @@ class Funding extends MY_Controller {
 				$readOnly = '<div id="field-ProjID" class="readonly_label">' . $q->Name .'</div>';
 				return $readOnly. '<input id="field-ProjID" name="ProjID" type="text" value="' . $id . '" class="numeric form-control" maxlength="255" style="display:none;">';
 			});
-			$crud->field_type("ApprovedBy", "hidden", $_SESSION['session_user']['bms_psnid']);
 			$crud->field_type("FBName", "dropdown", $FBArr);
 			$crud->field_type("FundBodyID", "dropdown", $FBArr);
 		} else {
@@ -190,12 +198,20 @@ class Funding extends MY_Controller {
 			$crud->field_type("FBName", "dropdown", $FBArr);
 			$crud->field_type("FundBodyID", "dropdown", $FBArr);	
 		}
-
-		
-		
-
-			
-				
+		//Get Financial Controller users for ApprovedBy
+		$fcusers = $crud->basic_model->return_query("SELECT PerID, CONCAT(FirstName, ' ', MiddleName, ' ', LastName) as FullName FROM Person
+		WHERE Is_FinanceController = 1");
+		$fcArr = array();
+		if (empty($fcusers) == false){
+			foreach($fcusers as $fc){
+				$fcArr += [$fc->PerID => $fc->FullName];
+			}
+			$crud->field_type("ApprovedBy", "dropdown", $fcArr);
+		}
+		else{
+			$crud->field_type("ApprovedBy", 'hidden');
+		}
+						
 		//Call Model to get the User's Full Names
 		$users = $crud->basic_model->return_query("SELECT PerID, CONCAT(FirstName, ' ', MiddleName, ' ', LastName) as FullName FROM Person");
 
@@ -208,8 +224,6 @@ class Funding extends MY_Controller {
 		//Change the field type to a dropdown with values
 		//to add to the relational table
 		$crud->field_type("FullName", "dropdown", $usrArr);
-		$crud->field_type("ApprovedBy", "dropdown", $usrArr);
-
 		
 		//$crud->unset_edit();
 		//$crud->add_action('Edit', '', '', 'edit_button edit-icon', array($this, 'upd_fund_proj'));
