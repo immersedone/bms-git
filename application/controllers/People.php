@@ -36,9 +36,9 @@ class People extends MY_Controller {
 		$crud->basic_model->set_query_str('SELECT * FROM (SELECT Sub.SuburbName as SubName, Sub.Postcode as Postcode, Per.* from `Person` Per
 		LEFT OUTER JOIN `Suburb` Sub ON Per.SuburbID=Sub.SuburbID) x');
 		$crud->columns('FirstName', 'LastName', 'Address', 'Postcode', 'SubName', 'PersonalEmail', 'Mobile', 'HomePhone');
-		$crud->add_fields('FirstName', 'MiddleName', 'LastName', 'Address', 'DateofBirth', 'SuburbID', 'PersonalEmail', 'Mobile', 'HomePhone', 'Status', 'DateStarted', 'ContractSigned', 'PaperworkCompleted', 'WWC', 'WWCFiled', 'WWCExpiry', 'PoliceCheck', 'PoliceCheckDate', 'TeacherRegCheck', 'TeacherExipry', 'FAQual', 'FAQLev', 'FAQaulExpiry', 'LanguagesSpoken', 'EmergContName', 'EmergContMob', 'EmergContHPhone', 'EmergContWPhone', 'EmergContRelToPer', 'Username', 'Password', 'Is_Sup');
-		$crud->edit_fields('FirstName', 'MiddleName', 'LastName','Address', 'DateofBirth', 'SuburbID', 'PersonalEmail', 'Mobile', 'HomePhone', 'Status', 'DateStarted', 'DateFinished', 'ContractSigned', 'PaperworkCompleted', 'WWC', 'WWCFiled', 'WWCExpiry', 'PoliceCheck', 'PoliceCheckDate', 'TeacherRegCheck', 'TeacherExipry', 'FAQual', 'FAQLev', 'FAQaulExpiry', 'LanguagesSpoken', 'EmergContName', 'EmergContMob', 'EmergContHPhone', 'EmergContWPhone', 'EmergContRelToPer', 'Is_Sup');	
-		$crud->set_read_fields('Username', 'FirstName', 'MiddleName', 'LastName','Address', 'DateofBirth', 'SuburbID', 'PersonalEmail', 'Mobile', 'HomePhone', 'Status', 'DateStarted', 'DateFinished', 'ContractSigned', 'PaperworkCompleted', 'WWC', 'WWCFiled', 'WWCExpiry', 'PoliceCheck', 'PoliceCheckDate', 'TeacherRegCheck', 'TeacherExipry', 'FAQual', 'FAQLev', 'FAQaulExpiry', 'LanguagesSpoken', 'EmergContName', 'EmergContMob', 'EmergContHPhone', 'EmergContWPhone', 'EmergContRelToPer', 'Is_Sup');	
+		$crud->add_fields('FirstName', 'MiddleName', 'LastName', 'Address', 'DateofBirth', 'SuburbID', 'PersonalEmail', 'Mobile', 'HomePhone', 'Status', 'DateStarted', 'ContractSigned', 'PaperworkCompleted', 'WWCReq', 'WWC', 'WWCFiled', 'WWCExpiry', 'PCReq', 'PoliceCheck', 'PoliceCheckDate', 'TRCReq', 'TeacherRegCheck', 'TeacherExipry', 'FAQual', 'FAQLev', 'FAQaulExpiry', 'LanguagesSpoken', 'EmergContName', 'EmergContMob', 'EmergContHPhone', 'EmergContWPhone', 'EmergContRelToPer', 'Username', 'Password', 'Is_Sup', 'Is_FinanceController');
+		$crud->edit_fields('FirstName', 'MiddleName', 'LastName','Address', 'DateofBirth', 'SuburbID', 'PersonalEmail', 'Mobile', 'HomePhone', 'Status', 'DateStarted', 'DateFinished', 'ContractSigned', 'PaperworkCompleted', 'WWCReq', 'WWC', 'WWCFiled', 'WWCExpiry', 'PCReq', 'PoliceCheck', 'PoliceCheckDate', 'TRCReq', 'TeacherRegCheck', 'TeacherExipry', 'FAQual', 'FAQLev', 'FAQaulExpiry', 'LanguagesSpoken', 'EmergContName', 'EmergContMob', 'EmergContHPhone', 'EmergContWPhone', 'EmergContRelToPer', 'Is_Sup');	
+		$crud->set_read_fields('Username', 'FirstName', 'MiddleName', 'LastName','Address', 'DateofBirth', 'SuburbID', 'PersonalEmail', 'Mobile', 'HomePhone', 'Status', 'DateStarted', 'DateFinished', 'ContractSigned', 'PaperworkCompleted', 'WWCReq', 'WWC', 'WWCFiled', 'WWCExpiry', 'PCReq', 'PoliceCheck', 'PoliceCheckDate', 'TRCReq', 'TeacherRegCheck', 'TeacherExipry','FAQual', 'FAQLev', 'FAQaulExpiry', 'LanguagesSpoken', 'EmergContName', 'EmergContMob', 'EmergContHPhone', 'EmergContWPhone', 'EmergContRelToPer', 'Is_Sup');	
 		$crud->display_as('FirstName', 'First Name');
 		$crud->display_as('MiddleName', 'Middle Name');
 		$crud->display_as('LastName', 'Last Name');
@@ -51,10 +51,13 @@ class People extends MY_Controller {
 		$crud->display_as('ContractSigned', 'Contract Signed');
 		$crud->display_as('PaperworkCompleted', 'Paperwork is Completed');
 		$crud->display_as('SubName', 'Suburb');
+		$crud->display_as('PCReq', 'Valid Police Check Required?');
 		$crud->display_as('PoliceCheck', 'Valid Police Check');
 		$crud->display_as('PoliceCheckDate', 'Date of Police Check');
+		$crud->display_as('TRCReq', 'Valid Teacher Registration Required?');
 		$crud->display_as('TeacherRegCheck', 'Valid Teacher Registration');
 		$crud->display_as('TeacherExipry', 'Valid Teacher Registration Expiry Date');
+		$crud->display_as('WWCReq', 'Working With Children Check (WWC) Required?');
 		$crud->display_as('WWC', 'Working With Children Check (WWC)');
 		$crud->display_as('WWCFiled', 'Working With Children Check (WWC) is Filed');
 		$crud->display_as('WWCExpiry', 'Working With Children Check (WWC) Expiry Date');
@@ -70,7 +73,8 @@ class People extends MY_Controller {
 		$crud->display_as('EmergContRelToPer', 'Emergency Contact Relation');
 		$crud->field_type('Hash', 'hidden');
 		$crud->field_type('Timeout', 'hidden');
-		$crud->display_as('Is_Sup', 'Is Supervisor');
+		$crud->display_as('Is_Sup', 'User is a Supervisor?');
+		$crud->display_as('Is_FinanceController', 'User is a Financial Controller?');
 
 		$state = $crud->getState();
 

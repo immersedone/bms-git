@@ -52,6 +52,20 @@ class Reimbursements extends MY_Controller {
 			$usrArr += [$usr->PerID => $usr->FullName];
 		}
 		
+		//Get Financial Controller users for ApprovedBy
+		$fcusers = $crud->basic_model->return_query("SELECT PerID, CONCAT(FirstName, ' ', MiddleName, ' ', LastName) as FullName FROM Person
+		WHERE Is_FinanceController = 1");
+		$fcArr = array();
+		if (empty($fcusers) == false){
+			foreach($fcusers as $fc){
+				$fcArr += [$fc->PerID => $fc->FullName];
+			}
+			$crud->field_type("ApprovedBy", "dropdown", $fcArr);
+		}
+		else{
+			$crud->field_type("ApprovedBy", 'hidden');
+		}
+		
 		$unpaidExp = $crud->basic_model->return_query("SELECT ExpID, CONCAT(ExpName, ' - ', Concept, ' - ', Amount) as ExpData FROM Expenditure");
 		
 		$expArr = array();
@@ -65,18 +79,11 @@ class Reimbursements extends MY_Controller {
 		
 		//Change the field type to a dropdown with values
 		//to add to the relational table
-		if($state == "add" || $state == "insert") {
-			$crud->field_type("ApprovedBy", "hidden", $_SESSION["session_user"]["bms_psnid"]);
-			//$crud->callback_after_insert(array($this, 'save_print'));
-		} elseif ($state == "edit" || $state == "update") {
-			$crud->callback_edit_field("ApprovedBy", array($this, 'callback_AppBy_edit'));
+		if ($state == "edit" || $state == "update") {
 			$crud->callback_edit_field("PerID", array($this, 'callback_ReFor_edit'));
 			$crud->field_type("ReimID", "hidden");
 			$crud->field_type("PerID", "readonly");
-		} else {
-			$crud->field_type("ApprovedBy", "dropdown", $usrArr);
-
-		}
+		} 
 
 		
 		$crud->field_type("FullName", "dropdown", $usrArr);
@@ -163,7 +170,7 @@ class Reimbursements extends MY_Controller {
 
 		$this->render($output);
 	}
-
+/*
 	public function callback_AppBy_edit($value, $primary_key) {
 		$q = $this->db->query('SELECT CONCAT( FirstName, " ", MiddleName, " ", LastName) as FullName FROM Person WHERE PerID="'.$value.'" LIMIT 1')->row();
 
@@ -171,7 +178,7 @@ class Reimbursements extends MY_Controller {
 		return $readOnly . '<input id="field-ApprovedBy" name="ApprovedBy" type="text" value="' . $value . '" class="numeric form-control" maxlength="255" style="display:none;">';
 
 	}
-
+*/
 	public function callback_ReFor_edit($value, $primary_key) {
 		$q = $this->db->query('SELECT CONCAT( FirstName, " ", MiddleName, " ", LastName) as FullName FROM Person WHERE PerID="'.$value.'" LIMIT 1')->row();
 

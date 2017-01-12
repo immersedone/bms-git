@@ -8,7 +8,7 @@ class Pervol extends MY_Controller {
 		parent::__construct();
 
 
-		$this->load->library('grocery_CRUD');
+		$this->load->library('Grocery_CRUD');
 		$this->load->library('bcrypt');
 	}
 
@@ -33,7 +33,7 @@ class Pervol extends MY_Controller {
 		$crud->basic_model->set_query_str('SELECT Vol.isActive, Vol.Supervisor, Vol.BGCSDepartment, Vol.DateStarted, Vol.DateFinished, Vol.RefFullName, Vol.RefMobile, Vol.RefHPhone, Vol.RefRelToVol, Vol.DaysWork, Vol.ContSkills, Vol.ContQual, Per.* FROM Person Per 
 		LEFT OUTER JOIN Volunteer Vol on Vol.PerID = Per.PerID');
 
-		$crud->add_fields('FirstName', 'MiddleName', 'LastName', 'Address', 'DateofBirth', 'SuburbID', 'PersonalEmail', 'Mobile', 'HomePhone', 'Status', 'DateStarted', 'ContractSigned', 'PaperworkCompleted', 'WWC', 'WWCFiled', 'WWCExpiry', 'PoliceCheck', 'PoliceCheckDate', 'TeacherRegCheck', 'TeacherExipry', 'FAQual', 'FAQLev', 'FAQaulExpiry', 'LanguagesSpoken', 'EmergContName', 'EmergContMob', 'EmergContHPhone', 'EmergContWPhone', 'EmergContRelToPer', 'Username', 'Password', 'Is_Sup', 'isActive', 'Supervisor', 'BGCSDepartment', 'DateStarted', 'DateFinished', 'RefFullName', 'RefMobile', 'RefHPhone', 'RefRelToVol', 'DaysWork', 'ContSkills', 'ContQual');
+		$crud->add_fields('FirstName', 'MiddleName', 'LastName', 'Address', 'DateofBirth', 'SuburbID', 'PersonalEmail', 'Mobile', 'HomePhone', 'Status', 'DateStarted', 'ContractSigned', 'PaperworkCompleted', 'WWCReq', 'WWC', 'WWCFiled', 'WWCExpiry', 'PCReq', 'PoliceCheck', 'PoliceCheckDate', 'TRCReq', 'TeacherRegCheck', 'TeacherExipry', 'FAQual', 'FAQLev', 'FAQaulExpiry', 'LanguagesSpoken', 'EmergContName', 'EmergContMob', 'EmergContHPhone', 'EmergContWPhone', 'EmergContRelToPer', 'Username', 'Password', 'Is_Sup', 'Is_FinanceController', 'isActive', 'Supervisor', 'BGCSDepartment', 'DateStarted', 'DateFinished', 'RefFullName', 'RefMobile', 'RefHPhone', 'RefRelToVol', 'DaysWork', 'ContSkills', 'ContQual');
 
 		$crud->display_as('FirstName', 'First Name');
 		$crud->display_as('MiddleName', 'Middle Name');
@@ -45,10 +45,13 @@ class Pervol extends MY_Controller {
 		$crud->display_as('DateFinished', 'Date Finished');
 		$crud->display_as('ContractSigned', 'Contract Signed');
 		$crud->display_as('PaperworkCompleted', 'Paperwork is Completed');
+		$crud->display_as('PCReq', 'Valid Police Check Required?');
 		$crud->display_as('PoliceCheck', 'Valid Police Check');
 		$crud->display_as('PoliceCheckDate', 'Date of Police Check');
+		$crud->display_as('TRCReq', 'Valid Teacher Registration Required?');
 		$crud->display_as('TeacherRegCheck', 'Valid Teacher Registration');
 		$crud->display_as('TeacherExipry', 'Valid Teacher Registration Expiry Date');
+		$crud->display_as('WWCReq', 'Working With Children Check (WWC) Required?');
 		$crud->display_as('WWC', 'Working With Children Check (WWC)');
 		$crud->display_as('WWCFiled', 'Working With Children Check (WWC) is Filed');
 		$crud->display_as('WWCExpiry', 'Working With Children Check (WWC) Expiry Date');
@@ -64,7 +67,8 @@ class Pervol extends MY_Controller {
 		$crud->display_as('EmergContRelToPer', 'Emergency Contact Relation');
 		$crud->field_type('Hash', 'hidden');
 		$crud->field_type('Timeout', 'hidden');
-		$crud->display_as('Is_Sup', 'Is Supervisor');
+		$crud->display_as('Is_Sup', 'User is a Supervisor?');
+		$crud->display_as('Is_FinanceController', 'User is a Financial Controller?');
 		$crud->display_as("BGCSDepartment", "Department Assigned To");
 		$crud->display_as("RefFullName", "Referee Full Name");
 		$crud->display_as("RefMobile", "Referee Mobile");
@@ -81,7 +85,8 @@ class Pervol extends MY_Controller {
 		$crud->display_as("isActive", "Is Active");
 		$crud->field_type('Username', 'hidden');
 		$crud->field_type('Password', 'hidden', $tempHash);
-		//$crud->field_type('isActive', 'true_false');
+		$crud->field_type('ContractSigned', 'true_false');
+		$crud->field_type('isActive', 'true_false');
 		$crud->field_type('ContSkills', 'text');
 		$crud->field_type('ContQual', 'text');
 		$crud->required_fields('FirstName', 
@@ -232,6 +237,10 @@ class Pervol extends MY_Controller {
 		$EmergContRelToPer = $_POST['EmergContRelToPer'];
 		$Is_Sup = $_POST['Is_Sup'];
 		$Password = $_POST['Password'];
+		$WWCReq = $_POST['WWCReq'];
+		$PCReq = $_POST['PCReq'];
+		$TRCReq = $_POST['TRCReq'];
+		$Is_FinanceController = $_POST['Is_FinanceController'];
 		
 		$LSList = "";	
 		for($i = 0; $i < count($LanguagesSpoken); $i++) {
@@ -246,7 +255,7 @@ class Pervol extends MY_Controller {
 		$crud = new grocery_CRUD();
 		$crud->set_model('PerEmp_GC');
 		$Username = $this->PerEmp_GC->create_user($FirstName, $MiddleName, $LastName);
-		$PerID = $crud->basic_model->insert_per($FirstName, $MiddleName, $LastName, $DateofBirth, $Address, $SuburbID, $PersonalEmail, $Mobile, $HomePhone, $Status, $DateStarted, $ContractSigned, $PaperworkCompleted, $WWC, $WWCFiled, $WWCExpiry, $PoliceCheck, $PoliceCheckDate, $TeacherRegCheck, $TeacherExipry, $FAQual, $FAQLev, $FAQaulExpiry, $Username, $Password, $LSList, $EmergContName, $EmergContMob, $EmergContHPhone, $EmergContWPhone, $EmergContRelToPer, $Is_Sup);
+		$PerID = $crud->basic_model->insert_per($FirstName, $MiddleName, $LastName, $DateofBirth, $Address, $SuburbID, $PersonalEmail, $Mobile, $HomePhone, $Status, $DateStarted, $ContractSigned, $PaperworkCompleted, $WWC, $WWCFiled, $WWCExpiry, $PoliceCheck, $PoliceCheckDate, $TeacherRegCheck, $TeacherExipry, $FAQual, $FAQLev, $FAQaulExpiry, $Username, $Password, $LSList, $EmergContName, $EmergContMob, $EmergContHPhone, $EmergContWPhone, $EmergContRelToPer, $Is_Sup, $WWCReq, $PCReq, $TRCReq, $Is_FinanceController);
 	
 		//Volunteer Add
 				
