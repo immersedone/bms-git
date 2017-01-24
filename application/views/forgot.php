@@ -26,7 +26,7 @@
 
 			if($_GET['er'] == 'udne') {
 
-				$m = 'Username doesn\'t exist.';
+				$m = 'Username/Email doesn\'t exist.';
 
 			} elseif($_GET['er'] == 'ftup') {
 				
@@ -96,7 +96,7 @@
 				<p class="justify" style="font-size: 13px;">Locked out? No worries. Just fill in your Email Address and Username below and we'll send out your temporary password.</p>
 				<hr/>
 				<?php echo form_open('forgot/email'); ?>
-					<label for="username">Email Address:</label>
+					<label for="username">Current Personal Email Address:</label>
 					<input type="email" name="emailadd" required="required"  placeholder="e.g. john.msmith@gmail.com" />
 					<label for="password">Username:</label>
 					<input type="text" name="username" required="required" placeholder="e.g. john.msmith" />

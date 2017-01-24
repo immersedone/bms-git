@@ -28,19 +28,20 @@ class Forgot extends CI_Controller {
 
 		//Check Database for matching username and email
 		$checkUser = $this->db->query("SELECT PerID, PersonalEmail, concat(FirstName, ' ', MiddleName, ' ', LastName) as FullName FROM Person WHERE Username='" . $username . "' AND PersonalEmail='" . $emailAdd . "' LIMIT 1 ");
-		$checkUserNumRow = $checkUser->num_rows();
 
 		//Testing array print for SQL
 		//print_r($checkUser);
 
 		//Assign SQL to Variables
-		$perID = $checkUser->row()->PerID;
-		$fullName = $checkUser->row()->FullName;
+		if($checkUser->num_rows() !== 0) {
+			$perID = $checkUser->row()->PerID;
+			$fullName = $checkUser->row()->FullName;
+		}
 
 		//Test Vars
 		//echo $perID . ' || Name: ' . $fullName;
 
-		if($checkUserNumRow == 0) {
+		if($checkUser->num_rows() === 0) {
 			//Username doesn't exist
 			redirect("forgot?er=udne", "refresh");
 
