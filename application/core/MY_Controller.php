@@ -13,9 +13,18 @@ class MY_Controller extends CI_Controller {
 
 	//Function to Check Login
 	public function check_login() {
+
+
+		//$perID = $_SESSION["session_user"]["bms_psnid"];
+
+		//Check to see if they are a temporary password
+		//$checkSetting = $this->db->query('SELECT * FROM Person WHERE PerID="'.$perID.'" LIMIT 1')->row();
+
 		if(!$this->is_logged_in()) {
 			redirect('login', 'refresh');
-		}
+		}// elseif($this->is_logged_in() && $checkSetting->isTempPass) {
+		//	redirect('user/profile', 'refresh');
+		//}
 	}
 
 	public function is_logged_in()

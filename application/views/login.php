@@ -17,6 +17,32 @@
 
 -->
 
+<?php 
+
+	//Display Messages accordingly (Success/Failed)
+	if(isset($_GET)) {
+
+		if(isset($_GET['sc'])) {
+
+			if($_GET['sc'] == 1 && (isset($_GET['rdt']) && $_GET['rdt'] == 'frg')) {
+
+				$m = 'Successfully resetted password.';
+
+			} 
+
+			$shSM = 'display:block';
+			$smBG = 'limegreen';
+		}
+
+	} else {
+
+		$shSM = 'display:none';
+		$smBG = 'maroon';
+
+	}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,6 +76,10 @@
 <body>
 	<div class="container">
 		<div class="loginPnl">
+			<!-- Display Messages -->
+			<div class="col-md-12 dpmg" style="position:absolute; top: -40px; background: <?php echo isset($smBG)? $smBG : ''; ?>; padding: 5px; text-align: center; font-weight: bold; font-size: 17px; width: 100%; color: white; border-radius: 5px; <?php echo isset($shSM)? $shSM : ''; ?>">
+				<?php echo isset($m)? $m : ''; ?>
+			</div>
 			<div class="col-md-12 header">
 				<img src="assets/img/logo.png" class="rsp_img" />
 				<h4>Banksia Gardens</h4>

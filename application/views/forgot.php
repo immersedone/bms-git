@@ -17,6 +17,40 @@
 
 -->
 
+<?php 
+
+	//Display Messages accordingly (Success/Failed)
+	if(isset($_GET)) {
+
+		if(isset($_GET['er'])) {
+
+			if($_GET['er'] == 'udne') {
+
+				$m = 'Username doesn\'t exist.';
+
+			} elseif($_GET['er'] == 'ftup') {
+				
+				$m = 'Failed to reset password.';
+
+			} elseif($_GET['er'] == 'ftsm') {
+				
+				$m = 'Failed to send email instructions.';
+
+			}
+
+			$shEM = 'display:block';
+			$emBG = 'maroon';
+		}
+
+	} else {
+
+		$shEM = 'display:none';
+		$emBG = 'limegreen';
+
+	}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,18 +84,22 @@
 <body>
 	<div class="container">
 		<div class="loginPnl forgot">
+			<!-- Display Messages -->
+			<div class="col-md-12 dpmg" style="position:absolute; top: -40px; background: <?php echo (isset($emBG))? $emBG : ''; ?>; padding: 5px; text-align: center; font-weight: bold; font-size: 17px; width: 100%; color: white; border-radius: 5px; <?php  echo (isset($shSM))? $shSM : ''; ?>">
+				<?php echo (isset($m))? $m : ''; ?>
+			</div>
 			<div class="col-md-12 header">
 				<img src="assets/img/logo.png" class="rsp_img" />
 				<h4>Banksia Gardens</h4>
 			</div>
 			<div class="col-md-12 content">
-				<p class="justify">Locked out? No worries. Just fill in your Email Address and PIN below and we'll send out your temporary password.</p>
+				<p class="justify" style="font-size: 13px;">Locked out? No worries. Just fill in your Email Address and Username below and we'll send out your temporary password.</p>
 				<hr/>
-				<form action="#" method="POST">
+				<?php echo form_open('forgot/email'); ?>
 					<label for="username">Email Address:</label>
-					<input type="text" name="username" required="required" />
-					<label for="password">PIN:</label>
-					<input type="number" name="password" required="required" />
+					<input type="email" name="emailadd" required="required"  placeholder="e.g. john.msmith@gmail.com" />
+					<label for="password">Username:</label>
+					<input type="text" name="username" required="required" placeholder="e.g. john.msmith" />
 					<input type="submit" value="Reset Password" class="btn" />
 				</form>
 				<hr/>

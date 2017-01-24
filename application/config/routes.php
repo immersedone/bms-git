@@ -61,6 +61,17 @@ $route['logout'] = 'logout';
 //Add Page Specific Routes and Controller Routes for Grocery CRUD
 $route['user'] = 'user';
 
+
+//Routes for Forgot Password Page
+$route['/forgot'] = 'forgot';
+$route['/forgot/email'] = 'forgot/email';
+
+
+//Routes for Updating Profile
+$route['user/profile'] = 'profile';
+$route['user/profile/procpas'] = 'profile/procpas';
+$route['user/profile/procdet'] = 'profile/procdet';
+
 //Routes for People Page
 $route['user/people'] = 'people';
 $route['user/people/index'] = 'people';
